@@ -6,10 +6,12 @@ import CreateIncidentModalSelect from '../CreateIncidentModalSelect/CreateIncide
 /**Bootstrap components */
 import { Modal, Button, Form } from 'react-bootstrap';
 
-function onSubmit(event) {
+const onSubmit = (event) => {
   event.preventDefault();
-}
-
+};
+const handlePriority = (category2, incident) => {
+  return category2.find((item) => item.id == incident.category2).priorityId;
+};
 const CreateIncidentModel = ({ handleClose, showModal }) => {
   const { user } = useSelector((state) => state.auth.users);
   const [incident, setIncident] = useState({
@@ -19,7 +21,6 @@ const CreateIncidentModel = ({ handleClose, showModal }) => {
     currentResponsible: '',
     text: '',
     priority: 0,
-    urgency: 0,
     status: 0,
     departmentId: user.departmentId,
     positionId: user.positionId,
@@ -33,6 +34,12 @@ const CreateIncidentModel = ({ handleClose, showModal }) => {
     category3: 1,
   });
 
+  useEffect(() => {
+    setIncident({
+      ...incident,
+      priority: handlePriority(category2, incident),
+    });
+  }, []);
   useEffect(() => {
     console.log('incident', incident);
     // console.log(
@@ -56,10 +63,9 @@ const CreateIncidentModel = ({ handleClose, showModal }) => {
   useEffect(() => {
     setIncident({
       ...incident,
-      priority: category2.find((item) => item.id == incident.category2)
-        .priorityId,
+      priority: handlePriority(category2, incident),
     });
-  }, []);
+  }, [incident.category2, incident.category1]);
   const category2Filter = category2.filter(
     (category2) => category2.category1Id === incident.category1,
   );
