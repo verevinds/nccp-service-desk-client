@@ -9,7 +9,6 @@ const Incident = (props) => {
   });
 
   useEffect(() => {
-    console.log('useEffect', status);
     switch (status.code) {
       case 0:
         setStatus({ ...status, textButton: 'Взять в работу' });
@@ -20,6 +19,7 @@ const Incident = (props) => {
       default:
         break;
     }
+    // eslint-disable-next-line
   }, [status.code]);
 
   return (
@@ -32,7 +32,7 @@ const Incident = (props) => {
           <Button
             variant="primary"
             onClick={() => {
-              setStatus(setStatus({ ...status, code: status.code++, }););
+              setStatus(setStatus({ ...status, code: status.code++ }));
             }}
           >
             {status.textButton}

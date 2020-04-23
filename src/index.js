@@ -1,16 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+
 import './index.css';
 import MainPage from './page/MainPage';
 import * as serviceWorker from './serviceWorker';
 import Header from './component/Header/Header';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import store from './redux/store';
 
 ReactDOM.render(
-  <React.StrictMode>
+  <Provider store={store}>
     <Header />
     <MainPage />
-  </React.StrictMode>,
+  </Provider>,
   document.getElementById('root'),
 );
 

@@ -1,11 +1,29 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect, useState } from 'react';
+import CreateIncidentModal from '../CreateIncidentModal/CreateIncidentModal';
 
 /**Bootstrap component */
-import { Navbar, Nav, Image, Button, Badge } from 'react-bootstrap';
+import { Navbar, Nav, Image, Button } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
 
 const incident = 0;
 
 const Header = (props) => {
+  const { users } = useSelector((state) => state.auth);
+
+  const [showModal, setShowModal] = useState(false);
+  const handleClose = () => setShowModal(false);
+  const handleOpen = () => setShowModal(true);
+
+  /**Получаем полное имя при изменение сущности users в store */
+  const [fullName, setFullName] = useState('');
+  useEffect(() => {
+    if (users.user) {
+      setFullName(`${users.user.name1} ${users.user.name2}`);
+    } else {
+      setFullName(`Гость`);
+    }
+  }, [users]);
+
   return (
     <nav>
       <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
@@ -19,12 +37,20 @@ const Header = (props) => {
               </Button>
             </Nav.Item>
             <Nav.Item>
-              <Button>Создать инцидент</Button>
+              <Button onClick={handleOpen}>Создать инцидент</Button>
+              {users.user ? (
+                <CreateIncidentModal
+                  handleClose={handleClose}
+                  showModal={showModal}
+                />
+              ) : (
+                console.log('users null')
+              )}
             </Nav.Item>
           </Nav>
           <Nav>
             <Nav.Link href="#deets">
-              <Navbar.Text className="pr-1">Веревин Денис</Navbar.Text>
+              <Navbar.Text className="pr-1">{`${fullName}`}</Navbar.Text>
               <Image src="https://via.placeholder.com/35" roundedCircle />
             </Nav.Link>
           </Nav>
