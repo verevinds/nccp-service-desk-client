@@ -1,16 +1,21 @@
 import {
-  CATEGOTY_FETCHING,
-  CATEGOTY_REQUEST_SENDD,
-  CATEGOTY_REQUEST_SUCCESSED,
+  CATEGORY_FETCHING,
+  CATEGORY_REQUEST_SENDD,
+  CATEGORY_REQUEST_SUCCESSED,
+  CATEGORY_POST,
 } from '../constants';
 
 export const categoryFetching = () => ({
-  type: CATEGOTY_FETCHING,
+  type: CATEGORY_FETCHING,
 });
 export const categoryRequestSendd = () => ({
-  type: CATEGOTY_REQUEST_SENDD,
+  type: CATEGORY_REQUEST_SENDD,
 });
 export const categoryRequestSuccessed = (data) => ({
-  type: CATEGOTY_REQUEST_SUCCESSED,
+  type: CATEGORY_REQUEST_SUCCESSED,
+  data,
+});
+export const categorySend = (data) => ({
+  type: CATEGORY_POST,
   data,
 });
