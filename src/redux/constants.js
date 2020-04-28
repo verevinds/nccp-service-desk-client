@@ -14,3 +14,6 @@ export const PROPERTY_POST = 'PROPERTY_POST';
 
 /** Константы для опций*/
 export const OPTION_POST = 'OPTION_POST';
+
+/** Константы для каталог*/
+export const CATALOG_POST = 'CATALOG_POST';

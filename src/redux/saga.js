@@ -1,12 +1,6 @@
 import { put, call, takeLatest } from 'redux-saga/effects';
 import * as axios from 'axios';
-import {
-  AUTH_FETCHING,
-  CATEGORY_FETCHING,
-  CATEGORY_POST,
-  PROPERTY_POST,
-  OPTION_POST,
-} from './constants';
+import { AUTH_FETCHING, CATEGORY_FETCHING, CATALOG_POST } from './constants';
 import {
   authRequestSendd,
   authRequestSuccessed,
@@ -20,9 +14,7 @@ import {
 export function* watchFetch() {
   yield takeLatest(AUTH_FETCHING, fetchAsync);
   yield takeLatest(CATEGORY_FETCHING, fetchAsyncCategory);
-  yield takeLatest(CATEGORY_POST, categoryPost);
-  yield takeLatest(PROPERTY_POST, propertyPost);
-  yield takeLatest(OPTION_POST, optionPost);
+  yield takeLatest(CATALOG_POST, catalogPost);
 }
 
 function* fetchAsync({ ip }) {
@@ -49,40 +41,25 @@ function* fetchAsyncCategory() {
   }
 }
 
-function* categoryPost({ data }) {
+function* catalogPost({ route, method, data, id }) {
   try {
     yield put(authRequestSendd());
-    const response = yield call(() =>
-      axios.post(`http://localhost:8080/api/categories`, data),
-    );
-    yield put(categoryFetching());
-    console.log(response.data);
-  } catch (error) {
-    console.log(error.message);
-  }
-}
+    switch (method) {
+      case 'post':
+        yield call(() =>
+          axios.post(`http://localhost:8080/api/${route}`, data),
+        );
+        break;
+      case 'delete':
+        yield call(() =>
+          axios.delete(`http://localhost:8080/api/${route}/${id}`, data),
+        );
+        break;
 
-function* propertyPost({ data }) {
-  try {
-    yield put(authRequestSendd());
-    const response = yield call(() =>
-      axios.post(`http://localhost:8080/api/properties`, data),
-    );
+      default:
+        break;
+    }
     yield put(categoryFetching());
-    console.log(response.data);
-  } catch (error) {
-    console.log(error.message);
-  }
-}
-
-function* optionPost({ data }) {
-  try {
-    yield put(authRequestSendd());
-    const response = yield call(() =>
-      axios.post(`http://localhost:8080/api/options`, data),
-    );
-    yield put(categoryFetching());
-    console.log(response.data);
   } catch (error) {
     console.log(error.message);
   }
