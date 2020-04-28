@@ -1,36 +1,60 @@
 import React, { memo, useEffect, useState } from 'react';
+import { categorySend } from '../redux/actionCreators/categoryAction';
+import { propertyPost } from '../redux/actionCreators/propertyAction';
+import { optionPost } from '../redux/actionCreators/optionAction';
 
 //?Bootstrap
-import { Row, Col, Container } from 'react-bootstrap';
-import { useSelector, useDispatch } from 'react-redux';
+import { Row } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
 import ListEdit from '../component/ListEdit/ListEdit';
 
 const AdminPage = (props) => {
-  const state = useSelector((state) => state);
+  const { list } = useSelector((state) => state.catalog);
+  const [currentCategory, setCurrentCategory] = useState();
 
-  const [propertyModal, setPropertyModal] = useState({
-    number: 0,
-  });
-  const onClick = (id) => {
-    setPropertyModal({ ...propertyModal, number: id });
+  const onClick = (id, setNumber) => {
+    setNumber(id);
   };
-
-  const [defineCategory, setDefineCategory] = useState({});
+  const [currentProperty, setCurrentProperty] = useState({});
   useEffect(() => {
-    setDefineCategory(
-      state.categories.list.filter((item) => item.id === propertyModal.number),
-    );
-  }, [propertyModal.number]);
+    setCurrentProperty(list.filter((item) => item.id === currentCategory));
+  }, [currentCategory, list]);
 
   return (
     <div>
-      <h1>Admin</h1>
       <Row>
-        <ListEdit list={state.categories.list} onClick={onClick} />
         <ListEdit
-          list={defineCategory[0] ? defineCategory[0].properties : []}
+          title="Категории"
+          list={list}
+          setNumber={setCurrentCategory}
+          activeId={currentCategory}
+          actionCreator={categorySend}
+          onClick={onClick}
         />
-        <ListEdit list={defineCategory[0] ? defineCategory[0].options : []} />
+        {currentProperty[0] ? (
+          <ListEdit
+            title="Параметры"
+            list={
+              currentProperty[0].properties.length > 0
+                ? currentProperty[0].properties
+                : null
+            }
+            actionCreator={propertyPost}
+            categoryId={currentCategory}
+          />
+        ) : null}
+        {currentProperty[0] ? (
+          <ListEdit
+            title="Опции"
+            list={
+              currentProperty[0].options.length > 0
+                ? currentProperty[0].options
+                : null
+            }
+            actionCreator={optionPost}
+            categoryId={currentCategory}
+          />
+        ) : null}
       </Row>
     </div>
   );

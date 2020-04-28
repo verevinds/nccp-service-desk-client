@@ -4,5 +4,5 @@ import { categoryReducer } from './categoryReducer';
 
 export const CombineReducers = combineReducers({
   auth: authReducer,
-  categories: categoryReducer,
+  catalog: categoryReducer,
 });

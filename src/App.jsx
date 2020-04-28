@@ -14,12 +14,12 @@ const App = (props) => {
   useEffect(() => {
     dispatch(authFetching(window.ipGlobal));
     dispatch(categoryFetching());
-  }, []);
-  console.log('state', state);
+    console.log('dispatch');
+  }, [dispatch]);
   return (
     <>
-      <Header />
-      {/* <MainPage /> */}
+      {false ? <Header /> : null}
+      {false ? <MainPage /> : null}
       <AdminPage />
     </>
   );
