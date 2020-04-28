@@ -1,7 +1,6 @@
 import { AUTH_REQUEST_SENDD, AUTH_REQUEST_SUCCESSED } from '../constants';
 
 const initialState = {
-  users: [],
   isRequest: false,
   isLoading: true,
 };
@@ -15,9 +14,12 @@ export const authReducer = (state = initialState, action) => {
         isRequest: true,
       };
     case AUTH_REQUEST_SUCCESSED:
+      const {
+        data: { user },
+      } = action;
       return {
         ...state,
-        users: action.data,
+        user,
         isLoading: true,
         isRequest: false,
       };

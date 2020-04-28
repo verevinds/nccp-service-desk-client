@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 const incident = 0;
 
 const Header = (props) => {
-  const { users } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.auth);
 
   const [showModal, setShowModal] = useState(false);
   const handleClose = () => setShowModal(false);
@@ -17,12 +17,12 @@ const Header = (props) => {
   /**Получаем полное имя при изменение сущности users в store */
   const [fullName, setFullName] = useState('');
   useEffect(() => {
-    if (users.user) {
-      setFullName(`${users.user.name1} ${users.user.name2}`);
+    if (!!user) {
+      setFullName(`${user.name1 || 'N'} ${user.name2 || 'N'}`);
     } else {
       setFullName(`Гость`);
     }
-  }, [users]);
+  }, [user]);
 
   return (
     <nav>
@@ -38,18 +38,16 @@ const Header = (props) => {
             </Nav.Item>
             <Nav.Item>
               <Button onClick={handleOpen}>Создать инцидент</Button>
-              {users.user ? (
+              {!!showModal ? (
                 <CreateIncidentModal
                   handleClose={handleClose}
                   showModal={showModal}
                 />
-              ) : (
-                console.log('users null')
-              )}
+              ) : null}
             </Nav.Item>
           </Nav>
           <Nav>
-            <Nav.Link href="#deets">
+            <Nav.Link href="">
               <Navbar.Text className="pr-1">{`${fullName}`}</Navbar.Text>
               <Image src="https://via.placeholder.com/35" roundedCircle />
             </Nav.Link>

@@ -1,6 +1,6 @@
 import React, { memo, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { categoryFetching } from './redux/actionCreators/categoryAction';
+import { categoryFetching } from './redux/actionCreators/catalogAction';
 import { authFetching } from './redux/actionCreators/authAction';
 
 import MainPage from './page/MainPage';
@@ -9,17 +9,15 @@ import AdminPage from './page/AdminPage';
 
 const App = (props) => {
   const dispatch = useDispatch();
-  const state = useSelector((state) => state);
-
   useEffect(() => {
     dispatch(authFetching(window.ipGlobal));
     dispatch(categoryFetching());
-    console.log('dispatch');
   }, [dispatch]);
+
   return (
     <>
-      {false ? <Header /> : null}
-      {false ? <MainPage /> : null}
+      <Header />
+      <MainPage />
       <AdminPage />
     </>
   );

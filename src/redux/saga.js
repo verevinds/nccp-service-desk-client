@@ -1,6 +1,6 @@
 import { put, call, takeLatest } from 'redux-saga/effects';
 import * as axios from 'axios';
-import { AUTH_FETCHING, CATEGORY_FETCHING, CATALOG_POST } from './constants';
+import { AUTH_FETCHING, CATALOG_FETCHING, CATALOG_POST } from './constants';
 import {
   authRequestSendd,
   authRequestSuccessed,
@@ -9,11 +9,11 @@ import {
   categoryFetching,
   categoryRequestSendd,
   categoryRequestSuccessed,
-} from './actionCreators/categoryAction';
+} from './actionCreators/catalogAction';
 
 export function* watchFetch() {
   yield takeLatest(AUTH_FETCHING, fetchAsync);
-  yield takeLatest(CATEGORY_FETCHING, fetchAsyncCategory);
+  yield takeLatest(CATALOG_FETCHING, fetchAsyncCatalog);
   yield takeLatest(CATALOG_POST, catalogPost);
 }
 
@@ -29,7 +29,7 @@ function* fetchAsync({ ip }) {
   }
 }
 
-function* fetchAsyncCategory() {
+function* fetchAsyncCatalog() {
   try {
     yield put(categoryRequestSendd());
     const response = yield call(() =>

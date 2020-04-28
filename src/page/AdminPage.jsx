@@ -1,7 +1,5 @@
 import React, { memo, useEffect, useState } from 'react';
-import { categorySend } from '../redux/actionCreators/categoryAction';
-import { propertyPost } from '../redux/actionCreators/propertyAction';
-import { optionPost } from '../redux/actionCreators/optionAction';
+import { catalogPost } from '../redux/actionCreators/catalogAction';
 
 //?Bootstrap
 import { Row } from 'react-bootstrap';
@@ -28,7 +26,8 @@ const AdminPage = (props) => {
           list={list}
           setNumber={setCurrentCategory}
           activeId={currentCategory}
-          actionCreator={categorySend}
+          actionCreator={catalogPost}
+          route={'categories'}
           onClick={onClick}
         />
         {currentProperty[0] ? (
@@ -39,7 +38,8 @@ const AdminPage = (props) => {
                 ? currentProperty[0].properties
                 : null
             }
-            actionCreator={propertyPost}
+            actionCreator={catalogPost}
+            route={'properties'}
             categoryId={currentCategory}
           />
         ) : null}
@@ -51,7 +51,8 @@ const AdminPage = (props) => {
                 ? currentProperty[0].options
                 : null
             }
-            actionCreator={optionPost}
+            route={'options'}
+            actionCreator={catalogPost}
             categoryId={currentCategory}
           />
         ) : null}

@@ -6,14 +6,14 @@ import CreateIncidentModalSelect from '../CreateIncidentModalSelect/CreateIncide
 /**Bootstrap components */
 import { Modal, Button, Form } from 'react-bootstrap';
 
-const onSubmit = (event) => {
-  event.preventDefault();
-};
-const handlePriority = (category2, incident) => {
-  return category2.find((item) => item.id == incident.category2).priorityId;
-};
 const CreateIncidentModel = ({ handleClose, showModal }) => {
-  const { user } = useSelector((state) => state.auth.users);
+  const onSubmit = (event) => {
+    event.preventDefault();
+  };
+  const handlePriority = (category2, incident) => {
+    return category2.find((item) => item.id == incident.category2).priorityId;
+  };
+  const { user } = useSelector((state) => state.auth);
   const [incident, setIncident] = useState({
     number: null,
     startWork: '',
@@ -33,26 +33,20 @@ const CreateIncidentModel = ({ handleClose, showModal }) => {
     category2: 1,
     category3: 1,
   });
-
-  useEffect(() => {
-    setIncident({
-      ...incident,
-      priority: handlePriority(category2, incident),
-    });
-  }, []);
-  useEffect(() => {
-    console.log('incident', incident);
-    // console.log(
-    //   'find',
-    //   category2.find((item) => item.id == incident.category2).priorityId,
-    // );
-  }, [incident]);
   const category1 = [
     { id: 1, name: 'Техника' },
     { id: 2, name: 'Программное обеспечение' },
     { id: 4, name: 'Эксплуатация' },
   ];
-
+  const { list } = useSelector((state) => state.catalog);
+  const [category, setCategory] = useState([]);
+  useEffect(() => {
+    console.log(category);
+    list.map((item) => setCategory(...category, category.push(item)));
+    // eslint-disable-next-line
+  }, [list]);
+  // console.log(catalog);
+  // catalog.list.map((item) => console.log(item.id));
   const category2 = [
     { id: 1, name: 'Замена принтера', category1Id: 1, priorityId: 2 },
     { id: 2, name: 'Ремонт принтера', category1Id: 1, priorityId: 1 },
@@ -60,12 +54,26 @@ const CreateIncidentModel = ({ handleClose, showModal }) => {
     { id: 5, name: 'Ремонт двери', category1Id: 4, priorityId: 5 },
     { id: 6, name: 'Замена замков', category1Id: 4, priorityId: 4 },
   ];
+  const category3 = [
+    { id: 1, name: 'XEROX 1020', category1Id: 1 },
+    { id: 2, name: 'XEROX 2200', category1Id: 1 },
+    { id: 3, name: '1С:Бухгалтерия', category1Id: 2 },
+    { id: 4, name: 'Microsoft Office', category1Id: 2 },
+  ];
   useEffect(() => {
     setIncident({
       ...incident,
       priority: handlePriority(category2, incident),
     });
-  }, [incident.category2, incident.category1]);
+    // eslint-disable-next-line
+  }, []);
+  useEffect(() => {
+    setIncident({
+      ...incident,
+      priority: handlePriority(category2, incident),
+    });
+    // eslint-disable-next-line
+  }, []);
   const category2Filter = category2.filter(
     (category2) => category2.category1Id === incident.category1,
   );
@@ -83,12 +91,6 @@ const CreateIncidentModel = ({ handleClose, showModal }) => {
       />
     );
   }
-  const category3 = [
-    { id: 1, name: 'XEROX 1020', category1Id: 1 },
-    { id: 2, name: 'XEROX 2200', category1Id: 1 },
-    { id: 3, name: '1С:Бухгалтерия', category1Id: 2 },
-    { id: 4, name: 'Microsoft Office', category1Id: 2 },
-  ];
   const category3Filter = category3.filter(
     (category3) => category3.category1Id === incident.category1,
   );
@@ -137,7 +139,7 @@ const CreateIncidentModel = ({ handleClose, showModal }) => {
                 category3: 1,
               })
             }
-            category={category1}
+            category={category}
             title={`Выберите категорию`}
           />
           {category2Component}

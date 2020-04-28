@@ -8,6 +8,7 @@ const CreateIncidentModalSelect = ({
   category,
   title = '',
 }) => {
+  console.log(category);
   return (
     <Form.Group controlId="exampleForm.ControlSelect1">
       {title ? <Form.Label>{title}</Form.Label> : null}
