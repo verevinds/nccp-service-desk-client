@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 
 /**Bootstrap components */
-import { Modal, Button, Form } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 
 const CreateIncidentModalSelect = ({
   handleCategory,
