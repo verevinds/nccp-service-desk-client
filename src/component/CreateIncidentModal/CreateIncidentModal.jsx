@@ -11,11 +11,10 @@ const CreateIncidentModel = ({ handleClose, showModal }) => {
     event.preventDefault();
   };
   const handlePriority = (category2, incident) => {
-    return category2.find((item) => item.id == incident.category2).priorityId;
+    return category2.find((item) => item.id === incident.category2).priorityId;
   };
   const { user } = useSelector((state) => state.auth);
   const [incident, setIncident] = useState({
-    number: null,
     startWork: '',
     dateCreate: '',
     currentResponsible: '',
@@ -33,11 +32,11 @@ const CreateIncidentModel = ({ handleClose, showModal }) => {
     category2: 1,
     category3: 1,
   });
-  const category1 = [
-    { id: 1, name: 'Техника' },
-    { id: 2, name: 'Программное обеспечение' },
-    { id: 4, name: 'Эксплуатация' },
-  ];
+  // const category1 = [
+  //   { id: 1, name: 'Техника' },
+  //   { id: 2, name: 'Программное обеспечение' },
+  //   { id: 4, name: 'Эксплуатация' },
+  // ];
   const { list } = useSelector((state) => state.catalog);
   const [category, setCategory] = useState([]);
   useEffect(() => {

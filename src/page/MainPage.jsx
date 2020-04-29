@@ -1,10 +1,9 @@
-import React, { memo, useEffect } from 'react';
+import React, { memo } from 'react';
 
 /**Bootstrap components */
 import { Row, Col } from 'react-bootstrap';
 import Incident from '../component/Incident/Incident';
 import Sidebar from '../component/Sidebar/Sidebar';
-import { authFetching } from '../redux/actionCreators/authAction';
 
 const MainPage = () => {
   return (

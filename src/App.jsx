@@ -1,5 +1,5 @@
 import React, { memo, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { categoryFetching } from './redux/actionCreators/catalogAction';
 import { authFetching } from './redux/actionCreators/authAction';
 
