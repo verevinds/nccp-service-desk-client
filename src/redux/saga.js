@@ -1,6 +1,11 @@
 import { put, call, takeLatest } from 'redux-saga/effects';
 import * as axios from 'axios';
-import { AUTH_FETCHING, CATALOG_FETCHING, CATALOG_POST } from './constants';
+import {
+  AUTH_FETCHING,
+  CATALOG_FETCHING,
+  CATALOG_POST,
+  INCIDENT_FETCHING,
+} from './constants';
 import {
   authRequestSendd,
   authRequestSuccessed,
@@ -10,11 +15,16 @@ import {
   categoryRequestSendd,
   categoryRequestSuccessed,
 } from './actionCreators/catalogAction';
+import {
+  incidentRequestSendd,
+  incidentRequestSuccessed,
+} from './actionCreators/incidentAction';
 
 export function* watchFetch() {
   yield takeLatest(AUTH_FETCHING, fetchAsync);
   yield takeLatest(CATALOG_FETCHING, fetchAsyncCatalog);
   yield takeLatest(CATALOG_POST, catalogPost);
+  yield takeLatest(INCIDENT_FETCHING, fetchAsyncIncident);
 }
 
 function* fetchAsync({ ip }) {
@@ -40,7 +50,17 @@ function* fetchAsyncCatalog() {
     console.log(error.message);
   }
 }
-
+function* fetchAsyncIncident() {
+  try {
+    yield put(incidentRequestSendd());
+    const response = yield call(() =>
+      axios.get(`http://localhost:8080/api/incidents`),
+    );
+    yield put(incidentRequestSuccessed(response.data));
+  } catch (error) {
+    console.log(error.message);
+  }
+}
 function* catalogPost({ route, method, data, id }) {
   try {
     yield put(authRequestSendd());
