@@ -2,7 +2,7 @@ import { AUTH_REQUEST_SENDD, AUTH_REQUEST_SUCCESSED } from '../constants';
 
 const initialState = {
   isRequest: false,
-  isLoading: true,
+  isLoading: false,
 };
 
 export const authReducer = (state = initialState, action) => {

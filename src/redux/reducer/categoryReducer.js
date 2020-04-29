@@ -2,7 +2,7 @@ import { CATALOG_REQUEST_SENDD, CATALOG_REQUEST_SUCCESSED } from '../constants';
 const initialState = {
   list: [],
   isRequest: false,
-  isLoading: true,
+  isLoading: false,
 };
 
 export const categoryReducer = (state = initialState, action) => {
