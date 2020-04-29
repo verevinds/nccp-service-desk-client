@@ -2,45 +2,29 @@ import React, { memo } from 'react';
 import styles from './styles.module.css';
 import { Container, Badge, ListGroup } from 'react-bootstrap';
 
-const Sidebar = (props) => {
+const Sidebar = ({ list, isLoading }) => {
   return (
     <Container>
       <h3>
         Инциденты
         <Badge variant="primary" className="ml-3">
-          {1}
+          {isLoading ? list.length : ''}
         </Badge>
       </h3>
       <div className={styles.block}>
         <ListGroup variant="flush">
-          <ListGroup.Item variant="primary">
+          {/* <ListGroup.Item variant="primary">
             №210324 - Замена картриджа
-          </ListGroup.Item>
-          <ListGroup.Item>№210543 - Замена принтера</ListGroup.Item>
-          <ListGroup.Item>№210234 - Ремонт принтера</ListGroup.Item>
-          <ListGroup.Item>№210654 - Ремонт принтера</ListGroup.Item>
-          <ListGroup.Item>№210654 - Ремонт принтера</ListGroup.Item>
-          <ListGroup.Item>№210654 - Ремонт принтера</ListGroup.Item>
-          <ListGroup.Item>№210654 - Ремонт принтера</ListGroup.Item>
-          <ListGroup.Item>№210654 - Ремонт принтера</ListGroup.Item>
-          <ListGroup.Item>№210654 - Ремонт принтера</ListGroup.Item>
-          <ListGroup.Item>№210654 - Ремонт принтера</ListGroup.Item>
-          <ListGroup.Item>№210654 - Ремонт принтера</ListGroup.Item>
-          <ListGroup.Item>№210654 - Ремонт принтера</ListGroup.Item>
-          <ListGroup.Item>№210654 - Ремонт принтера</ListGroup.Item>
-          <ListGroup.Item>№210654 - Ремонт принтера</ListGroup.Item>
-          <ListGroup.Item>№210654 - Ремонт принтера</ListGroup.Item>
-          <ListGroup.Item>№210654 - Ремонт принтера</ListGroup.Item>
-          <ListGroup.Item>№210654 - Ремонт принтера</ListGroup.Item>
-          <ListGroup.Item>№210654 - Ремонт принтера</ListGroup.Item>
-          <ListGroup.Item>№210654 - Ремонт принтера</ListGroup.Item>
-          <ListGroup.Item>№210654 - Ремонт принтера</ListGroup.Item>
-          <ListGroup.Item>№210654 - Ремонт принтера</ListGroup.Item>
-          <ListGroup.Item>№210654 - Ремонт принтера</ListGroup.Item>
-          <ListGroup.Item>№210654 - Ремонт принтера</ListGroup.Item>
-          <ListGroup.Item>№210654 - Ремонт принтера</ListGroup.Item>
-          <ListGroup.Item>№210654 - Ремонт принтера</ListGroup.Item>
-          <ListGroup.Item>№210654 - Ремонт принтера</ListGroup.Item>
+          </ListGroup.Item> */}
+          {isLoading
+            ? list.map((item) => (
+                <ListGroup.Item key={item.id}>
+                  №{item.id} -{' '}
+                  {item.property ? item.property.name : item.category.name}{' '}
+                  {item.option ? item.option.name : ''}
+                </ListGroup.Item>
+              ))
+            : 'Загрузка инцидентов...'}
         </ListGroup>
       </div>
     </Container>
