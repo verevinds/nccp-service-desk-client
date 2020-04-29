@@ -1,4 +1,4 @@
-import React, { memo, useState, useEffect } from 'react';
+import React, { memo, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import CreateIncidentModalSelect from '../CreateIncidentModalSelect/CreateIncidentModalSelect';
@@ -7,19 +7,17 @@ import CreateIncidentModalSelect from '../CreateIncidentModalSelect/CreateIncide
 import { Modal, Button, Form } from 'react-bootstrap';
 
 const CreateIncidentModel = ({ handleClose, showModal }) => {
-  const onSubmit = (event) => {
-    event.preventDefault();
-  };
-  const handlePriority = (category2, incident) => {
-    return category2.find((item) => item.id === incident.category2).priorityId;
-  };
-  const { user } = useSelector((state) => state.auth);
+  const {
+    auth: { user },
+    catalog: { list },
+  } = useSelector((state) => state);
+
   const [incident, setIncident] = useState({
     startWork: '',
     dateCreate: '',
     currentResponsible: '',
     text: '',
-    priority: 0,
+    level: 0,
     status: 0,
     departmentId: user.departmentId,
     positionId: user.positionId,
@@ -28,86 +26,59 @@ const CreateIncidentModel = ({ handleClose, showModal }) => {
     number: user.number,
     phone1: user.phone1,
     phone2: user.phone2,
-    category1: 1,
-    category2: 1,
-    category3: 1,
+    category: 1,
+    property: 1,
+    option: 1,
   });
-  // const category1 = [
-  //   { id: 1, name: 'Техника' },
-  //   { id: 2, name: 'Программное обеспечение' },
-  //   { id: 4, name: 'Эксплуатация' },
-  // ];
-  const { list } = useSelector((state) => state.catalog);
-  const [category, setCategory] = useState([]);
-  useEffect(() => {
-    console.log(category);
-    list.map((item) => setCategory(...category, category.push(item)));
-    // eslint-disable-next-line
-  }, [list]);
-  // console.log(catalog);
-  // catalog.list.map((item) => console.log(item.id));
-  const category2 = [
-    { id: 1, name: 'Замена принтера', category1Id: 1, priorityId: 2 },
-    { id: 2, name: 'Ремонт принтера', category1Id: 1, priorityId: 1 },
-    { id: 3, name: 'Устранение неполадок', category1Id: 2, priorityId: 3 },
-    { id: 5, name: 'Ремонт двери', category1Id: 4, priorityId: 5 },
-    { id: 6, name: 'Замена замков', category1Id: 4, priorityId: 4 },
-  ];
-  const category3 = [
-    { id: 1, name: 'XEROX 1020', category1Id: 1 },
-    { id: 2, name: 'XEROX 2200', category1Id: 1 },
-    { id: 3, name: '1С:Бухгалтерия', category1Id: 2 },
-    { id: 4, name: 'Microsoft Office', category1Id: 2 },
-  ];
-  useEffect(() => {
-    setIncident({
-      ...incident,
-      priority: handlePriority(category2, incident),
-    });
-    // eslint-disable-next-line
-  }, []);
-  useEffect(() => {
-    setIncident({
-      ...incident,
-      priority: handlePriority(category2, incident),
-    });
-    // eslint-disable-next-line
-  }, []);
-  const category2Filter = category2.filter(
-    (category2) => category2.category1Id === incident.category1,
-  );
-  if (category2Filter.length) {
-    var category2Component = (
-      <CreateIncidentModalSelect
-        handleCategory={(event) => {
-          setIncident({
-            ...incident,
-            category2: Number(event.target.value),
-            category3: 1,
-          });
-        }}
-        category={category2Filter}
-      />
-    );
-  }
-  const category3Filter = category3.filter(
-    (category3) => category3.category1Id === incident.category1,
-  );
-  if (category3Filter.length) {
-    var category3Component = (
-      <CreateIncidentModalSelect
-        handleCategory={(event) => {
-          setIncident({
-            ...incident,
-            category2: Number(event.target.value),
-            category3: 1,
-          });
-        }}
-        category={category3Filter}
-      />
-    );
-  }
 
+  //? Создать селектор категории
+
+  const selectCategory = (
+    <CreateIncidentModalSelect
+      onChange={(event) => {
+        setIncident({
+          ...incident,
+          category: Number(event.target.value),
+          property: 1,
+          option: 1,
+        });
+      }}
+      category={list}
+      title={`Выберите категорию`}
+    />
+  );
+
+  const currentCategory = list.filter(
+    (item) => item.id === incident.category,
+  )[0];
+  const selectProperty = (
+    <CreateIncidentModalSelect
+      onChange={(event) => {
+        setIncident({
+          ...incident,
+          property: Number(event.target.value),
+          option: 1,
+        });
+      }}
+      category={currentCategory.properties}
+    />
+  );
+  const selectOption = (
+    <CreateIncidentModalSelect
+      onChange={(event) => {
+        setIncident({
+          ...incident,
+          option: Number(event.target.value),
+        });
+      }}
+      category={currentCategory.options}
+    />
+  );
+
+  const onSubmit = (event) => {
+    event.preventDefault();
+    console.log(incident);
+  };
   return (
     <Modal
       size="lg"
@@ -129,21 +100,9 @@ const CreateIncidentModel = ({ handleClose, showModal }) => {
               администратору.
             </Form.Text>
           </Form.Group>
-          <CreateIncidentModalSelect
-            handleCategory={(event) =>
-              setIncident({
-                ...incident,
-                category1: Number(event.target.value),
-                category2: 1,
-                category3: 1,
-              })
-            }
-            category={category}
-            title={`Выберите категорию`}
-          />
-          {category2Component}
-          {category3Component}
-
+          {list.length > 0 ? selectCategory : null}
+          {currentCategory.properties.length > 0 ? selectProperty : null}
+          {currentCategory.options.length > 0 ? selectOption : null}
           <Form.Group controlId="exampleForm.ControlTextarea1">
             <Form.Label>Содержание обращения</Form.Label>
             <Form.Control
