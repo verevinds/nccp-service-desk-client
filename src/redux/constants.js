@@ -14,3 +14,8 @@ export const PROPERTY_POST = 'PROPERTY_POST';
 
 /** Константы для опций*/
 export const OPTION_POST = 'OPTION_POST';
+
+/** Константы для инцидентов */
+export const INCIDENT_FETCHING = 'INCIDENT_FETCHING';
+export const INCIDENT_REQUEST_SENDD = 'INCIDENT_REQUEST_SENDD';
+export const INCIDENT_REQUEST_SUCCESSED = 'INCIDENT_REQUEST_SUCCESSED';
