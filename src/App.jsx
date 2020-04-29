@@ -2,6 +2,7 @@ import React, { memo, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { categoryFetching } from './redux/actionCreators/catalogAction';
 import { authFetching } from './redux/actionCreators/authAction';
+import { incidentFetching } from './redux/actionCreators/incidentAction';
 
 import MainPage from './page/MainPage';
 import Header from './component/Header/Header';
@@ -12,6 +13,7 @@ const App = (props) => {
   useEffect(() => {
     dispatch(authFetching(window.ipGlobal));
     dispatch(categoryFetching());
+    dispatch(incidentFetching());
   }, [dispatch]);
 
   return (
@@ -22,4 +24,5 @@ const App = (props) => {
     </>
   );
 };
+
 export default memo(App);
