@@ -1,10 +1,11 @@
-import React, { memo, useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { memo, useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
 import CreateIncidentModalSelect from '../CreateIncidentModalSelect/CreateIncidentModalSelect';
 
 /**Bootstrap components */
 import { Modal, Button, Form } from 'react-bootstrap';
+import { incidentFetching } from '../../redux/actionCreators/incidentAction';
 
 const CreateIncidentModel = ({ handleClose, showModal }) => {
   const {
@@ -12,10 +13,11 @@ const CreateIncidentModel = ({ handleClose, showModal }) => {
     catalog: { list },
   } = useSelector((state) => state);
 
+  const dateNow = new Date();
   const [incident, setIncident] = useState({
-    startWork: '',
-    dateCreate: '',
-    currentResponsible: '',
+    startWork: `${dateNow.getFullYear()}-${dateNow.getUTCMonth()}-${dateNow.getDate()} ${dateNow.getHours()}:${dateNow.getMinutes()}:${dateNow.getSeconds()}`,
+    dateCreate: `${dateNow.getFullYear()}-${dateNow.getUTCMonth()}-${dateNow.getDate()} ${dateNow.getHours()}:${dateNow.getMinutes()}:${dateNow.getSeconds()}`,
+    currentResponsible: null,
     text: '',
     level: 0,
     status: 0,
@@ -26,58 +28,64 @@ const CreateIncidentModel = ({ handleClose, showModal }) => {
     number: user.number,
     phone1: user.phone1,
     phone2: user.phone2,
-    category: 1,
-    property: 1,
-    option: 1,
+    categoryId: list[0] ? list[0].id : null,
+    propertyId: list[0].properties[0] ? list[0].properties[0].id : null,
+    optionId: list[0].options[0] ? list[0].options[0].id : null,
   });
 
-  //? Создать селектор категории
+  //? Инициализируем состояние номера текущей категории
+  const [currentIdCategory, setCurrentIdCategory] = useState(
+    incident.categoryId,
+  );
+  //? Инициализируем состояние номера текущего параметра
+  const [currentIdProperty, setCurrentIdProperty] = useState(
+    incident.propertyId,
+  );
+  //? Инициализируем состояние номера текущей опции
+  const [currentIdOption, setCurrentIdOption] = useState(incident.optionId);
 
-  const selectCategory = (
+  //? Инициализируем состояние текущей категории
+  const [currentCategory, setCurrentCategory] = useState(
+    list.filter((item) => item.id === currentIdCategory),
+  );
+
+  //? Устанавливаем эффект на каждое изменение состояния номера текущей категории
+  useEffect(() => {
+    let categoryId = Number(currentIdCategory);
+    let propertyId = Number(currentIdProperty);
+    let optionId = Number(currentIdOption);
+
+    const newCurrentCategory = list.filter(
+      (item) => item.id === currentIdCategory,
+    );
+
+    if (categoryId != incident.categoryId) {
+      if (!!newCurrentCategory[0].properties[0]) {
+        propertyId = newCurrentCategory[0].properties[0].id;
+      }
+      if (!!newCurrentCategory[0].options[0]) {
+        optionId = newCurrentCategory[0].options[0].id;
+      }
+    }
+
+    setCurrentCategory(newCurrentCategory);
+    setIncident({ ...incident, categoryId, propertyId, optionId });
+  }, [currentIdCategory, currentIdProperty, currentIdOption]);
+
+  //Функция собирающая из списка и функции изменения состояния номера элемент html
+  const listSelect = (list, setCurrent, title) => (
     <CreateIncidentModalSelect
-      onChange={(event) => {
-        setIncident({
-          ...incident,
-          category: Number(event.target.value),
-          property: 1,
-          option: 1,
-        });
-      }}
-      category={list}
-      title={`Выберите категорию`}
+      list={list}
+      onChange={(event) => setCurrent(Number(event.target.value))}
+      title={title}
     />
   );
 
-  const currentCategory = list.filter(
-    (item) => item.id === incident.category,
-  )[0];
-  const selectProperty = (
-    <CreateIncidentModalSelect
-      onChange={(event) => {
-        setIncident({
-          ...incident,
-          property: Number(event.target.value),
-          option: 1,
-        });
-      }}
-      category={currentCategory.properties}
-    />
-  );
-  const selectOption = (
-    <CreateIncidentModalSelect
-      onChange={(event) => {
-        setIncident({
-          ...incident,
-          option: Number(event.target.value),
-        });
-      }}
-      category={currentCategory.options}
-    />
-  );
-
+  const dispatch = useDispatch();
   const onSubmit = (event) => {
     event.preventDefault();
-    console.log(incident);
+    dispatch(incidentFetching('post', incident));
+    handleClose();
   };
   return (
     <Modal
@@ -100,9 +108,11 @@ const CreateIncidentModel = ({ handleClose, showModal }) => {
               администратору.
             </Form.Text>
           </Form.Group>
-          {list.length > 0 ? selectCategory : null}
-          {currentCategory.properties.length > 0 ? selectProperty : null}
-          {currentCategory.options.length > 0 ? selectOption : null}
+
+          {listSelect(list, setCurrentIdCategory, 'Выберите категорию')}
+          {listSelect(currentCategory[0].properties, setCurrentIdProperty)}
+          {listSelect(currentCategory[0].options, setCurrentIdOption)}
+
           <Form.Group controlId="exampleForm.ControlTextarea1">
             <Form.Label>Содержание обращения</Form.Label>
             <Form.Control

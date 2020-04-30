@@ -1,9 +1,14 @@
 import React, { memo, useEffect, useState } from 'react';
 import CreateIncidentModal from '../CreateIncidentModal/CreateIncidentModal';
+import { NavLink } from 'react-router-dom';
+import styles from './styles.module.css';
 
 /**Bootstrap component */
 import { Navbar, Nav, Image, Button } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
+//? Font Awesome иконки
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircle } from '@fortawesome/free-solid-svg-icons';
 
 const incident = 0;
 
@@ -30,12 +35,16 @@ const Header = (props) => {
         <Navbar.Brand>Service Desk</Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="mr-auto">
+          <Nav className={`${styles.nav} mr-auto`}>
             <Nav.Item>
-              <Button variant={incident > 0 ? 'primary' : 'light'}>
-                <span className="pr-1">Отработанные инциденты</span>
-              </Button>
-            </Nav.Item>
+              <NavLink
+                to="/"
+                activeClassName={`btn-light ${styles.nav__button}`}
+                className="btn btn-link align-middle"
+              >
+                Инциденты
+              </NavLink>
+            </Nav.Item>{' '}
             <Nav.Item>
               <Button onClick={handleOpen}>Создать инцидент</Button>
               {!!showModal ? (
@@ -47,10 +56,21 @@ const Header = (props) => {
             </Nav.Item>
           </Nav>
           <Nav>
-            <Nav.Link href="">
-              <Navbar.Text className="pr-1">{`${fullName}`}</Navbar.Text>
-              <Image src="https://via.placeholder.com/35" roundedCircle />
-            </Nav.Link>
+            <Nav.Item>
+              <Nav.Link href="">
+                <Navbar.Text className="pr-1">{`${fullName}`}</Navbar.Text>
+                <Image src="https://via.placeholder.com/35" roundedCircle />
+              </Nav.Link>
+            </Nav.Item>
+            <Nav.Item className={styles.nav__item}>
+              <NavLink
+                to="/setting"
+                activeClassName={'btn-light'}
+                className="btn btn-link align-middle"
+              >
+                <FontAwesomeIcon icon={faCircle} />
+              </NavLink>
+            </Nav.Item>
           </Nav>
         </Navbar.Collapse>
       </Navbar>

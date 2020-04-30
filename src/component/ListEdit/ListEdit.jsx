@@ -4,7 +4,7 @@ import styles from './styles.module.css';
 //? Bootstrap
 import { Row, Col, Container, ListGroup, Form, Button } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
-//? Font Awesome
+//? Font Awesome иконки
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
@@ -25,13 +25,12 @@ const ListEdit = (props) => {
   const onSubmit = (event) => {
     event.preventDefault();
     if (props.route) {
-      console.log('route', props.route);
       dispatch(props.actionCreator(props.route, 'post', state));
       setState({ name: '' });
     }
   };
   return (
-    <Col xs={3}>
+    <Col xs={4}>
       <Container>
         <Form onSubmit={onSubmit}>
           <Form.Group>

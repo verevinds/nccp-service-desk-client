@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 
 /**Bootstrap components */
 import { Row, Col } from 'react-bootstrap';
@@ -7,18 +7,30 @@ import Sidebar from '../component/Sidebar/Sidebar';
 import { useSelector } from 'react-redux';
 
 const MainPage = () => {
-  const incidents = useSelector((state) => state.incidents);
+  const { list, isLoading } = useSelector((state) => state.incidents);
+  const [currentIdIncident, setCurrentIdIncident] = useState();
+
+  const [currentIncident, setCurrentIncident] = useState();
   useEffect(() => {
-    console.log(incidents);
-  }, [incidents]);
+    console.log('currentIdIncident', currentIdIncident);
+    const newCurrentIncident = list.filter(
+      (item) => item.id === currentIdIncident,
+    )[0];
+    setCurrentIncident(newCurrentIncident);
+  }, [currentIdIncident]);
 
   return (
     <Row className="mt-3">
-      <Col xs={3}>
-        <Sidebar list={incidents.list} isLoading={incidents.isLoading} />
+      <Col xs={5}>
+        <Sidebar
+          list={list}
+          isLoading={isLoading}
+          onClick={setCurrentIdIncident}
+          activeId={currentIdIncident}
+        />
       </Col>
       <Col>
-        <Incident />
+        <Incident incident={currentIncident} />
       </Col>
     </Row>
   );

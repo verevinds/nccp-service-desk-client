@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import styles from './styles.module.css';
 import { Container, Badge, ListGroup } from 'react-bootstrap';
 
-const Sidebar = ({ list, isLoading }) => {
+const Sidebar = ({ list, isLoading, onClick, activeId }) => {
   return (
     <Container>
       <h3>
@@ -18,7 +18,13 @@ const Sidebar = ({ list, isLoading }) => {
           </ListGroup.Item> */}
           {isLoading
             ? list.map((item) => (
-                <ListGroup.Item key={item.id}>
+                <ListGroup.Item
+                  key={item.id}
+                  onClick={() => onClick(item.id)}
+                  className={`${styles.item} ${
+                    activeId === item.id ? styles.active : null
+                  }`}
+                >
                   №{item.id} -{' '}
                   {item.property ? item.property.name : item.category.name}{' '}
                   {item.option ? item.option.name : ''}
