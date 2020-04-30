@@ -8,7 +8,7 @@ import { Navbar, Nav, Image, Button } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 //? Font Awesome иконки
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircle } from '@fortawesome/free-solid-svg-icons';
+import { faCog } from '@fortawesome/free-solid-svg-icons';
 
 const incident = 0;
 
@@ -68,7 +68,7 @@ const Header = (props) => {
                 activeClassName={'btn-light'}
                 className="btn btn-link align-middle"
               >
-                <FontAwesomeIcon icon={faCircle} />
+                <FontAwesomeIcon icon={faCog} />
               </NavLink>
             </Nav.Item>
           </Nav>

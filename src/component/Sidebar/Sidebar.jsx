@@ -1,6 +1,7 @@
 import React, { memo } from 'react';
 import styles from './styles.module.css';
 import { Container, Badge, ListGroup } from 'react-bootstrap';
+import Moment from 'react-moment';
 
 const Sidebar = ({ list, isLoading, onClick, activeId }) => {
   return (
@@ -27,7 +28,10 @@ const Sidebar = ({ list, isLoading, onClick, activeId }) => {
                 >
                   №{item.id} -{' '}
                   {item.property ? item.property.name : item.category.name}{' '}
-                  {item.option ? item.option.name : ''}
+                  {item.option ? item.option.name : ''}{' '}
+                  <Moment locale="ru" format="DD.MM">
+                    {item.createdAt}
+                  </Moment>
                 </ListGroup.Item>
               ))
             : 'Загрузка инцидентов...'}
