@@ -4,7 +4,12 @@ import {
   INCIDENT_REQUEST_SUCCESSED,
 } from '../constants';
 
-export const incidentFetching = (route, method, data) => ({
+export const incidentFetching = (
+  method = 'get',
+  data,
+  id,
+  route = 'incidents',
+) => ({
   type: INCIDENT_FETCHING,
   route,
   method,
