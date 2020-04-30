@@ -5,6 +5,9 @@ import Moment from 'react-moment';
 import 'moment/locale/ru';
 
 const Incident = ({ incident }) => {
+  useEffect(() => {
+    console.log(incident);
+  }, [incident]);
   const [status, setStatus] = useState({
     code: 0,
     textButton: 'Взять в работу',

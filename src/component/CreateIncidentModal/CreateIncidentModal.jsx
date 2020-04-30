@@ -20,7 +20,7 @@ const CreateIncidentModel = ({ handleClose, showModal }) => {
     currentResponsible: null,
     text: '',
     level: 0,
-    status: 0,
+    statusId: 0,
     departmentId: user.departmentId,
     positionId: user.positionId,
     name: `${user.name1} ${user.name2} ${user.name3}`,
