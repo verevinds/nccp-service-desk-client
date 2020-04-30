@@ -1,0 +1,13 @@
+.nav {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.nav__item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.nav__button {
+  margin-right: 0.1em;
+}

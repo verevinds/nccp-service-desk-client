@@ -2,3 +2,12 @@
   height: 700px;
   overflow-y: auto;
 }
+.item {
+  cursor: pointer;
+}
+.item:hover {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+.active {
+  color: #007bff;
+}
