@@ -1,8 +1,10 @@
 import React, { memo, useState } from 'react';
 import { Container, Card, Button } from 'react-bootstrap';
 import { useEffect } from 'react';
+import Moment from 'react-moment';
+import 'moment/locale/ru';
 
-const Incident = (props) => {
+const Incident = ({ incident }) => {
   const [status, setStatus] = useState({
     code: 0,
     textButton: 'Взять в работу',
@@ -21,27 +23,53 @@ const Incident = (props) => {
     }
     // eslint-disable-next-line
   }, [status.code]);
-
-  return (
-    <Container>
-      <Card>
-        <Card.Header>№210324 - Замена картриджа</Card.Header>
-        <Card.Body>
-          <Card.Title>Замента картриджа в кабинете № 504</Card.Title>
-          <Card.Text>Закончилась краска в картиридже. Нужна заменя.</Card.Text>
-          <Button
-            variant="primary"
-            onClick={() => {
-              setStatus(setStatus({ ...status, code: status.code++ }));
-            }}
-          >
-            {status.textButton}
-          </Button>
-        </Card.Body>
-        <Card.Footer className="text-right">Создан : 2 дня назад</Card.Footer>
-      </Card>
-    </Container>
-  );
+  if (!!incident) {
+    return (
+      <Container>
+        <Card>
+          <Card.Header>
+            Инцидент №{incident.id} |<b>{` принят в работу `}</b>
+            <Moment locale="ru" fromNow>
+              {incident.startWork}
+            </Moment>
+          </Card.Header>
+          <Card.Body>
+            <Card.Title>
+              {!!incident.category ? incident.category.name : null}
+              {' / '}
+              {!!incident.property ? incident.property.name : null}
+              {' / '}
+              {!!incident.option ? incident.option.name : null}
+            </Card.Title>
+            <Card.Text>Инициатор: {incident.name}</Card.Text>
+            <Card.Text>
+              {!!incident.email ? `Email: ${incident.email} ` : null}
+            </Card.Text>
+            <hr />
+            <Card.Text>{incident.text}</Card.Text>
+            <Button>Сохранить</Button>
+          </Card.Body>
+          <Card.Footer className="text-right">
+            <i>
+              <b>Создан:</b>{' '}
+              <Moment locale="ru" fromNow>
+                {incident.createdAt}
+              </Moment>
+            </i>
+            {' | '}
+            <i>
+              <b>Последнее обновление:</b>{' '}
+              <Moment locale="ru" fromNow>
+                {incident.updatedAt}
+              </Moment>
+            </i>
+          </Card.Footer>
+        </Card>
+      </Container>
+    );
+  } else {
+    return <h2>Выберите инцидент</h2>;
+  }
 };
 
 export default memo(Incident);
