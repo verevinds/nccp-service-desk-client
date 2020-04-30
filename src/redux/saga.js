@@ -16,6 +16,7 @@ import {
   categoryRequestSuccessed,
 } from './actionCreators/catalogAction';
 import {
+  incidentFetching,
   incidentRequestSendd,
   incidentRequestSuccessed,
 } from './actionCreators/incidentAction';
@@ -50,13 +51,32 @@ function* fetchAsyncCatalog() {
     console.log(error.message);
   }
 }
-function* fetchAsyncIncident() {
+function* fetchAsyncIncident({ route, method, data, id }) {
   try {
     yield put(incidentRequestSendd());
-    const response = yield call(() =>
-      axios.get(`http://localhost:8080/api/incidents`),
-    );
-    yield put(incidentRequestSuccessed(response.data));
+    switch (method) {
+      case 'post':
+        yield call(() =>
+          axios.post(`http://localhost:8080/api/${route}`, data),
+        );
+        yield put(incidentFetching());
+        break;
+      case 'delete':
+        yield call(() =>
+          axios.delete(`http://localhost:8080/api/${route}/${id}`, data),
+        );
+        yield put(incidentFetching());
+        break;
+      case 'get':
+        const response = yield call(() =>
+          axios.get(`http://localhost:8080/api/incidents`),
+        );
+        yield put(incidentRequestSuccessed(response.data));
+        break;
+
+      default:
+        break;
+    }
   } catch (error) {
     console.log(error.message);
   }
