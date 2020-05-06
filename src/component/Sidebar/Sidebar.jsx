@@ -3,15 +3,20 @@ import styles from './styles.module.css';
 import { Container, Badge, ListGroup } from 'react-bootstrap';
 import Moment from 'react-moment';
 
-const Sidebar = ({ list, isLoading, onClick, activeId }) => {
-  return (
-    <Container>
+const Sidebar = ({ title, list, isLoading, onClick, activeId }) => {
+  if (title) {
+    var blogTitle = (
       <h3>
-        Инциденты
+        {title}
         <Badge variant="primary" className="ml-3">
           {isLoading ? list.length : ''}
         </Badge>
       </h3>
+    );
+  }
+  return (
+    <Container>
+      {blogTitle ? blogTitle : null}
       <div className={styles.block}>
         <ListGroup variant="flush">
           {/* <ListGroup.Item variant="primary">
@@ -34,7 +39,7 @@ const Sidebar = ({ list, isLoading, onClick, activeId }) => {
                   </Moment>
                 </ListGroup.Item>
               ))
-            : 'Загрузка инцидентов...'}
+            : 'Загрузка данных...'}
         </ListGroup>
       </div>
     </Container>
