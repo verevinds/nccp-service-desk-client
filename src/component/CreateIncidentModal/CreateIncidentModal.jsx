@@ -59,7 +59,7 @@ const CreateIncidentModel = ({ handleClose, showModal }) => {
       (item) => item.id === currentIdCategory,
     );
 
-    if (categoryId != incident.categoryId) {
+    if (categoryId !== incident.categoryId) {
       if (!!newCurrentCategory[0].properties[0]) {
         propertyId = newCurrentCategory[0].properties[0].id;
       }
@@ -70,6 +70,7 @@ const CreateIncidentModel = ({ handleClose, showModal }) => {
 
     setCurrentCategory(newCurrentCategory);
     setIncident({ ...incident, categoryId, propertyId, optionId });
+    // eslint-disable-next-line
   }, [currentIdCategory, currentIdProperty, currentIdOption]);
 
   //Функция собирающая из списка и функции изменения состояния номера элемент html

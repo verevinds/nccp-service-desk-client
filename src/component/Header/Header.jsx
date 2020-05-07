@@ -10,8 +10,6 @@ import { useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCog } from '@fortawesome/free-solid-svg-icons';
 
-const incident = 0;
-
 const Header = (props) => {
   const { user } = useSelector((state) => state.auth);
 
@@ -30,7 +28,7 @@ const Header = (props) => {
   }, [user]);
 
   return (
-    <nav>
+    <nav className="mb-1">
       <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
         <Navbar.Brand>Service Desk</Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
