@@ -8,15 +8,15 @@ import ListEdit from '../ListEdit/ListEdit';
 
 const CatalogSetting = (props) => {
   const { list } = useSelector((state) => state.catalog);
-  const [currentCategory, setCurrentCategory] = useState();
+  const [chooseCategoryId, setChooseCategoryId] = useState();
 
   const onClick = (id, setNumber) => {
     setNumber(id);
   };
-  const [currentProperty, setCurrentProperty] = useState({});
+  const [currentCategory, setCurrentCategory] = useState({});
   useEffect(() => {
-    setCurrentProperty(list.filter((item) => item.id === currentCategory));
-  }, [currentCategory, list]);
+    setCurrentCategory(list.find((item) => item.id === chooseCategoryId));
+  }, [chooseCategoryId, list]);
 
   return (
     <div>
@@ -24,36 +24,30 @@ const CatalogSetting = (props) => {
         <ListEdit
           title="Категории"
           list={list}
-          setNumber={setCurrentCategory}
-          activeId={currentCategory}
+          setNumber={setChooseCategoryId}
+          activeId={chooseCategoryId}
           actionCreator={catalogPost}
           route={'categories'}
           onClick={onClick}
         />
-        {currentProperty[0] ? (
+        {currentCategory ? (
           <ListEdit
             title="Параметры"
             list={
-              currentProperty[0].properties.length > 0
-                ? currentProperty[0].properties
-                : null
+              currentCategory.properties ? currentCategory.properties : null
             }
             actionCreator={catalogPost}
             route={'properties'}
-            categoryId={currentCategory}
+            categoryId={Number(chooseCategoryId)}
           />
         ) : null}
-        {currentProperty[0] ? (
+        {currentCategory ? (
           <ListEdit
             title="Опции"
-            list={
-              currentProperty[0].options.length > 0
-                ? currentProperty[0].options
-                : null
-            }
+            list={currentCategory.options ? currentCategory.options : null}
             route={'options'}
             actionCreator={catalogPost}
-            categoryId={currentCategory}
+            categoryId={chooseCategoryId}
           />
         ) : null}
       </Row>

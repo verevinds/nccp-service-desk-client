@@ -14,6 +14,7 @@ export const incidentFetching = (
   route,
   method,
   data,
+  id,
 });
 export const incidentRequestSendd = () => ({
   type: INCIDENT_REQUEST_SENDD,

@@ -1,7 +1,9 @@
-import * as React from 'react';
+import React, { memo } from 'react';
 import styles from './styles.module.css';
 import { Container, Badge, ListGroup } from 'react-bootstrap';
 import Moment from 'react-moment';
+
+//Interface TypeScript for function Sidebar
 import { ISidebar } from './interface';
 
 const Sidebar: React.FC<ISidebar> = ({
@@ -12,7 +14,7 @@ const Sidebar: React.FC<ISidebar> = ({
   activeId,
 }) => {
   let blogTitle: JSX.Element | null = null;
-  console.log('list', list);
+  console.log('Sidebar', list);
   if (title) {
     blogTitle = (
       <h3>
@@ -23,6 +25,7 @@ const Sidebar: React.FC<ISidebar> = ({
       </h3>
     );
   }
+
   return (
     <Container>
       {blogTitle ? blogTitle : null}
@@ -30,19 +33,27 @@ const Sidebar: React.FC<ISidebar> = ({
         <ListGroup variant="flush">
           {list.map((item) => {
             let { id, name, createdAt } = item;
+            let itemText: string;
+            if (createdAt) {
+              itemText = `№${id} - ${name ? name : 'N/A'} `;
+            } else {
+              itemText = `${name ? name : 'N/A'} `;
+            }
             return (
               <ListGroup.Item
                 key={id}
                 //@ts-ignore
-                onClick={() => onClick(id)}
+                onClick={onClick ? () => onClick(id) : null}
                 className={`${styles.item} ${
                   activeId === id ? styles.active : null
                 }`}
               >
-                {`№${id} - ${name ? name : 'N/A'} `}
-                <Moment locale="ru" format="DD.MM">
-                  {createdAt}
-                </Moment>
+                {itemText}
+                {createdAt ? (
+                  <Moment locale="ru" format="DD.MM">
+                    {createdAt}
+                  </Moment>
+                ) : null}
               </ListGroup.Item>
             );
           })}
@@ -52,4 +63,4 @@ const Sidebar: React.FC<ISidebar> = ({
   );
 };
 
-export default React.memo(Sidebar);
+export default memo(Sidebar);

@@ -1,40 +1,46 @@
-import React, { memo, useState } from 'react';
-import { Container, Card, Button } from 'react-bootstrap';
-import { useEffect } from 'react';
+import React, { memo, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Moment from 'react-moment';
 import 'moment/locale/ru';
 
+//ActionCreator
+import { incidentFetching } from '../../redux/actionCreators/incidentAction';
+
+import IncidentInWork from '../IncidentInWork/IncidentInWork';
+
+import { Container, Card, Button } from 'react-bootstrap';
+
 const Incident = ({ incident }) => {
+  const dispatch = useDispatch();
+  const { number } = useSelector((state) => state.auth.user);
+  const onClick = () => {
+    const dateNow = new Date();
+    const responsible = {
+      currentResponsible: number,
+      startWork: `${dateNow.getFullYear()}-${
+        dateNow.getMonth() + 1
+      }-${dateNow.getDate()} ${dateNow.getHours()}:${dateNow.getMinutes()}:${dateNow.getSeconds()}`,
+    };
+    dispatch(incidentFetching('put', responsible, incident.id, 'incidents'));
+  };
   useEffect(() => {
     console.log(incident);
   }, [incident]);
-  const [status, setStatus] = useState({
-    code: 0,
-    textButton: 'Взять в работу',
-  });
-
-  useEffect(() => {
-    switch (status.code) {
-      case 0:
-        setStatus({ ...status, textButton: 'Взять в работу' });
-        break;
-      case 1:
-        setStatus({ ...status, textButton: 'Выполнен' });
-        break;
-      default:
-        break;
-    }
-    // eslint-disable-next-line
-  }, [status.code]);
   if (!!incident) {
     return (
       <Container>
         <Card>
           <Card.Header>
-            Инцидент №{incident.id} |<b>{` принят в работу `}</b>
-            <Moment locale="ru" fromNow>
-              {incident.startWork}
-            </Moment>
+            Инцидент №{incident.id}{' '}
+            {incident.user ? (
+              <IncidentInWork
+                startWork={incident.startWork}
+                nameResponsible={`
+                ${incident.user.name1} ${incident.user.name2.charAt(
+                  0,
+                )}.${incident.user.name3.charAt(0)}.`}
+              />
+            ) : null}
           </Card.Header>
           <Card.Body>
             <Card.Title>
@@ -50,22 +56,30 @@ const Incident = ({ incident }) => {
             </Card.Text>
             <hr />
             <Card.Text>{incident.text}</Card.Text>
-            <Button>Сохранить</Button>
+            {!incident.user ? (
+              <Button variant="outline-success" xs="sm" onClick={onClick}>
+                Взять в работу
+              </Button>
+            ) : (
+              <Button>Сохранить</Button>
+            )}
           </Card.Body>
           <Card.Footer className="text-right">
-            <i>
-              <b>Создан:</b>{' '}
-              <Moment locale="ru" fromNow>
-                {incident.createdAt}
-              </Moment>
-            </i>
-            {' | '}
-            <i>
-              <b>Последнее обновление:</b>{' '}
-              <Moment locale="ru" fromNow>
-                {incident.updatedAt}
-              </Moment>
-            </i>
+            <small>
+              <i>
+                <b>Создан:</b>{' '}
+                <Moment locale="ru" fromNow>
+                  {incident.createdAt}
+                </Moment>
+              </i>
+              {' | '}
+              <i>
+                <b>Последнее обновление:</b>{' '}
+                <Moment locale="ru" fromNow>
+                  {incident.updatedAt}
+                </Moment>
+              </i>
+            </small>
           </Card.Footer>
         </Card>
       </Container>

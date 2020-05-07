@@ -15,8 +15,8 @@ const CreateIncidentModel = ({ handleClose, showModal }) => {
 
   const dateNow = new Date();
   const [incident, setIncident] = useState({
-    startWork: `${dateNow.getFullYear()}-${dateNow.getUTCMonth()}-${dateNow.getDate()} ${dateNow.getHours()}:${dateNow.getMinutes()}:${dateNow.getSeconds()}`,
-    dateCreate: `${dateNow.getFullYear()}-${dateNow.getUTCMonth()}-${dateNow.getDate()} ${dateNow.getHours()}:${dateNow.getMinutes()}:${dateNow.getSeconds()}`,
+    startWork: null,
+    dateCreate: `${dateNow.getFullYear()}-${dateNow.getMonth()}-${dateNow.getDate()} ${dateNow.getHours()}:${dateNow.getMinutes()}:${dateNow.getSeconds()}`,
     currentResponsible: null,
     text: '',
     level: 0,

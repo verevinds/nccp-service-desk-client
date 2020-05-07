@@ -53,6 +53,10 @@ function* fetchAsyncCatalog() {
 }
 function* fetchAsyncIncident({ route, method, data, id }) {
   try {
+    console.log('route', route);
+    console.log('id', id);
+    console.log('data', data);
+    console.log('method', method);
     yield put(incidentRequestSendd());
     switch (method) {
       case 'post':
@@ -64,6 +68,12 @@ function* fetchAsyncIncident({ route, method, data, id }) {
       case 'delete':
         yield call(() =>
           axios.delete(`http://localhost:8080/api/${route}/${id}`, data),
+        );
+        yield put(incidentFetching());
+        break;
+      case 'put':
+        yield call(() =>
+          axios.put(`http://localhost:8080/api/${route}/${id}`, data),
         );
         yield put(incidentFetching());
         break;

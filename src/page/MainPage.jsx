@@ -8,32 +8,36 @@ import { useSelector } from 'react-redux';
 
 const MainPage = () => {
   const { list, isLoading } = useSelector((state) => state.incidents);
-  const [currentIdIncident, setCurrentIdIncident] = useState();
+  const [chooseIncidentId, setChooseIncidentId] = useState();
 
+  //currentIncident хранит текущий инцидент, setCurrentIncident изменяется состояние currentIncident
   const [currentIncident, setCurrentIncident] = useState();
   useEffect(() => {
-    const newCurrentIncident = list.filter(
-      (item) => item.id === currentIdIncident,
-    )[0];
+    //Получаем новый выбранный инцидент
+    const newCurrentIncident = list.find(
+      (item) => item.id === chooseIncidentId,
+    );
+    //
     setCurrentIncident(newCurrentIncident);
     // eslint-disable-next-line
-  }, [currentIdIncident]);
+  }, [chooseIncidentId, list]); // Использовать эффект если изменились параметры chooseIncidentId, list поменяли свое состояние
 
   const [sidebarList, setSidebarList] = useState([]);
   useEffect(() => {
     // eslint-disable-next-line
-    list.map((item) => {
-      setSidebarList([
-        ...sidebarList,
-        {
+
+    setSidebarList(
+      list.map((item) => {
+        const newItem = {
+          id: item.id,
           name: `${item.category ? item.category.name : null} ${
             item.property ? item.property.name : null
           } ${item.option ? item.option.name : null}`,
-          id: item.id,
           createdAt: item.createdAt,
-        },
-      ]);
-    });
+        };
+        return newItem;
+      }),
+    );
     // eslint-disable-next-line
   }, [list]);
 
@@ -44,8 +48,8 @@ const MainPage = () => {
           <Sidebar
             title={'Инциденты'}
             list={sidebarList}
-            onClick={setCurrentIdIncident}
-            activeId={currentIdIncident}
+            onClick={setChooseIncidentId}
+            activeId={chooseIncidentId}
           />
         ) : (
           'Загрузка данных'
@@ -53,7 +57,7 @@ const MainPage = () => {
       </Col>
       <Col>
         <Container>
-          <Incident incident={currentIncident} />
+          {currentIncident ? <Incident incident={currentIncident} /> : null}
         </Container>
       </Col>
     </Row>
