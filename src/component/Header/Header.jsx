@@ -12,7 +12,8 @@ import { faCog } from '@fortawesome/free-solid-svg-icons';
 
 const Header = (props) => {
   const { user } = useSelector((state) => state.auth);
-
+  console.log(user);
+  const [access, setAccess] = useState(1);
   const [showModal, setShowModal] = useState(false);
   const handleClose = () => setShowModal(false);
   const handleOpen = () => setShowModal(true);
@@ -22,6 +23,7 @@ const Header = (props) => {
   useEffect(() => {
     if (!!user) {
       setFullName(`${user.name1 || 'N'} ${user.name2 || 'N'}`);
+      setAccess(user.level);
     } else {
       setFullName(`Гость`);
     }
@@ -67,15 +69,17 @@ const Header = (props) => {
                 <Image src="https://via.placeholder.com/35" roundedCircle />
               </Nav.Link>
             </Nav.Item>
-            <Nav.Item className={styles.nav__item}>
-              <NavLink
-                to="/setting"
-                activeClassName={'btn-light'}
-                className="btn btn-link align-middle"
-              >
-                <FontAwesomeIcon icon={faCog} />
-              </NavLink>
-            </Nav.Item>
+            {access === 1 ? (
+              <Nav.Item className={styles.nav__item}>
+                <NavLink
+                  to="/setting"
+                  activeClassName={'btn-light'}
+                  className="btn btn-link align-middle"
+                >
+                  <FontAwesomeIcon icon={faCog} />
+                </NavLink>
+              </Nav.Item>
+            ) : null}
           </Nav>
         </Navbar.Collapse>
       </Navbar>

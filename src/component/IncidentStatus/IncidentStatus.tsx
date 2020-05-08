@@ -5,7 +5,6 @@ import { DropdownButton, Dropdown, Button } from 'react-bootstrap';
 
 const IncidentStatus: React.FC<IIncidentStatus> = ({ myincident, status }) => {
   const [statusTitle, setStatus] = useState('В работе');
-  console.log(myincident);
   if (status)
     return (
       <>

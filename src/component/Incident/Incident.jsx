@@ -28,9 +28,9 @@ const Incident = ({ list, isLoading, myincident }) => {
       list.map((item) => {
         const newItem = {
           id: item.id,
-          name: `${item.category ? item.category.name : null} ${
-            item.property ? item.property.name : null
-          } ${item.option ? item.option.name : null}`,
+          name: `${item.category ? item.category.name : ''} ${
+            item.property ? item.property.name : ''
+          } ${item.option ? item.option.name : ''}`,
           createdAt: item.createdAt,
         };
         return newItem;

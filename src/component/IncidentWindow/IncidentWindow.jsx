@@ -1,6 +1,7 @@
 import React, { memo, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Moment from 'react-moment';
+import styles from './styles.module.css';
 import 'moment/locale/ru';
 
 //ActionCreator
@@ -33,35 +34,42 @@ const IncidentWindow = ({ incident, myincident }) => {
     return (
       <Container>
         <Card>
-          <Card.Header>
-            Инцидент №{incident.id}{' '}
-            {incident.user ? (
-              <IncidentInWork
-                startWork={incident.startWork}
-                nameResponsible={`
+          <Card.Header className={styles.header}>
+            <div>
+              Инцидент №{incident.id}{' '}
+              {incident.user ? (
+                <>
+                  {'| '}
+                  <IncidentInWork
+                    startWork={incident.startWork}
+                    nameResponsible={`
                 ${incident.user.name1} ${incident.user.name2.charAt(
-                  0,
-                )}.${incident.user.name3.charAt(0)}.`}
-              />
-            ) : null}
+                      0,
+                    )}.${incident.user.name3.charAt(0)}.`}
+                  />
+                </>
+              ) : null}
+            </div>
+            <IncidentStatus
+              myincident={myincident | undefined}
+              status={incident.statusId}
+            />
           </Card.Header>
           <Card.Body>
             <Card.Title>
               {!!incident.category ? incident.category.name : null}
-              {' / '}
-              {!!incident.property ? incident.property.name : null}
-              {' / '}
-              {!!incident.option ? incident.option.name : null}
+
+              {!!incident.property ? ` / ${incident.property.name}` : null}
+
+              {!!incident.option ? ` /  ${incident.option.name}` : null}
             </Card.Title>
-            <Card.Text>
-              <IncidentStatus
-                myincident={myincident | undefined}
-                status={incident.statusId}
-              />
-            </Card.Text>
+            <Card.Text></Card.Text>
             <Card.Text>Инициатор: {incident.name}</Card.Text>
             <Card.Text>
               {!!incident.email ? `Email: ${incident.email} ` : null}
+            </Card.Text>
+            <Card.Text>
+              {!!incident.phone1 ? `Тел.: ${incident.phone1} ` : null}
             </Card.Text>
             <hr />
             <Card.Text>{incident.text}</Card.Text>

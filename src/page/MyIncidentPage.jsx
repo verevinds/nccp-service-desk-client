@@ -11,8 +11,6 @@ const MyIncidentPage = (props) => {
   const [myList, setMyList] = useState([]);
   useEffect(() => {
     if (user && list) {
-      console.log('incident list:', list);
-      console.log('user:', user);
       let newList = list.filter((item) => item.number == user.number);
       setMyList(newList);
 

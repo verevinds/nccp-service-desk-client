@@ -29,8 +29,8 @@ const CreateIncidentModel = ({ handleClose, showModal }) => {
     phone1: user.phone1,
     phone2: user.phone2,
     categoryId: list[0] ? list[0].id : null,
-    propertyId: list[0].properties[0] ? list[0].properties[0].id : null,
-    optionId: list[0].options[0] ? list[0].options[0].id : null,
+    propertyId: null,
+    optionId: null,
   });
 
   //? Инициализируем состояние номера текущей категории
@@ -55,6 +55,10 @@ const CreateIncidentModel = ({ handleClose, showModal }) => {
     let propertyId = Number(currentIdProperty);
     let optionId = Number(currentIdOption);
 
+    console.log('categoryId', categoryId);
+    console.log('propertyId', propertyId);
+    console.log('optionId', optionId);
+
     const newCurrentCategory = list.filter(
       (item) => item.id === currentIdCategory,
     );
@@ -62,10 +66,10 @@ const CreateIncidentModel = ({ handleClose, showModal }) => {
     if (categoryId !== incident.categoryId) {
       if (!!newCurrentCategory[0].properties[0]) {
         propertyId = newCurrentCategory[0].properties[0].id;
-      }
+      } else propertyId = null;
       if (!!newCurrentCategory[0].options[0]) {
         optionId = newCurrentCategory[0].options[0].id;
-      }
+      } else optionId = null;
     }
 
     setCurrentCategory(newCurrentCategory);
@@ -88,6 +92,7 @@ const CreateIncidentModel = ({ handleClose, showModal }) => {
     dispatch(incidentFetching('post', incident));
     handleClose();
   };
+
   return (
     <Modal
       size="lg"
