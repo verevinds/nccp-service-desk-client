@@ -53,10 +53,6 @@ function* fetchAsyncCatalog() {
 }
 function* fetchAsyncIncident({ route, method, data, id }) {
   try {
-    console.log('route', route);
-    console.log('id', id);
-    console.log('data', data);
-    console.log('method', method);
     yield put(incidentRequestSendd());
     switch (method) {
       case 'post':

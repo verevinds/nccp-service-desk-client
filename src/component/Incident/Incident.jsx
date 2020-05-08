@@ -1,92 +1,68 @@
-import React, { memo, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import Moment from 'react-moment';
-import 'moment/locale/ru';
+import React, { memo, useState, useEffect } from 'react';
+import IncidentWindow from '../IncidentWindow/IncidentWindow';
+import Sidebar from '../Sidebar/Sidebar';
 
-//ActionCreator
-import { incidentFetching } from '../../redux/actionCreators/incidentAction';
+/**Bootstrap components */
+import { Row, Col, Container } from 'react-bootstrap';
 
-import IncidentInWork from '../IncidentInWork/IncidentInWork';
+const Incident = ({ list, isLoading, myincident }) => {
+  const [chooseIncidentId, setChooseIncidentId] = useState();
 
-import { Container, Card, Button } from 'react-bootstrap';
-
-const Incident = ({ incident }) => {
-  const dispatch = useDispatch();
-  const { number } = useSelector((state) => state.auth.user);
-  const onClick = () => {
-    const dateNow = new Date();
-    const responsible = {
-      currentResponsible: number,
-      startWork: `${dateNow.getFullYear()}-${
-        dateNow.getMonth() + 1
-      }-${dateNow.getDate()} ${dateNow.getHours()}:${dateNow.getMinutes()}:${dateNow.getSeconds()}`,
-    };
-    dispatch(incidentFetching('put', responsible, incident.id, 'incidents'));
-  };
+  //currentIncident хранит текущий инцидент, setCurrentIncident изменяется состояние currentIncident
+  const [currentIncident, setCurrentIncident] = useState();
   useEffect(() => {
-    console.log(incident);
-  }, [incident]);
-  if (!!incident) {
-    return (
-      <Container>
-        <Card>
-          <Card.Header>
-            Инцидент №{incident.id}{' '}
-            {incident.user ? (
-              <IncidentInWork
-                startWork={incident.startWork}
-                nameResponsible={`
-                ${incident.user.name1} ${incident.user.name2.charAt(
-                  0,
-                )}.${incident.user.name3.charAt(0)}.`}
-              />
-            ) : null}
-          </Card.Header>
-          <Card.Body>
-            <Card.Title>
-              {!!incident.category ? incident.category.name : null}
-              {' / '}
-              {!!incident.property ? incident.property.name : null}
-              {' / '}
-              {!!incident.option ? incident.option.name : null}
-            </Card.Title>
-            <Card.Text>Инициатор: {incident.name}</Card.Text>
-            <Card.Text>
-              {!!incident.email ? `Email: ${incident.email} ` : null}
-            </Card.Text>
-            <hr />
-            <Card.Text>{incident.text}</Card.Text>
-            {!incident.user ? (
-              <Button variant="outline-success" xs="sm" onClick={onClick}>
-                Взять в работу
-              </Button>
-            ) : (
-              <Button>Сохранить</Button>
-            )}
-          </Card.Body>
-          <Card.Footer className="text-right">
-            <small>
-              <i>
-                <b>Создан:</b>{' '}
-                <Moment locale="ru" fromNow>
-                  {incident.createdAt}
-                </Moment>
-              </i>
-              {' | '}
-              <i>
-                <b>Последнее обновление:</b>{' '}
-                <Moment locale="ru" fromNow>
-                  {incident.updatedAt}
-                </Moment>
-              </i>
-            </small>
-          </Card.Footer>
-        </Card>
-      </Container>
+    //Получаем новый выбранный инцидент
+    const newCurrentIncident = list.find(
+      (item) => item.id === chooseIncidentId,
     );
-  } else {
-    return <h2>Выберите инцидент</h2>;
-  }
+    //
+    setCurrentIncident(newCurrentIncident);
+    // eslint-disable-next-line
+  }, [chooseIncidentId, list]); // Использовать эффект если изменились параметры chooseIncidentId, list поменяли свое состояние
+
+  const [sidebarList, setSidebarList] = useState([]);
+  useEffect(() => {
+    // eslint-disable-next-line
+
+    setSidebarList(
+      list.map((item) => {
+        const newItem = {
+          id: item.id,
+          name: `${item.category ? item.category.name : null} ${
+            item.property ? item.property.name : null
+          } ${item.option ? item.option.name : null}`,
+          createdAt: item.createdAt,
+        };
+        return newItem;
+      }),
+    );
+    // eslint-disable-next-line
+  }, [list]);
+
+  return (
+    <Row className="mt-3">
+      <Col xs={5}>
+        <Sidebar
+          title={'Инциденты'}
+          list={sidebarList}
+          onClick={setChooseIncidentId}
+          activeId={chooseIncidentId}
+          isLoading={isLoading}
+          badge={!myincident}
+        />
+      </Col>
+      <Col>
+        <Container>
+          {currentIncident ? (
+            <IncidentWindow
+              incident={currentIncident}
+              myincident={myincident}
+            />
+          ) : null}
+        </Container>
+      </Col>
+    </Row>
+  );
 };
 
 export default memo(Incident);

@@ -9,6 +9,7 @@ import { incidentFetching } from './redux/actionCreators/incidentAction';
 import MainPage from './page/MainPage';
 import SettingPage from './page/SettingPage';
 import Header from './component/Header/Header';
+import MyIncidentPage from './page/MyIncidentPage';
 
 const App = (props) => {
   const dispatch = useDispatch();
@@ -17,18 +18,14 @@ const App = (props) => {
     dispatch(categoryFetching());
     dispatch(incidentFetching());
   }, [dispatch]);
-  const dateNow = new Date();
-  console.log(
-    `${dateNow.getFullYear()}-${
-      dateNow.getMonth() + 1
-    }-${dateNow.getDate()} ${dateNow.getHours()}:${dateNow.getMinutes()}:${dateNow.getSeconds()}`,
-  );
+
   return (
     <BrowserRouter>
       <Header />
       <Switch>
         <Route exact path="/" component={MainPage} />
         <Route path="/setting" component={SettingPage} />
+        <Route path="/myincidents" component={MyIncidentPage} />
       </Switch>
     </BrowserRouter>
   );

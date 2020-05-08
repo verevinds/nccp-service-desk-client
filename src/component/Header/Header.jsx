@@ -40,7 +40,14 @@ const Header = (props) => {
                 activeClassName={`btn-light ${styles.nav__button}`}
                 className="btn btn-link align-middle"
               >
-                Инциденты
+                Рабочая панель
+              </NavLink>
+              <NavLink
+                to="/myincidents"
+                activeClassName={`btn-light ${styles.nav__button}`}
+                className="btn btn-link align-middle"
+              >
+                Мои инциденты
               </NavLink>
             </Nav.Item>{' '}
             <Nav.Item>

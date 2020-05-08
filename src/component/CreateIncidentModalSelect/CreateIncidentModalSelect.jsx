@@ -4,7 +4,6 @@ import React, { memo } from 'react';
 import { Form } from 'react-bootstrap';
 
 const CreateIncidentModalSelect = ({ onChange, list, title = '' }) => {
-  // console.log(title, list);
   return (
     <Form.Group controlId="exampleForm.ControlSelect1">
       {!!title ? <Form.Label>{title}</Form.Label> : null}
