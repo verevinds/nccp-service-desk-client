@@ -8,7 +8,7 @@ const CreateIncidentModalSelect = ({ onChange, list, title = '' }) => {
     <Form.Group controlId="exampleForm.ControlSelect1">
       {!!title ? <Form.Label>{title}</Form.Label> : null}
       <Form.Control as="select" onChange={onChange}>
-        {typeof list === 'object'
+        {list.length
           ? list.map((item) => {
               return (
                 <option value={item.id} key={item.id}>

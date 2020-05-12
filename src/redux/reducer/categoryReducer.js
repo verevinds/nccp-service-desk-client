@@ -1,4 +1,5 @@
 import { CATALOG_REQUEST_SENDD, CATALOG_REQUEST_SUCCESSED } from '../constants';
+import { DEPARTMENT_REQUEST_SUCCESSED } from '../constants';
 const initialState = {
   list: [],
   isRequest: false,
@@ -19,6 +20,11 @@ export const categoryReducer = (state = initialState, action) => {
         list: action.data,
         isLoading: true,
         isRequest: false,
+      };
+    case DEPARTMENT_REQUEST_SUCCESSED:
+      return {
+        ...state,
+        department: action.data,
       };
     default:
       return state;

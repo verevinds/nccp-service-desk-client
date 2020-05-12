@@ -1,11 +1,24 @@
 import React, { memo, useState, useEffect } from 'react';
 import CatalogSetting from '../component/CatalogSetting/CatalogSetting';
 import Sidebar from '../component/Sidebar/Sidebar';
+import { useSelector } from 'react-redux';
+import DepartmentSetting from '../component/DepartmentSetting/DepartmentSetting';
 
 /**Bootstrap components */
 import { Row, Col, Container } from 'react-bootstrap';
 
 const SettingPage = (props) => {
+  const { catalog } = useSelector((state) => state);
+  const [departmentId, setDepartmentId] = useState();
+  const onClick = (id, setNumber) => {
+    setNumber(id);
+  };
+  const [listCatalog, setListCatalog] = useState([]);
+  useEffect(() => {
+    setListCatalog(
+      catalog.list.filter((item) => item.departmentId == departmentId),
+    );
+  }, [departmentId, catalog]);
   const [activeId, setActiveId] = useState(0);
   const list = [
     { name: 'Каталог', id: 1 },
@@ -19,7 +32,18 @@ const SettingPage = (props) => {
         setJsxContent('');
         break;
       case 1:
-        setJsxContent(<CatalogSetting />);
+        setJsxContent(
+          <Row>
+            <DepartmentSetting
+              department={catalog.department}
+              setNumber={setDepartmentId}
+              activeId={departmentId}
+              onClick={onClick}
+              inputed
+            />
+            <CatalogSetting list={listCatalog} departmentId={departmentId} />
+          </Row>,
+        );
         break;
       default:
         setJsxContent(
@@ -29,10 +53,10 @@ const SettingPage = (props) => {
         );
         break;
     }
-  }, [activeId]);
+  }, [activeId, listCatalog]);
   return (
     <Row>
-      <Col xs={3}>
+      <Col xs={2}>
         <Sidebar
           list={list}
           title={`Настройки`}
@@ -40,9 +64,7 @@ const SettingPage = (props) => {
           onClick={setActiveId}
         />
       </Col>
-      <Col xs={9}>
-        <Container>{jsxContent}</Container>
-      </Col>
+      <Col xs={10}>{jsxContent}</Col>
     </Row>
   );
 };

@@ -7,4 +7,6 @@ export interface IListEdit {
   route: string;
   onClick: () => void;
   categoryId: number | undefined | null;
+  departmentId: number | undefined | null;
+  inputOff: boolean;
 }

@@ -12,7 +12,6 @@ import { faCog } from '@fortawesome/free-solid-svg-icons';
 
 const Header = (props) => {
   const { user } = useSelector((state) => state.auth);
-  console.log(user);
   const [access, setAccess] = useState(1);
   const [showModal, setShowModal] = useState(false);
   const handleClose = () => setShowModal(false);
@@ -23,7 +22,7 @@ const Header = (props) => {
   useEffect(() => {
     if (!!user) {
       setFullName(`${user.name1 || 'N'} ${user.name2 || 'N'}`);
-      setAccess(user.level);
+      setAccess(1);
     } else {
       setFullName(`Гость`);
     }

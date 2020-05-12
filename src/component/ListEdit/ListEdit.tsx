@@ -18,16 +18,19 @@ const ListEdit: React.FC<IListEdit> = ({
   actionCreator,
   route,
   onClick,
+  departmentId,
   categoryId,
+  inputOff,
 }) => {
   const dispatch = useDispatch();
-
   //! Определить локальное состояние и обработчик
   // Define local state and handleState
-  const [state, setState] = useState({ name: '', categoryId });
+  const [state, setState] = useState({ name: '', categoryId, departmentId });
   useEffect(() => {
     if (categoryId) {
-      setState({ name: '', categoryId });
+      setState({ name: '', categoryId, departmentId });
+    } else if (departmentId) {
+      setState({ name: '', categoryId, departmentId });
     }
   }, [categoryId]);
 
@@ -38,26 +41,28 @@ const ListEdit: React.FC<IListEdit> = ({
     if (route) {
       //@ts-ignore
       dispatch(actionCreator(route, 'post', state));
-      setState({ name: '', categoryId: undefined });
+      setState({ name: '', categoryId: undefined, departmentId });
     }
   };
   return (
-    <Col xs={4}>
-      <Form onSubmit={onSubmit}>
-        <Form.Group>
-          <Form.Label>
-            <h2>{title}</h2>
-          </Form.Label>
-          <Form.Control
-            type="text"
-            placeholder='Введите название и нажмите "Enter"'
-            value={state.name}
-            onChange={(event: any) => {
-              setState({ ...state, name: event.target.value });
-            }}
-          />
-        </Form.Group>
-      </Form>
+    <Col xs={3}>
+      <h2>{title}</h2>
+      {inputOff ? null : (
+        <Form onSubmit={onSubmit}>
+          <Form.Group>
+            <Form.Label></Form.Label>
+            <Form.Control
+              type="text"
+              placeholder='Введите название и нажмите "Enter"'
+              value={state.name}
+              onChange={(event: any) => {
+                setState({ ...state, name: event.target.value, departmentId });
+              }}
+            />
+          </Form.Group>
+        </Form>
+      )}
+
       <ListGroup variant="flush">
         {list ? (
           list.map((item) => (
@@ -79,18 +84,20 @@ const ListEdit: React.FC<IListEdit> = ({
                     {item.name}
                   </div>
                 </Col>
-                <Col xs={3}>
-                  <Button
-                    size="sm"
-                    variant="danger"
-                    onClick={() => {
-                      //@ts-ignore
-                      dispatch(actionCreator(route, 'delete', '', item.id));
-                    }}
-                  >
-                    <FontAwesomeIcon icon={faTrash} />
-                  </Button>
-                </Col>
+                {inputOff ? null : (
+                  <Col xs={3}>
+                    <Button
+                      size="sm"
+                      variant="danger"
+                      onClick={() => {
+                        //@ts-ignore
+                        dispatch(actionCreator(route, 'delete', '', item.id));
+                      }}
+                    >
+                      <FontAwesomeIcon icon={faTrash} />
+                    </Button>
+                  </Col>
+                )}
               </Row>
             </ListGroup.Item>
           ))

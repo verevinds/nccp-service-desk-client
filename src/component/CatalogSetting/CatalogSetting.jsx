@@ -2,12 +2,11 @@ import React, { memo, useEffect, useState } from 'react';
 import { catalogPost } from '../../redux/actionCreators/catalogAction';
 
 //?Bootstrap
-import { Row } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import ListEdit from '../ListEdit/ListEdit';
 
-const CatalogSetting = (props) => {
-  const { list } = useSelector((state) => state.catalog);
+const CatalogSetting = ({ list, departmentId }) => {
   const [chooseCategoryId, setChooseCategoryId] = useState();
 
   const onClick = (id, setNumber) => {
@@ -19,39 +18,36 @@ const CatalogSetting = (props) => {
   }, [chooseCategoryId, list]);
 
   return (
-    <div>
-      <Row>
+    <>
+      <ListEdit
+        title="Категории"
+        departmentId={departmentId}
+        list={list}
+        setNumber={setChooseCategoryId}
+        activeId={chooseCategoryId}
+        actionCreator={catalogPost}
+        route={'categories'}
+        onClick={onClick}
+      />
+      {currentCategory ? (
         <ListEdit
-          title="Категории"
-          list={list}
-          setNumber={setChooseCategoryId}
-          activeId={chooseCategoryId}
+          title="Параметры"
+          list={currentCategory.properties ? currentCategory.properties : null}
           actionCreator={catalogPost}
-          route={'categories'}
-          onClick={onClick}
+          route={'properties'}
+          categoryId={Number(chooseCategoryId)}
         />
-        {currentCategory ? (
-          <ListEdit
-            title="Параметры"
-            list={
-              currentCategory.properties ? currentCategory.properties : null
-            }
-            actionCreator={catalogPost}
-            route={'properties'}
-            categoryId={Number(chooseCategoryId)}
-          />
-        ) : null}
-        {currentCategory ? (
-          <ListEdit
-            title="Опции"
-            list={currentCategory.options ? currentCategory.options : null}
-            route={'options'}
-            actionCreator={catalogPost}
-            categoryId={chooseCategoryId}
-          />
-        ) : null}
-      </Row>
-    </div>
+      ) : null}
+      {currentCategory ? (
+        <ListEdit
+          title="Опции"
+          list={currentCategory.options ? currentCategory.options : null}
+          route={'options'}
+          actionCreator={catalogPost}
+          categoryId={chooseCategoryId}
+        />
+      ) : null}
+    </>
   );
 };
 

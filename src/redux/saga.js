@@ -5,7 +5,10 @@ import {
   CATALOG_FETCHING,
   CATALOG_POST,
   INCIDENT_FETCHING,
+  QUERY_API,
 } from './constants';
+import { departmentRequestSuccessed } from './actionCreators/departmentAction';
+import { queryApi } from './actionCreators/queryApiAction';
 import {
   authRequestSendd,
   authRequestSuccessed,
@@ -25,7 +28,36 @@ export function* watchFetch() {
   yield takeLatest(AUTH_FETCHING, fetchAsync);
   yield takeLatest(CATALOG_FETCHING, fetchAsyncCatalog);
   yield takeLatest(CATALOG_POST, catalogPost);
+  yield takeLatest(QUERY_API, queryApiAsync);
   yield takeLatest(INCIDENT_FETCHING, fetchAsyncIncident);
+}
+
+function* queryApiAsync({ route, successedAction, method, data, id }) {
+  try {
+    // yield put(authRequestSendd());
+    let response;
+    switch (method) {
+      case 'post':
+        response = yield call(() =>
+          axios.post(`http://localhost:8080/api/${route}`, data),
+        );
+        break;
+      case 'delete':
+        response = yield call(() =>
+          axios.delete(`http://localhost:8080/api/${route}/${id}`, data),
+        );
+        break;
+
+      default:
+        response = yield call(() =>
+          axios.get(`http://localhost:8080/api/${route}/${id || ''}`, data),
+        );
+        break;
+    }
+    yield put(successedAction(response.data));
+  } catch (error) {
+    console.log(error.message);
+  }
 }
 
 function* fetchAsync({ ip }) {
