@@ -11,6 +11,7 @@ import {
 } from './redux/actionCreators/incidentAction';
 import { queryApi } from './redux/actionCreators/queryApiAction';
 import { departmentRequestSuccessed } from './redux/actionCreators/departmentAction';
+import { categoryRequestSuccessed } from './redux/actionCreators/catalogAction';
 
 import MainPage from './page/MainPage';
 import SettingPage from './page/SettingPage';
@@ -24,6 +25,7 @@ const App = (props) => {
   useEffect(() => {
     dispatch(authFetching(window.ipGlobal));
     dispatch(categoryFetching());
+
     dispatch(incidentFetching());
     dispatch(queryApi('departments', departmentRequestSuccessed));
   }, [dispatch]);
@@ -39,6 +41,14 @@ const App = (props) => {
           'get',
           {},
           auth.user.number,
+        ),
+      );
+      dispatch(
+        queryApi(
+          'incidents/responsible',
+          categoryRequestSuccessed,
+          'get',
+          auth.user.departmentId,
         ),
       );
     }

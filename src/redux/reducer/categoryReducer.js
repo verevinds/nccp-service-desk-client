@@ -4,6 +4,7 @@ const initialState = {
   list: [],
   isRequest: false,
   isLoading: false,
+  department: null,
 };
 
 export const categoryReducer = (state = initialState, action) => {
@@ -22,6 +23,7 @@ export const categoryReducer = (state = initialState, action) => {
         isRequest: false,
       };
     case DEPARTMENT_REQUEST_SUCCESSED:
+      console.log(DEPARTMENT_REQUEST_SUCCESSED);
       return {
         ...state,
         department: action.data,

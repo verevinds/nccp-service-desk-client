@@ -1,4 +1,4 @@
-import { put, call, takeLatest } from 'redux-saga/effects';
+import { put, call, takeLatest, takeEvery } from 'redux-saga/effects';
 import * as axios from 'axios';
 import {
   AUTH_FETCHING,
@@ -27,8 +27,8 @@ import {
 export function* watchFetch() {
   yield takeLatest(AUTH_FETCHING, fetchAsync);
   yield takeLatest(CATALOG_FETCHING, fetchAsyncCatalog);
-  yield takeLatest(CATALOG_POST, catalogPost);
-  yield takeLatest(QUERY_API, queryApiAsync);
+  yield takeEvery(CATALOG_POST, catalogPost);
+  yield takeEvery(QUERY_API, queryApiAsync);
   yield takeLatest(INCIDENT_FETCHING, fetchAsyncIncident);
 }
 

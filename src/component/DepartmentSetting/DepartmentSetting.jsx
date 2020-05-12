@@ -1,13 +1,7 @@
 import React, { memo, useState } from 'react';
 import ListEdit from '../ListEdit/ListEdit';
 
-const DepartmentSetting = ({
-  department,
-  setNumber,
-  activeId,
-  onClick,
-  inputed,
-}) => {
+const DepartmentSetting = ({ department, setNumber, activeId, onClick }) => {
   return (
     <>
       <ListEdit

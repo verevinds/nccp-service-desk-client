@@ -5,22 +5,9 @@ import { useSelector } from 'react-redux';
 const MyIncidentPage = (props) => {
   const {
     incidents: { myList },
-    auth: { user },
   } = useSelector((state) => state);
-  const [isLoading, setIsLoading] = useState(false);
-  // const [myList, setMyList] = useState([]);
-  // useEffect(() => {
-  //   if (user && list) {
-  //     let newList = list.filter((item) => item.number == user.number);
-  //     setMyList(newList);
 
-  //     if (newList.length) {
-  //       setIsLoading(true);
-  //     }
-  //   }
-  // }, [user, list]);
-
-  return <Incident list={myList} isLoading={isLoading} myincident={true} />;
+  return <Incident list={myList} myincident={true} />;
 };
 
 export default memo(MyIncidentPage);
