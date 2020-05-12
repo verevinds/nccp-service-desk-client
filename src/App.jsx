@@ -5,7 +5,10 @@ import { useSelector } from 'react-redux';
 
 import { categoryFetching } from './redux/actionCreators/catalogAction';
 import { authFetching } from './redux/actionCreators/authAction';
-import { incidentFetching } from './redux/actionCreators/incidentAction';
+import {
+  incidentFetching,
+  myIncidentRequestSuccessed,
+} from './redux/actionCreators/incidentAction';
 import { queryApi } from './redux/actionCreators/queryApiAction';
 import { departmentRequestSuccessed } from './redux/actionCreators/departmentAction';
 
@@ -16,6 +19,7 @@ import MyIncidentPage from './page/MyIncidentPage';
 
 const App = (props) => {
   const state = useSelector((state) => state);
+  const { auth } = state;
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(authFetching(window.ipGlobal));
@@ -26,6 +30,19 @@ const App = (props) => {
   useEffect(() => {
     console.log(state);
   }, [state]);
+  useEffect(() => {
+    if (!!auth.user) {
+      dispatch(
+        queryApi(
+          'incidents/my',
+          myIncidentRequestSuccessed,
+          'get',
+          {},
+          auth.user.number,
+        ),
+      );
+    }
+  }, [auth]);
   return (
     <BrowserRouter>
       <Header />

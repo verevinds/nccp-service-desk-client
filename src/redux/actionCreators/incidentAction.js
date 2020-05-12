@@ -2,6 +2,7 @@ import {
   INCIDENT_FETCHING,
   INCIDENT_REQUEST_SENDD,
   INCIDENT_REQUEST_SUCCESSED,
+  MY_INCIDENT_REQUEST_SUCCESSED,
 } from '../constants';
 
 export const incidentFetching = (
@@ -21,5 +22,9 @@ export const incidentRequestSendd = () => ({
 });
 export const incidentRequestSuccessed = (data) => ({
   type: INCIDENT_REQUEST_SUCCESSED,
+  data,
+});
+export const myIncidentRequestSuccessed = (data) => ({
+  type: MY_INCIDENT_REQUEST_SUCCESSED,
   data,
 });
