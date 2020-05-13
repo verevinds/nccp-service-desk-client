@@ -3,8 +3,10 @@ import {
   CATALOG_REQUEST_SENDD,
   CATALOG_REQUEST_SUCCESSED,
   CATALOG_POST,
+  CATALOG_UPDATE,
 } from '../constants';
 
+export const categoryUpdate = () => ({ type: CATALOG_UPDATE });
 export const categoryFetching = () => ({
   type: CATALOG_FETCHING,
 });

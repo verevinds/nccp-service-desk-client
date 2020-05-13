@@ -1,9 +1,14 @@
-import { CATALOG_REQUEST_SENDD, CATALOG_REQUEST_SUCCESSED } from '../constants';
+import {
+  CATALOG_REQUEST_SENDD,
+  CATALOG_REQUEST_SUCCESSED,
+  CATALOG_UPDATE,
+} from '../constants';
 import { DEPARTMENT_REQUEST_SUCCESSED } from '../constants';
 const initialState = {
   list: [],
   isRequest: false,
   isLoading: false,
+  isUpdate: true,
   department: null,
 };
 
@@ -21,11 +26,17 @@ export const categoryReducer = (state = initialState, action) => {
         list: action.data,
         isLoading: true,
         isRequest: false,
+        isUpdate: false,
       };
     case DEPARTMENT_REQUEST_SUCCESSED:
       return {
         ...state,
         department: action.data,
+      };
+    case CATALOG_UPDATE:
+      return {
+        ...state,
+        isUpdate: true,
       };
     default:
       return state;

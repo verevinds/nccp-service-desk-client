@@ -21,6 +21,7 @@ const ListEdit: React.FC<IListEdit> = ({
   departmentId,
   categoryId,
   inputOff,
+  actionUpdate,
 }) => {
   const dispatch = useDispatch();
   //! Определить локальное состояние и обработчик
@@ -39,6 +40,10 @@ const ListEdit: React.FC<IListEdit> = ({
   const onSubmit = (event: any) => {
     event.preventDefault();
     if (route) {
+      if (!!actionUpdate) {
+        //@ts-ignore
+        dispatch(actionUpdate());
+      }
       //@ts-ignore
       dispatch(actionCreator(route, 'post', state));
       setState({ name: '', categoryId: undefined, departmentId });
@@ -90,6 +95,10 @@ const ListEdit: React.FC<IListEdit> = ({
                       size="sm"
                       variant="danger"
                       onClick={() => {
+                        if (!!actionUpdate) {
+                          //@ts-ignore
+                          dispatch(actionUpdate());
+                        }
                         //@ts-ignore
                         dispatch(actionCreator(route, 'delete', '', item.id));
                       }}

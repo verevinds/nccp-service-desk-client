@@ -9,4 +9,5 @@ export interface IListEdit {
   categoryId: number | undefined | null;
   departmentId: number | undefined | null;
   inputOff: boolean;
+  actionUpdate: () => void;
 }

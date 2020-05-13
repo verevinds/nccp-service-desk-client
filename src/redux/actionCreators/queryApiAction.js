@@ -1,9 +1,17 @@
 import { QUERY_API } from '../constants';
 
-export const queryApi = (route, successedAction, method, data, id) => ({
+export const queryApi = ({
+  route,
+  actionSuccessed,
+  actionUpdate,
+  method,
+  data,
+  id,
+}) => ({
   type: QUERY_API,
   route,
-  successedAction,
+  actionSuccessed,
+  actionUpdate,
   data,
   id,
   method,

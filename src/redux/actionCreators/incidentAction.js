@@ -3,6 +3,7 @@ import {
   INCIDENT_REQUEST_SENDD,
   INCIDENT_REQUEST_SUCCESSED,
   MY_INCIDENT_REQUEST_SUCCESSED,
+  INCIDENT_CHOOSE,
   INCIDENT_CREATE,
 } from '../constants';
 
@@ -30,3 +31,7 @@ export const myIncidentRequestSuccessed = (data) => ({
   data,
 });
 export const incidentCreate = () => ({ type: INCIDENT_CREATE });
+export const incidentChoose = (incident) => ({
+  type: INCIDENT_CHOOSE,
+  incident,
+});

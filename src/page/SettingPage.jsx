@@ -1,26 +1,12 @@
 import React, { memo, useState, useEffect } from 'react';
-import CatalogSetting from '../component/CatalogSetting/CatalogSetting';
 import Sidebar from '../component/Sidebar/Sidebar';
-import { useSelector } from 'react-redux';
-import DepartmentSetting from '../component/DepartmentSetting/DepartmentSetting';
+import SettingCatalog from '../component/SettingCatalog/SettingCatalog';
+import SettingStatus from '../component/SettingStatus/SettingStatus';
 
 /**Bootstrap components */
 import { Row, Col } from 'react-bootstrap';
 
 const SettingPage = (props) => {
-  const { catalog } = useSelector((state) => state);
-  const [departmentId, setDepartmentId] = useState();
-  const onClick = (id, setNumber) => {
-    setNumber(id);
-  };
-  const [listCatalog, setListCatalog] = useState([]);
-  useEffect(() => {
-    setListCatalog(
-      catalog.list.filter(
-        (item) => Number(item.departmentId) === Number(departmentId),
-      ),
-    );
-  }, [departmentId, catalog]);
   const [activeId, setActiveId] = useState(0);
   const list = [
     { name: 'Каталог', id: 1 },
@@ -34,18 +20,10 @@ const SettingPage = (props) => {
         setJsxContent('');
         break;
       case 1:
-        setJsxContent(
-          <Row>
-            <DepartmentSetting
-              department={catalog.department}
-              setNumber={setDepartmentId}
-              activeId={departmentId}
-              onClick={onClick}
-              inputed
-            />
-            <CatalogSetting list={listCatalog} departmentId={departmentId} />
-          </Row>,
-        );
+        setJsxContent(<SettingCatalog />);
+        break;
+      case 2:
+        setJsxContent(<SettingStatus />);
         break;
       default:
         setJsxContent(
@@ -55,7 +33,7 @@ const SettingPage = (props) => {
         );
         break;
     }
-  }, [activeId, listCatalog, catalog.department, departmentId]);
+  }, [activeId]);
   return (
     <Row>
       <Col xs={2}>

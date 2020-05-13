@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-import { categoryFetching } from './redux/actionCreators/catalogAction';
+import { categoryRequestSuccessed } from './redux/actionCreators/catalogAction';
 import { authFetching } from './redux/actionCreators/authAction';
 import {
   incidentRequestSuccessed,
@@ -11,7 +11,7 @@ import {
 } from './redux/actionCreators/incidentAction';
 import { queryApi } from './redux/actionCreators/queryApiAction';
 import { departmentRequestSuccessed } from './redux/actionCreators/departmentAction';
-
+import { statusRequestSeccessed } from './redux/actionCreators/statusAction';
 import MainPage from './page/MainPage';
 import SettingPage from './page/SettingPage';
 import Header from './component/Header/Header';
@@ -20,38 +20,60 @@ import MyIncidentPage from './page/MyIncidentPage';
 const App = (props) => {
   const {
     auth: { user },
-    incidents: { isUpdate },
+    incidents,
+    status,
+    catalog,
   } = useSelector((state) => state);
   const dispatch = useDispatch();
+  // const state = useSelector((state) => state);
+  // // console.log(state);
+
   useEffect(() => {
     dispatch(authFetching(window.ipGlobal));
-    dispatch(categoryFetching());
-    dispatch(queryApi('departments', departmentRequestSuccessed));
+    dispatch(
+      queryApi({
+        route: 'departments',
+        actionSuccessed: departmentRequestSuccessed,
+      }),
+    );
     // eslint-disable-next-line
-  }, []);
+  }, [dispatch]);
   useEffect(() => {
-    if (!!user && isUpdate) {
+    if (catalog.isUpdate) {
       dispatch(
-        queryApi(
-          'incidents/my',
-          myIncidentRequestSuccessed,
-          'get',
-          {},
-          user.number,
-        ),
+        queryApi({
+          route: 'categories',
+          actionSuccessed: categoryRequestSuccessed,
+        }),
+      );
+    }
+  }, [catalog.isUpdate, dispatch]);
+  useEffect(() => {
+    if (status.isUpdate) {
+      dispatch(
+        queryApi({ route: 'status', actionSuccessed: statusRequestSeccessed }),
+      );
+    }
+  }, [status.isUpdate, dispatch]);
+  useEffect(() => {
+    if (!!user && incidents.isUpdate) {
+      dispatch(
+        queryApi({
+          route: 'incidents/my',
+          actionSuccessed: myIncidentRequestSuccessed,
+          id: user.number,
+        }),
       );
       dispatch(
-        queryApi(
-          'incidents/responsible',
-          incidentRequestSuccessed,
-          'get',
-          {},
-          user.departmentId,
-        ),
+        queryApi({
+          route: 'incidents/responsible',
+          actionSuccessed: incidentRequestSuccessed,
+          id: user.departmentId,
+        }),
       );
     }
     // eslint-disable-next-line
-  }, [user, isUpdate]);
+  }, [user, incidents.isUpdate, dispatch]);
   return (
     <BrowserRouter>
       <Header />

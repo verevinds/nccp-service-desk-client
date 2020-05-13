@@ -36,10 +36,12 @@ const Sidebar: React.FC<ISidebar> = ({
   ]);
   useEffect(() => {
     const jsxItem = list.map((item) => {
-      let { id, name, createdAt } = item;
+      let { id, name, createdAt, status, responsible } = item;
       let itemText: string;
       if (createdAt) {
-        itemText = `№${id} - ${name ? name : 'N/A'} `;
+        itemText = `№${id} - ${
+          name ? name : 'N/A'
+        } - ${responsible} - ${status}`;
       } else {
         itemText = `${name ? name : 'N/A'} `;
       }

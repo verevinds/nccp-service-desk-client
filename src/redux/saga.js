@@ -17,9 +17,9 @@ import {
   categoryRequestSuccessed,
 } from './actionCreators/catalogAction';
 import {
-  incidentFetching,
   incidentRequestSendd,
   incidentRequestSuccessed,
+  incidentCreate,
 } from './actionCreators/incidentAction';
 
 export function* watchFetch() {
@@ -30,7 +30,14 @@ export function* watchFetch() {
   yield takeEvery(INCIDENT_FETCHING, fetchAsyncIncident);
 }
 
-function* queryApiAsync({ route, successedAction, method, data, id }) {
+function* queryApiAsync({
+  route,
+  actionSuccessed,
+  actionUpdate,
+  method,
+  data,
+  id,
+}) {
   try {
     // yield put(authRequestSendd());
     let response;
@@ -39,20 +46,31 @@ function* queryApiAsync({ route, successedAction, method, data, id }) {
         response = yield call(() =>
           axios.post(`http://localhost:8080/api/${route}`, data),
         );
+        if (!!actionUpdate) {
+          yield put(actionUpdate());
+        }
         break;
       case 'delete':
         response = yield call(() =>
           axios.delete(`http://localhost:8080/api/${route}/${id}`, data),
         );
+        if (!!actionUpdate) {
+          yield put(actionUpdate());
+        }
         break;
 
       default:
         response = yield call(() =>
           axios.get(`http://localhost:8080/api/${route}/${id || ''}`, data),
         );
+        if (!!actionUpdate) {
+          yield put(actionUpdate());
+        }
         break;
     }
-    yield put(successedAction(response.data));
+    if (!!actionSuccessed) {
+      yield put(actionSuccessed(response.data));
+    }
   } catch (error) {
     console.log(error.message);
   }
@@ -89,16 +107,19 @@ function* fetchAsyncIncident({ route, method, data, id }) {
         yield call(() =>
           axios.post(`http://localhost:8080/api/${route}`, data),
         );
+        yield put(incidentCreate());
         break;
       case 'delete':
         yield call(() =>
           axios.delete(`http://localhost:8080/api/${route}/${id}`, data),
         );
+        yield put(incidentCreate());
         break;
       case 'put':
         yield call(() =>
           axios.put(`http://localhost:8080/api/${route}/${id}`, data),
         );
+        yield put(incidentCreate());
         break;
       case 'get':
         const response = yield call(() =>
@@ -106,7 +127,6 @@ function* fetchAsyncIncident({ route, method, data, id }) {
         );
         yield put(incidentRequestSuccessed(response.data));
         break;
-
       default:
         break;
     }
