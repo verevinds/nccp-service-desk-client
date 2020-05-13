@@ -2,6 +2,7 @@ import {
   INCIDENT_REQUEST_SENDD,
   INCIDENT_REQUEST_SUCCESSED,
   MY_INCIDENT_REQUEST_SUCCESSED,
+  INCIDENT_CREATE,
 } from '../constants';
 
 const initialState = {
@@ -9,6 +10,7 @@ const initialState = {
   myList: [],
   isRequest: false,
   isLoading: false,
+  isUpdate: true,
 };
 
 export const incidentReducer = (state = initialState, action) => {
@@ -24,6 +26,7 @@ export const incidentReducer = (state = initialState, action) => {
         ...state,
         list: action.data,
         isLoading: true,
+        isUpdate: false,
         isRequest: false,
       };
     case MY_INCIDENT_REQUEST_SUCCESSED:
@@ -32,6 +35,12 @@ export const incidentReducer = (state = initialState, action) => {
         myList: action.data,
         isLoading: true,
         isRequest: false,
+        isUpdate: false,
+      };
+    case INCIDENT_CREATE:
+      return {
+        ...state,
+        isUpdate: true,
       };
     default:
       return state;

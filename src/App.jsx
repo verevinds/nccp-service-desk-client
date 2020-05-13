@@ -18,7 +18,10 @@ import Header from './component/Header/Header';
 import MyIncidentPage from './page/MyIncidentPage';
 
 const App = (props) => {
-  const { auth } = useSelector((state) => state);
+  const {
+    auth: { user },
+    incidents: { isUpdate },
+  } = useSelector((state) => state);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(authFetching(window.ipGlobal));
@@ -27,14 +30,14 @@ const App = (props) => {
     // eslint-disable-next-line
   }, []);
   useEffect(() => {
-    if (!!auth.user) {
+    if (!!user && isUpdate) {
       dispatch(
         queryApi(
           'incidents/my',
           myIncidentRequestSuccessed,
           'get',
           {},
-          auth.user.number,
+          user.number,
         ),
       );
       dispatch(
@@ -43,12 +46,12 @@ const App = (props) => {
           incidentRequestSuccessed,
           'get',
           {},
-          auth.user.departmentId,
+          user.departmentId,
         ),
       );
     }
     // eslint-disable-next-line
-  }, [auth]);
+  }, [user, isUpdate]);
   return (
     <BrowserRouter>
       <Header />

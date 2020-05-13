@@ -89,19 +89,16 @@ function* fetchAsyncIncident({ route, method, data, id }) {
         yield call(() =>
           axios.post(`http://localhost:8080/api/${route}`, data),
         );
-        yield put(incidentFetching());
         break;
       case 'delete':
         yield call(() =>
           axios.delete(`http://localhost:8080/api/${route}/${id}`, data),
         );
-        yield put(incidentFetching());
         break;
       case 'put':
         yield call(() =>
           axios.put(`http://localhost:8080/api/${route}/${id}`, data),
         );
-        yield put(incidentFetching());
         break;
       case 'get':
         const response = yield call(() =>

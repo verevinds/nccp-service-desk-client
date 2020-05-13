@@ -83,7 +83,7 @@ const IncidentWindow = ({ incident, myincident }) => {
                 ? `Тел.: ${incident.initiatorUser.phone1} `
                 : null}
             </Card.Text>
-            <hr />
+            {incident.text ? <hr /> : null}
             <Card.Text>{incident.text}</Card.Text>
             {!myincident ? (
               <IncidentWorkButton
