@@ -6,7 +6,6 @@ import CreateIncidentModalSelect from '../CreateIncidentModalSelect/CreateIncide
 /**Bootstrap components */
 import { Modal, Button, Form } from 'react-bootstrap';
 import { incidentFetching } from '../../redux/actionCreators/incidentAction';
-import { incidentCreate } from '../../redux/actionCreators/incidentAction';
 
 const CreateIncidentModel = ({ handleClose, showModal }) => {
   const {
@@ -93,7 +92,6 @@ const CreateIncidentModel = ({ handleClose, showModal }) => {
   const dispatch = useDispatch();
   const onSubmit = (event) => {
     event.preventDefault();
-    dispatch(incidentCreate());
     dispatch(incidentFetching('post', incident));
     handleClose();
   };

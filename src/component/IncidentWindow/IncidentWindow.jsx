@@ -20,12 +20,13 @@ const IncidentWindow = ({ incident, myincident }) => {
   const dispatch = useDispatch();
   const { number } = useSelector((state) => state.auth.user);
   const onClick = () => {
-    const dateNow = new Date();
+    const date = new Date();
+    const dateNow = `${date.getFullYear()}-${
+      date.getMonth() + 1
+    }-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
     const responsible = {
       currentResponsible: number,
-      startWork: `${dateNow.getFullYear()}-${
-        dateNow.getMonth() + 1
-      }-${dateNow.getDate()} ${dateNow.getHours()}:${dateNow.getMinutes()}:${dateNow.getSeconds()}`,
+      startWork: dateNow,
       statusId: Number(1),
     };
     dispatch(incidentFetching('put', responsible, incident.id, 'incidents'));
