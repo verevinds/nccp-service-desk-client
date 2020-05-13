@@ -43,7 +43,7 @@ const Incident = ({ list, isLoading, myincident }) => {
     <Row className="mt-3">
       <Col xs={5}>
         <Sidebar
-          title={'Инциденты'}
+          title={myincident ? 'Мои инциденты' : 'Инциденты'}
           list={sidebarList}
           onClick={setChooseIncidentId}
           activeId={chooseIncidentId}

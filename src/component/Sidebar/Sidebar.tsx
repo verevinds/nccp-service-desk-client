@@ -29,7 +29,7 @@ const Sidebar: React.FC<ISidebar> = ({
       );
       setBlogTitle(newBlogTitle);
     }
-  }, [title, list]);
+  }, [title, list, badge]);
 
   const [jsxListItem, setJsxListItem] = useState([
     <p key={0}>Загрузка данных</p>,
@@ -61,7 +61,7 @@ const Sidebar: React.FC<ISidebar> = ({
     });
 
     setJsxListItem(jsxItem);
-  }, [list, activeId]);
+  }, [list, activeId, onClick]);
 
   return (
     <Container>

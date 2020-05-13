@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo } from 'react';
 
 import Incident from '../component/Incident/Incident';
 import { useSelector } from 'react-redux';

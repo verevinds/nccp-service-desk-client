@@ -23,7 +23,6 @@ export const categoryReducer = (state = initialState, action) => {
         isRequest: false,
       };
     case DEPARTMENT_REQUEST_SUCCESSED:
-      console.log(DEPARTMENT_REQUEST_SUCCESSED);
       return {
         ...state,
         department: action.data,

@@ -7,8 +7,6 @@ import {
   INCIDENT_FETCHING,
   QUERY_API,
 } from './constants';
-import { departmentRequestSuccessed } from './actionCreators/departmentAction';
-import { queryApi } from './actionCreators/queryApiAction';
 import {
   authRequestSendd,
   authRequestSuccessed,
@@ -29,7 +27,7 @@ export function* watchFetch() {
   yield takeLatest(CATALOG_FETCHING, fetchAsyncCatalog);
   yield takeEvery(CATALOG_POST, catalogPost);
   yield takeEvery(QUERY_API, queryApiAsync);
-  yield takeLatest(INCIDENT_FETCHING, fetchAsyncIncident);
+  yield takeEvery(INCIDENT_FETCHING, fetchAsyncIncident);
 }
 
 function* queryApiAsync({ route, successedAction, method, data, id }) {

@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import DepartmentSetting from '../component/DepartmentSetting/DepartmentSetting';
 
 /**Bootstrap components */
-import { Row, Col, Container } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 
 const SettingPage = (props) => {
   const { catalog } = useSelector((state) => state);
@@ -16,7 +16,9 @@ const SettingPage = (props) => {
   const [listCatalog, setListCatalog] = useState([]);
   useEffect(() => {
     setListCatalog(
-      catalog.list.filter((item) => item.departmentId == departmentId),
+      catalog.list.filter(
+        (item) => Number(item.departmentId) === Number(departmentId),
+      ),
     );
   }, [departmentId, catalog]);
   const [activeId, setActiveId] = useState(0);
@@ -53,7 +55,7 @@ const SettingPage = (props) => {
         );
         break;
     }
-  }, [activeId, listCatalog]);
+  }, [activeId, listCatalog, catalog.department, departmentId]);
   return (
     <Row>
       <Col xs={2}>

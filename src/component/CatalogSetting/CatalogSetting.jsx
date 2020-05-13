@@ -2,8 +2,6 @@ import React, { memo, useEffect, useState } from 'react';
 import { catalogPost } from '../../redux/actionCreators/catalogAction';
 
 //?Bootstrap
-import { Row, Col } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
 import ListEdit from '../ListEdit/ListEdit';
 
 const CatalogSetting = ({ list, departmentId }) => {

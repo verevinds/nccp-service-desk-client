@@ -21,11 +21,11 @@ const CreateIncidentModel = ({ handleClose, showModal }) => {
     text: '',
     level: 0,
     statusId: 0,
-    departmentId: user.departmentId,
-    positionId: user.positionId,
+    departmentId: null,
+    positionId: null,
     name: `${user.name1} ${user.name2} ${user.name3}`,
     email: user.email,
-    number: user.number,
+    userNumber: user.number,
     phone1: user.phone1,
     phone2: user.phone2,
     categoryId: list[0] ? list[0].id : null,
@@ -92,6 +92,7 @@ const CreateIncidentModel = ({ handleClose, showModal }) => {
   const dispatch = useDispatch();
   const onSubmit = (event) => {
     event.preventDefault();
+    console.log('incident', incident);
     dispatch(incidentFetching('post', incident));
     handleClose();
   };

@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { memo } from 'react';
 import ListEdit from '../ListEdit/ListEdit';
 
 const DepartmentSetting = ({ department, setNumber, activeId, onClick }) => {

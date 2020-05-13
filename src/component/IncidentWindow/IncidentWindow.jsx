@@ -11,10 +11,11 @@ import IncidentInWork from '../IncidentInWork/IncidentInWork';
 import IncidentStatus from '../IncidentStatus/IncidentStatus';
 import IncidentWorkButton from '../IncidentWorkButton/IncidentWorkButton';
 
-import { Container, Card, Button } from 'react-bootstrap';
+import { Container, Card } from 'react-bootstrap';
 
 const IncidentWindow = ({ incident, myincident }) => {
   //State изменений в инциденте
+  console.log(incident);
 
   const dispatch = useDispatch();
   const { number } = useSelector((state) => state.auth.user);
@@ -37,15 +38,17 @@ const IncidentWindow = ({ incident, myincident }) => {
           <Card.Header className={styles.header}>
             <div>
               Инцидент №{incident.id}{' '}
-              {incident.user ? (
+              {incident.responsibleUser ? (
                 <>
                   {'| '}
                   <IncidentInWork
                     startWork={incident.startWork}
                     nameResponsible={`
-                ${incident.user.name1} ${incident.user.name2.charAt(
+                ${
+                  incident.responsibleUser.name1
+                } ${incident.responsibleUser.name2.charAt(
                       0,
-                    )}.${incident.user.name3.charAt(0)}.`}
+                    )}.${incident.responsibleUser.name3.charAt(0)}.`}
                   />
                 </>
               ) : null}
@@ -64,17 +67,29 @@ const IncidentWindow = ({ incident, myincident }) => {
               {!!incident.option ? ` /  ${incident.option.name}` : null}
             </Card.Title>
             <Card.Text></Card.Text>
-            <Card.Text>Инициатор: {incident.name}</Card.Text>
             <Card.Text>
-              {!!incident.email ? `Email: ${incident.email} ` : null}
+              Инициатор:{' '}
+              {`${incident.initiatorUser.name1 || ''} ${
+                incident.initiatorUser.name2 || ''
+              } ${incident.initiatorUser.name3 || ''}`}
             </Card.Text>
             <Card.Text>
-              {!!incident.phone1 ? `Тел.: ${incident.phone1} ` : null}
+              {!!incident.initiatorUser
+                ? `Email: ${incident.initiatorUser.email} `
+                : null}
+            </Card.Text>
+            <Card.Text>
+              {!!incident.initiatorUser
+                ? `Тел.: ${incident.initiatorUser.phone1} `
+                : null}
             </Card.Text>
             <hr />
             <Card.Text>{incident.text}</Card.Text>
             {!myincident ? (
-              <IncidentWorkButton user={incident.user} onClick={onClick} />
+              <IncidentWorkButton
+                user={incident.responsibleUser}
+                onClick={onClick}
+              />
             ) : null}
           </Card.Body>
           <Card.Footer className="text-right">

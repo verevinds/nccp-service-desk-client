@@ -6,12 +6,11 @@ import { useSelector } from 'react-redux';
 import { categoryFetching } from './redux/actionCreators/catalogAction';
 import { authFetching } from './redux/actionCreators/authAction';
 import {
-  incidentFetching,
+  incidentRequestSuccessed,
   myIncidentRequestSuccessed,
 } from './redux/actionCreators/incidentAction';
 import { queryApi } from './redux/actionCreators/queryApiAction';
 import { departmentRequestSuccessed } from './redux/actionCreators/departmentAction';
-import { categoryRequestSuccessed } from './redux/actionCreators/catalogAction';
 
 import MainPage from './page/MainPage';
 import SettingPage from './page/SettingPage';
@@ -19,19 +18,14 @@ import Header from './component/Header/Header';
 import MyIncidentPage from './page/MyIncidentPage';
 
 const App = (props) => {
-  const state = useSelector((state) => state);
-  const { auth } = state;
+  const { auth } = useSelector((state) => state);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(authFetching(window.ipGlobal));
     dispatch(categoryFetching());
-
-    dispatch(incidentFetching());
     dispatch(queryApi('departments', departmentRequestSuccessed));
-  }, [dispatch]);
-  useEffect(() => {
-    console.log(state);
-  }, [state]);
+    // eslint-disable-next-line
+  }, []);
   useEffect(() => {
     if (!!auth.user) {
       dispatch(
@@ -46,12 +40,14 @@ const App = (props) => {
       dispatch(
         queryApi(
           'incidents/responsible',
-          categoryRequestSuccessed,
+          incidentRequestSuccessed,
           'get',
+          {},
           auth.user.departmentId,
         ),
       );
     }
+    // eslint-disable-next-line
   }, [auth]);
   return (
     <BrowserRouter>

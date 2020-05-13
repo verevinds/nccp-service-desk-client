@@ -32,7 +32,7 @@ const ListEdit: React.FC<IListEdit> = ({
     } else if (departmentId) {
       setState({ name: '', categoryId, departmentId });
     }
-  }, [categoryId]);
+  }, [categoryId, departmentId]);
 
   //! Определить функцию обработки события
   // Define function handle submit
