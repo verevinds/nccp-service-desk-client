@@ -15,7 +15,6 @@ import { Container, Card } from 'react-bootstrap';
 
 const IncidentWindow = ({ incident, myincident }) => {
   //State изменений в инциденте
-  console.log(incident);
 
   const dispatch = useDispatch();
   const { number } = useSelector((state) => state.auth.user);

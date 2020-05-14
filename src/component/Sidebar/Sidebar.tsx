@@ -39,9 +39,7 @@ const Sidebar: React.FC<ISidebar> = ({
       let { id, name, createdAt, status, responsible } = item;
       let itemText: string;
       if (createdAt) {
-        itemText = `№${id} - ${
-          name ? name : 'N/A'
-        } - ${responsible} - ${status}`;
+        itemText = `№${id} - ${name ? name : 'N/A'} ${responsible} ${status}`;
       } else {
         itemText = `${name ? name : 'N/A'} `;
       }

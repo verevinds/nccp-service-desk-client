@@ -28,16 +28,17 @@ const Incident = ({ list, isLoading, myincident }) => {
   const [sidebarList, setSidebarList] = useState([]);
   useEffect(() => {
     // eslint-disable-next-line
-    console.log(list);
     setSidebarList(
       list.map((item) => {
         let responsible;
         if (item.responsibleUser) {
-          responsible = `${
+          responsible = `(${
             item.responsibleUser.name1
           } ${item.responsibleUser.name2.charAt(
             0,
-          )}. ${item.responsibleUser.name2.charAt(0)}.`;
+          )}. ${item.responsibleUser.name3.charAt(0)}.)`;
+        } else {
+          responsible = '';
         }
         const newItem = {
           id: item.id,

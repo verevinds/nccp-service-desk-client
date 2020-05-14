@@ -3,7 +3,6 @@ import List from '../List/List';
 import { useSelector, shallowEqual, useDispatch } from 'react-redux';
 import { queryApi } from '../../redux/actionCreators/queryApiAction';
 import { categoryUpdate } from '../../redux/actionCreators/catalogAction';
-
 import { Row } from 'react-bootstrap';
 
 const SettingCatalog = (props) => {
@@ -58,14 +57,20 @@ const SettingCatalog = (props) => {
     function () {
       const { route } = arguments[0];
       const id = arguments[1];
-      dispatch(
-        queryApi({
-          method: 'delete',
-          actionUpdate: categoryUpdate,
-          route,
-          id,
-        }),
+      const conf = window.confirm(
+        'Все инциденты связаные с этим удаляться. Вы точно хотите удалить?',
       );
+
+      if (conf) {
+        dispatch(
+          queryApi({
+            method: 'delete',
+            actionUpdate: categoryUpdate,
+            route,
+            id,
+          }),
+        );
+      }
     },
     [dispatch],
   );
@@ -93,29 +98,32 @@ const SettingCatalog = (props) => {
       categoryList.find((item) => item.id === categoryIdCurrent),
     );
   }, [categoryIdCurrent, categoryList]);
-  const [categorySubJsx, setCategorySubJsx] = useState();
+  const [propertyJsx, setPropertyJsx] = useState();
+  const [optionJsx, setOptionJsx] = useState();
   useEffect(() => {
     if (categorySubList) {
-      setCategorySubJsx(
-        <>
-          <List
-            title="Параметры"
-            list={categorySubList.properties}
-            onSubmit={onSubmit.bind(null, { route: 'properties' })}
-            onDelete={onDelete.bind(null, { route: 'properties' })}
-          />
-          <List
-            title="Опции"
-            list={categorySubList.options}
-            onSubmit={onSubmit.bind(null, { route: 'options' })}
-            onDelete={onDelete.bind(null, { route: 'options' })}
-          />
-        </>,
+      setPropertyJsx(
+        <List
+          title="Параметры"
+          list={categorySubList.properties}
+          onSubmit={onSubmit.bind(null, { route: 'properties' })}
+          onDelete={onDelete.bind(null, { route: 'properties' })}
+        />,
+      );
+      setOptionJsx(
+        <List
+          title="Опции"
+          list={categorySubList.options}
+          onSubmit={onSubmit.bind(null, { route: 'options' })}
+          onDelete={onDelete.bind(null, { route: 'options' })}
+        />,
       );
     } else {
-      setCategorySubJsx(null);
+      setPropertyJsx(null);
+      setOptionJsx(null);
     }
-  }, [categorySubList, onDelete]);
+  }, [categorySubList, onDelete, onSubmit]);
+
   return (
     <>
       <h1>Каталог</h1>
@@ -127,7 +135,8 @@ const SettingCatalog = (props) => {
           activeId={departmentIdCurrent}
         />
         {categoryJsx}
-        {categorySubJsx}
+        {propertyJsx}
+        {optionJsx}
       </Row>
     </>
   );

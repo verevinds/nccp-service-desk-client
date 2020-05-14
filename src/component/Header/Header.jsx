@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useState } from 'react';
-import CreateIncidentModal from '../CreateIncidentModal/CreateIncidentModal';
+import CreateIncidentModal from '../CreateIncident/CreateIncident';
 import { NavLink } from 'react-router-dom';
 import styles from './styles.module.css';
 
