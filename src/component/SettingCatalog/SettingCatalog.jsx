@@ -33,7 +33,6 @@ const SettingCatalog = (props) => {
       event = arguments[1];
       value = arguments[2];
       const { route } = arguments[0];
-      console.dir(categoryUpdate);
       event.preventDefault();
       if (value) {
         const data = {
@@ -76,7 +75,7 @@ const SettingCatalog = (props) => {
   );
   // Эффект отрисовки компонента
   useEffect(() => {
-    if (categoryList.length) {
+    if (departmentIdCurrent) {
       setCategoryJsx(
         <List
           title={'Категории'}

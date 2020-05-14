@@ -45,42 +45,44 @@ const List: React.FC<IList> = ({
 
       <ListGroup variant="flush">
         {!!list.length ? (
-          list.map((item) => (
-            <ListGroup.Item
-              key={item.id}
-              className={item.id === activeId ? `active` : undefined}
-            >
-              <Row>
-                <Col xs={9}>
-                  <div
-                    className={!!onClick ? styles.item : undefined}
-                    onClick={() => {
-                      if (!!onClick) {
-                        //@ts-ignore
-                        onClick(item.id);
-                      }
-                    }}
-                  >
-                    {item.name}
-                  </div>
-                </Col>
-                {!!onDelete ? (
-                  <Col xs={3}>
-                    <Button
-                      size="sm"
-                      variant="danger"
+          list.map((item) => {
+            return (
+              <ListGroup.Item
+                key={item.id}
+                className={item.id === activeId ? `active` : undefined}
+              >
+                <Row>
+                  <Col xs={9}>
+                    <div
+                      className={!!onClick ? styles.item : undefined}
                       onClick={() => {
-                        //@ts-ignore
-                        onDelete(item.id);
+                        if (!!onClick) {
+                          //@ts-ignore
+                          onClick(item.id);
+                        }
                       }}
                     >
-                      <FontAwesomeIcon icon={faTrash} />
-                    </Button>
+                      {item.name}
+                    </div>
                   </Col>
-                ) : null}
-              </Row>
-            </ListGroup.Item>
-          ))
+                  {!!onDelete && !item.noChange ? (
+                    <Col xs={3}>
+                      <Button
+                        size="sm"
+                        variant="danger"
+                        onClick={() => {
+                          //@ts-ignore
+                          onDelete(item.id);
+                        }}
+                      >
+                        <FontAwesomeIcon icon={faTrash} />
+                      </Button>
+                    </Col>
+                  ) : null}
+                </Row>
+              </ListGroup.Item>
+            );
+          })
         ) : (
           <small className="text-muted text-center">Данные отсутствуют</small>
         )}
