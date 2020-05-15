@@ -12,6 +12,7 @@ import { faCog } from '@fortawesome/free-solid-svg-icons';
 
 const Header = (props) => {
   const { user } = useSelector((state) => state.auth);
+  const { list } = useSelector((state) => state.catalog);
   const [access, setAccess] = useState(1);
   const [showModal, setShowModal] = useState(false);
   const handleClose = () => setShowModal(false);
@@ -53,10 +54,12 @@ const Header = (props) => {
             </Nav.Item>{' '}
             <Nav.Item>
               <Button onClick={handleOpen}>Создать инцидент</Button>
-              {!!showModal ? (
+              {!!showModal && list.length && user ? (
                 <CreateIncidentModal
                   handleClose={handleClose}
                   showModal={showModal}
+                  user={user}
+                  list={list}
                 />
               ) : null}
             </Nav.Item>

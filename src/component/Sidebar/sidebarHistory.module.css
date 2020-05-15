@@ -1,0 +1,16 @@
+.accordion {
+  margin-top: 1em;
+}
+.item {
+  background-color: inherit;
+  border: none;
+  color: #c3c3c3;
+}
+.item button {
+  background-color: inherit;
+  border: none;
+  color: #a8a8a8;
+}
+.item:hover {
+  background-color: rgba(0, 0, 0, 0.02);
+}

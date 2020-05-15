@@ -4,11 +4,13 @@ import {
   MY_INCIDENT_REQUEST_SUCCESSED,
   INCIDENT_CREATE,
   INCIDENT_CHOOSE,
+  INCIDENT_HISTORY_REQUEST_SUCCESSED,
 } from '../constants';
 
 const initialState = {
   list: [],
   myList: [],
+  history: [],
   current: {
     incident: null,
     isChange: false,
@@ -38,6 +40,15 @@ export const incidentReducer = (state = initialState, action) => {
       return {
         ...state,
         myList: action.data,
+        isLoading: true,
+        isRequest: false,
+        isUpdate: false,
+      };
+
+    case INCIDENT_HISTORY_REQUEST_SUCCESSED:
+      return {
+        ...state,
+        history: action.data,
         isLoading: true,
         isRequest: false,
         isUpdate: false,

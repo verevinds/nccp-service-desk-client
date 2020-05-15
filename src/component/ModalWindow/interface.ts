@@ -7,4 +7,5 @@ export interface IModalWindow {
   onHide: () => void | undefined;
   show: boolean;
   onSubmit: () => void | undefined;
+  validated: boolean | undefined;
 }

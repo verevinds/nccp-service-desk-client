@@ -14,7 +14,6 @@ export const statusReducer = (state = initialState, action) => {
         isUpdate: false,
       };
     case STATUS_UPDATE:
-      console.log(STATUS_UPDATE);
       return {
         ...state,
         isUpdate: true,

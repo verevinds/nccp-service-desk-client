@@ -37,12 +37,12 @@ const SettingPage = (props) => {
   return (
     <Row>
       <Col xs={2}>
-        <Sidebar
+        {/* <Sidebar
           list={list}
           title={`Настройки`}
           activeId={activeId}
           onClick={setActiveId}
-        />
+        /> */}
       </Col>
       <Col xs={10}>{jsxContent}</Col>
     </Row>

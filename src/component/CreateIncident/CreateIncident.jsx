@@ -8,12 +8,7 @@ import { Form } from 'react-bootstrap';
 import { incidentFetching } from '../../redux/actionCreators/incidentAction';
 import ModalWindow from '../ModalWindow/ModalWindow';
 
-const CreateIncidentModel = ({ handleClose, showModal }) => {
-  const {
-    auth: { user },
-    catalog: { list },
-  } = useSelector((state) => state);
-
+const CreateIncidentModel = ({ handleClose, showModal, list, user }) => {
   const dateNow = new Date();
   const [incident, setIncident] = useState({
     startWork: null,

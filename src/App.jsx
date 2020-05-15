@@ -25,8 +25,6 @@ const App = (props) => {
     catalog,
   } = useSelector((state) => state);
   const dispatch = useDispatch();
-  // const state = useSelector((state) => state);
-  // // console.log(state);
 
   useEffect(() => {
     dispatch(authFetching(window.ipGlobal));

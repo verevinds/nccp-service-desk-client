@@ -58,7 +58,14 @@ function* queryApiAsync({
           yield put(actionUpdate());
         }
         break;
-
+      case 'put':
+        response = yield call(() =>
+          axios.put(`http://localhost:8080/api/${route}/${id}`, data),
+        );
+        if (!!actionUpdate) {
+          yield put(actionUpdate());
+        }
+        break;
       default:
         response = yield call(() =>
           axios.get(`http://localhost:8080/api/${route}/${id || ''}`, data),
