@@ -10,14 +10,16 @@ const SidebarHistory: React.FC<ISidebarHistory> = ({
   activeId,
   onClickHistory,
 }) => {
-  const { history } = useSelector((state: any) => state.incidents);
-  const { user } = useSelector((state: any) => state.auth, shallowEqual);
+  const { history } = useSelector(
+    (state: any) => state.incidents,
+    shallowEqual,
+  );
   const [isLoadHistory, setIsLoadHistory] = useState(false);
   useEffect(() => {
-    if (isLoadHistory && user.departmentId) {
+    if (isLoadHistory) {
       onClickHistory();
     }
-  }, [isLoadHistory, user]);
+  }, [isLoadHistory, onClickHistory]);
 
   const [sidebarList, setSidebarList] = useState([]);
   useEffect(() => {

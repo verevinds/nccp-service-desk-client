@@ -1,4 +1,4 @@
-import React, { memo, useState, useEffect } from 'react';
+import React, { memo, useState } from 'react';
 import ModalWindow from '../ModalWindow/ModalWindow';
 import { useSelector, shallowEqual, useDispatch } from 'react-redux';
 import { queryApi } from '../../redux/actionCreators/queryApiAction';
@@ -38,7 +38,7 @@ const IncidentModalWrapper = ({ show, onHide, incident }) => {
       );
     };
     if (form.checkValidity()) {
-      if (newStatus.statusId != incident.statusId) {
+      if (newStatus.statusId !== incident.statusId) {
         fnNewComment(
           `${fullName} изменил статус на "${
             list.find((item) => item.id === newStatus.statusId).name

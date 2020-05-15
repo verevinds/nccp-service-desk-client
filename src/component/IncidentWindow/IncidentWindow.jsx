@@ -16,7 +16,7 @@ import IncidentInWork from '../IncidentInWork/IncidentInWork';
 import IncidentStatus from '../IncidentStatus/IncidentStatus';
 import IncidentWorkButton from '../IncidentWorkButton/IncidentWorkButton';
 
-import { Container, Card, Button, Accordion, Table } from 'react-bootstrap';
+import { Container, Card, Accordion, Table } from 'react-bootstrap';
 
 const IncidentWindow = ({ incident, myincident }) => {
   //State изменений в инциденте

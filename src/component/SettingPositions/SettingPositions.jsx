@@ -21,21 +21,21 @@ const SettingPositions = (props) => {
         route,
       }),
     );
-  }, [isUpdate]);
+  }, [isUpdate, dispatch, route]);
   const onFavorites = useCallback(
     (id) => {
-      console.log(list.find((item) => item.id == id).level);
+      console.log(list.find((item) => item.id === id).level);
       dispatch(
         queryApi({
           id,
           actionUpdate: positionsUpdate,
           route,
           method: 'put',
-          data: { level: Number(!list.find((item) => item.id == id).level) },
+          data: { level: Number(!list.find((item) => item.id === id).level) },
         }),
       );
     },
-    [list],
+    [list, dispatch, route],
   );
   return (
     <>
