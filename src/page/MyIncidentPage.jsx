@@ -1,13 +1,10 @@
 import React, { memo } from 'react';
+
+/**My components */
 import Incident from '../component/Incident/Incident';
-import { useSelector } from 'react-redux';
 
 const MyIncidentPage = (props) => {
-  const {
-    incidents: { myList },
-  } = useSelector((state) => state);
-
-  return <Incident list={myList} myincident={true} />;
+  return <Incident myincident={true} />;
 };
 
 export default memo(MyIncidentPage);

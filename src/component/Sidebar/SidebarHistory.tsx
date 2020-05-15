@@ -3,25 +3,19 @@ import { ISidebarHistory } from './interface';
 import { Accordion, Card, Button } from 'react-bootstrap';
 import styles from './sidebarHistory.module.css';
 import Sidebar from './Sidebar';
-import { incidentHistoryRequestSuccessed } from '../../redux/actionCreators/incidentAction';
-import { queryApi } from '../../redux/actionCreators/queryApiAction';
-import { useDispatch, useSelector, shallowEqual } from 'react-redux';
+import { useSelector, shallowEqual } from 'react-redux';
 
-const SidebarHistory: React.FC<ISidebarHistory> = ({ onClick, activeId }) => {
-  const dispatch = useDispatch();
+const SidebarHistory: React.FC<ISidebarHistory> = ({
+  onClick,
+  activeId,
+  onClickHistory,
+}) => {
   const { history } = useSelector((state: any) => state.incidents);
   const { user } = useSelector((state: any) => state.auth, shallowEqual);
   const [isLoadHistory, setIsLoadHistory] = useState(false);
   useEffect(() => {
     if (isLoadHistory && user.departmentId) {
-      dispatch(
-        //@ts-ignore
-        queryApi({
-          route: 'incidents/history',
-          actionSuccessed: incidentHistoryRequestSuccessed,
-          id: user.departmentId,
-        }),
-      );
+      onClickHistory();
     }
   }, [isLoadHistory, user]);
 

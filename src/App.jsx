@@ -5,10 +5,6 @@ import { useSelector } from 'react-redux';
 
 import { categoryRequestSuccessed } from './redux/actionCreators/catalogAction';
 import { authFetching } from './redux/actionCreators/authAction';
-import {
-  incidentRequestSuccessed,
-  myIncidentRequestSuccessed,
-} from './redux/actionCreators/incidentAction';
 import { queryApi } from './redux/actionCreators/queryApiAction';
 import { departmentRequestSuccessed } from './redux/actionCreators/departmentAction';
 import { statusRequestSeccessed } from './redux/actionCreators/statusAction';
@@ -18,12 +14,7 @@ import Header from './component/Header/Header';
 import MyIncidentPage from './page/MyIncidentPage';
 
 const App = (props) => {
-  const {
-    auth: { user },
-    incidents,
-    status,
-    catalog,
-  } = useSelector((state) => state);
+  const { status, catalog } = useSelector((state) => state);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -53,25 +44,6 @@ const App = (props) => {
       );
     }
   }, [status.isUpdate, dispatch]);
-  useEffect(() => {
-    if (!!user && incidents.isUpdate) {
-      dispatch(
-        queryApi({
-          route: 'incidents/my',
-          actionSuccessed: myIncidentRequestSuccessed,
-          id: user.number,
-        }),
-      );
-      dispatch(
-        queryApi({
-          route: 'incidents/responsible',
-          actionSuccessed: incidentRequestSuccessed,
-          id: user.departmentId,
-        }),
-      );
-    }
-    // eslint-disable-next-line
-  }, [user, incidents.isUpdate, dispatch]);
   return (
     <BrowserRouter>
       <Header />

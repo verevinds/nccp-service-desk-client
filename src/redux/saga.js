@@ -35,12 +35,17 @@ function* queryApiAsync({
   actionSuccessed,
   actionUpdate,
   method,
-  data,
+  data = {},
   id,
+  params,
 }) {
   try {
     // yield put(authRequestSendd());
     let response;
+    if (params) {
+      Object.assign(data, { params });
+    }
+    console.log(data);
     switch (method) {
       case 'post':
         response = yield call(() =>
@@ -68,7 +73,7 @@ function* queryApiAsync({
         break;
       default:
         response = yield call(() =>
-          axios.get(`http://localhost:8080/api/${route}/${id || ''}`, data),
+          axios.get(`http://localhost:8080/api/${route}/`, data),
         );
         if (!!actionUpdate) {
           yield put(actionUpdate());

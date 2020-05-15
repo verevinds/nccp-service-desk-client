@@ -12,11 +12,13 @@ export interface ISidebar {
 }
 export interface ISidebarHistory {
   onClick: () => undefined;
+  onClickHistory: () => void;
   activeId: number;
 }
 export interface ISidebarWrapper {
   title: string;
   badge: boolean;
+  onClickHistory: () => void;
   list: [] | never[];
   onClick: () => undefined;
   isLoading: boolean;

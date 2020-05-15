@@ -1,6 +1,6 @@
 import React, { memo, useState, useEffect } from 'react';
 import { ISidebarWrapper } from './interface';
-import { Container, Badge, ListGroup, Accordion, Card } from 'react-bootstrap';
+import { Container, Badge } from 'react-bootstrap';
 import SidebarHistory from './SidebarHistory';
 import styles from './sidebarWrapper.module.css';
 import Sidebar from './Sidebar';
@@ -12,6 +12,7 @@ const SidebarWrapper: React.FC<ISidebarWrapper> = ({
   isLoading,
   onClick,
   activeId,
+  onClickHistory,
 }) => {
   const [blogTitle, setBlogTitle] = useState<JSX.Element | null>(null);
   useEffect(() => {
@@ -37,7 +38,11 @@ const SidebarWrapper: React.FC<ISidebarWrapper> = ({
           {Array.isArray(list) && list.length ? (
             <Sidebar list={list} onClick={onClick} activeId={activeId} />
           ) : null}
-          <SidebarHistory onClick={onClick} activeId={activeId} />
+          <SidebarHistory
+            onClick={onClick}
+            activeId={activeId}
+            onClickHistory={onClickHistory}
+          />
         </div>
       </Container>
     </>

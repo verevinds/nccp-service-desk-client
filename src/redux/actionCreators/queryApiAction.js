@@ -7,6 +7,7 @@ export const queryApi = ({
   method,
   data,
   id,
+  params,
 }) => ({
   type: QUERY_API,
   route,
@@ -15,4 +16,5 @@ export const queryApi = ({
   data,
   id,
   method,
+  params,
 });

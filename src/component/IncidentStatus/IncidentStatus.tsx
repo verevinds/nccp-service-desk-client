@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { IIncidentStatus } from './interface';
 import styles from './styles.module.css';
 //Bootstrap
-import { DropdownButton, Dropdown, Button } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 
 const IncidentStatus: React.FC<IIncidentStatus> = ({ myincident, status }) => {
   const [variant, setVariant] = useState<'info' | 'success'>('info');

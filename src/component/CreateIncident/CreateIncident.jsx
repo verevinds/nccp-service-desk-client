@@ -1,5 +1,5 @@
 import React, { memo, useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import CreateIncidentSelect from '../CreateIncidentSelect/CreateIncidentSelect';
 
