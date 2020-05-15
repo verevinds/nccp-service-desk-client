@@ -122,19 +122,12 @@ const IncidentWindow = ({ incident, myincident }) => {
               {incident.text ? <hr /> : null}
               <Card.Text>{incident.text}</Card.Text>
               {!myincident ? (
-                incident.statusId < 1 ? (
-                  <Button variant="outline-success" xs="sm" onClick={onClick}>
-                    Взять в работу
-                  </Button>
-                ) : (
-                  <Button
-                    variant="outline-primary"
-                    xs="sm"
-                    onClick={handleOpenModal}
-                  >
-                    Изменить
-                  </Button>
-                )
+                <IncidentWorkButton
+                  incident={incident}
+                  handleOpenModal={handleOpenModal}
+                  onClick={onClick}
+                  user={user}
+                />
               ) : null}
               <br />
               <br />

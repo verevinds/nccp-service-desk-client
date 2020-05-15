@@ -125,7 +125,7 @@ const SettingCatalog = (props) => {
 
   return (
     <>
-      <h1>Каталог</h1>
+      <h2>Каталог</h2>
       <Row>
         <List
           title={'Отделы'}

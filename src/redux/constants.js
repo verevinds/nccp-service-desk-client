@@ -37,3 +37,7 @@ export const QUERY_API = 'QUERY_API';
 /** Константы для статус */
 export const STATUS_REQUEST_SUCCESSED = 'STATUS_REQUEST_SUCCESSED';
 export const STATUS_UPDATE = 'STATUS_UPDATE';
+
+/**Должности */
+export const POSITIONS_REQUEST_SUCCESSED = 'POSITIONS_REQUEST_SUCCESSED';
+export const POSITIONS_UPDATE = 'POSITIONS_UPDATE';

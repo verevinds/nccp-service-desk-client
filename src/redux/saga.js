@@ -45,7 +45,6 @@ function* queryApiAsync({
     if (params) {
       Object.assign(data, { params });
     }
-    console.log(data);
     switch (method) {
       case 'post':
         response = yield call(() =>
