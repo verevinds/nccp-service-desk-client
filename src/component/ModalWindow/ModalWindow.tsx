@@ -29,13 +29,13 @@ const ModalWindow: React.FC<IModalWindow> = ({
           </Modal.Header>
         ) : null}
 
-        <Form noValidate validated={validated} onSubmit={onSubmit || null}>
-          {!!children ? <Modal.Body>{children}</Modal.Body> : null}
+        <Form noValidate validated={validated} onSubmit={onSubmit || undefined}>
+          {!!children ? <Modal.Body>{children}</Modal.Body> : undefined}
 
           {!!textOk || !!textNot ? (
             <Modal.Footer>
               {!!textNot ? (
-                <Button variant="secondary" onClick={onHide || null}>
+                <Button variant="secondary" onClick={onHide || undefined}>
                   {textNot}
                 </Button>
               ) : null}

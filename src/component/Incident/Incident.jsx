@@ -1,4 +1,10 @@
-import React, { memo, useState, useEffect, useCallback } from 'react';
+import React, {
+  memo,
+  useState,
+  useEffect,
+  useCallback,
+  useLayoutEffect,
+} from 'react';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 
 /** Action creators */
@@ -14,30 +20,12 @@ import IncidentWindow from '../IncidentWindow/IncidentWindow';
 /**Bootstrap components */
 import { Row, Col, Container } from 'react-bootstrap';
 
-const Incident = ({ myincident }) => {
+const Incident = ({ params, title, badge }) => {
   const { list, history, current } = useSelector(
     (state) => state.incidents,
     shallowEqual,
   );
 
-  const [params, setParams] = useState({});
-  useEffect(() => {
-    console.log(params);
-  }, [params]);
-  const user = useSelector((state) => state.auth.user, shallowEqual);
-
-  useEffect(() => {
-    if (user) {
-      if (myincident) {
-        setParams({
-          userNumber: user.number,
-          departmentId: user.departmentId,
-        });
-      } else {
-        setParams({ departmentId: user.departmentId });
-      }
-    }
-  }, [myincident, user]);
   const incidents = useSelector((state) => state.incidents, shallowEqual);
   const dispatch = useDispatch();
   const fetchIncident = useCallback(
@@ -51,14 +39,14 @@ const Incident = ({ myincident }) => {
       );
     },
     // eslint-disable-next-line
-    [params, dispatch],
+    [dispatch],
   );
-  useEffect(() => {
-    if (!!user || incidents.isUpdate) {
+  useLayoutEffect(() => {
+    if (!!params && incidents.isUpdate) {
       fetchIncident(params, incidentRequestSuccessed);
     }
     // eslint-disable-next-line
-  }, [user, incidents.isUpdate, dispatch, myincident, params]);
+  }, [incidents.isUpdate, params]);
   const onClickHistory = useCallback(() => {
     let historyParams = Object.assign(params, { history: 'true' });
     fetchIncident(historyParams, incidentHistoryRequestSuccessed);
@@ -110,21 +98,18 @@ const Incident = ({ myincident }) => {
     <Row className="mt-3">
       <Col xs={5}>
         <SidebarWrapper
-          title={myincident ? 'Мои инциденты' : 'Инциденты'}
+          title={title}
           list={sidebarList}
           onClick={setChooseIncidentId}
           activeId={chooseIncidentId}
-          badge={!myincident}
+          badge={!badge}
           onClickHistory={onClickHistory}
         />
       </Col>
       <Col>
         <Container>
           {current.incident ? (
-            <IncidentWindow
-              incident={current.incident}
-              myincident={myincident}
-            />
+            <IncidentWindow incident={current.incident} myincident={badge} />
           ) : null}
         </Container>
       </Col>

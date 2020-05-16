@@ -28,20 +28,26 @@ const IncidentWindow = ({ incident, myincident }) => {
       setFullName(`${user.name1} ${user.name2} ${user.name3}`);
     }
   }, [user]);
-  const onClick = () => {
+  const onClick = (number, anotherResponsible) => {
     const date = new Date();
     const dateNow = `${date.getFullYear()}-${
       date.getMonth() + 1
     }-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
     const responsible = {
-      currentResponsible: user.number,
+      currentResponsible: number,
       startWork: dateNow,
       statusId: Number(1),
     };
     dispatch(incidentFetching('put', responsible, incident.id, 'incidents'));
-
+    let text;
+    console.log(anotherResponsible);
+    if (!!anotherResponsible) {
+      text = `${fullName} принял в работу, назначил ответственного ${anotherResponsible}`;
+    } else {
+      text = `${fullName} принял в работу`;
+    }
     const data = {
-      text: `${fullName} принял в работу`,
+      text,
       userNumber: user.number,
       incidentId: incident.id,
     };
