@@ -5,7 +5,7 @@ import { queryApi } from '../../redux/actionCreators/queryApiAction';
 import { incidentCreate } from '../../redux/actionCreators/incidentAction';
 import { Form } from 'react-bootstrap';
 
-const IncidentModalWrapper = ({ show, onHide, incident }) => {
+const IncidentHandleStatus = ({ show, onHide, incident }) => {
   const dispatch = useDispatch();
   const { list } = useSelector((state) => state.status, shallowEqual);
   const { user } = useSelector((state) => state.auth, shallowEqual);
@@ -113,4 +113,4 @@ const IncidentModalWrapper = ({ show, onHide, incident }) => {
   }
 };
 
-export default memo(IncidentModalWrapper);
+export default memo(IncidentHandleStatus);

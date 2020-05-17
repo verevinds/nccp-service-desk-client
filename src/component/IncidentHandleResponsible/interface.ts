@@ -1,4 +1,4 @@
-export interface ISetResponsible {
+export interface IIncidentHandleResponsible {
   show?: boolean;
   onHide?: (() => void) | undefined;
   currentResponsible?: number | undefined;
@@ -7,7 +7,7 @@ export interface ISetResponsible {
     | undefined;
 }
 
-export interface ISetResponsibleButton {
+export interface IIncidentHandleResponsibleButton {
   incident: any;
   currentResponsible: number | null;
   currentResponsibleFullname: any;

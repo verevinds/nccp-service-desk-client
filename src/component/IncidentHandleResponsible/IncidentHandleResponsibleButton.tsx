@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import styles from './styles.module.css';
 import { Button } from 'react-bootstrap';
-import { ISetResponsibleButton } from './interface';
+import { IIncidentHandleResponsibleButton } from './interface';
 
 const SetResponsibleButton = ({
   incident,
@@ -9,7 +9,7 @@ const SetResponsibleButton = ({
   currentResponsibleFullname,
   onClick,
   onHide,
-}: ISetResponsibleButton) => {
+}: IIncidentHandleResponsibleButton) => {
   if (!!onClick && !!onHide) {
     return (
       <div className={styles.button_group}>

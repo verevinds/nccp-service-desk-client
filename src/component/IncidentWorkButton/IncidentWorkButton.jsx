@@ -1,6 +1,6 @@
 import React, { memo, useState } from 'react';
 import { Button } from 'react-bootstrap';
-import SetResponsible from '../SetResponsible/SetResponsible';
+import SetResponsible from '../IncidentHandleResponsible/IncidentHandleResponsible';
 import styles from './styles.module.css';
 
 export default memo(function IncidentWorkButton({

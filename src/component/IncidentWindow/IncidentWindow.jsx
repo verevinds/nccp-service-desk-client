@@ -3,7 +3,7 @@ import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import Moment from 'react-moment';
 import styles from './styles.module.css';
 import 'moment/locale/ru';
-import IncidentModalWrapper from '../IncidentModalWrapper/IncidentModalWrapper';
+import IncidentModalWrapper from '../IncidentHandleStatus/IncidentHandleStatus';
 
 //ActionCreator
 import {

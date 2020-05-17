@@ -1,15 +1,15 @@
 import React, { memo, useLayoutEffect, useState, useEffect } from 'react';
 import ModalWindow from '../ModalWindow/ModalWindow';
-import { ISetResponsible } from './interface';
+import { IIncidentHandleResponsible } from './interface';
 import { Form, Button } from 'react-bootstrap';
 import { queryApi } from '../../redux/actionCreators/queryApiAction';
 import { usersRequestSeccessed } from '../../redux/actionCreators/usersAction';
 import { incidentCreate } from '../../redux/actionCreators/incidentAction';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
-import SetResponsibleButton from './SetResponsibleButton';
+import SetResponsibleButton from './IncidentHandleResponsibleButton';
 import styles from './styles.module.css';
 
-const SetResponsible: React.FC<ISetResponsible> = ({
+const IncidentHandleResponsible: React.FC<IIncidentHandleResponsible> = ({
   show,
   onHide,
   onClick,
@@ -88,4 +88,4 @@ const SetResponsible: React.FC<ISetResponsible> = ({
   );
 };
 
-export default memo(SetResponsible);
+export default memo(IncidentHandleResponsible);
