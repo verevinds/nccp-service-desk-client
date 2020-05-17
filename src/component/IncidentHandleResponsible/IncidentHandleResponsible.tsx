@@ -1,12 +1,10 @@
 import React, { memo, useLayoutEffect, useState, useEffect } from 'react';
 import ModalWindow from '../ModalWindow/ModalWindow';
 import { IIncidentHandleResponsible } from './interface';
-import { Form, Button } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 import { queryApi } from '../../redux/actionCreators/queryApiAction';
 import { usersRequestSeccessed } from '../../redux/actionCreators/usersAction';
-import { incidentCreate } from '../../redux/actionCreators/incidentAction';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
-import SetResponsibleButton from './IncidentHandleResponsibleButton';
 import styles from './styles.module.css';
 
 const IncidentHandleResponsible: React.FC<IIncidentHandleResponsible> = ({
@@ -35,7 +33,15 @@ const IncidentHandleResponsible: React.FC<IIncidentHandleResponsible> = ({
         )}. ${currentUser.name3.charAt(0)}.`,
       );
     }
-  }, [currentResponsible, list]);
+    if (list.length) {
+      setCurrentResponsible(
+        list.filter(
+          (item: any) =>
+            Number(item.number) !== Number(incident.currentResponsible),
+        )[0].number,
+      );
+    }
+  }, [currentResponsible, list, incident.currentResponsible]);
   useLayoutEffect(() => {
     dispatch(
       queryApi({
@@ -49,6 +55,11 @@ const IncidentHandleResponsible: React.FC<IIncidentHandleResponsible> = ({
       title={`Изменение ответственного для инцидента №${incident.id}`}
       show={show}
       onHide={onHide}
+      textOk={'Сохранить'}
+      onOk={() => {
+        onHide();
+        onClick.call(null, currentResponsible, currentResponsibleFullname);
+      }}
     >
       <>
         <Form.Group>
@@ -61,9 +72,6 @@ const IncidentHandleResponsible: React.FC<IIncidentHandleResponsible> = ({
             }}
             className={styles.select}
           >
-            <option className={styles.select__option_placeholder} value={0}>
-              Выберите ответственного
-            </option>
             {list
               .filter(
                 (item: any) =>
@@ -76,13 +84,6 @@ const IncidentHandleResponsible: React.FC<IIncidentHandleResponsible> = ({
               ))}
           </Form.Control>
         </Form.Group>
-        <SetResponsibleButton
-          currentResponsible={currentResponsible}
-          currentResponsibleFullname={currentResponsibleFullname}
-          incident={incident}
-          onClick={onClick}
-          onHide={onHide}
-        />
       </>
     </ModalWindow>
   );

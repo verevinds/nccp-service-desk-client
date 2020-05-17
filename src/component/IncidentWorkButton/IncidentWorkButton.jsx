@@ -2,6 +2,7 @@ import React, { memo, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import SetResponsible from '../IncidentHandleResponsible/IncidentHandleResponsible';
 import styles from './styles.module.css';
+import IncidentHandleDepartment from '../IncidentHandleDepartment/IncidentHandleDepartment';
 
 export default memo(function IncidentWorkButton({
   incident,
@@ -9,13 +10,22 @@ export default memo(function IncidentWorkButton({
   handleOpenModal,
   user,
 }) {
-  const [showSetResponsible, SetShowSetResponsible] = useState(false);
-  const handleShow = () => {
-    SetShowSetResponsible(true);
+  const [showHanldeResponsible, SetShowHanldeResponsible] = useState(false);
+  const handleShowResponsible = () => {
+    SetShowHanldeResponsible(true);
   };
-  const handleClose = () => {
-    SetShowSetResponsible(false);
+  function handleCloseResponsible() {
+    SetShowHanldeResponsible(false);
+  }
+
+  const [showHandleDepartment, setShowHandleDepartment] = useState(false);
+  const handleShowDepartment = () => {
+    setShowHandleDepartment(true);
   };
+  const handleCloseDepartment = () => {
+    setShowHandleDepartment(false);
+  };
+
   return (
     <>
       <hr />
@@ -23,19 +33,34 @@ export default memo(function IncidentWorkButton({
         <div>
           {user.position.level ? (
             <>
-              <Button variant={'light'} size="sm" onClick={handleShow}>
+              <Button
+                variant={'light'}
+                size="sm"
+                onClick={handleShowResponsible}
+              >
                 Назначить ответственного
               </Button>{' '}
-              {showSetResponsible ? (
+              {showHanldeResponsible ? (
                 <SetResponsible
-                  show={showSetResponsible}
-                  onHide={handleClose}
+                  show={showHanldeResponsible}
+                  onHide={handleCloseResponsible}
                   onClick={onClick}
                 />
               ) : undefined}
-              <Button variant={'light'} size="sm" onClick={() => {}}>
+              <Button
+                variant={'light'}
+                size="sm"
+                onClick={handleShowDepartment}
+              >
                 Передать в другой отдел
               </Button>
+              {showHandleDepartment ? (
+                <IncidentHandleDepartment
+                  show={showHandleDepartment}
+                  onHide={handleCloseDepartment}
+                  onClick={onClick}
+                />
+              ) : undefined}
             </>
           ) : null}
         </div>

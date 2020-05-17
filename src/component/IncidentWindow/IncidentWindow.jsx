@@ -28,7 +28,7 @@ const IncidentWindow = ({ incident, myincident }) => {
       setFullName(`${user.name1} ${user.name2} ${user.name3}`);
     }
   }, [user]);
-  const onClick = (number, anotherResponsible) => {
+  const onClick = (number, anotherResponsible, catalog) => {
     const date = new Date();
     const dateNow = `${date.getFullYear()}-${
       date.getMonth() + 1
@@ -38,6 +38,9 @@ const IncidentWindow = ({ incident, myincident }) => {
       startWork: dateNow,
       statusId: Number(1),
     };
+    if (!!catalog) {
+      Object.assign(responsible, catalog);
+    }
     dispatch(incidentFetching('put', responsible, incident.id, 'incidents'));
     let text;
     if (!!anotherResponsible) {
