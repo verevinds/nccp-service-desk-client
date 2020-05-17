@@ -1,0 +1,11 @@
+.button_group {
+  display: flex;
+  justify-content: flex-end;
+}
+.select,
+.select option {
+  cursor: pointer;
+}
+.select__option_placeholder {
+  font-style: italic;
+}

@@ -40,7 +40,6 @@ const IncidentWindow = ({ incident, myincident }) => {
     };
     dispatch(incidentFetching('put', responsible, incident.id, 'incidents'));
     let text;
-    console.log(anotherResponsible);
     if (!!anotherResponsible) {
       text = `${fullName} принял в работу, назначил ответственного ${anotherResponsible}`;
     } else {

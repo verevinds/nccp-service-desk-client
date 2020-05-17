@@ -48,9 +48,10 @@ const Incident = ({ params, title, badge }) => {
     // eslint-disable-next-line
   }, [incidents.isUpdate, params]);
   const onClickHistory = useCallback(() => {
-    let historyParams = Object.assign(params, { history: 'true' });
+    let historyParams = { ...params, history: 'true' };
     fetchIncident(historyParams, incidentHistoryRequestSuccessed);
-  }, [params, fetchIncident]);
+    // eslint-disable-next-line
+  }, [params, fetchIncident, incidents.isUpdate]);
   const [chooseIncidentId, setChooseIncidentId] = useState();
 
   //currentIncident хранит текущий инцидент, setCurrentIncident изменяется состояние currentIncident
@@ -94,6 +95,7 @@ const Incident = ({ params, title, badge }) => {
     );
     // eslint-disable-next-line
   }, [list]);
+
   return (
     <Row className="mt-3">
       <Col xs={5}>

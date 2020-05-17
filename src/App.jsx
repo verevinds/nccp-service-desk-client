@@ -1,7 +1,7 @@
 import React, { memo, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, shallowEqual } from 'react-redux';
 
 import { categoryRequestSuccessed } from './redux/actionCreators/catalogAction';
 import { authFetching } from './redux/actionCreators/authAction';
@@ -15,8 +15,12 @@ import MyIncidentPage from './page/MyIncidentPage';
 
 const App = (props) => {
   const { status, catalog } = useSelector((state) => state);
-  const dispatch = useDispatch();
 
+  const state = useSelector((state) => state, shallowEqual);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    // console.log(state);
+  }, [state]);
   useEffect(() => {
     dispatch(authFetching(window.ipGlobal));
     dispatch(

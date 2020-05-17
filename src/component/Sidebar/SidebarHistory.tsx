@@ -10,8 +10,8 @@ const SidebarHistory: React.FC<ISidebarHistory> = ({
   activeId,
   onClickHistory,
 }) => {
-  const { history } = useSelector(
-    (state: any) => state.incidents,
+  const history = useSelector(
+    (state: any) => state.incidents.history,
     shallowEqual,
   );
   const [isLoadHistory, setIsLoadHistory] = useState(false);

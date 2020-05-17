@@ -6,6 +6,8 @@ import { queryApi } from '../../redux/actionCreators/queryApiAction';
 import { usersRequestSeccessed } from '../../redux/actionCreators/usersAction';
 import { incidentCreate } from '../../redux/actionCreators/incidentAction';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
+import SetResponsibleButton from './SetResponsibleButton';
+import styles from './styles.module.css';
 
 const SetResponsible: React.FC<ISetResponsible> = ({
   show,
@@ -43,7 +45,11 @@ const SetResponsible: React.FC<ISetResponsible> = ({
     );
   }, [dispatch]);
   return (
-    <ModalWindow title={'Выберите ответственного'} show={show} onHide={onHide}>
+    <ModalWindow
+      title={`Изменение ответственного для инцидента №${incident.id}`}
+      show={show}
+      onHide={onHide}
+    >
       <>
         <Form.Group>
           <Form.Label>Список ответственных</Form.Label>
@@ -53,27 +59,30 @@ const SetResponsible: React.FC<ISetResponsible> = ({
             onChange={(event: any) => {
               setCurrentResponsible(event.target.value);
             }}
+            className={styles.select}
           >
-            <option></option>
-            {list.map((item: any) => (
-              <option value={item.number} key={item.number}>{`${
-                item.name1
-              } ${item.name2.charAt(0)}. ${item.name3.charAt(0)}.`}</option>
-            ))}
+            <option className={styles.select__option_placeholder} value={0}>
+              Выберите ответственного
+            </option>
+            {list
+              .filter(
+                (item: any) =>
+                  Number(item.number) !== Number(incident.currentResponsible),
+              )
+              .map((item: any) => (
+                <option value={item.number} key={item.number}>{`${
+                  item.name1
+                } ${item.name2.charAt(0)}. ${item.name3.charAt(0)}.`}</option>
+              ))}
           </Form.Control>
         </Form.Group>
-        {!!onClick ? (
-          <Button
-            onClick={onClick.bind(
-              null,
-              currentResponsible,
-              currentResponsibleFullname,
-            )}
-            disabled={currentResponsible ? false : true}
-          >
-            Изменить
-          </Button>
-        ) : undefined}
+        <SetResponsibleButton
+          currentResponsible={currentResponsible}
+          currentResponsibleFullname={currentResponsibleFullname}
+          incident={incident}
+          onClick={onClick}
+          onHide={onHide}
+        />
       </>
     </ModalWindow>
   );
