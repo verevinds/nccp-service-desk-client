@@ -11,3 +11,7 @@ export interface IIncidentHandleResponsibleButton {
   onClick: (number?: number | null | undefined, text?: string) => void;
   onHide: (() => void) | undefined;
 }
+
+export type IUser = {
+  number: number;
+};

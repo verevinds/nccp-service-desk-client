@@ -24,7 +24,6 @@ const SettingPositions = (props) => {
   }, [isUpdate, dispatch, route]);
   const onFavorites = useCallback(
     (id) => {
-      console.log(list.find((item) => item.id === id).level);
       dispatch(
         queryApi({
           id,

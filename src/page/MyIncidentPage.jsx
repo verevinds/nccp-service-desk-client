@@ -12,7 +12,7 @@ const MyIncidentPage = (props) => {
     if (user) {
       setParams({
         userNumber: user.number,
-        departmentId: user.departmentId,
+        // departmentId: user.departmentId,
       });
     }
   }, [user]);

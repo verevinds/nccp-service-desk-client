@@ -19,7 +19,7 @@ const App = (props) => {
   const state = useSelector((state) => state, shallowEqual);
   const dispatch = useDispatch();
   useEffect(() => {
-    console.log(state);
+    // console.log(state);
   }, [state]);
   useEffect(() => {
     dispatch(authFetching(window.ipGlobal));

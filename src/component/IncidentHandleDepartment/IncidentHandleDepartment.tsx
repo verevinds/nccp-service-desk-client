@@ -19,9 +19,7 @@ const IncidentHandleDepartment = ({
 }: IIncidentHandleDepartment) => {
   const catalog = useSelector((state: any) => state.catalog, shallowEqual);
   const user = useSelector((state: any) => state.auth.user, shallowEqual);
-  useLayoutEffect(() => {
-    console.log('catalog', catalog);
-  }, [catalog]);
+  useLayoutEffect(() => {}, [catalog]);
 
   //**Получение листа отделов */
   const [currentDepartmentId, setCurrentDepartmentId] = useState(null);
@@ -92,11 +90,11 @@ const IncidentHandleDepartment = ({
   }, [currentCategoryId, categoryList]);
 
   /**Вывод всех выдранных категорий */
-  console.group('currentID');
-  console.log('currentDepartmentId', currentDepartmentId);
-  console.log('currentCategoryId', currentCategoryId);
-  console.log('currentPropertyId', currentPropertyId);
-  console.groupEnd();
+  // console.group('currentID');
+  // console.log('currentDepartmentId', currentDepartmentId);
+  // console.log('currentCategoryId', currentCategoryId);
+  // console.log('currentPropertyId', currentPropertyId);
+  // console.groupEnd();
   const jsxSelector = (
     title: string,
     defaultValue: number | null,

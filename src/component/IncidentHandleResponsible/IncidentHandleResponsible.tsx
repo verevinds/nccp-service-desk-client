@@ -1,6 +1,6 @@
 import React, { memo, useLayoutEffect, useState, useEffect } from 'react';
 import ModalWindow from '../ModalWindow/ModalWindow';
-import { IIncidentHandleResponsible } from './interface';
+import { IIncidentHandleResponsible, IUser } from './interface';
 import { Form } from 'react-bootstrap';
 import { queryApi } from '../../redux/actionCreators/queryApiAction';
 import { usersRequestSeccessed } from '../../redux/actionCreators/usersAction';
@@ -13,12 +13,34 @@ const IncidentHandleResponsible: React.FC<IIncidentHandleResponsible> = ({
   onClick,
 }) => {
   const dispatch = useDispatch();
-  const { list } = useSelector((state: any) => state.users, shallowEqual);
+  const list = useSelector((state: any) => state.users.list, shallowEqual);
+  const user = useSelector((state: any) => state.auth.user, shallowEqual);
   const { incident } = useSelector(
     (state: any) => state.incidents.current,
     shallowEqual,
   );
-  const [currentResponsible, setCurrentResponsible] = useState(null);
+
+  const [fullName, setFullName] = useState('');
+  useLayoutEffect(() => {
+    setFullName(`${user.name1} ${user.name2} ${user.name3}`);
+  }, [user]);
+  const [filterList, setFilterList] = useState<IUser[]>([]);
+  useLayoutEffect(() => {
+    if (!!list) {
+      setFilterList(
+        list.filter(
+          (item: any) =>
+            Number(item.number) !== Number(incident.currentResponsible),
+        ),
+      );
+    }
+  }, [list]);
+  const [currentResponsible, setCurrentResponsible] = useState<number>();
+  useLayoutEffect(() => {
+    if (filterList[0]) {
+      setCurrentResponsible(filterList[0].number);
+    }
+  }, [filterList]);
   const [currentResponsibleFullname, setCurrentResponsibleFullname] = useState(
     '',
   );
@@ -33,13 +55,15 @@ const IncidentHandleResponsible: React.FC<IIncidentHandleResponsible> = ({
         )}. ${currentUser.name3.charAt(0)}.`,
       );
     }
-    if (list.length) {
-      setCurrentResponsible(
-        list.filter(
-          (item: any) =>
-            Number(item.number) !== Number(incident.currentResponsible),
-        )[0].number,
-      );
+    if (!!list.length) {
+      if (!!list.number) {
+        setCurrentResponsible(
+          list.filter(
+            (item: any) =>
+              Number(item.number) !== Number(incident.currentResponsible),
+          )[0].number,
+        );
+      }
     }
   }, [currentResponsible, list, incident.currentResponsible]);
   useLayoutEffect(() => {
@@ -47,46 +71,56 @@ const IncidentHandleResponsible: React.FC<IIncidentHandleResponsible> = ({
       queryApi({
         route: 'users',
         actionSuccessed: usersRequestSeccessed,
+        params: { departmentId: user.departmentId },
       }),
     );
-  }, [dispatch]);
-  return (
-    <ModalWindow
-      title={`Изменение ответственного для инцидента №${incident.id}`}
-      show={show}
-      onHide={onHide}
-      textOk={'Сохранить'}
-      onOk={() => {
-        onHide();
-        onClick.call(null, currentResponsible, currentResponsibleFullname);
-      }}
-    >
-      <>
-        <Form.Group>
-          <Form.Label>Список ответственных</Form.Label>
-          <Form.Control
-            as="select"
-            defaultValue={currentResponsible || 0}
-            onChange={(event: any) => {
-              setCurrentResponsible(event.target.value);
-            }}
-            className={styles.select}
-          >
-            {list
-              .filter(
-                (item: any) =>
-                  Number(item.number) !== Number(incident.currentResponsible),
-              )
-              .map((item: any) => (
+  }, [dispatch, user.departmentId]);
+  if (list.length > 1) {
+    return (
+      <ModalWindow
+        title={`Изменение ответственного для инцидента №${incident.id}`}
+        show={show}
+        onHide={onHide}
+        textOk={'Сохранить'}
+        onOk={() => {
+          onHide();
+          onClick.call(
+            null,
+            currentResponsible,
+            `Статус инцидента изменен на "В работе". Ответственным назначен: ${currentResponsibleFullname}`,
+          );
+        }}
+      >
+        <>
+          <Form.Group>
+            <Form.Label>Список ответственных</Form.Label>
+            <Form.Control
+              as="select"
+              defaultValue={filterList[0] ? filterList[0].number : 0}
+              onChange={(event: any) => {
+                setCurrentResponsible(event.target.value);
+              }}
+              className={styles.select}
+            >
+              {filterList.map((item: any) => (
                 <option value={item.number} key={item.number}>{`${
                   item.name1
                 } ${item.name2.charAt(0)}. ${item.name3.charAt(0)}.`}</option>
               ))}
-          </Form.Control>
-        </Form.Group>
-      </>
-    </ModalWindow>
-  );
+            </Form.Control>
+          </Form.Group>
+        </>
+      </ModalWindow>
+    );
+  } else {
+    return (
+      <ModalWindow
+        title={'В отделе нет других сотрудников'}
+        onHide={onHide}
+        show={show}
+      />
+    );
+  }
 };
 
 export default memo(IncidentHandleResponsible);
