@@ -22,7 +22,7 @@ const SidebarWrapper: React.FC<ISidebarWrapper> = ({
           {title}
           {badge && list.length ? (
             <Badge variant="primary" className="ml-3">
-              {list.length}
+              {list.filter((item) => Number(item.status) > 0).length}
             </Badge>
           ) : null}
         </h3>

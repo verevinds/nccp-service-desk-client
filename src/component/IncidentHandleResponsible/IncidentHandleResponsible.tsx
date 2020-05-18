@@ -20,10 +20,6 @@ const IncidentHandleResponsible: React.FC<IIncidentHandleResponsible> = ({
     shallowEqual,
   );
 
-  const [fullName, setFullName] = useState('');
-  useLayoutEffect(() => {
-    setFullName(`${user.name1} ${user.name2} ${user.name3}`);
-  }, [user]);
   const [filterList, setFilterList] = useState<IUser[]>([]);
   useLayoutEffect(() => {
     if (!!list) {
@@ -34,7 +30,7 @@ const IncidentHandleResponsible: React.FC<IIncidentHandleResponsible> = ({
         ),
       );
     }
-  }, [list]);
+  }, [list, incident.currentResponsible]);
   const [currentResponsible, setCurrentResponsible] = useState<number>();
   useLayoutEffect(() => {
     if (filterList[0]) {

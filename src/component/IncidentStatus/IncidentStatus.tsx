@@ -5,7 +5,7 @@ import styles from './styles.module.css';
 //Bootstrap
 import { Button } from 'react-bootstrap';
 
-const IncidentStatus: React.FC<IIncidentStatus> = ({ myincident, status }) => {
+const IncidentStatus: React.FC<IIncidentStatus> = ({ status }) => {
   const [variant, setVariant] = useState<'info' | 'success'>('info');
   useEffect(() => {
     if (status === 8388608) {

@@ -2,6 +2,12 @@
   height: 700px;
   overflow-y: auto;
 }
+.icon {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 2em;
+}
 .item {
   cursor: pointer;
   display: flex;

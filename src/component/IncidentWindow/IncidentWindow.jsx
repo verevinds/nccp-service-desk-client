@@ -12,8 +12,6 @@ import {
 } from '../../redux/actionCreators/incidentAction';
 import { queryApi } from '../../redux/actionCreators/queryApiAction';
 
-import IncidentInWork from '../IncidentInWork/IncidentInWork';
-import IncidentStatus from '../IncidentStatus/IncidentStatus';
 import IncidentWorkButton from '../IncidentWorkButton/IncidentWorkButton';
 
 import { Container, Card, Accordion, Table } from 'react-bootstrap';
@@ -21,6 +19,7 @@ import { Container, Card, Accordion, Table } from 'react-bootstrap';
 //? Font Awesome иконки
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleRight, faAngleDown } from '@fortawesome/free-solid-svg-icons';
+import IncidentWindowHeader from '../IncidentWindowHeader/IncidentWindowHeader';
 
 const IncidentWindow = ({ incident, myincident }) => {
   //State изменений в инциденте
@@ -72,29 +71,7 @@ const IncidentWindow = ({ incident, myincident }) => {
         ) : null}
         <Container>
           <Card>
-            <Card.Header className={styles.header}>
-              <div>
-                Инцидент №{incident.id}{' '}
-                {incident.responsibleUser ? (
-                  <>
-                    {'| '}
-                    <IncidentInWork
-                      startWork={incident.startWork}
-                      nameResponsible={`
-                ${
-                  incident.responsibleUser.name1
-                } ${incident.responsibleUser.name2.charAt(
-                        0,
-                      )}.${incident.responsibleUser.name3.charAt(0)}.`}
-                    />
-                  </>
-                ) : null}
-              </div>
-              <IncidentStatus
-                myincident={myincident | undefined}
-                status={incident.statusId}
-              />
-            </Card.Header>
+            <IncidentWindowHeader incident={incident} myincident={myincident} />
             <Card.Body>
               <Card.Title>
                 {!!incident.category ? incident.category.name : null}

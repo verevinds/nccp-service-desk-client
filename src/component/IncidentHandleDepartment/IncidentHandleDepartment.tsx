@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useState, useLayoutEffect } from 'react';
 import ModalWindow from '../ModalWindow/ModalWindow';
 import {
   IIncidentHandleDepartment,
@@ -9,8 +9,6 @@ import {
 } from './interface';
 import { Form } from 'react-bootstrap';
 import { useSelector, shallowEqual } from 'react-redux';
-import { useLayoutEffect } from 'react';
-import { useEffect } from 'react';
 
 const IncidentHandleDepartment = ({
   show,

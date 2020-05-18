@@ -1,4 +1,4 @@
 export interface IIncidentStatus {
-  myincident: boolean;
+  myincident?: boolean;
   status: number;
 }

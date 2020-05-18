@@ -6,7 +6,7 @@ export interface TList {
   responsible: string | undefined;
 }
 export interface ISidebar {
-  list: [] | never[];
+  list: TList[];
   onClick: () => undefined;
   activeId: number;
 }
@@ -19,7 +19,7 @@ export interface ISidebarWrapper {
   title: string;
   badge: boolean;
   onClickHistory: () => void;
-  list: [] | never[];
+  list: TList[] | never[];
   onClick: () => undefined;
   isLoading: boolean;
   activeId: number;
