@@ -18,17 +18,15 @@ import IncidentWorkButton from '../IncidentWorkButton/IncidentWorkButton';
 
 import { Container, Card, Accordion, Table } from 'react-bootstrap';
 
+//? Font Awesome иконки
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAngleRight, faAngleDown } from '@fortawesome/free-solid-svg-icons';
+
 const IncidentWindow = ({ incident, myincident }) => {
   //State изменений в инциденте
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth, shallowEqual);
-  const [fullName, setFullName] = useState(``);
-  useEffect(() => {
-    if (user) {
-      setFullName(`${user.name1} ${user.name2} ${user.name3}`);
-    }
-  }, [user]);
-  const onClick = (number = null, comment = null, dataCatalog) => {
+  const onClick = (number, comment, dataCatalog) => {
     const date = new Date();
     const dateNow = `${date.getFullYear()}-${
       date.getMonth() + 1
@@ -41,9 +39,7 @@ const IncidentWindow = ({ incident, myincident }) => {
     if (!!dataCatalog) {
       Object.assign(responsible, dataCatalog);
     }
-
     dispatch(incidentFetching('put', responsible, incident.id, 'incidents'));
-
     const data = {
       text: comment,
       userNumber: user.number,
@@ -63,6 +59,7 @@ const IncidentWindow = ({ incident, myincident }) => {
   const [showModal, setShowModal] = useState(false);
   const handleCloseModal = () => setShowModal(false);
   const handleOpenModal = () => setShowModal(true);
+  const [accordion, setAccordion] = useState(false);
   if (!!incident) {
     return (
       <>
@@ -136,9 +133,20 @@ const IncidentWindow = ({ incident, myincident }) => {
               <br />
               <br />
               {incident.comments.length ? (
-                <Accordion defaultActiveKey="0">
+                <Accordion defaultActiveKey="1">
                   <Card>
-                    <Accordion.Toggle as={Card.Header} eventKey="0">
+                    <Accordion.Toggle
+                      as={Card.Header}
+                      eventKey="0"
+                      onClick={() => {
+                        let boolean = accordion;
+                        setAccordion(!boolean);
+                      }}
+                      className={styles.comment__header}
+                    >
+                      <FontAwesomeIcon
+                        icon={accordion ? faAngleDown : faAngleRight}
+                      />{' '}
                       Комментарии
                     </Accordion.Toggle>
                     <Accordion.Collapse eventKey="0">

@@ -3,3 +3,6 @@
   flex-direction: row;
   justify-content: space-between;
 }
+.comment__header {
+  cursor: pointer;
+}

@@ -6,6 +6,10 @@ import styles from './siderbar.module.css';
 //Interface TypeScript for function Sidebar
 import { ISidebar, TList } from './interface';
 
+//? Font Awesome иконки
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
+
 const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId }) => {
   const [jsxListItem, setJsxListItem] = useState<
     JSX.Element[] | JSX.Element | void[]
@@ -36,6 +40,7 @@ const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId }) => {
                 {item.createdAt}
               </Moment>
             ) : null}
+            <FontAwesomeIcon icon={faAngleRight} />
           </ListGroup.Item>
         );
       });

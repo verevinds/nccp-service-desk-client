@@ -11,7 +11,7 @@ const MainPage = () => {
   useEffect(() => {
     if (user) {
       setParams({ departmentId: user.departmentId });
-      setTitle(`Инциденты: ${user.department.name}`);
+      setTitle(`${user.department.name}`);
     }
   }, [user]);
   return <Incident params={params} title={title} />;

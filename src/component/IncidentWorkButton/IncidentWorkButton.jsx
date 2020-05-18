@@ -30,7 +30,6 @@ export default memo(function IncidentWorkButton({
   const handleCloseDepartment = () => {
     setShowHandleDepartment(false);
   };
-
   return (
     <>
       <hr />
@@ -77,6 +76,7 @@ export default memo(function IncidentWorkButton({
                 null,
                 user.number,
                 `Статус инцидента изменен на "В работе". Ответственным назначен: ${fullName}`,
+                null,
               )}
             >
               Взять в работу
