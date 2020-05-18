@@ -67,8 +67,16 @@ const Header = (props) => {
           <Nav>
             <Nav.Item>
               <Nav.Link href="">
-                <Navbar.Text className="pr-1">{`${fullName}`}</Navbar.Text>
-                <Image src="https://via.placeholder.com/35" roundedCircle />
+                <div className={styles.user}>
+                  <Navbar.Text className="pr-1">{`${fullName}`}</Navbar.Text>
+                  <div className={styles.avatar}>
+                    <Image
+                      src={user ? user.photo : ''}
+                      roundedCircle
+                      className={styles.avatar__img}
+                    />
+                  </div>
+                </div>
               </Nav.Link>
             </Nav.Item>
             {access === 1 ? (

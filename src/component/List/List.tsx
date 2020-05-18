@@ -1,11 +1,23 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useState, useLayoutEffect } from 'react';
 import styles from './styles.module.css';
-import { IList } from './interface';
+import { IList, TList } from './interface';
 //? Bootstrap
-import { Row, Col, ListGroup, Form, Button } from 'react-bootstrap';
+import {
+  Row,
+  Col,
+  ListGroup,
+  Form,
+  Button,
+  InputGroup,
+  FormControl,
+} from 'react-bootstrap';
 //? Font Awesome иконки
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import {
+  faTrash,
+  faSearch,
+  faFolderPlus,
+} from '@fortawesome/free-solid-svg-icons';
 import ListButtonFavorites from './ListButtonFavorites';
 
 const List: React.FC<IList> = ({
@@ -16,12 +28,38 @@ const List: React.FC<IList> = ({
   activeId,
   list,
   onFavorites,
+  xs,
 }) => {
   const [input, setInput] = useState('');
+
+  const [filterList, setFilterList] = useState<TList[]>(list);
+  const [filter, setFilter] = useState('');
+  useLayoutEffect(() => {
+    setFilterList(
+      list.filter(
+        (item) => ~item.name.toLowerCase().indexOf(filter.toLowerCase()),
+      ),
+    );
+  }, [list, filter]);
   if (Array.isArray(list)) {
     return (
-      <Col xs={3}>
+      <Col xs={xs}>
         <h2>{title}</h2>
+        <InputGroup className="mb-1">
+          <InputGroup.Prepend>
+            <InputGroup.Text id="basic-addon1">
+              <FontAwesomeIcon icon={faSearch} />
+            </InputGroup.Text>
+          </InputGroup.Prepend>
+          <FormControl
+            placeholder="Поиск..."
+            aria-label="Ведущий специалист"
+            aria-describedby="basic-addon1"
+            onChange={(event: any) => {
+              setFilter(event.target.value);
+            }}
+          />
+        </InputGroup>
         {!!onSubmit ? (
           <Form
             onSubmit={(event: any) => {
@@ -33,22 +71,28 @@ const List: React.FC<IList> = ({
             }}
           >
             <Form.Group>
-              <Form.Label></Form.Label>
-              <Form.Control
-                type="text"
-                placeholder='Введите название и нажмите "Enter"'
-                value={input}
-                onChange={(event: any) => {
-                  setInput(event.target.value);
-                }}
-              />
+              <InputGroup className="mb-1">
+                <InputGroup.Prepend>
+                  <InputGroup.Text id="basic-addon1">
+                    <FontAwesomeIcon icon={faFolderPlus} />
+                  </InputGroup.Text>
+                </InputGroup.Prepend>
+                <Form.Control
+                  type="text"
+                  placeholder='Введите название и нажмите "Enter"'
+                  value={input}
+                  onChange={(event: any) => {
+                    setInput(event.target.value);
+                  }}
+                />
+              </InputGroup>
             </Form.Group>
           </Form>
         ) : null}
 
         <ListGroup variant="flush">
           {!!list.length ? (
-            list
+            filterList
               .sort((a: any, b: any) => {
                 if (b.name < a.name) {
                   return 1;

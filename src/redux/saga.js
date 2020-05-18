@@ -82,6 +82,7 @@ function* queryApiAsync({
         response = yield call(() =>
           axios.get(`http://192.168.214.106:8080/api/${route}/`, data),
         );
+        // console.log(`http://192.168.214.106:8080/api/${route}/`, data);
         if (!!actionUpdate) {
           yield put(actionUpdate());
         }

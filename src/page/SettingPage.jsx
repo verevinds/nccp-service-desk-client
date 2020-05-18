@@ -1,12 +1,15 @@
-import React, { memo, useState, useEffect } from 'react';
+import React, { memo, useState, useEffect, Suspense } from 'react';
+
 import Sidebar from '../component/Sidebar/Sidebar';
 import SettingCatalog from '../component/SettingCatalog/SettingCatalog';
 import SettingStatus from '../component/SettingStatus/SettingStatus';
 
 /**Bootstrap components */
 import { Row, Col } from 'react-bootstrap';
-import SettingPositions from '../component/SettingPositions/SettingPositions';
 
+const SettingPositions = React.lazy(() =>
+  import('../component/SettingPositions/SettingPositions'),
+);
 const SettingPage = (props) => {
   const [activeId, setActiveId] = useState(0);
   const list = [
@@ -27,7 +30,11 @@ const SettingPage = (props) => {
         setJsxContent(<SettingStatus />);
         break;
       case 3:
-        setJsxContent(<SettingPositions />);
+        setJsxContent(
+          <Suspense fallback={<div>Loading...</div>}>
+            <SettingPositions />
+          </Suspense>,
+        );
         break;
       default:
         setJsxContent(
@@ -40,11 +47,11 @@ const SettingPage = (props) => {
   }, [activeId]);
   return (
     <Row className={'m-1'}>
-      <Col xs={2}>
+      <Col xs={3}>
         <h1>Настройки</h1>
         <Sidebar list={list} activeId={activeId} onClick={setActiveId} />
       </Col>
-      <Col xs={10}>{jsxContent}</Col>
+      <Col xs={9}>{jsxContent}</Col>
     </Row>
   );
 };

@@ -11,3 +11,20 @@
 .nav__button {
   margin-right: 0.1em;
 }
+.user {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.avatar {
+  width: 35px;
+  height: 35px;
+  overflow: hidden;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  background-color: #fff;
+}
+.avatar__img {
+  height: 35px;
+}

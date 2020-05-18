@@ -1,18 +1,26 @@
-import React, { memo, useLayoutEffect, useState, useCallback } from 'react';
+import React, {
+  memo,
+  useLayoutEffect,
+  useState,
+  useCallback,
+  Suspense,
+} from 'react';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import { queryApi } from '../../redux/actionCreators/queryApiAction';
 import {
   positionsRequestSeccessed,
   positionsUpdate,
 } from '../../redux/actionCreators/positionAction';
+import { InputGroup, FormControl, Spinner } from 'react-bootstrap';
 import List from '../List/List';
 
 const SettingPositions = (props) => {
   const dispatch = useDispatch();
-  const { list, isUpdate } = useSelector(
-    (state) => state.positions,
+  const isUpdate = useSelector(
+    (state) => state.positions.isUpdate,
     shallowEqual,
   );
+  const list = useSelector((state) => state.positions.list, shallowEqual);
   const [route] = useState('positions');
   useLayoutEffect(() => {
     dispatch(
@@ -30,7 +38,9 @@ const SettingPositions = (props) => {
           actionUpdate: positionsUpdate,
           route,
           method: 'put',
-          data: { level: Number(!list.find((item) => item.id === id).level) },
+          data: {
+            level: Number(!list.find((item) => item.id === id).level),
+          },
         }),
       );
     },

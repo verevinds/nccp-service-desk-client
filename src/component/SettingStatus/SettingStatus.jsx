@@ -41,7 +41,7 @@ const SettingStatus = (props) => {
   return (
     <Col>
       <h2>Статус</h2>
-      <List list={list} onSubmit={onSubmit} onDelete={onDelete} />
+      <List list={list} onSubmit={onSubmit} onDelete={onDelete} xs={5} />
     </Col>
   );
 };

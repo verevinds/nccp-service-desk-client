@@ -1,3 +1,8 @@
 .item {
   cursor: pointer;
 }
+.spinner {
+  display: flex;
+  justify-content: center;
+  margin: 2em 0;
+}
