@@ -24,16 +24,16 @@ const ListItem = ({ filterList, onClick, onDelete, onFavorites, activeId }) => {
           })
           .map((item) => {
             return (
-              <ListGroup.Item
-                key={item.id}
-                className={item.id === activeId ? `active` : undefined}
-                variant={!!item.level ? 'warning' : undefined}
-              >
-                <Fade key={item.id} opposite collapse bottom>
+              <Fade key={item.id} opposite collapse bottom>
+                <ListGroup.Item
+                  key={item.id}
+                  className={item.id === activeId ? `active` : undefined}
+                  variant={!!item.level ? 'warning' : undefined}
+                >
                   <Row>
                     <Col xs={9}>
                       <div
-                        className={!!onClick ? styles.item : undefined}
+                        className={!!onClick ? styles.item_pointer : undefined}
                         onClick={() => {
                           if (!!onClick) {
                             //@ts-ignore
@@ -41,7 +41,7 @@ const ListItem = ({ filterList, onClick, onDelete, onFavorites, activeId }) => {
                           }
                         }}
                       >
-                        {item.name}
+                        <span>{item.name}</span>
                       </div>
                     </Col>
                     <Col xs={3}>
@@ -64,8 +64,8 @@ const ListItem = ({ filterList, onClick, onDelete, onFavorites, activeId }) => {
                       ) : null}
                     </Col>
                   </Row>
-                </Fade>
-              </ListGroup.Item>
+                </ListGroup.Item>
+              </Fade>
             );
           })
       ) : (

@@ -2,7 +2,6 @@ import React, { memo, useState, useEffect, Suspense } from 'react';
 import Sidebar from '../component/Sidebar/Sidebar';
 import SettingCatalog from '../component/SettingCatalog/SettingCatalog';
 import SettingStatus from '../component/SettingStatus/SettingStatus';
-import Fade from 'react-reveal/Fade';
 /**Bootstrap components */
 import { Row, Col } from 'react-bootstrap';
 const SettingPositions = React.lazy(() =>
@@ -23,25 +22,15 @@ const SettingPage = (props) => {
         setJsxContent('');
         break;
       case 1:
-        setJsxContent(
-          <Fade opposite collapse left>
-            <SettingCatalog />
-          </Fade>,
-        );
+        setJsxContent(<SettingCatalog />);
         break;
       case 2:
-        setJsxContent(
-          <Fade opposite collapse left>
-            <SettingStatus />
-          </Fade>,
-        );
+        setJsxContent(<SettingStatus />);
         break;
       case 3:
         setJsxContent(
           <Suspense fallback={<div>Loading...</div>}>
-            <Fade opposite collapse left>
-              <SettingPositions />
-            </Fade>
+            <SettingPositions />
           </Suspense>,
         );
         break;

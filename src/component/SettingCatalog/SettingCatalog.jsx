@@ -84,6 +84,7 @@ const SettingCatalog = (props) => {
           onDelete={onDelete.bind(null, { route: 'categories' })}
           onClick={setCategoryIdCurrent}
           activeId={categoryIdCurrent}
+          xs={3}
         />,
       );
     }
@@ -107,6 +108,7 @@ const SettingCatalog = (props) => {
           list={categorySubList.properties}
           onSubmit={onSubmit.bind(null, { route: 'properties' })}
           onDelete={onDelete.bind(null, { route: 'properties' })}
+          xs={3}
         />,
       );
       setOptionJsx(
@@ -115,6 +117,7 @@ const SettingCatalog = (props) => {
           list={categorySubList.options}
           onSubmit={onSubmit.bind(null, { route: 'options' })}
           onDelete={onDelete.bind(null, { route: 'options' })}
+          xs={3}
         />,
       );
     } else {
@@ -132,6 +135,7 @@ const SettingCatalog = (props) => {
           list={department}
           onClick={setDepartmentIdCurrent}
           activeId={departmentIdCurrent}
+          xs={3}
         />
         {categoryJsx}
         {propertyJsx}
