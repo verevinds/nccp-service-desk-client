@@ -6,12 +6,45 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin-left: 2em;
+}
+.icon_right {
+  margin-left: 1em;
+}
+.icon_left {
+  margin-right: 1em;
 }
 .item {
   cursor: pointer;
   display: flex;
   justify-content: space-between;
+  padding: 0.4em;
+}
+.item__body {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.item__id {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-right: 1em;
+}
+.item__text {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.item__text_span {
+  text-align: left;
+}
+.item__date {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 59px;
 }
 .item:hover {
   background-color: rgba(0, 0, 0, 0.02);

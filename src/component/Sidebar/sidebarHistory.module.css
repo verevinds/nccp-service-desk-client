@@ -14,3 +14,6 @@
 .item:hover {
   background-color: rgba(0, 0, 0, 0.02);
 }
+.body {
+  padding: 0;
+}

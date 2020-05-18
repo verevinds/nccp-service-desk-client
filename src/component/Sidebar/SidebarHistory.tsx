@@ -65,7 +65,7 @@ const SidebarHistory: React.FC<ISidebarHistory> = ({
             Показать историю
           </Accordion.Toggle>
           <Accordion.Collapse eventKey="0">
-            <Card.Body>
+            <Card.Body className={styles.body}>
               {Array.isArray(sidebarList) && sidebarList.length ? (
                 <Sidebar
                   list={sidebarList}

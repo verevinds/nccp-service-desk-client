@@ -7,7 +7,7 @@ import { ISidebar } from './interface';
 
 //? Font Awesome иконки
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
+import { faAngleRight, faTag } from '@fortawesome/free-solid-svg-icons';
 
 const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId }) => {
   const [jsxListItem, setJsxListItem] = useState<
@@ -16,22 +16,18 @@ const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId }) => {
   useEffect(() => {
     if (Array.isArray(list) && list.length) {
       const jsxItem: JSX.Element[] | void[] = list.map((item: any) => {
-        let itemText: string;
+        let itemText: string = '';
         if (item.createdAt) {
-          itemText = `№${item.id} - ${item.name ? item.name : 'N/A'} ${
-            item.responsible
-          }  `;
-        } else {
-          itemText = `${item.name ? item.name : 'N/A'} `;
+          itemText = ` №${item.id} `;
         }
-        let color = '#1b1e21';
+        let color;
         if (item.status) {
           if (Number(item.status) === 8388608) {
             color = '#c3e6cb';
           } else {
             color = '#bee5eb';
           }
-        } else {
+        } else if (item.status === 0) {
           color = '#007bff';
         }
         return (
@@ -43,16 +39,30 @@ const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId }) => {
               activeId === item.id ? styles.active : null
             }`}
           >
-            <span>
-              {itemText}
-              {item.createdAt ? (
-                <Moment locale="ru" format="DD MMM YY">
-                  {item.createdAt}
-                </Moment>
-              ) : null}
-            </span>
-            <div className={styles.icon}>
-              <FontAwesomeIcon icon={faAngleRight} color={color} />
+            {!!item.status || item.status === 0 ? (
+              <div className={`${styles.icon} ${styles.icon_left}`}>
+                <FontAwesomeIcon icon={faTag} color={color} />
+              </div>
+            ) : undefined}
+            <div className={styles.item__body}>
+              <div className={styles.item__id}>
+                <span>{itemText}</span>
+              </div>
+              <div className={styles.item__text}>
+                <span className={styles.item__text_span}>
+                  {item.name ? item.name : 'N/A'} {item.responsible}
+                </span>
+              </div>
+              <div className={styles.item__date}>
+                {item.createdAt ? (
+                  <Moment locale="ru" format="DD.MM.YY">
+                    {item.createdAt}
+                  </Moment>
+                ) : null}
+              </div>
+            </div>
+            <div className={`${styles.icon} ${styles.icon_right}`}>
+              <FontAwesomeIcon icon={faAngleRight} />
             </div>
           </ListGroup.Item>
         );
