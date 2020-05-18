@@ -1,6 +1,15 @@
-.block {
-  height: 700px;
-  overflow-y: auto;
+@media screen and (min-height: 720px) {
+  .block {
+    max-height: 700px;
+    overflow-y: auto;
+  }
+}
+
+@media screen and (min-height: 500px) and (max-height: 720px) {
+  .block {
+    max-height: 500px;
+    overflow-y: auto;
+  }
 }
 .item {
   cursor: pointer;
@@ -11,7 +20,6 @@
 .active {
   color: #007bff;
 }
-
 ::-webkit-scrollbar {
   width: 5px;
   height: 0px;

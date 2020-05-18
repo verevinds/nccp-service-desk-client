@@ -1,3 +1,17 @@
 .comment__header {
   cursor: pointer;
 }
+
+@media screen and (min-height: 720px) {
+  .window {
+    max-height: 700px;
+    overflow-y: auto;
+  }
+}
+
+@media screen and (min-height: 500px) and (max-height: 720px) {
+  .window {
+    max-height: 500px;
+    overflow-y: auto;
+  }
+}

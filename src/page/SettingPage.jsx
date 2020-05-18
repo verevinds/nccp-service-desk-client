@@ -1,15 +1,14 @@
 import React, { memo, useState, useEffect, Suspense } from 'react';
-
 import Sidebar from '../component/Sidebar/Sidebar';
 import SettingCatalog from '../component/SettingCatalog/SettingCatalog';
 import SettingStatus from '../component/SettingStatus/SettingStatus';
-
+import Fade from 'react-reveal/Fade';
 /**Bootstrap components */
 import { Row, Col } from 'react-bootstrap';
-
 const SettingPositions = React.lazy(() =>
   import('../component/SettingPositions/SettingPositions'),
 );
+
 const SettingPage = (props) => {
   const [activeId, setActiveId] = useState(0);
   const list = [
@@ -24,15 +23,25 @@ const SettingPage = (props) => {
         setJsxContent('');
         break;
       case 1:
-        setJsxContent(<SettingCatalog />);
+        setJsxContent(
+          <Fade opposite collapse left>
+            <SettingCatalog />
+          </Fade>,
+        );
         break;
       case 2:
-        setJsxContent(<SettingStatus />);
+        setJsxContent(
+          <Fade opposite collapse left>
+            <SettingStatus />
+          </Fade>,
+        );
         break;
       case 3:
         setJsxContent(
           <Suspense fallback={<div>Loading...</div>}>
-            <SettingPositions />
+            <Fade opposite collapse left>
+              <SettingPositions />
+            </Fade>
           </Suspense>,
         );
         break;
@@ -51,6 +60,7 @@ const SettingPage = (props) => {
         <h1>Настройки</h1>
         <Sidebar list={list} activeId={activeId} onClick={setActiveId} />
       </Col>
+
       <Col xs={9}>{jsxContent}</Col>
     </Row>
   );

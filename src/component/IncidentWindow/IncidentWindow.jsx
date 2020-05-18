@@ -72,7 +72,7 @@ const IncidentWindow = ({ incident, myincident }) => {
         <Container>
           <Card>
             <IncidentWindowHeader incident={incident} myincident={myincident} />
-            <Card.Body>
+            <Card.Body className={styles.window}>
               <Card.Title>
                 {!!incident.category ? incident.category.name : null}
 
