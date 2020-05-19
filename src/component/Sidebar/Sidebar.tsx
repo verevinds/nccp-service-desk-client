@@ -1,4 +1,4 @@
-import React, { memo, useState, useEffect, useLayoutEffect } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import { ListGroup } from 'react-bootstrap';
 import Moment from 'react-moment';
 import styles from './siderbar.module.css';

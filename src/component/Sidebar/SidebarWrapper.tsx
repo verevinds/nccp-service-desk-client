@@ -1,15 +1,13 @@
 import React, { memo, useState, useEffect } from 'react';
 import { ISidebarWrapper } from './interface';
-import { Container, Badge } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 import SidebarHistory from './SidebarHistory';
 import styles from './sidebarWrapper.module.css';
 import Sidebar from './Sidebar';
 
 const SidebarWrapper: React.FC<ISidebarWrapper> = ({
   title,
-  badge,
   list,
-  isLoading,
   onClick,
   activeId,
   onClickHistory,

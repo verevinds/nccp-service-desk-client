@@ -7,7 +7,6 @@ import { shallowEqual, useSelector } from 'react-redux';
 
 export default memo(function IncidentWorkButton({ onClick, handleOpenModal }) {
   const user = useSelector((state) => state.auth.user, shallowEqual);
-  const localOnClick = useMemo(() => onClick, [onClick]);
   const [fullName, setFullName] = useState('');
   useLayoutEffect(() => {
     setFullName(`${user.name1} ${user.name2} ${user.name3}`);
@@ -101,7 +100,13 @@ export default memo(function IncidentWorkButton({ onClick, handleOpenModal }) {
           );
       }
     }
-  }, [currentIncident]);
+  }, [
+    currentIncident,
+    handleInWork,
+    handleOpenModal,
+    onClick,
+    user.position.level,
+  ]);
   return (
     <>
       <hr />

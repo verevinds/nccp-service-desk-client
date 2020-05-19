@@ -6,10 +6,7 @@ import 'moment/locale/ru';
 import IncidentModalWrapper from '../IncidentHandleStatus/IncidentHandleStatus';
 
 //ActionCreator
-import {
-  incidentFetching,
-  incidentCreate,
-} from '../../redux/actionCreators/incidentAction';
+import { incidentCreate } from '../../redux/actionCreators/incidentAction';
 import { queryApi } from '../../redux/actionCreators/queryApiAction';
 
 import IncidentWorkButton from '../IncidentWorkButton/IncidentWorkButton';
