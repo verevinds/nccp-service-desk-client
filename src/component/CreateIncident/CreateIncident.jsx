@@ -1,5 +1,6 @@
 import React, { memo, useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import openSocket from 'socket.io-client';
 
 import CreateIncidentSelect from '../CreateIncidentSelect/CreateIncidentSelect';
 
@@ -88,6 +89,9 @@ const CreateIncidentModel = ({ handleClose, showModal, list, user }) => {
   const onSubmit = (event) => {
     event.preventDefault();
     dispatch(incidentFetching('post', incident));
+
+    const socket = openSocket('http://192.168.214.106:8000');
+    socket.emit('departmentId', currentCategory[0].departmentId);
     handleClose();
   };
   return (

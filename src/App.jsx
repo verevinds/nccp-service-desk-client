@@ -1,8 +1,8 @@
-import React, { memo, useEffect } from 'react';
+import React, { memo, useEffect, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { useSelector, shallowEqual } from 'react-redux';
-
+import { incidentCreate } from './redux/actionCreators/incidentAction';
 import { categoryRequestSuccessed } from './redux/actionCreators/catalogAction';
 import { authRequestSuccessed } from './redux/actionCreators/authAction';
 import { queryApi } from './redux/actionCreators/queryApiAction';
@@ -13,9 +13,13 @@ import SettingPage from './page/SettingPage';
 import Header from './component/Header/Header';
 import MyIncidentPage from './page/MyIncidentPage';
 import axios from 'axios';
+import openSocket from 'socket.io-client';
+const socket = openSocket('http://192.168.214.106:8000');
 
 const App = (props) => {
-  const { status, catalog } = useSelector((state) => state);
+  const user = useSelector((state) => state.auth.user, shallowEqual);
+  const catalog = useSelector((state) => state.catalog, shallowEqual);
+  const status = useSelector((state) => state.status, shallowEqual);
 
   const state = useSelector((state) => state, shallowEqual);
   const dispatch = useDispatch();
@@ -64,6 +68,14 @@ const App = (props) => {
       );
     }
   }, [status.isUpdate, dispatch]);
+
+  useEffect(() => {
+    if (user)
+      socket.on(String(user.departmentId), (data) => {
+        dispatch(incidentCreate());
+      });
+  }, [user]);
+
   return (
     <BrowserRouter>
       <Header />

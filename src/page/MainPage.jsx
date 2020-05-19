@@ -1,6 +1,6 @@
 import React, { memo, useState, useEffect } from 'react';
 import { useSelector, shallowEqual } from 'react-redux';
-
+import { Button } from 'react-bootstrap';
 /**My components */
 import Incident from '../component/Incident/Incident';
 

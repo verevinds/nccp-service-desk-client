@@ -16,7 +16,6 @@ import {
 const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId }) => {
   const tags = (item: any, color?: any) => {
     let tags = [];
-    console.log('item', item);
     if (!!item.status || Number(item.status) === 0) {
       tags.push(
         <FontAwesomeIcon
