@@ -75,7 +75,7 @@ const SettingCatalog = (props) => {
   );
 
   const onFavorites = useCallback(
-    ({ actionUpdate, list, route }, id) => {
+    ({ list, route }, id) => {
       // console.log('id', id);
       // console.log('actionUpdate', actionUpdate);
       // console.log('list', list);
@@ -83,7 +83,7 @@ const SettingCatalog = (props) => {
       dispatch(
         queryApi({
           id,
-          actionUpdate,
+          actionUpdate: categoryUpdate,
           route,
           method: 'put',
           data: {
@@ -110,7 +110,6 @@ const SettingCatalog = (props) => {
           onFavorites={onFavorites.bind(null, {
             route,
             list: categoryList,
-            actionUpdate: categoryUpdate,
           })}
           xs={3}
         />,
@@ -130,21 +129,31 @@ const SettingCatalog = (props) => {
   const [optionJsx, setOptionJsx] = useState();
   useEffect(() => {
     if (categorySubList) {
+      let route = 'properties';
       setPropertyJsx(
         <List
           title="Параметры"
           list={categorySubList.properties}
-          onSubmit={onSubmit.bind(null, { route: 'properties' })}
-          onDelete={onDelete.bind(null, { route: 'properties' })}
+          onSubmit={onSubmit.bind(null, { route })}
+          onDelete={onDelete.bind(null, { route })}
+          onFavorites={onFavorites.bind(null, {
+            route,
+            list: categorySubList.properties,
+          })}
           xs={3}
         />,
       );
+      route = 'options';
       setOptionJsx(
         <List
           title="Опции"
           list={categorySubList.options}
-          onSubmit={onSubmit.bind(null, { route: 'options' })}
-          onDelete={onDelete.bind(null, { route: 'options' })}
+          onSubmit={onSubmit.bind(null, { route })}
+          onDelete={onDelete.bind(null, { route })}
+          onFavorites={onFavorites.bind(null, {
+            route,
+            list: categorySubList.options,
+          })}
           xs={3}
         />,
       );
@@ -152,7 +161,7 @@ const SettingCatalog = (props) => {
       setPropertyJsx(null);
       setOptionJsx(null);
     }
-  }, [categorySubList, onDelete, onSubmit]);
+  }, [categorySubList, onDelete, onSubmit, onFavorites]);
 
   return (
     <>
