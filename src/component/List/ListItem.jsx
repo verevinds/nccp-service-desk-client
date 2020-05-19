@@ -44,24 +44,26 @@ const ListItem = ({ filterList, onClick, onDelete, onFavorites, activeId }) => {
                         <span>{item.name}</span>
                       </div>
                     </Col>
-                    <Col xs={3}>
-                      {!!onDelete && !item.noChange ? (
-                        <Button
-                          size="sm"
-                          variant="danger"
-                          onClick={() => {
-                            //@ts-ignore
-                            onDelete(item.id);
-                          }}
-                        >
-                          <FontAwesomeIcon icon={faTrash} />
-                        </Button>
-                      ) : null}
-                      {!!onFavorites ? (
-                        <ListButtonFavorites
-                          onFavorites={onFavorites.bind(null, item.id)}
-                        />
-                      ) : null}
+                    <Col xs={3} className={styles.buttonGroup}>
+                      <div className={styles.buttonGroup_flexRow}>
+                        {!!onDelete && !item.noChange ? (
+                          <Button
+                            size="sm"
+                            variant="danger"
+                            onClick={() => {
+                              //@ts-ignore
+                              onDelete(item.id);
+                            }}
+                          >
+                            <FontAwesomeIcon icon={faTrash} />
+                          </Button>
+                        ) : null}
+                        {!!onFavorites ? (
+                          <ListButtonFavorites
+                            onFavorites={onFavorites.bind(null, item.id)}
+                          />
+                        ) : null}
+                      </div>
                     </Col>
                   </Row>
                 </ListGroup.Item>

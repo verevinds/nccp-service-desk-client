@@ -73,17 +73,45 @@ const SettingCatalog = (props) => {
     },
     [dispatch],
   );
+
+  const onFavorites = useCallback(
+    ({ actionUpdate, list, route }, id) => {
+      // console.log('id', id);
+      // console.log('actionUpdate', actionUpdate);
+      // console.log('list', list);
+      // console.log('route', route);
+      dispatch(
+        queryApi({
+          id,
+          actionUpdate,
+          route,
+          method: 'put',
+          data: {
+            level: Number(!list.find((item) => item.id === id).level),
+          },
+        }),
+      );
+    },
+    [dispatch],
+  );
+
   // Эффект отрисовки компонента
   useEffect(() => {
     if (departmentIdCurrent) {
+      let route = 'categories';
       setCategoryJsx(
         <List
           title={'Категории'}
           list={categoryList}
-          onSubmit={onSubmit.bind(null, { route: 'categories' })}
-          onDelete={onDelete.bind(null, { route: 'categories' })}
+          onSubmit={onSubmit.bind(null, { route })}
+          onDelete={onDelete.bind(null, { route })}
           onClick={setCategoryIdCurrent}
           activeId={categoryIdCurrent}
+          onFavorites={onFavorites.bind(null, {
+            route,
+            list: categoryList,
+            actionUpdate: categoryUpdate,
+          })}
           xs={3}
         />,
       );
