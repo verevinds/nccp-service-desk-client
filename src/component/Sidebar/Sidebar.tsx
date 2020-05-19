@@ -1,4 +1,4 @@
-import React, { memo, useState, useEffect } from 'react';
+import React, { memo, useState, useEffect, useLayoutEffect } from 'react';
 import { ListGroup } from 'react-bootstrap';
 import Moment from 'react-moment';
 import styles from './siderbar.module.css';
@@ -7,9 +7,39 @@ import { ISidebar } from './interface';
 
 //? Font Awesome иконки
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleRight, faTag } from '@fortawesome/free-solid-svg-icons';
+import {
+  faAngleRight,
+  faTag,
+  faUserClock,
+} from '@fortawesome/free-solid-svg-icons';
 
 const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId }) => {
+  const tags = (item: any, color?: any) => {
+    let tags = [];
+    console.log('item', item);
+    if (!!item.status || Number(item.status) === 0) {
+      tags.push(
+        <FontAwesomeIcon
+          key={item.id + 't'}
+          icon={faTag}
+          color={color}
+          className={'mb-1'}
+        />,
+      );
+      if (!!item.responsible && Number(item.status) === 0) {
+        tags.push(
+          <FontAwesomeIcon
+            key={item.id + 'c'}
+            icon={faUserClock}
+            color={'#007bff'}
+          />,
+        );
+      }
+    }
+
+    return tags;
+  };
+
   const [jsxListItem, setJsxListItem] = useState<
     JSX.Element[] | JSX.Element | void[]
   >([<p key={0}>Загрузка данных</p>]);
@@ -39,11 +69,9 @@ const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId }) => {
               activeId === item.id ? styles.active : null
             }`}
           >
-            {!!item.status || item.status === 0 ? (
-              <div className={`${styles.icon} ${styles.icon_left}`}>
-                <FontAwesomeIcon icon={faTag} color={color} />
-              </div>
-            ) : undefined}
+            <div className={`${styles.icon} ${styles.icon_left}`}>
+              {tags(item, color)?.map((item) => item)}
+            </div>
             <div className={styles.item__body}>
               <div className={styles.item__id}>
                 <span>{itemText}</span>

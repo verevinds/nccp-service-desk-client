@@ -17,19 +17,10 @@ const SidebarWrapper: React.FC<ISidebarWrapper> = ({
   const [blogTitle, setBlogTitle] = useState<JSX.Element | null>(null);
   useEffect(() => {
     if (title) {
-      const newBlogTitle = (
-        <h3>
-          {title}
-          {badge && list.length ? (
-            <Badge variant="primary" className="ml-3">
-              {list.filter((item) => Number(item.status) > 0).length}
-            </Badge>
-          ) : null}
-        </h3>
-      );
+      const newBlogTitle = <h3>{title}</h3>;
       setBlogTitle(newBlogTitle);
     }
-  }, [title, list, badge]);
+  }, [title, list]);
   return (
     <>
       <Container>

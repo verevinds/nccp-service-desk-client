@@ -25,20 +25,33 @@ const IncidentWindow = ({ incident, myincident }) => {
   //State изменений в инциденте
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth, shallowEqual);
-  const onClick = (number, comment, dataCatalog) => {
+  const onClick = ({ number, comment, bodyData, isConsent }) => {
     const date = new Date();
     const dateNow = `${date.getFullYear()}-${
       date.getMonth() + 1
     }-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
-    const responsible = {
-      currentResponsible: number,
+    const incidentData = {
       startWork: dateNow,
       statusId: Number(1),
     };
-    if (!!dataCatalog) {
-      Object.assign(responsible, dataCatalog);
+    if (isConsent) {
+      incidentData.startWork = null;
+      incidentData.statusId = 0;
     }
-    dispatch(incidentFetching('put', responsible, incident.id, 'incidents'));
+    if (!!bodyData) {
+      Object.assign(incidentData, bodyData);
+    }
+    console.log('incidentData', incidentData);
+    // dispatch(incidentFetching('put', responsible, incident.id, 'incidents'));
+    dispatch(
+      queryApi({
+        route: 'incidents',
+        method: 'put',
+        actionUpdate: incidentCreate,
+        data: incidentData,
+        id: incident.id,
+      }),
+    );
     const data = {
       text: comment,
       userNumber: user.number,
@@ -97,8 +110,15 @@ const IncidentWindow = ({ incident, myincident }) => {
                   ? `Тел.: ${incident.initiatorUser.phone1} `
                   : null}
               </Card.Text>
-              {incident.text ? <hr /> : null}
-              <Card.Text>{incident.text}</Card.Text>
+              {incident.text ? (
+                <>
+                  <hr />
+                  <Card.Text>
+                    <pre>{incident.text}</pre>
+                  </Card.Text>
+                </>
+              ) : null}
+
               {!myincident ? (
                 <IncidentWorkButton
                   incident={incident}
@@ -109,58 +129,58 @@ const IncidentWindow = ({ incident, myincident }) => {
               ) : null}
               <br />
               <br />
-              {incident.comments.length ? (
-                <Accordion defaultActiveKey="1">
-                  <Card>
-                    <Accordion.Toggle
-                      as={Card.Header}
-                      eventKey="0"
-                      onClick={() => {
-                        let boolean = accordion;
-                        setAccordion(!boolean);
-                      }}
-                      className={styles.comment__header}
-                    >
-                      <FontAwesomeIcon
-                        icon={accordion ? faAngleDown : faAngleRight}
-                      />{' '}
-                      Комментарии
-                    </Accordion.Toggle>
-                    <Accordion.Collapse eventKey="0">
-                      <Table striped bordered size="sm">
-                        <thead>
-                          <tr>
-                            <th>№</th>
-                            <th>Текст</th>
-                            <th>Автор</th>
-                            <th>Дата</th>
+              <Accordion defaultActiveKey="1">
+                <Card>
+                  <Accordion.Toggle
+                    as={Card.Header}
+                    eventKey="0"
+                    onClick={() => {
+                      let boolean = accordion;
+                      setAccordion(!boolean);
+                    }}
+                    className={styles.comment__header}
+                  >
+                    <FontAwesomeIcon
+                      icon={accordion ? faAngleDown : faAngleRight}
+                    />{' '}
+                    Комментарии
+                  </Accordion.Toggle>
+                  <Accordion.Collapse eventKey="0">
+                    <Table striped bordered size="sm" className={styles.table}>
+                      <thead>
+                        <tr>
+                          <th>№</th>
+                          <th>Текст</th>
+                          <th>Автор</th>
+                          <th>Дата</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {incident.comments.map((item, index) => (
+                          <tr key={item.id}>
+                            <td>{index + 1}</td>
+                            <td>
+                              <pre>{item.text}</pre>
+                            </td>
+                            <td>{`${item.user.name1} ${item.user.name2.charAt(
+                              0,
+                            )}. ${item.user.name3.charAt(0)}.`}</td>
+                            <td>
+                              <Moment
+                                locale="ru"
+                                format="HH:mm D.MM.YYг"
+                                withTitle
+                              >
+                                {item.createdAt}
+                              </Moment>
+                            </td>
                           </tr>
-                        </thead>
-                        <tbody>
-                          {incident.comments.map((item, index) => (
-                            <tr key={item.id}>
-                              <td>{index + 1}</td>
-                              <td>{item.text}</td>
-                              <td>{`${item.user.name1} ${item.user.name2.charAt(
-                                0,
-                              )}. ${item.user.name3.charAt(0)}.`}</td>
-                              <td>
-                                <Moment
-                                  locale="ru"
-                                  format="D.MM.YYг HH:mm"
-                                  withTitle
-                                >
-                                  {item.createdAt}
-                                </Moment>
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </Table>
-                    </Accordion.Collapse>
-                  </Card>
-                </Accordion>
-              ) : null}
+                        ))}
+                      </tbody>
+                    </Table>
+                  </Accordion.Collapse>
+                </Card>
+              </Accordion>
             </Card.Body>
             <Card.Footer className="text-right">
               <small>

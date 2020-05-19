@@ -2,13 +2,13 @@ export interface IIncidentHandleDepartment {
   show?: boolean;
   onHide?: (() => void) | undefined;
   currentResponsible?: number | undefined;
-  onClick: (
-    number?: number | null | undefined,
-    text?: string,
-    catalog?: any,
-  ) => void;
+  onClick: (arg0?: TParams) => void;
 }
-
+type TParams = {
+  number?: number | null | undefined;
+  comment?: string;
+  bodyData?: any;
+};
 export type IDepartment = {
   categories: never[] | [];
   id: number | null;

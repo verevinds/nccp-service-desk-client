@@ -4,8 +4,8 @@ import { NavLink } from 'react-router-dom';
 import styles from './styles.module.css';
 
 /**Bootstrap component */
-import { Navbar, Nav, Image, Button } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
+import { Navbar, Nav, Image, Button, Badge } from 'react-bootstrap';
+import { useSelector, shallowEqual } from 'react-redux';
 //? Font Awesome иконки
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCog } from '@fortawesome/free-solid-svg-icons';
@@ -13,6 +13,10 @@ import { faCog } from '@fortawesome/free-solid-svg-icons';
 const Header = (props) => {
   const { user } = useSelector((state) => state.auth);
   const { list } = useSelector((state) => state.catalog);
+  const listIncident = useSelector(
+    (state) => state.incidents.list,
+    shallowEqual,
+  );
   const [access, setAccess] = useState(1);
   const [showModal, setShowModal] = useState(false);
   const handleClose = () => setShowModal(false);
@@ -39,15 +43,23 @@ const Header = (props) => {
             <Nav.Item>
               <NavLink
                 to="/"
-                activeClassName={`btn-light ${styles.nav__button}`}
-                className="btn btn-link align-middle"
+                activeClassName={`btn-light`}
+                className={`btn btn-link align-middle ${styles.nav__button}`}
               >
                 Рабочая панель
+                {!!listIncident.length ? (
+                  <Badge variant="primary" className={'ml-1'}>
+                    {
+                      listIncident.filter((item) => Number(item.statusId) === 0)
+                        .length
+                    }
+                  </Badge>
+                ) : undefined}
               </NavLink>
               <NavLink
                 to="/myincidents"
                 activeClassName={`btn-light ${styles.nav__button}`}
-                className="btn btn-link align-middle"
+                className={`btn btn-link align-middle ${styles.nav__button}`}
               >
                 Мои инциденты
               </NavLink>

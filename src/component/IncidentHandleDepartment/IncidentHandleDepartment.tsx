@@ -1,4 +1,4 @@
-import React, { memo, useState, useLayoutEffect } from 'react';
+import React, { memo, useState, useLayoutEffect, useEffect } from 'react';
 import ModalWindow from '../ModalWindow/ModalWindow';
 import {
   IIncidentHandleDepartment,
@@ -36,24 +36,17 @@ const IncidentHandleDepartment = ({
 
   //**Получение листа категорий */
   const [currentCategoryId, setCurrentCategoryId] = useState(null);
-  const [categoryList, setCategoryList] = useState<ICategory[]>([
-    {
-      createdAt: '',
-      departmentId: null,
-      id: null,
-      name: '',
-      options: [],
-      properties: [],
-      updatedAt: '',
-    },
-  ]);
-  useLayoutEffect(() => {
+  const [categoryList, setCategoryList] = useState<ICategory[]>([]);
+  useEffect(() => {
     let category = catalog.list.filter(
-      (item: any) => item.departmentId === currentDepartmentId,
+      (item: any) => Number(item.departmentId) === Number(currentDepartmentId),
     );
     if (!!category.length) {
       setCategoryList(category);
       setCurrentCategoryId(category[0].id);
+    } else {
+      setCategoryList([]);
+      setCurrentCategoryId(null);
     }
   }, [currentDepartmentId, catalog.list]);
 
@@ -67,7 +60,7 @@ const IncidentHandleDepartment = ({
   // Опции
   const [currentOptionId, setCurrentOptionId] = useState<number | null>(null);
   const [optionList, setOptionList] = useState<IOption[]>([]);
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (!!categoryList) {
       let currentCategory = categoryList.find(
         (item: any) => Number(item.id) === Number(currentCategoryId),
@@ -77,11 +70,17 @@ const IncidentHandleDepartment = ({
         if (!!currentCategory.properties.length) {
           setPropertyList(currentCategory.properties);
           setCurrentPropertyId(currentCategory.properties[0].id);
+        } else {
+          setPropertyList([]);
+          setCurrentPropertyId(null);
         }
 
         if (!!currentCategory.options.length) {
           setOptionList(currentCategory.options);
           setCurrentOptionId(currentCategory.options[0].id);
+        } else {
+          setOptionList([]);
+          setCurrentOptionId(null);
         }
       }
     }
@@ -92,6 +91,7 @@ const IncidentHandleDepartment = ({
   // console.log('currentDepartmentId', currentDepartmentId);
   // console.log('currentCategoryId', currentCategoryId);
   // console.log('currentPropertyId', currentPropertyId);
+  // console.log('currentOptionId', currentOptionId);
   // console.groupEnd();
   const jsxSelector = (
     title: string,
@@ -110,11 +110,19 @@ const IncidentHandleDepartment = ({
               setId(event.target.value);
             }}
           >
-            {list.map((item: any) => (
-              <option value={item.id} key={item.id}>
-                {item.name}
-              </option>
-            ))}
+            {list
+              .sort((a: any, b: any) => {
+                if (b.name < a.name) {
+                  return 1;
+                } else {
+                  return -1;
+                }
+              })
+              .map((item: any) => (
+                <option value={item.id} key={item.id}>
+                  {item.name}
+                </option>
+              ))}
           </Form.Control>
         </Form.Group>
       </>
@@ -122,17 +130,27 @@ const IncidentHandleDepartment = ({
   };
   return (
     <ModalWindow
-      title={'Направить инцидент в отдел'}
+      title={'Передать инцидент'}
       show={show}
       onHide={onHide}
       onOk={() => {
-        onClick.call(null, null, '', {
-          categoryId: currentCategoryId,
-          propertyId: currentPropertyId,
-          optionId: currentOptionId,
+        onClick.call(null, {
+          comment: `${user.name1} ${user.name2.charAt(0)} ${user.name3.charAt(
+            0,
+          )} передал инцидент в "${
+            departmentList.find(
+              (item: any) => Number(item.id) === Number(currentDepartmentId),
+            )?.name
+          }"`,
+          bodyData: {
+            categoryId: currentCategoryId,
+            propertyId: currentPropertyId,
+            optionId: currentOptionId,
+            currentResponsible: null,
+          },
         });
       }}
-      textOk={'Направить'}
+      textOk={'Передать'}
     >
       <>
         {!!departmentList.length

@@ -12,9 +12,11 @@ const IncidentInWork: React.FC<IIncidentInWork> = ({
     <>
       <small>
         {`${nameResponsible} принял(а) в работу `}
-        <Moment locale="ru" fromNow>
-          {startWork}
-        </Moment>
+        {!!startWork ? (
+          <Moment locale="ru" fromNow>
+            {startWork}
+          </Moment>
+        ) : undefined}
       </small>
     </>
   );

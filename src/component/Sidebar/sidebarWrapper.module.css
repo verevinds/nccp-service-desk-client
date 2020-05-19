@@ -1,13 +1,13 @@
 @media screen and (min-height: 720px) {
   .block {
-    max-height: 700px;
+    height: 700px;
     overflow-y: auto;
   }
 }
 
 @media screen and (min-height: 500px) and (max-height: 720px) {
   .block {
-    max-height: 500px;
+    height: 500px;
     overflow-y: auto;
   }
 }

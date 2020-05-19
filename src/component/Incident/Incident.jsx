@@ -108,7 +108,7 @@ const Incident = ({ params, title, badge }) => {
           onClickHistory={onClickHistory}
         />
       </Col>
-      <Col>
+      <Col xs={7}>
         <Container>
           {current.incident ? (
             <IncidentWindow incident={current.incident} myincident={badge} />

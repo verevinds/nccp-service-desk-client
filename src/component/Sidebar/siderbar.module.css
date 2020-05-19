@@ -1,11 +1,8 @@
-.block {
-  height: 700px;
-  overflow-y: auto;
-}
 .icon {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-evenly;
+  width: 25px;
 }
 .icon_right {
   margin-left: 1em;
@@ -18,6 +15,7 @@
   display: flex;
   justify-content: space-between;
   padding: 0.4em;
+  min-height: 62px;
 }
 .item__body {
   width: 100%;
