@@ -75,29 +75,30 @@ export default memo(function IncidentWorkButton({ onClick, handleOpenModal }) {
           </>
         );
       } else {
-        return (
-          <>
-            <ButtonGroup aria-label="Basic example">
-              <Button
-                variant="success"
-                onClick={onClick.bind(null, {
-                  comment: `Согласовано`,
-                })}
-              >
-                Согласовать
-              </Button>
-              <Button
-                variant="outline-danger"
-                onClick={onClick.bind(null, {
-                  comment: `Отказано`,
-                  bodyData: { currentResponsible: null, statusId: 0 },
-                })}
-              >
-                Отказать
-              </Button>
-            </ButtonGroup>
-          </>
-        );
+        if (user.position.level)
+          return (
+            <>
+              <ButtonGroup aria-label="Basic example">
+                <Button
+                  variant="success"
+                  onClick={onClick.bind(null, {
+                    comment: `Согласовано`,
+                  })}
+                >
+                  Согласовать
+                </Button>
+                <Button
+                  variant="outline-danger"
+                  onClick={onClick.bind(null, {
+                    comment: `Отказано`,
+                    bodyData: { currentResponsible: null, statusId: 0 },
+                  })}
+                >
+                  Отказать
+                </Button>
+              </ButtonGroup>
+            </>
+          );
       }
     }
   }, [currentIncident]);
@@ -109,7 +110,7 @@ export default memo(function IncidentWorkButton({ onClick, handleOpenModal }) {
           {user.position.level ? (
             <>
               <Button
-                variant={'light'}
+                variant={'outline-secondary'}
                 size="sm"
                 onClick={handleShowResponsible}
               >
@@ -122,22 +123,23 @@ export default memo(function IncidentWorkButton({ onClick, handleOpenModal }) {
                   onClick={onClick}
                 />
               ) : undefined}
-              <Button
-                variant={'light'}
-                size="sm"
-                onClick={handleShowDepartment}
-              >
-                Передать в другой отдел
-              </Button>
-              {showHandleDepartment ? (
-                <IncidentHandleDepartment
-                  show={showHandleDepartment}
-                  onHide={handleCloseDepartment}
-                  onClick={onClick}
-                />
-              ) : undefined}
             </>
           ) : null}
+
+          <Button
+            variant={'outline-secondary'}
+            size="sm"
+            onClick={handleShowDepartment}
+          >
+            Передать в другой отдел
+          </Button>
+          {showHandleDepartment ? (
+            <IncidentHandleDepartment
+              show={showHandleDepartment}
+              onHide={handleCloseDepartment}
+              onClick={onClick}
+            />
+          ) : undefined}
         </div>
         {responsibleButton}
       </div>
