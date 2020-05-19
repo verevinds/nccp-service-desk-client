@@ -62,7 +62,7 @@ export default memo(function IncidentWorkButton({ onClick, handleOpenModal }) {
         <>
           <Button variant="outline-primary" onClick={handleOpenModal}>
             Изменить
-          </Button>{' '}
+          </Button>
         </>
       );
     } else {
@@ -71,7 +71,7 @@ export default memo(function IncidentWorkButton({ onClick, handleOpenModal }) {
           <>
             <Button variant="outline-success" onClick={handleInWork}>
               Взять в работу
-            </Button>{' '}
+            </Button>
           </>
         );
       } else {
@@ -113,9 +113,10 @@ export default memo(function IncidentWorkButton({ onClick, handleOpenModal }) {
                 variant={'outline-secondary'}
                 size="sm"
                 onClick={handleShowResponsible}
+                className={'m-1'}
               >
                 Назначить ответственного
-              </Button>{' '}
+              </Button>
               {showHanldeResponsible ? (
                 <SetResponsible
                   show={showHanldeResponsible}
@@ -129,6 +130,7 @@ export default memo(function IncidentWorkButton({ onClick, handleOpenModal }) {
           <Button
             variant={'outline-secondary'}
             size="sm"
+            className={'m-1'}
             onClick={handleShowDepartment}
           >
             Передать в другой отдел

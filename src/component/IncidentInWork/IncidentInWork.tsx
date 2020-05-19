@@ -11,7 +11,9 @@ const IncidentInWork: React.FC<IIncidentInWork> = ({
   return (
     <>
       <small>
-        {`${nameResponsible} принял(а) в работу `}
+        {`${nameResponsible} принял(а) в работу ${
+          !startWork ? `(на согласовании)` : ''
+        }`}
         {!!startWork ? (
           <Moment locale="ru" fromNow>
             {startWork}
