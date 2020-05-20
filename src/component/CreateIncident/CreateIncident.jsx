@@ -8,6 +8,7 @@ import CreateIncidentSelect from '../CreateIncidentSelect/CreateIncidentSelect';
 import { Form } from 'react-bootstrap';
 import { incidentFetching } from '../../redux/actionCreators/incidentAction';
 import ModalWindow from '../ModalWindow/ModalWindow';
+const socket = openSocket('http://192.168.214.106:8000');
 
 const CreateIncidentModel = ({ handleClose, showModal, list, user }) => {
   const dateNow = new Date();
@@ -69,7 +70,13 @@ const CreateIncidentModel = ({ handleClose, showModal, list, user }) => {
       } else optionId = null;
     }
     setCurrentCategory(newCurrentCategory);
-    setIncident({ ...incident, categoryId, propertyId, optionId });
+    setIncident({
+      ...incident,
+      departmentId: currentCategory[0].departmentId,
+      categoryId,
+      propertyId,
+      optionId,
+    });
     // eslint-disable-next-line
   }, [currentIdCategory, currentIdProperty, currentIdOption]);
 
@@ -90,7 +97,6 @@ const CreateIncidentModel = ({ handleClose, showModal, list, user }) => {
     event.preventDefault();
     dispatch(incidentFetching('post', incident));
 
-    const socket = openSocket('http://192.168.214.106:8000');
     socket.emit('departmentId', currentCategory[0].departmentId);
     handleClose();
   };

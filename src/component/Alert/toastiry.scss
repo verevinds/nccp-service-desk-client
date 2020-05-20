@@ -1,0 +1,91 @@
+/** Used to define container behavior: width, position: fixed etc... **/
+.Toastify__toast-container {
+  padding: 0;
+}
+
+/** Used to define the position of the ToastContainer **/
+.Toastify__toast-container--top-left {
+}
+.Toastify__toast-container--top-center {
+}
+.Toastify__toast-container--top-right {
+}
+.Toastify__toast-container--bottom-left {
+}
+.Toastify__toast-container--bottom-center {
+}
+.Toastify__toast-container--bottom-right {
+}
+
+/** Classes for the displayed toast **/
+.Toastify__toast {
+}
+.Toastify__toast--rtl {
+}
+.Toastify__toast--dark {
+}
+.Toastify__toast--default {
+}
+.Toastify__toast--info {
+  color: #0c5460;
+  font-size: 0.8em;
+  background-color: #d1ecf1;
+  padding: 0.75rem 1.25rem;
+  border-color: #bee5eb;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
+  opacity: 0.8;
+  .alertCustom {
+    margin: 0;
+  }
+  .alertCustom h6 {
+    padding-left: 1em;
+    line-height: 30px;
+    font-weight: 500;
+    margin: 0;
+  }
+  .alertCustom__title {
+    padding: 0;
+    display: flex;
+  }
+  .alertCustom__text {
+    margin: 0;
+    padding: 0 0.25em;
+    color: #0c5460;
+  }
+}
+.Toastify__toast--success {
+}
+.Toastify__toast--warning {
+}
+.Toastify__toast--error {
+}
+.Toastify__toast-body {
+}
+
+/** Classes for the close button. Better use your own closeButton **/
+.Toastify__close-button {
+  color: #0c5460;
+}
+.Toastify__close-button--default {
+}
+.Toastify__close-button > svg {
+}
+.Toastify__close-button:hover,
+.Toastify__close-button:focus {
+}
+
+/** Classes for the progress bar **/
+.Toastify__progress-bar {
+}
+.Toastify__progress-bar--animated {
+}
+.Toastify__progress-bar--controlled {
+}
+.Toastify__progress-bar--rtl {
+}
+.Toastify__progress-bar--default {
+}
+.Toastify__progress-bar--dark {
+}

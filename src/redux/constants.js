@@ -46,3 +46,6 @@ export const POSITIONS_UPDATE = 'POSITIONS_UPDATE';
 /**Пользователи */
 export const USERS_REQUEST_SUCCESSED = 'USERS_REQUEST_SUCCESSED';
 export const USERS_UPDATE = 'USERS_UPDATE';
+
+/**ERROR_CLOSE */
+export const ERROR_CLOSE = 'ERROR_CLOSE';
