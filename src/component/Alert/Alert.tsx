@@ -8,7 +8,7 @@ import useSound from 'use-sound';
 import openSocket from 'socket.io-client';
 import { incidentCreate } from '../../redux/actionCreators/incidentAction';
 
-const socket = openSocket('http://192.168.214.106:8000');
+const socket = openSocket('http://192.168.213.77:8000');
 interface Props {
   data: any;
   title: string;
