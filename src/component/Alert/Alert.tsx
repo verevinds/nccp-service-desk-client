@@ -17,7 +17,7 @@ interface Props {
 const Alert: React.FC<Props> = () => {
   const user = useSelector((state: any) => state.auth.user, shallowEqual);
   const dispatch = useDispatch();
-  const [play, { stop }] = useSound('../../sounds/SpeechOn.wav', {
+  const [play] = useSound('../../sounds/SpeechOn.wav', {
     volume: 1,
   });
 
@@ -36,6 +36,7 @@ const Alert: React.FC<Props> = () => {
         </div>,
       );
     });
+    // eslint-disable-next-line
   }, [user, dispatch]);
 
   return (
