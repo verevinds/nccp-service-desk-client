@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from 'react';
+import React, { memo, useEffect, useLayoutEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { useSelector, shallowEqual } from 'react-redux';
@@ -7,6 +7,7 @@ import { authRequestSuccessed } from './redux/actionCreators/authAction';
 import { queryApi } from './redux/actionCreators/queryApiAction';
 import { departmentRequestSuccessed } from './redux/actionCreators/departmentAction';
 import { statusRequestSeccessed } from './redux/actionCreators/statusAction';
+import { accessRequestSeccessed } from './redux/actionCreators/accessAction';
 import MainPage from './page/MainPage';
 import SettingPage from './page/SettingPage';
 import Header from './component/Header/Header';
@@ -17,7 +18,7 @@ import Alert from './component/Alert/Alert';
 const App = (props) => {
   const catalog = useSelector((state) => state.catalog, shallowEqual);
   const status = useSelector((state) => state.status, shallowEqual);
-
+  const user = useSelector((state) => state.auth?.user, shallowEqual);
   const state = useSelector((state) => state, shallowEqual);
   const dispatch = useDispatch();
 
@@ -25,7 +26,16 @@ const App = (props) => {
     // console.log(state);
   }, [state]);
   useEffect(() => {
-    // dispatch(authFetching(window.ipGlobal));
+    if (!!user)
+      dispatch(
+        queryApi({
+          route: 'access',
+          actionSuccessed: accessRequestSeccessed,
+          id: user.number,
+        }),
+      );
+  }, [user, dispatch]);
+  useLayoutEffect(() => {
     axios
       .get('http://api.nccp-eng.ru/', {
         params: {

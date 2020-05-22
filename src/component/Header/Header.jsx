@@ -11,13 +11,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCog } from '@fortawesome/free-solid-svg-icons';
 
 const Header = (props) => {
-  const { user } = useSelector((state) => state.auth);
-  const { list } = useSelector((state) => state.catalog);
+  const user = useSelector((state) => state.auth.user, shallowEqual);
+  const isAccess = useSelector((state) => state.access.isAccess, shallowEqual);
+  const list = useSelector((state) => state.catalog.list, shallowEqual);
   const listIncident = useSelector(
     (state) => state.incidents.list,
     shallowEqual,
   );
-  const [access, setAccess] = useState(1);
   const [showModal, setShowModal] = useState(false);
   const handleClose = () => setShowModal(false);
   const handleOpen = () => setShowModal(true);
@@ -27,7 +27,6 @@ const Header = (props) => {
   useEffect(() => {
     if (!!user) {
       setFullName(`${user.name1 || 'N'} ${user.name2 || 'N'}`);
-      setAccess(1);
     } else {
       setFullName(`Гость`);
     }
@@ -91,7 +90,7 @@ const Header = (props) => {
                 </div>
               </Nav.Link>
             </Nav.Item>
-            {access === 1 ? (
+            {isAccess >= 1 ? (
               <Nav.Item className={styles.nav__item}>
                 <NavLink
                   to="/setting"

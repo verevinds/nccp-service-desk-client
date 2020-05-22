@@ -49,3 +49,7 @@ export const USERS_UPDATE = 'USERS_UPDATE';
 
 /**ERROR_CLOSE */
 export const ERROR_CLOSE = 'ERROR_CLOSE';
+
+/**Пользователи */
+export const ACCESS_REQUEST_SUCCESSED = 'ACCESS_REQUEST_SUCCESSED';
+export const ACCESS_UPDATE = 'ACCESS_UPDATE';

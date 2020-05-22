@@ -38,13 +38,13 @@ export default memo(function IncidentWorkButton({ onClick, handleOpenModal }) {
     let { category, property, option } = currentIncident;
     if (category || property || option) {
       if (category.level) {
-        return onClick.bind(null, {
+        return onClick.bind({
           bodyData: { currentResponsible: user.number },
           comment: `${fullName} назначил себя ответственный. Ожидает согласования.`,
           isConsent: true,
         });
       } else {
-        return onClick.bind(null, {
+        return onClick.bind({
           bodyData: { currentResponsible: user.number },
           comment: `Статус инцидента изменен на "В работе". Ответственным назначен: ${fullName}`,
         });
@@ -80,7 +80,7 @@ export default memo(function IncidentWorkButton({ onClick, handleOpenModal }) {
               <ButtonGroup aria-label="Basic example">
                 <Button
                   variant="success"
-                  onClick={onClick.bind(null, {
+                  onClick={onClick.bind({
                     comment: `Согласовано`,
                   })}
                 >
@@ -88,7 +88,7 @@ export default memo(function IncidentWorkButton({ onClick, handleOpenModal }) {
                 </Button>
                 <Button
                   variant="outline-danger"
-                  onClick={onClick.bind(null, {
+                  onClick={onClick.bind({
                     comment: `Отказано`,
                     bodyData: { currentResponsible: null, statusId: 0 },
                   })}

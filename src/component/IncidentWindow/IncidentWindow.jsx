@@ -4,6 +4,7 @@ import Moment from 'react-moment';
 import styles from './styles.module.css';
 import 'moment/locale/ru';
 import IncidentModalWrapper from '../IncidentHandleStatus/IncidentHandleStatus';
+import dateNow from '../../js/dateNow';
 
 //ActionCreator
 import { incidentCreate } from '../../redux/actionCreators/incidentAction';
@@ -22,24 +23,19 @@ const IncidentWindow = ({ incident, myincident }) => {
   //State изменений в инциденте
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth, shallowEqual);
-  const onClick = ({ number, comment, bodyData, isConsent }) => {
-    const date = new Date();
-    const dateNow = `${date.getFullYear()}-${
-      date.getMonth() + 1
-    }-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+
+  function onClick() {
     const incidentData = {
-      startWork: dateNow,
+      startWork: dateNow(),
       statusId: Number(1),
     };
-    if (isConsent) {
+    if (this.isConsent) {
       incidentData.startWork = null;
       incidentData.statusId = 0;
     }
-    if (!!bodyData) {
-      Object.assign(incidentData, bodyData);
+    if (!!this.bodyData) {
+      Object.assign(incidentData, this.bodyData);
     }
-    console.log('incidentData', incidentData);
-    // dispatch(incidentFetching('put', responsible, incident.id, 'incidents'));
     dispatch(
       queryApi({
         route: 'incidents',
@@ -50,7 +46,7 @@ const IncidentWindow = ({ incident, myincident }) => {
       }),
     );
     const data = {
-      text: comment,
+      text: this.comment,
       userNumber: user.number,
       incidentId: incident.id,
     };
@@ -63,7 +59,8 @@ const IncidentWindow = ({ incident, myincident }) => {
         id: incident.id,
       }),
     );
-  };
+  }
+
   useEffect(() => {}, [incident]);
   const [showModal, setShowModal] = useState(false);
   const handleCloseModal = () => setShowModal(false);
