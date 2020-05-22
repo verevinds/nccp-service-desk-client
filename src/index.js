@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 
 import './index.css';
-import * as serviceWorker from './serviceWorker';
+// import * as serviceWorker from './serviceWorker';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import store from './redux/store';
 import App from './App';
@@ -21,12 +21,15 @@ ReactDOM.render(
 // serviceWorker.register();
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', function () {
-    navigator.serviceWorker.register('/sw.js').then(function (registration) {
-      // Успешная регистрация
-      console.log('ServiceWorker registration successful');
-    }, function (err) {
-      // При регистрации произошла ошибка
-      console.log('ServiceWorker registration failed: ', err);
-    });
+    navigator.serviceWorker.register('/sw.js').then(
+      function (registration) {
+        // Успешная регистрация
+        console.log('ServiceWorker registration successful');
+      },
+      function (err) {
+        // При регистрации произошла ошибка
+        console.log('ServiceWorker registration failed: ', err);
+      },
+    );
   });
 }

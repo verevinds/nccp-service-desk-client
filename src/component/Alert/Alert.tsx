@@ -8,7 +8,7 @@ import useSound from 'use-sound';
 import openSocket from 'socket.io-client';
 import { incidentCreate } from '../../redux/actionCreators/incidentAction';
 
-const socket = openSocket('http://192.168.213.77:8000');
+const socket = openSocket('http://localhost:8000/');
 interface Props {
   data: any;
   title: string;
@@ -22,7 +22,7 @@ const Alert: React.FC<Props> = () => {
   });
 
   useEffect(() => {
-    socket.on(String(user?.departmentId), (data: any) => {
+    const newAlert = (data: any) => {
       dispatch(incidentCreate());
       play();
       toast.info(
@@ -31,11 +31,13 @@ const Alert: React.FC<Props> = () => {
             <span role="img" aria-label="inbox">
               📥
             </span>
-            <h6>Поступил новый инцидент</h6>
+            <h6>{data || `Поступил новый инцидент`}</h6>
           </div>
         </div>,
       );
-    });
+    };
+    // socket.on(String(user?.departmentId), newAlert);
+    socket.on('test', newAlert);
     // eslint-disable-next-line
   }, [user, dispatch]);
 

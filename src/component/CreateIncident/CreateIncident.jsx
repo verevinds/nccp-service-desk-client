@@ -8,7 +8,7 @@ import CreateIncidentSelect from '../CreateIncidentSelect/CreateIncidentSelect';
 import { Form } from 'react-bootstrap';
 import { incidentFetching } from '../../redux/actionCreators/incidentAction';
 import ModalWindow from '../ModalWindow/ModalWindow';
-const socket = openSocket('http://192.168.213.77:8000');
+const socket = openSocket('http://localhost:8000/');
 
 const CreateIncidentModel = ({ handleClose, showModal, list, user }) => {
   const dateNow = new Date();

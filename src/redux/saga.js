@@ -29,7 +29,7 @@ export function* watchFetch() {
   yield takeEvery(QUERY_API, queryApiAsync);
   yield takeEvery(INCIDENT_FETCHING, fetchAsyncIncident);
 }
-
+const URL = 'http://192.168.213.77/';
 function* queryApiAsync({
   route,
   actionSuccessed,
@@ -55,34 +55,26 @@ function* queryApiAsync({
     // console.groupEnd();
     switch (method) {
       case 'post':
-        response = yield call(() =>
-          axios.post(`http://192.168.213.77/api/${route}`, data),
-        );
+        response = yield call(() => axios.post(`api/${route}`, data));
         if (!!actionUpdate) {
           yield put(actionUpdate());
         }
         break;
       case 'delete':
-        response = yield call(() =>
-          axios.delete(`http://192.168.213.77/api/${route}/${id}`, data),
-        );
+        response = yield call(() => axios.delete(`api/${route}/${id}`, data));
         if (!!actionUpdate) {
           yield put(actionUpdate());
         }
         break;
       case 'put':
-        response = yield call(() =>
-          axios.put(`http://192.168.213.77/api/${route}/${id}`, data),
-        );
+        response = yield call(() => axios.put(`api/${route}/${id}`, data));
         if (!!actionUpdate) {
           yield put(actionUpdate());
         }
         break;
       default:
-        response = yield call(() =>
-          axios.get(`http://192.168.213.77/api/${route}/`, data),
-        );
-        // console.log(`http://192.168.213.77/api/${route}/`, data);
+        response = yield call(() => axios.get(`api/${route}/`, data));
+        // console.log(`api/${route}/`, data);
         if (!!actionUpdate) {
           yield put(actionUpdate());
         }
@@ -99,9 +91,7 @@ function* queryApiAsync({
 function* fetchAsync({ ip }) {
   try {
     yield put(authRequestSendd());
-    const response = yield call(() =>
-      axios.get(`http://192.168.213.77/api/auth/?ip=${ip}`),
-    );
+    const response = yield call(() => axios.get(`api/auth/?ip=${ip}`));
     yield put(authRequestSuccessed(response.data[0]));
   } catch (error) {
     console.log(error.message);
@@ -111,9 +101,7 @@ function* fetchAsync({ ip }) {
 function* fetchAsyncCatalog() {
   try {
     yield put(categoryRequestSendd());
-    const response = yield call(() =>
-      axios.get(`http://192.168.213.77/api/categories`),
-    );
+    const response = yield call(() => axios.get(`api/categories`));
     yield put(categoryRequestSuccessed(response.data));
   } catch (error) {
     console.log(error.message);
@@ -124,27 +112,19 @@ function* fetchAsyncIncident({ route, method, data, id }) {
     yield put(incidentRequestSendd());
     switch (method) {
       case 'post':
-        yield call(() =>
-          axios.post(`http://192.168.213.77/api/${route}`, data),
-        );
+        yield call(() => axios.post(`api/${route}`, data));
         yield put(incidentCreate());
         break;
       case 'delete':
-        yield call(() =>
-          axios.delete(`http://192.168.213.77/api/${route}/${id}`, data),
-        );
+        yield call(() => axios.delete(`api/${route}/${id}`, data));
         yield put(incidentCreate());
         break;
       case 'put':
-        yield call(() =>
-          axios.put(`http://192.168.213.77/api/${route}/${id}`, data),
-        );
+        yield call(() => axios.put(`api/${route}/${id}`, data));
         yield put(incidentCreate());
         break;
       case 'get':
-        const response = yield call(() =>
-          axios.get(`http://192.168.213.77/api/incidents`),
-        );
+        const response = yield call(() => axios.get(`api/incidents`));
         yield put(incidentRequestSuccessed(response.data));
         break;
       default:
@@ -159,14 +139,10 @@ function* catalogPost({ route, method, data, id }) {
     yield put(authRequestSendd());
     switch (method) {
       case 'post':
-        yield call(() =>
-          axios.post(`http://192.168.213.77/api/${route}`, data),
-        );
+        yield call(() => axios.post(`api/${route}`, data));
         break;
       case 'delete':
-        yield call(() =>
-          axios.delete(`http://192.168.213.77/api/${route}/${id}`, data),
-        );
+        yield call(() => axios.delete(`api/${route}/${id}`, data));
         break;
 
       default:
