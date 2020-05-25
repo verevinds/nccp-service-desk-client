@@ -38,7 +38,7 @@
     "typescript": "^3.8.3",
     "use-sound": "^1.0.2"
   },
-  "proxy": "http://192.168.213.77:8000",
+  "proxy": "http://192.168.213.77:8080",
   "scripts": {
     "start": "set PORT=8081 & react-scripts start",
     "build": "react-scripts build",

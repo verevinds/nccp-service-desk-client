@@ -19,19 +19,8 @@
 
 /** Classes for the displayed toast **/
 .Toastify__toast {
-}
-.Toastify__toast--rtl {
-}
-.Toastify__toast--dark {
-}
-.Toastify__toast--default {
-}
-.Toastify__toast--info {
-  color: #0c5460;
   font-size: 0.8em;
-  background-color: #d1ecf1;
   padding: 0.75rem 1.25rem;
-  border-color: #bee5eb;
   margin-bottom: 1rem;
   border: 1px solid transparent;
   border-radius: 0.25rem;
@@ -44,7 +33,7 @@
   }
   .alertCustom h6 {
     padding-left: 1em;
-    line-height: 30px;
+    line-height: 25px;
     font-weight: 500;
     margin: 0;
   }
@@ -58,9 +47,32 @@
     color: #0c5460;
   }
 }
+.Toastify__toast--rtl {
+}
+.Toastify__toast--dark {
+  color: #1b1e21;
+  background-color: #d6d8d9;
+  border-color: #c6c8ca;
+}
+.Toastify__toast--default {
+  color: #818182;
+  background-color: #fefefe;
+  border-color: #fdfdfe;
+}
+.Toastify__toast--info {
+  color: #0c5460;
+  background-color: #d1ecf1;
+  border-color: #bee5eb;
+}
 .Toastify__toast--success {
+  color: #155724;
+  background-color: #d4edda;
+  border-color: #c3e6cb;
 }
 .Toastify__toast--warning {
+  color: #721c24;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
 }
 .Toastify__toast--error {
 }

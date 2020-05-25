@@ -29,7 +29,7 @@ export function* watchFetch() {
   yield takeEvery(QUERY_API, queryApiAsync);
   yield takeEvery(INCIDENT_FETCHING, fetchAsyncIncident);
 }
-const URL = 'http://192.168.213.77';
+const URL = 'http://192.168.213.77:8080';
 function* queryApiAsync({
   route,
   actionSuccessed,

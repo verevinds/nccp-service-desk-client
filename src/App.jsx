@@ -13,7 +13,8 @@ import SettingPage from './page/SettingPage';
 import Header from './component/Header/Header';
 import MyIncidentPage from './page/MyIncidentPage';
 import axios from 'axios';
-import Alert from './component/Alert/Alert';
+import HandleSocket from './component/HandleSocket/HandleSocket';
+import TestPage from './page/TestPage';
 
 const App = (props) => {
   const catalog = useSelector((state) => state.catalog, shallowEqual);
@@ -80,11 +81,12 @@ const App = (props) => {
   return (
     <BrowserRouter>
       <Header />
-      <Alert />
+      <HandleSocket />
       <Switch>
         <Route exact path="/" component={MainPage} />
         <Route path="/setting" component={SettingPage} />
         <Route path="/myincidents" component={MyIncidentPage} />
+        <Route path="/test" component={TestPage} />
       </Switch>
     </BrowserRouter>
   );

@@ -1,0 +1,38 @@
+.files-input {
+  display: flex;
+  flex: 1 1 auto;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  border-bottom-left-radius: unset;
+  border-top-left-radius: unset;
+}
+.files-input .btn-tertiary {
+  line-height: 35px;
+}
+.files-input label {
+  margin-bottom: 0;
+  color: #495057;
+}
+.files-input .btn-tertiary:hover,
+.files-input .btn-tertiary:focus {
+  color: #888;
+}
+.files-input .input-file {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  flex: 1 1 auto;
+  z-index: -1;
+}
+.files-input .input-file + .js-labelFile {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 0 10px;
+  cursor: pointer;
+}
+.files-input .icon {
+  margin-right: 1em;
+}

@@ -10,7 +10,7 @@ const MainPage = () => {
   useEffect(() => {
     if (user) {
       setParams({ departmentId: user.departmentId });
-      setTitle(`${user.department.name}`);
+      if (user.department) setTitle(`${user.department?.name}`);
     }
   }, [user]);
   return <Incident params={params} title={title} />;

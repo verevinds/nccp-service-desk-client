@@ -8,6 +8,7 @@ import CreateIncidentSelect from '../CreateIncidentSelect/CreateIncidentSelect';
 import { Form } from 'react-bootstrap';
 import { incidentFetching } from '../../redux/actionCreators/incidentAction';
 import ModalWindow from '../ModalWindow/ModalWindow';
+import UploadFiles from '../UploadFiles/UploadFiles';
 const socket = openSocket('http://192.168.213.77:8000/');
 
 const CreateIncidentModel = ({ handleClose, showModal, list, user }) => {
@@ -133,6 +134,9 @@ const CreateIncidentModel = ({ handleClose, showModal, list, user }) => {
             setIncident({ ...incident, text: event.target.value });
           }}
         />
+      </Form.Group>
+      <Form.Group>
+        <UploadFiles />
       </Form.Group>
     </ModalWindow>
   );
