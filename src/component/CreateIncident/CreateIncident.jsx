@@ -106,7 +106,7 @@ const CreateIncidentModel = ({ handleClose, showModal, list, user }) => {
   const dispatch = useDispatch();
   const onSubmit = async (event) => {
     event.preventDefault();
-    let statusFileUpload = await fileUpload(file[0]);
+    let statusFileUpload = await fileUpload(file ? file[0] : '');
     console.log(statusFileUpload);
     if (statusFileUpload.status === Number(200)) {
       setAlert(
