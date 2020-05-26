@@ -15,6 +15,7 @@ import MyIncidentPage from './page/MyIncidentPage';
 import axios from 'axios';
 import HandleSocket from './component/HandleSocket/HandleSocket';
 import TestPage from './page/TestPage';
+import AppContext from './context/AppContext';
 
 const App = (props) => {
   const catalog = useSelector((state) => state.catalog, shallowEqual);

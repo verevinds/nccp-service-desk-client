@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
+import React, { memo, useMemo } from 'react';
+import { ToastContainer, toast, ToastOptions } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './toastiry.scss';
 
@@ -30,34 +30,30 @@ const Alert: React.FC<Props> = ({ text, type, autoClose }) => {
       </div>
     );
   }, [text, type]);
-
+  const options: ToastOptions = {
+    position: 'top-right',
+    autoClose: autoClose,
+    hideProgressBar: !Boolean(autoClose),
+    closeOnClick: false,
+    rtl: false,
+    draggable: true,
+  };
   switch (type) {
     case 'info':
-      toast.info(body);
+      toast.info(body, options);
       break;
     case 'success':
-      toast.success(body);
+      toast.success(body, options);
       break;
     case 'warn':
-      toast.warn(body);
+      toast.warn(body, options);
       break;
     default:
-      toast(body);
+      toast(body, options);
       break;
   }
 
-  return (
-    <ToastContainer
-      position="top-right"
-      autoClose={autoClose}
-      hideProgressBar={!autoClose}
-      newestOnTop
-      closeOnClick={false}
-      rtl={false}
-      pauseOnFocusLoss
-      draggable
-    />
-  );
+  return <ToastContainer />;
 };
 
 export default Alert;

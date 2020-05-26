@@ -1,17 +1,24 @@
-import React, { memo, useState, useEffect } from 'react';
+import React, { memo, useState, useEffect, useContext } from 'react';
 import { useDispatch } from 'react-redux';
 import openSocket from 'socket.io-client';
 
+//** My components */
 import CreateIncidentSelect from '../CreateIncidentSelect/CreateIncidentSelect';
+import ModalWindow from '../ModalWindow/ModalWindow';
+import UploadFiles from '../UploadFiles/UploadFiles';
+import { fileUpload } from '../UploadFiles/fileUpload';
+import Alert from '../Alert/Alert';
+import { AppContext } from '../../context/AppContext';
+/** Action creators */
+import { incidentFetching } from '../../redux/actionCreators/incidentAction';
 
 /**Bootstrap components */
 import { Form } from 'react-bootstrap';
-import { incidentFetching } from '../../redux/actionCreators/incidentAction';
-import ModalWindow from '../ModalWindow/ModalWindow';
-import UploadFiles from '../UploadFiles/UploadFiles';
+
 const socket = openSocket('http://192.168.213.77:8000/');
 
 const CreateIncidentModel = ({ handleClose, showModal, list, user }) => {
+  const [alert, setAlert] = useState();
   const dateNow = new Date();
   const [incident, setIncident] = useState({
     startWork: null,
@@ -47,6 +54,9 @@ const CreateIncidentModel = ({ handleClose, showModal, list, user }) => {
   const [currentCategory, setCurrentCategory] = useState(
     list.filter((item) => item.id === currentIdCategory),
   );
+
+  //? Инициализируем состояние выбранного файла
+  const [file, setFile] = useState(null);
 
   //? Устанавливаем эффект на каждое изменение состояния номера текущей категории
   useEffect(() => {
@@ -94,14 +104,25 @@ const CreateIncidentModel = ({ handleClose, showModal, list, user }) => {
   };
 
   const dispatch = useDispatch();
-  const onSubmit = (event) => {
+  const onSubmit = async (event) => {
     event.preventDefault();
-    dispatch(incidentFetching('post', incident));
-    socket.emit('newIncident', currentCategory[0].departmentId);
-
+    let statusFileUpload = await fileUpload(file[0]);
+    console.log(statusFileUpload);
+    if (statusFileUpload.status === Number(200)) {
+      setAlert(
+        <Alert
+          autoClose={3000}
+          type={'success'}
+          text={statusFileUpload.data.message}
+        />,
+      );
+    }
+    await dispatch(incidentFetching('post', incident));
+    await socket.emit('newIncident', currentCategory[0].departmentId);
     // socket.emit('departmentId', currentCategory[0].departmentId);
-    handleClose();
+    await handleClose();
   };
+
   return (
     <ModalWindow
       show={showModal}
@@ -136,7 +157,7 @@ const CreateIncidentModel = ({ handleClose, showModal, list, user }) => {
         />
       </Form.Group>
       <Form.Group>
-        <UploadFiles />
+        <UploadFiles setFile={setFile} />
       </Form.Group>
     </ModalWindow>
   );

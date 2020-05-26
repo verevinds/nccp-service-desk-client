@@ -6,10 +6,13 @@ import './styles.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUpload, faCheck } from '@fortawesome/free-solid-svg-icons';
 
-const InputFile = ({ callback }) => {
-  const inputEl = useRef(null);
-  const [fileName, setFileName] = useState(undefined);
-  const [alert, setAlert] = useState(undefined);
+interface IInputFile {
+  setFile: (file: FileList) => void;
+}
+const InputFile: React.FC<IInputFile> = ({ setFile }) => {
+  const file = useRef<HTMLInputElement>(null);
+  const [fileName, setFileName] = useState<string | undefined>(undefined);
+  const [alert, setAlert] = useState<JSX.Element | undefined>(undefined);
 
   useEffect(() => {
     if (!!fileName)
@@ -22,16 +25,21 @@ const InputFile = ({ callback }) => {
       );
   }, [fileName]);
 
-  const onChange = (event) => {
-    setFileName(inputEl.current.files[0].name);
+  const onChange = (event: React.FormEvent<HTMLInputElement>) => {
+    if (!!file)
+      if (!!file.current)
+        if (!!file.current.files) {
+          setFileName(file.current.files[0].name);
+          if (!!setFile) setFile(file.current.files);
+        }
   };
 
   return (
     <>
       {alert}
-      <div class="input-group flex-nowrap">
-        <div class="input-group-prepend">
-          <span class="input-group-text" id="addon-wrapping">
+      <div className="input-group flex-nowrap">
+        <div className="input-group-prepend">
+          <span className="input-group-text" id="addon-wrapping">
             Вложение:{' '}
           </span>
         </div>
@@ -41,10 +49,10 @@ const InputFile = ({ callback }) => {
             name="file"
             id="file"
             className="input-file"
-            ref={inputEl}
+            ref={file}
             onChange={onChange}
           />
-          <label for="file" className="btn btn-tertiary js-labelFile">
+          <label htmlFor="file" className="btn btn-tertiary js-labelFile">
             <FontAwesomeIcon
               icon={fileName ? faCheck : faUpload}
               color={fileName ? '#155724' : '#495057'}
