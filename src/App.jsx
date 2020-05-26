@@ -1,4 +1,10 @@
-import React, { memo, useEffect, useLayoutEffect } from 'react';
+import React, {
+  memo,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { useDispatch } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { useSelector, shallowEqual } from 'react-redux';
@@ -15,7 +21,8 @@ import MyIncidentPage from './page/MyIncidentPage';
 import axios from 'axios';
 import HandleSocket from './component/HandleSocket/HandleSocket';
 import TestPage from './page/TestPage';
-import AppContext from './context/AppContext';
+import Alert from './component/Alert/Alert';
+import { AlertContext } from './component/Alert/AlertContext';
 
 const App = (props) => {
   const catalog = useSelector((state) => state.catalog, shallowEqual);
@@ -25,7 +32,7 @@ const App = (props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // console.log(state);
+    console.log(state);
   }, [state]);
   useEffect(() => {
     if (!!user)
@@ -78,17 +85,31 @@ const App = (props) => {
       );
     }
   }, [status.isUpdate, dispatch]);
+  const [alert, setAlert] = useState();
+  let alertJsx = useMemo(() => {
+    if (alert)
+      return (
+        <Alert
+          text={alert.text}
+          autoClose={alert.autoClose || undefined}
+          type={alert.type || undefined}
+        />
+      );
+  }, [alert]);
 
   return (
     <BrowserRouter>
-      <Header />
-      <HandleSocket />
-      <Switch>
-        <Route exact path="/" component={MainPage} />
-        <Route path="/setting" component={SettingPage} />
-        <Route path="/myincidents" component={MyIncidentPage} />
-        <Route path="/test" component={TestPage} />
-      </Switch>
+      <AlertContext.Provider value={setAlert}>
+        <Header />
+        {alertJsx}
+        <HandleSocket />
+        <Switch>
+          <Route exact path="/" component={MainPage} />
+          <Route path="/setting" component={SettingPage} />
+          <Route path="/myincidents" component={MyIncidentPage} />
+          <Route path="/test" component={TestPage} />
+        </Switch>
+      </AlertContext.Provider>
     </BrowserRouter>
   );
 };

@@ -1,0 +1,22 @@
+.header {
+  cursor: pointer;
+}
+.table {
+  margin: 0;
+}
+.item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+.item pre {
+  margin: 0;
+}
+.item td {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.icon {
+  cursor: pointer;
+}

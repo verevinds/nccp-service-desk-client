@@ -8,17 +8,10 @@ import {
   INCIDENT_HISTORY_REQUEST_SUCCESSED,
 } from '../constants';
 
-export const incidentFetching = (
-  method = 'get',
-  data,
-  id,
-  route = 'incidents',
-) => ({
+export const incidentFetching = (data, dataFile) => ({
   type: INCIDENT_FETCHING,
-  route,
-  method,
+  dataFile,
   data,
-  id,
 });
 export const incidentRequestSendd = () => ({
   type: INCIDENT_REQUEST_SENDD,

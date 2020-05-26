@@ -30,14 +30,18 @@ const Alert: React.FC<Props> = ({ text, type, autoClose }) => {
       </div>
     );
   }, [text, type]);
-  const options: ToastOptions = {
-    position: 'top-right',
-    autoClose: autoClose,
-    hideProgressBar: !Boolean(autoClose),
-    closeOnClick: false,
-    rtl: false,
-    draggable: true,
-  };
+
+  const options: ToastOptions = useMemo(() => {
+    return {
+      position: 'top-right',
+      autoClose: !!autoClose ? autoClose : false,
+      hideProgressBar: !autoClose,
+      closeOnClick: false,
+      rtl: false,
+      draggable: true,
+    };
+  }, [autoClose]);
+
   switch (type) {
     case 'info':
       toast.info(body, options);
@@ -52,8 +56,7 @@ const Alert: React.FC<Props> = ({ text, type, autoClose }) => {
       toast(body, options);
       break;
   }
-
   return <ToastContainer />;
 };
 
-export default Alert;
+export default memo(Alert);

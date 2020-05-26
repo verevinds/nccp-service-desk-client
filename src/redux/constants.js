@@ -53,3 +53,8 @@ export const ERROR_CLOSE = 'ERROR_CLOSE';
 /**Пользователи */
 export const ACCESS_REQUEST_SUCCESSED = 'ACCESS_REQUEST_SUCCESSED';
 export const ACCESS_UPDATE = 'ACCESS_UPDATE';
+
+/**Пользователи */
+export const FILE_FETCHING = 'FILE_FETCHING';
+export const FILE_REQUEST_SENDD = 'FILE_REQUEST_SENDD';
+export const FILE_REQUEST_SUCCESSED = 'FILE_REQUEST_SUCCESSED';

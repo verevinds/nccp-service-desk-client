@@ -1,0 +1,8 @@
+.comment__header {
+  cursor: pointer;
+}
+.table,
+.table pre {
+  font-size: 0.9em;
+  margin: 0;
+}

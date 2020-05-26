@@ -7,18 +7,23 @@ import CreateIncidentSelect from '../CreateIncidentSelect/CreateIncidentSelect';
 import ModalWindow from '../ModalWindow/ModalWindow';
 import UploadFiles from '../UploadFiles/UploadFiles';
 import { fileUpload } from '../UploadFiles/fileUpload';
-import Alert from '../Alert/Alert';
-import { AppContext } from '../../context/AppContext';
+import { AlertContext } from '../Alert/AlertContext';
+
 /** Action creators */
-import { incidentFetching } from '../../redux/actionCreators/incidentAction';
+import {
+  incidentFetching,
+  incidentCreate,
+} from '../../redux/actionCreators/incidentAction';
 
 /**Bootstrap components */
 import { Form } from 'react-bootstrap';
+import { queryApi } from '../../redux/actionCreators/queryApiAction';
 
 const socket = openSocket('http://192.168.213.77:8000/');
 
 const CreateIncidentModel = ({ handleClose, showModal, list, user }) => {
-  const [alert, setAlert] = useState();
+  const setAlert = useContext(AlertContext);
+
   const dateNow = new Date();
   const [incident, setIncident] = useState({
     startWork: null,
@@ -106,18 +111,32 @@ const CreateIncidentModel = ({ handleClose, showModal, list, user }) => {
   const dispatch = useDispatch();
   const onSubmit = async (event) => {
     event.preventDefault();
+    let data = incident;
+    let dataFile;
     let statusFileUpload = await fileUpload(file ? file[0] : '');
-    console.log(statusFileUpload);
     if (statusFileUpload.status === Number(200)) {
-      setAlert(
-        <Alert
-          autoClose={3000}
-          type={'success'}
-          text={statusFileUpload.data.message}
-        />,
-      );
+      let type = undefined;
+      let text = undefined;
+      if (statusFileUpload.data.wasFile) {
+        type = 'success';
+        text = statusFileUpload.data.message;
+      } else {
+        text = `Вы не прикрепили файл`;
+      }
+      setAlert({
+        autoClose: 3000,
+        type,
+        text,
+      });
+      dataFile = statusFileUpload.data;
+    } else {
+      setAlert({
+        autoClose: 5000,
+        type: 'warn',
+        text: `Невозможно прикрепить файл: ${statusFileUpload}`,
+      });
     }
-    await dispatch(incidentFetching('post', incident));
+    await dispatch(incidentFetching(data, dataFile));
     await socket.emit('newIncident', currentCategory[0].departmentId);
     // socket.emit('departmentId', currentCategory[0].departmentId);
     await handleClose();

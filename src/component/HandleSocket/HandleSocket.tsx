@@ -1,6 +1,6 @@
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo, useEffect, useState, useContext } from 'react';
 import { useSelector, shallowEqual, useDispatch } from 'react-redux';
-import Alert from '../Alert/Alert';
+import { AlertContext } from '../Alert/AlertContext';
 // import SpeechOn from '../../sounds/SpeechOn.mp3';
 
 import openSocket from 'socket.io-client';
@@ -13,21 +13,20 @@ interface Props {
 }
 
 const HandleSocket: React.FC<Props> = () => {
+  const setAlert = useContext(AlertContext);
   const user = useSelector((state: any) => state.auth.user, shallowEqual);
   const dispatch = useDispatch();
-  const [alert, setAlert] = useState<JSX.Element | undefined>(undefined);
 
   useEffect(() => {
     const newAlert = (data: any) => {
       dispatch(incidentCreate());
-      console.log(data);
-      setAlert(<Alert type={'info'} text={`Поступил новый инцидент`} />);
+      setAlert({ type: 'info', text: `Поступил новый инцидент` });
     };
 
     socket.on(String(user?.departmentId), newAlert);
-  }, [user, dispatch]);
+  }, [user, dispatch, setAlert]);
 
-  return <>{alert}</>;
+  return <></>;
 };
 
 export default memo(HandleSocket);

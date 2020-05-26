@@ -1,7 +1,7 @@
-import React, { memo, useRef, useState, useEffect } from 'react';
-import Alert from '../Alert/Alert';
+import React, { memo, useRef, useState, useEffect, useContext } from 'react';
 import './styles.css';
 
+import { AlertContext } from '../Alert/AlertContext';
 //? Font Awesome иконки
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUpload, faCheck } from '@fortawesome/free-solid-svg-icons';
@@ -12,18 +12,16 @@ interface IInputFile {
 const InputFile: React.FC<IInputFile> = ({ setFile }) => {
   const file = useRef<HTMLInputElement>(null);
   const [fileName, setFileName] = useState<string | undefined>(undefined);
-  const [alert, setAlert] = useState<JSX.Element | undefined>(undefined);
+  const setAlert = useContext(AlertContext);
 
   useEffect(() => {
     if (!!fileName)
-      setAlert(
-        <Alert
-          type={'info'}
-          text={`Выбран файл ${fileName}`}
-          autoClose={4000}
-        />,
-      );
-  }, [fileName]);
+      setAlert({
+        type: 'success',
+        text: `Выбран файл ${fileName}`,
+        autoClose: 4000,
+      });
+  }, [fileName, setAlert]);
 
   const onChange = (event: React.FormEvent<HTMLInputElement>) => {
     if (!!file)
@@ -36,7 +34,6 @@ const InputFile: React.FC<IInputFile> = ({ setFile }) => {
 
   return (
     <>
-      {alert}
       <div className="input-group flex-nowrap">
         <div className="input-group-prepend">
           <span className="input-group-text" id="addon-wrapping">

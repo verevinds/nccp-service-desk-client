@@ -6,6 +6,7 @@ import {
   CATALOG_POST,
   INCIDENT_FETCHING,
   QUERY_API,
+  FILE_FETCHING,
 } from './constants';
 import {
   authRequestSendd,
@@ -21,6 +22,10 @@ import {
   incidentRequestSuccessed,
   incidentCreate,
 } from './actionCreators/incidentAction';
+import {
+  fileRequestSendd,
+  fileRequestSuccessed,
+} from './actionCreators/fileAction';
 
 export function* watchFetch() {
   yield takeLatest(AUTH_FETCHING, fetchAsync);
@@ -28,8 +33,33 @@ export function* watchFetch() {
   yield takeEvery(CATALOG_POST, catalogPost);
   yield takeEvery(QUERY_API, queryApiAsync);
   yield takeEvery(INCIDENT_FETCHING, fetchAsyncIncident);
+  yield takeEvery(FILE_FETCHING, fetchAsyncFile);
 }
 const URL = 'http://192.168.213.77:8080';
+
+function* fetchAsyncFile({ file, incidentId, userNumber }) {
+  try {
+    let response;
+    yield put(fileRequestSendd());
+    // console.log(file, incidentId, userId);
+    if (file.wasFile) {
+      let bindFileIncident = {
+        name: file.filename,
+        url: file.url,
+        userNumber,
+        incidentId,
+      };
+      response = yield call(() =>
+        axios.post(`${URL}/api/files`, bindFileIncident),
+      );
+    }
+
+    yield put(fileRequestSuccessed());
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
 function* queryApiAsync({
   route,
   actionSuccessed,
@@ -89,6 +119,7 @@ function* queryApiAsync({
     if (!!actionSuccessed) {
       yield put(actionSuccessed(response.data));
     }
+    return response;
   } catch (error) {
     console.log(error.message);
   }
@@ -113,29 +144,24 @@ function* fetchAsyncCatalog() {
     console.log(error.message);
   }
 }
-function* fetchAsyncIncident({ route, method, data, id }) {
+function* fetchAsyncIncident({ data, dataFile }) {
   try {
     yield put(incidentRequestSendd());
-    switch (method) {
-      case 'post':
-        yield call(() => axios.post(`${URL}/api/${route}`, data));
-        yield put(incidentCreate());
-        break;
-      case 'delete':
-        yield call(() => axios.delete(`${URL}/api/${route}/${id}`, data));
-        yield put(incidentCreate());
-        break;
-      case 'put':
-        yield call(() => axios.put(`${URL}/api/${route}/${id}`, data));
-        yield put(incidentCreate());
-        break;
-      case 'get':
-        const response = yield call(() => axios.get(`${URL}/api/incidents`));
-        yield put(incidentRequestSuccessed(response.data));
-        break;
-      default:
-        break;
+    const newIncident = yield call(() =>
+      axios.post(`${URL}/api/incidents`, data),
+    );
+
+    if (dataFile.wasFile) {
+      let bindFileIncident = {
+        name: dataFile.filename,
+        url: dataFile.url,
+        userNumber: newIncident.data.userNumber,
+        incidentId: newIncident.data.id,
+      };
+      yield call(() => axios.post(`${URL}/api/files`, bindFileIncident));
     }
+
+    yield put(incidentCreate());
   } catch (error) {
     console.log(error.message);
   }
