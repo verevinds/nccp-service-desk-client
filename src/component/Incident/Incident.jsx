@@ -97,7 +97,7 @@ const Incident = ({ params, title, badge }) => {
   }, [list]);
 
   return (
-    <Row className="mt-3">
+    <Row className="mt-1">
       <Col xs={5}>
         <SidebarWrapper
           title={title}

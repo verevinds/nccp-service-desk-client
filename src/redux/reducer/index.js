@@ -7,6 +7,7 @@ import { positionReducer } from './positionReducer';
 import { usersReducer } from './usersReducer';
 import { accessReducer } from './accessReducer';
 import { fileReducer } from './fileReducer';
+import { progressReducer } from './progressReducer';
 
 export const CombineReducers = combineReducers({
   auth: authReducer,
@@ -17,4 +18,5 @@ export const CombineReducers = combineReducers({
   users: usersReducer,
   access: accessReducer,
   file: fileReducer,
+  progress: progressReducer,
 });

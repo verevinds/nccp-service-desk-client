@@ -1,25 +1,8 @@
-import { put, call, takeLatest, takeEvery } from 'redux-saga/effects';
+import { put, call, takeEvery } from 'redux-saga/effects';
 import * as axios from 'axios';
-import {
-  AUTH_FETCHING,
-  CATALOG_FETCHING,
-  CATALOG_POST,
-  INCIDENT_FETCHING,
-  QUERY_API,
-  FILE_FETCHING,
-} from './constants';
-import {
-  authRequestSendd,
-  authRequestSuccessed,
-} from './actionCreators/authAction';
-import {
-  categoryFetching,
-  categoryRequestSendd,
-  categoryRequestSuccessed,
-} from './actionCreators/catalogAction';
+import { INCIDENT_FETCHING, QUERY_API, FILE_FETCHING } from './constants';
 import {
   incidentRequestSendd,
-  incidentRequestSuccessed,
   incidentCreate,
 } from './actionCreators/incidentAction';
 import {
@@ -28,9 +11,6 @@ import {
 } from './actionCreators/fileAction';
 
 export function* watchFetch() {
-  yield takeLatest(AUTH_FETCHING, fetchAsync);
-  yield takeLatest(CATALOG_FETCHING, fetchAsyncCatalog);
-  yield takeEvery(CATALOG_POST, catalogPost);
   yield takeEvery(QUERY_API, queryApiAsync);
   yield takeEvery(INCIDENT_FETCHING, fetchAsyncIncident);
   yield takeEvery(FILE_FETCHING, fetchAsyncFile);
@@ -41,7 +21,7 @@ function* fetchAsyncFile({ file, incidentId, userNumber }) {
   try {
     let response;
     yield put(fileRequestSendd());
-    // console.log(file, incidentId, userId);
+
     if (file.wasFile) {
       let bindFileIncident = {
         name: file.filename,
@@ -53,7 +33,7 @@ function* fetchAsyncFile({ file, incidentId, userNumber }) {
         axios.post(`${URL}/api/files`, bindFileIncident),
       );
     }
-
+    console.log(response);
     yield put(fileRequestSuccessed());
   } catch (error) {
     console.log(error.message);
@@ -70,7 +50,6 @@ function* queryApiAsync({
   params,
 }) {
   try {
-    // yield put(authRequestSendd());
     let response;
     if (params) {
       Object.assign(data, { params });
@@ -110,7 +89,6 @@ function* queryApiAsync({
         response = yield call(() =>
           axios.get(`${URL}/api/${route}/${id || ''}`, data),
         );
-        // console.log(`${URL}/api/${route}/`, data);
         if (!!actionUpdate) {
           yield put(actionUpdate());
         }
@@ -125,25 +103,6 @@ function* queryApiAsync({
   }
 }
 
-function* fetchAsync({ ip }) {
-  try {
-    yield put(authRequestSendd());
-    const response = yield call(() => axios.get(`${URL}/api/auth/?ip=${ip}`));
-    yield put(authRequestSuccessed(response.data[0]));
-  } catch (error) {
-    console.log(error.message);
-  }
-}
-
-function* fetchAsyncCatalog() {
-  try {
-    yield put(categoryRequestSendd());
-    const response = yield call(() => axios.get(`${URL}/api/categories`));
-    yield put(categoryRequestSuccessed(response.data));
-  } catch (error) {
-    console.log(error.message);
-  }
-}
 function* fetchAsyncIncident({ data, dataFile }) {
   try {
     yield put(incidentRequestSendd());
@@ -162,25 +121,6 @@ function* fetchAsyncIncident({ data, dataFile }) {
     }
 
     yield put(incidentCreate());
-  } catch (error) {
-    console.log(error.message);
-  }
-}
-function* catalogPost({ route, method, data, id }) {
-  try {
-    yield put(authRequestSendd());
-    switch (method) {
-      case 'post':
-        yield call(() => axios.post(`${URL}/api/${route}`, data));
-        break;
-      case 'delete':
-        yield call(() => axios.delete(`${URL}/api/${route}/${id}`, data));
-        break;
-
-      default:
-        break;
-    }
-    yield put(categoryFetching());
   } catch (error) {
     console.log(error.message);
   }

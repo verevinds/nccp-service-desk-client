@@ -1,4 +1,4 @@
-import React, { memo, useState, useContext, useCallback } from 'react';
+import React, { memo, useState, useContext } from 'react';
 import ModalWindow from '../ModalWindow/ModalWindow';
 import { useSelector, shallowEqual, useDispatch } from 'react-redux';
 import { queryApi } from '../../redux/actionCreators/queryApiAction';
@@ -26,7 +26,6 @@ const IncidentHandleStatus = ({ show, onHide, incident }) => {
 
   const uploadFile = async (file) => {
     let dataFile;
-    let response;
     let statusFileUpload = await fileUpload(file ? file[0] : '');
     if (statusFileUpload.status === Number(200)) {
       let type = undefined;

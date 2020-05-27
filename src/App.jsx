@@ -8,34 +8,74 @@ import React, {
 import { useDispatch } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { useSelector, shallowEqual } from 'react-redux';
+import axios from 'axios';
+import styles from './styles.module.css';
+
+//** Pages */
+import TestPage from './page/TestPage';
+import MyIncidentPage from './page/MyIncidentPage';
+import SettingPage from './page/SettingPage';
+import MainPage from './page/MainPage';
+
+//** Components */
+import Header from './component/Header/Header';
+import HandleSocket from './component/HandleSocket/HandleSocket';
+import Alert from './component/Alert/Alert';
+import { AlertContext } from './component/Alert/AlertContext';
+
+//** Action Creators */
 import { categoryRequestSuccessed } from './redux/actionCreators/catalogAction';
 import { authRequestSuccessed } from './redux/actionCreators/authAction';
 import { queryApi } from './redux/actionCreators/queryApiAction';
 import { departmentRequestSuccessed } from './redux/actionCreators/departmentAction';
 import { statusRequestSeccessed } from './redux/actionCreators/statusAction';
 import { accessRequestSeccessed } from './redux/actionCreators/accessAction';
-import MainPage from './page/MainPage';
-import SettingPage from './page/SettingPage';
-import Header from './component/Header/Header';
-import MyIncidentPage from './page/MyIncidentPage';
-import axios from 'axios';
-import HandleSocket from './component/HandleSocket/HandleSocket';
-import TestPage from './page/TestPage';
-import Alert from './component/Alert/Alert';
-import { AlertContext } from './component/Alert/AlertContext';
+import {
+  progressStart,
+  progressStep,
+  progressFinish,
+} from './redux/actionCreators/progressAction';
+
+/**Bootstrap components */
+import { ProgressBar, Spinner } from 'react-bootstrap';
 
 const App = (props) => {
-  const catalog = useSelector((state) => state.catalog, shallowEqual);
-  const status = useSelector((state) => state.status, shallowEqual);
-  const user = useSelector((state) => state.auth?.user, shallowEqual);
-  const state = useSelector((state) => state, shallowEqual);
   const dispatch = useDispatch();
+  //** Get State from Store */
+  const isUpdateCatalog = useSelector(
+    (state) => state.catalog.isUpdate,
+    shallowEqual,
+  ); // Получаем данные каталога при строгом изменение обекта isUpdate
+  const isUpdateStatus = useSelector(
+    (state) => state.status.isUpdate,
+    shallowEqual,
+  ); // Получаем данные каталога при строгом изменение обекта status
+  const user = useSelector((state) => state.auth?.user, shallowEqual); // Получаем данные каталога при строгом изменение обекта user
+  const state = useSelector((state) => state, shallowEqual); // Получаем данные каталога при строгом изменение обекта state
+  const { progress } = useSelector((state) => state); // Получаем данные каталога при строгом изменение обекта state
 
+  /** Local State */
+  const [alert, setAlert] = useState();
+
+  //** Local variable */
+  let alertJsx = useMemo(() => {
+    if (alert)
+      return (
+        <Alert
+          text={alert.text}
+          autoClose={alert.autoClose || undefined}
+          type={alert.type || undefined}
+        />
+      );
+  }, [alert]);
+
+  //** Sider Effect */
   useEffect(() => {
     console.log(state);
-  }, [state]);
+  }, [state]); // For change state of the state
+
   useEffect(() => {
-    if (!!user)
+    if (!!user) {
       dispatch(
         queryApi({
           route: 'access',
@@ -43,8 +83,13 @@ const App = (props) => {
           id: user.number,
         }),
       );
-  }, [user, dispatch]);
+      dispatch(progressStep(20));
+      dispatch(progressFinish());
+    }
+  }, [user, dispatch]); // For change state of the user & dispatch
+
   useLayoutEffect(() => {
+    dispatch(progressStart());
     axios
       .get('http://api.nccp-eng.ru/', {
         params: {
@@ -59,43 +104,40 @@ const App = (props) => {
             params: { number: res.data.number },
           }),
         );
+        dispatch(progressStep(16));
       });
+    dispatch(progressStep(16));
+
     dispatch(
       queryApi({
         route: 'departments',
         actionSuccessed: departmentRequestSuccessed,
       }),
     );
+    dispatch(progressStep(16));
     // eslint-disable-next-line
-  }, [dispatch]);
+  }, [dispatch]); // For change state of the  dispatch
+
   useEffect(() => {
-    if (catalog.isUpdate) {
+    if (isUpdateCatalog) {
       dispatch(
         queryApi({
           route: 'categories',
           actionSuccessed: categoryRequestSuccessed,
         }),
       );
+      dispatch(progressStep(16));
     }
-  }, [catalog.isUpdate, dispatch]);
+  }, [isUpdateCatalog, dispatch]); // For change state of the isUpdateCatalog, dispatch
+
   useEffect(() => {
-    if (status.isUpdate) {
+    if (isUpdateStatus) {
       dispatch(
         queryApi({ route: 'status', actionSuccessed: statusRequestSeccessed }),
       );
+      dispatch(progressStep(16));
     }
-  }, [status.isUpdate, dispatch]);
-  const [alert, setAlert] = useState();
-  let alertJsx = useMemo(() => {
-    if (alert)
-      return (
-        <Alert
-          text={alert.text}
-          autoClose={alert.autoClose || undefined}
-          type={alert.type || undefined}
-        />
-      );
-  }, [alert]);
+  }, [isUpdateStatus, dispatch]); // For change state of the isUpdateStatus, dispatch
 
   return (
     <BrowserRouter>
@@ -103,12 +145,23 @@ const App = (props) => {
         <Header />
         {alertJsx}
         <HandleSocket />
-        <Switch>
-          <Route exact path="/" component={MainPage} />
-          <Route path="/setting" component={SettingPage} />
-          <Route path="/myincidents" component={MyIncidentPage} />
-          <Route path="/test" component={TestPage} />
-        </Switch>
+        <div className={styles.progressBar}>
+          <ProgressBar animated now={progress.now} hidden={progress.isFinish} />
+        </div>
+        {progress.isFinish ? (
+          <Switch>
+            <Route exact path="/" component={MainPage} />
+            <Route path="/setting" component={SettingPage} />
+            <Route path="/myincidents" component={MyIncidentPage} />
+            <Route path="/test" component={TestPage} />
+          </Switch>
+        ) : (
+          <div className={styles.spinner}>
+            <Spinner animation="border" role="status" variant="primary">
+              <span className="sr-only">Loading...</span>
+            </Spinner>
+          </div>
+        )}
       </AlertContext.Provider>
     </BrowserRouter>
   );

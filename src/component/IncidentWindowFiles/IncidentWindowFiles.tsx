@@ -21,7 +21,6 @@ import {
   faAngleDown,
   faFileImage,
   faFile,
-  faEllipsisV,
 } from '@fortawesome/free-solid-svg-icons';
 import ModalWindow from '../ModalWindow/ModalWindow';
 import PopUpMenu from '../PopupMenu/PopUpMenu';

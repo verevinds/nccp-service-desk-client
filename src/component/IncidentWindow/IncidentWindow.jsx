@@ -5,22 +5,17 @@ import 'moment/locale/ru';
 import styles from './styles.module.css';
 import IncidentHandleStatus from '../IncidentHandleStatus/IncidentHandleStatus';
 import dateNow from '../../js/dateNow';
+import IncidentWindowHeader from '../IncidentWindowHeader/IncidentWindowHeader';
+import IncidentWindowComments from '../IncidentWindowComments/IncidentWindowComments';
+import IncidentWindowFiles from '../IncidentWindowFiles/IncidentWindowFiles';
+import IncidentWorkButton from '../IncidentWorkButton/IncidentWorkButton';
 
 //ActionCreator
 import { incidentCreate } from '../../redux/actionCreators/incidentAction';
 import { queryApi } from '../../redux/actionCreators/queryApiAction';
 
-import IncidentWorkButton from '../IncidentWorkButton/IncidentWorkButton';
-
 // Bootstrap
-import { Container, Card, Accordion, Table } from 'react-bootstrap';
-
-//? Font Awesome иконки
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleRight, faAngleDown } from '@fortawesome/free-solid-svg-icons';
-import IncidentWindowHeader from '../IncidentWindowHeader/IncidentWindowHeader';
-import IncidentWindowComments from '../IncidentWindowComments/IncidentWindowComments';
-import IncidentWindowFiles from '../IncidentWindowFiles/IncidentWindowFiles';
+import { Container, Card } from 'react-bootstrap';
 
 const IncidentWindow = ({ incident, myincident }) => {
   //State изменений в инциденте

@@ -1,13 +1,7 @@
 import React, { memo, useState, useRef } from 'react';
 import styles from './styles.module.css';
 //Bootstrap
-import {
-  Popover,
-  OverlayTrigger,
-  ListGroup,
-  Button,
-  Overlay,
-} from 'react-bootstrap';
+import { Popover, ListGroup, Overlay } from 'react-bootstrap';
 //? Font Awesome иконки
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {

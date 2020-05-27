@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState, useContext } from 'react';
+import React, { memo, useEffect, useContext } from 'react';
 import { useSelector, shallowEqual, useDispatch } from 'react-redux';
 import { AlertContext } from '../Alert/AlertContext';
 // import SpeechOn from '../../sounds/SpeechOn.mp3';

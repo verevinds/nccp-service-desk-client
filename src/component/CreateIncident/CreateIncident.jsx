@@ -10,14 +10,10 @@ import { fileUpload } from '../UploadFiles/fileUpload';
 import { AlertContext } from '../Alert/AlertContext';
 
 /** Action creators */
-import {
-  incidentFetching,
-  incidentCreate,
-} from '../../redux/actionCreators/incidentAction';
+import { incidentFetching } from '../../redux/actionCreators/incidentAction';
 
 /**Bootstrap components */
 import { Form } from 'react-bootstrap';
-import { queryApi } from '../../redux/actionCreators/queryApiAction';
 
 const socket = openSocket('http://192.168.213.77:8000/');
 

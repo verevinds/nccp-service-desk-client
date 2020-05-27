@@ -33,7 +33,7 @@ const Header = (props) => {
   }, [user]);
 
   return (
-    <nav className="mb-1">
+    <nav>
       <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
         <Navbar.Brand>Service Desk</Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
