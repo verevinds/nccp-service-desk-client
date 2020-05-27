@@ -31,9 +31,6 @@ export default memo(function IncidentWorkButton({ onClick, handleOpenModal }) {
     (state) => state.incidents.current.incident,
     shallowEqual,
   );
-  useLayoutEffect(() => {
-    // console.log('currentIncident', currentIncident);
-  }, [currentIncident]);
   const handleInWork = useMemo(() => {
     let { category, property, option } = currentIncident;
     if (category || property || option) {

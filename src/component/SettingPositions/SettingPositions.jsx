@@ -5,7 +5,8 @@ import {
   positionsRequestSeccessed,
   positionsUpdate,
 } from '../../redux/actionCreators/positionAction';
-import List from '../List/List';
+import List from '../ListAnother/List';
+import FilterQuery from '../FilterQuery/FilterQuery';
 
 const SettingPositions = (props) => {
   const dispatch = useDispatch();
@@ -42,6 +43,11 @@ const SettingPositions = (props) => {
   return (
     <>
       <h2>Должности</h2>
+      <FilterQuery
+        actionSuccessed={positionsRequestSeccessed}
+        route={route}
+        noFetchVoid
+      />
       <List list={list} onFavorites={onFavorites} />
     </>
   );

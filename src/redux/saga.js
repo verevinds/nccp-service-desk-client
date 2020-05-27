@@ -34,7 +34,6 @@ function* fetchAsyncFile({ file, incidentId, userNumber }) {
         axios.post(`${URL}/api/files`, bindFileIncident),
       );
     }
-    console.log(response);
     if (response.statusText === 'OK') {
       const data = {
         text: `Прикреплено вложение: ${response.data?.name}`,
@@ -98,6 +97,7 @@ function* queryApiAsync({
         response = yield call(() =>
           axios.put(`${URL}/api/${route}/${id}`, data),
         );
+
         if (!!actionUpdate) {
           yield put(actionUpdate());
         }
@@ -106,11 +106,13 @@ function* queryApiAsync({
         response = yield call(() =>
           axios.get(`${URL}/api/${route}/${id || ''}`, data),
         );
+
         if (!!actionUpdate) {
           yield put(actionUpdate());
         }
         break;
     }
+
     if (!!actionSuccessed) {
       yield put(actionSuccessed(response.data));
     }

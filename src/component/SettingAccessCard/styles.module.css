@@ -1,0 +1,9 @@
+.photo {
+  height: 50px;
+  width: auto;
+}
+.footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}

@@ -71,7 +71,7 @@ const App = (props) => {
 
   //** Sider Effect */
   useEffect(() => {
-    console.log(state);
+    // console.log(state);
   }, [state]); // For change state of the state
 
   useEffect(() => {

@@ -33,7 +33,6 @@ const fileUpload = async (
     .then((response: AxiosResponse<IResponse>) => {
       !!onSuccess ? onSuccess(response) : console.log(response);
       if (response.statusText === 'OK') {
-        console.log(response.statusText);
         return response;
       }
     })

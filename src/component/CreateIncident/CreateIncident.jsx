@@ -65,10 +65,6 @@ const CreateIncidentModel = ({ handleClose, showModal, list, user }) => {
     let propertyId = currentIdProperty;
     let optionId = currentIdOption;
 
-    // console.log('categoryId', categoryId);
-    // console.log('propertyId', propertyId);
-    // console.log('optionId', optionId);
-
     const newCurrentCategory = list.filter(
       (item) => item.id === currentIdCategory,
     );

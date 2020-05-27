@@ -4,6 +4,7 @@ import SettingCatalog from '../component/SettingCatalog/SettingCatalog';
 import SettingStatus from '../component/SettingStatus/SettingStatus';
 /**Bootstrap components */
 import { Row, Col } from 'react-bootstrap';
+import SettingAccess from '../component/SettingAccess/SettingAccess';
 const SettingPositions = React.lazy(() =>
   import('../component/SettingPositions/SettingPositions'),
 );
@@ -14,6 +15,7 @@ const SettingPage = (props) => {
     { name: 'Каталог', id: 1 },
     { name: 'Статус', id: 2 },
     { name: 'Должности', id: 3 },
+    { name: 'Доступ', id: 4 },
   ];
   const [jsxContent, setJsxContent] = useState();
   useEffect(() => {
@@ -31,6 +33,13 @@ const SettingPage = (props) => {
         setJsxContent(
           <Suspense fallback={<div>Loading...</div>}>
             <SettingPositions />
+          </Suspense>,
+        );
+        break;
+      case 4:
+        setJsxContent(
+          <Suspense fallback={<div>Loading...</div>}>
+            <SettingAccess />
           </Suspense>,
         );
         break;

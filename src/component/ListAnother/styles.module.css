@@ -1,0 +1,22 @@
+.item_pointer {
+  cursor: pointer;
+  width: 100%;
+}
+.spinner {
+  display: flex;
+  justify-content: center;
+  margin: 2em 0;
+}
+.buttonGroup {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.buttonGroup_flexRow {
+  display: flex;
+  justify-content: space-around;
+}
+.buttonGroup_flexRow button {
+  margin: 0 0.1em;
+}

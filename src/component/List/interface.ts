@@ -1,15 +1,10 @@
-export interface IList {
-  title?: string | undefined;
-  list: TList[];
+export type THandle = {
   onSubmit?: () => void;
   onDelete?: () => void;
-  onClick?: () => void;
-  onFavorites?: () => void | undefined;
-  activeId?: number | undefined;
-  inputOff?: boolean | undefined;
-  pointer?: boolean | undefined;
-  xs?: number;
-}
+  onClick?: (id: number) => void;
+  onFavorites?: () => void;
+};
+
 export type TList = {
   id: number;
   name: string;
@@ -17,6 +12,17 @@ export type TList = {
   noChange: boolean | undefined;
   level: number | undefined;
 };
-export interface IListButtonFavorites {
+
+export interface IList extends THandle {
+  list: TList[];
+}
+
+export type IListButtonFavorites = {
   onFavorites?: () => void;
+  level: boolean;
+};
+
+export interface IListItem extends THandle {
+  item: TList;
+  activeId?: number;
 }
