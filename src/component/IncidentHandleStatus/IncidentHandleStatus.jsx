@@ -89,7 +89,6 @@ const IncidentHandleStatus = ({ show, onHide, incident }) => {
         );
       }
       fnNewComment(newComment);
-      fnNewComment(newComment);
 
       dispatch(
         queryApi({

@@ -9,6 +9,7 @@ import {
   fileRequestSendd,
   fileRequestSuccessed,
 } from './actionCreators/fileAction';
+import { queryApi } from './actionCreators/queryApiAction';
 
 export function* watchFetch() {
   yield takeEvery(QUERY_API, queryApiAsync);
@@ -34,6 +35,22 @@ function* fetchAsyncFile({ file, incidentId, userNumber }) {
       );
     }
     console.log(response);
+    if (response.statusText === 'OK') {
+      const data = {
+        text: `Прикреплено вложение: ${response.data?.name}`,
+        userNumber,
+        incidentId,
+      };
+      yield put(
+        queryApi({
+          route: 'comments',
+          method: 'post',
+          actionUpdate: incidentCreate,
+          data,
+          id: incidentId,
+        }),
+      );
+    }
     yield put(fileRequestSuccessed());
   } catch (error) {
     console.log(error.message);

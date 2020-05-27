@@ -39,7 +39,7 @@ const IncidentWindowComments = (props) => {
                 <tr>
                   <th>№</th>
                   <th>Текст</th>
-                  <th>Автор</th>
+                  <th>Автор комментария</th>
                   <th>Дата</th>
                 </tr>
               </thead>
@@ -54,7 +54,7 @@ const IncidentWindowComments = (props) => {
                       0,
                     )}. ${item.user.name3.charAt(0)}.`}</td>
                     <td>
-                      <Moment locale="ru" format="HH:mm D.MM.YYг" withTitle>
+                      <Moment locale="ru" format="hh:mm D.MM.YYг" withTitle>
                         {item.createdAt}
                       </Moment>
                     </td>

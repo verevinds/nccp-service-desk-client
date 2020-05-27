@@ -58,7 +58,16 @@ const IncidentWindowFiles = () => {
             Вложения
           </Accordion.Toggle>
           <Accordion.Collapse eventKey="0">
-            <Table size="sm" borderless hover className={styles.table}>
+            <Table borderless hover>
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Название файла</th>
+                  <th>Кто вложил</th>
+                  <th>Дата вложения</th>
+                  <th></th>
+                </tr>
+              </thead>
               <tbody>
                 {files.map((item: any) => {
                   let stateFile = { icon: faFile, isImg: false };
@@ -66,7 +75,7 @@ const IncidentWindowFiles = () => {
                     stateFile = { icon: faFileImage, isImg: true };
                   }
                   return (
-                    <tr key={item.id} className={styles.item}>
+                    <tr key={item.id}>
                       <td>
                         <OverlayTrigger
                           placement="right"
