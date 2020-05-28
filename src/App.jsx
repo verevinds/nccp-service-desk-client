@@ -38,6 +38,7 @@ import {
 
 /**Bootstrap components */
 import { ProgressBar, Spinner } from 'react-bootstrap';
+import { incidentRequestSuccessed } from './redux/actionCreators/incidentAction';
 
 const App = (props) => {
   const dispatch = useDispatch();
@@ -71,8 +72,8 @@ const App = (props) => {
 
   //** Sider Effect */
   useEffect(() => {
-    // console.log(state);
-  }, [state]); // For change state of the state
+    // console.log(state.incidents);
+  }, [state.incidents]); // For change state of the state
 
   useEffect(() => {
     if (!!user) {
@@ -84,6 +85,14 @@ const App = (props) => {
         }),
       );
       dispatch(progressStep(20));
+
+      dispatch(
+        queryApi({
+          route: 'incidents',
+          actionSuccessed: incidentRequestSuccessed,
+          params: { departmentId: user.departmentId },
+        }),
+      );
       dispatch(progressFinish());
     }
   }, [user, dispatch]); // For change state of the user & dispatch

@@ -13,9 +13,9 @@ const SettingPage = (props) => {
   const [activeId, setActiveId] = useState(0);
   const list = [
     { name: 'Каталог', id: 1 },
-    { name: 'Статус', id: 2 },
+    { name: 'Статус инцидента', id: 2 },
     { name: 'Должности', id: 3 },
-    { name: 'Доступ', id: 4 },
+    { name: 'Пользователи', id: 4 },
   ];
   const [jsxContent, setJsxContent] = useState();
   useEffect(() => {

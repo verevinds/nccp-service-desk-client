@@ -104,9 +104,7 @@ const IncidentWindow = ({ incident, myincident }) => {
               {incident.text ? (
                 <>
                   <hr />
-                  <Card.Text>
-                    <pre>{incident.text}</pre>
-                  </Card.Text>
+                  <pre>{incident.text}</pre>
                 </>
               ) : null}
 

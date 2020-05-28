@@ -9,7 +9,6 @@ import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 
 /** Action creators */
 import { incidentChoose } from '../../redux/actionCreators/incidentAction';
-import { incidentRequestSuccessed } from '../../redux/actionCreators/incidentAction';
 import { queryApi } from '../../redux/actionCreators/queryApiAction';
 import { incidentHistoryRequestSuccessed } from '../../redux/actionCreators/incidentAction';
 
@@ -20,8 +19,8 @@ import IncidentWindow from '../IncidentWindow/IncidentWindow';
 /**Bootstrap components */
 import { Row, Col, Container } from 'react-bootstrap';
 
-const Incident = ({ params, title, badge }) => {
-  const { list, history, current } = useSelector(
+const Incident = ({ list, params, title, badge, actionSuccessed }) => {
+  const { history, current } = useSelector(
     (state) => state.incidents,
     shallowEqual,
   );
@@ -43,7 +42,7 @@ const Incident = ({ params, title, badge }) => {
   );
   useLayoutEffect(() => {
     if (!!params) {
-      fetchIncident(params, incidentRequestSuccessed);
+      fetchIncident(params, actionSuccessed);
     }
     // eslint-disable-next-line
   }, [incidents.isUpdate, params]);
