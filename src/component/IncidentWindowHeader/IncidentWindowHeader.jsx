@@ -23,6 +23,7 @@ const IncidentWindowHeader = ({ incident, myincident }) => {
                 } ${incident.responsibleUser.name2.charAt(
                 0,
               )}.${incident.responsibleUser.name3.charAt(0)}.`}
+              number={incident.responsibleUser.number}
             />
           </>
         ) : null}

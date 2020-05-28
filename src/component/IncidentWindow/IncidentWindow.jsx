@@ -15,7 +15,8 @@ import { incidentCreate } from '../../redux/actionCreators/incidentAction';
 import { queryApi } from '../../redux/actionCreators/queryApiAction';
 
 // Bootstrap
-import { Container, Card } from 'react-bootstrap';
+import { Container, Card, OverlayTrigger } from 'react-bootstrap';
+import PopoverCardUser from '../PopoverCardUser/PopoverCardUser';
 
 const IncidentWindow = ({ incident, myincident }) => {
   //State изменений в инциденте
@@ -85,11 +86,24 @@ const IncidentWindow = ({ incident, myincident }) => {
                 {!!incident.option ? ` /  ${incident.option.name}` : null}
               </Card.Title>
               <Card.Text></Card.Text>
+
               <Card.Text>
-                Инициатор:{' '}
-                {`${incident.initiatorUser.name1 || ''} ${
-                  incident.initiatorUser.name2 || ''
-                } ${incident.initiatorUser.name3 || ''}`}
+                <span>Инициатор: </span>
+                <OverlayTrigger
+                  placement="right"
+                  delay={{ show: 250, hide: 400 }}
+                  overlay={
+                    <div>
+                      <PopoverCardUser id={incident.initiatorUser.number} />
+                    </div>
+                  }
+                >
+                  <span className="pointer">
+                    {`${incident.initiatorUser.name1 || ''} ${
+                      incident.initiatorUser.name2 || ''
+                    } ${incident.initiatorUser.name3 || ''}`}
+                  </span>
+                </OverlayTrigger>
               </Card.Text>
               <Card.Text>
                 {!!incident.initiatorUser

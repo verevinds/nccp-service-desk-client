@@ -1,7 +1,7 @@
 import React, { memo, Fragment, useState } from 'react';
 import { Row, Col } from 'react-bootstrap';
 import SettingAccessList from '../SettingAccessList/SettingAccessList';
-import SettingAccessCard from '../SettingAccessCard/SettingAccessCard';
+import CardUser from '../CardUser/CardUser';
 
 const SettingAccess = () => {
   const [id, setId] = useState<number | undefined>();
@@ -17,7 +17,7 @@ const SettingAccess = () => {
           />
         </Col>
 
-        <Col xs={7}>{id ? <SettingAccessCard id={id} /> : undefined}</Col>
+        <Col xs={7}>{id ? <CardUser id={id} /> : undefined}</Col>
       </Row>
     </Fragment>
   );
