@@ -32,6 +32,7 @@ const Header = (props) => {
     }
   }, [user]);
 
+  const [page, setPage] = useState(undefined);
   return (
     <nav>
       <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
@@ -42,8 +43,12 @@ const Header = (props) => {
             <Nav.Item>
               <NavLink
                 to="/"
-                activeClassName={`btn-light`}
-                className={`btn btn-link align-middle ${styles.nav__button}`}
+                className={`btn btn-link align-middle ${styles.nav__button} ${
+                  page === Number(1) ? 'btn-light' : undefined
+                }`}
+                onClick={() => {
+                  setPage(Number(1));
+                }}
               >
                 Рабочая панель
                 {!!listIncident.length ? (
@@ -57,8 +62,12 @@ const Header = (props) => {
               </NavLink>
               <NavLink
                 to="/myincidents"
-                activeClassName={`btn-light ${styles.nav__button}`}
-                className={`btn btn-link align-middle ${styles.nav__button}`}
+                className={`btn btn-link align-middle ${styles.nav__button}  ${
+                  page === Number(2) ? 'btn-light' : undefined
+                }`}
+                onClick={() => {
+                  setPage(Number(2));
+                }}
               >
                 Мои инциденты
               </NavLink>
