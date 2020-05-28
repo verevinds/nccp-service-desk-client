@@ -10,12 +10,13 @@ import { faStar } from '@fortawesome/free-solid-svg-icons';
 
 const ListButtonFavorites: React.FC<IListButtonFavorites> = ({
   onFavorites,
+  level,
 }) => {
   return (
     <>
       <Button
         size="sm"
-        variant="warning"
+        variant={level ? 'warning' : 'light'}
         onClick={() => {
           //@ts-ignore
           onFavorites();

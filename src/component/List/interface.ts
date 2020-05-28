@@ -14,7 +14,9 @@ export type TList = {
 };
 
 export interface IList extends THandle {
-  list: TList[];
+  title: string;
+  xs?: number;
+  list: [] | never[];
 }
 
 export type IListButtonFavorites = {

@@ -1,3 +1,7 @@
+.listGroup {
+  height: 600px;
+  overflow: scroll;
+}
 .item_pointer {
   cursor: pointer;
   width: 100%;

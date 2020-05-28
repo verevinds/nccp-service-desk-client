@@ -1,4 +1,4 @@
-import React, { memo, useState, useEffect } from 'react';
+import React, { memo, useState, useEffect, useMemo } from 'react';
 import { queryApi } from '../../redux/actionCreators/queryApiAction';
 import { useDispatch } from 'react-redux';
 
@@ -9,40 +9,21 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 interface IFilterQuery {
-  actionSuccessed: () => void;
-  route: string;
-  noFetchVoid?: boolean;
+  setList: (list: never[] | []) => void;
+  list: never[] | [];
 }
-const FilterQuery: React.FC<IFilterQuery> = ({
-  actionSuccessed,
-  route,
-  noFetchVoid,
-}) => {
-  const dispatch = useDispatch();
-  const [filter, setFilter] = useState('');
-  useEffect(() => {
-    const fetchQuery = (filter: string) => {
-      dispatch(
-        queryApi({
-          route,
-          actionSuccessed,
-          params: { filter },
-        }),
-      );
-    };
+const FilterQuery: React.FC<IFilterQuery> = ({ setList, list }) => {
+  const [text, setText] = useState('');
 
-    if (noFetchVoid)
-      if (filter)
-        fetchQuery(
-          filter
-            .split(' ')
-            .map((item) =>
-              item ? item[0].toUpperCase() + item.slice(1).toLowerCase() : ``,
-            )
-            .join(' ')
-            .trim(),
-        );
-  }, [filter, noFetchVoid, actionSuccessed, dispatch, route]);
+  useEffect(() => {
+    if (list.length && setList) {
+      setList(
+        list.filter(
+          (item: any) => ~item?.name.toLowerCase().indexOf(text.toLowerCase()),
+        ),
+      );
+    }
+  }, [list, text]);
 
   return (
     <InputGroup className="mb-1">
@@ -54,9 +35,9 @@ const FilterQuery: React.FC<IFilterQuery> = ({
       <FormControl
         placeholder="Поиск..."
         aria-describedby="basic-addon1"
-        value={filter}
+        value={text}
         onChange={(event: React.FormEvent<HTMLInputElement>) => {
-          setFilter(event.currentTarget.value);
+          setText(event.currentTarget.value);
         }}
       />
     </InputGroup>

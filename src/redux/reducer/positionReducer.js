@@ -8,6 +8,7 @@ const initialState = {
 export const positionReducer = (state = initialState, action) => {
   switch (action.type) {
     case POSITIONS_REQUEST_SUCCESSED:
+      console.log(action);
       return {
         ...state,
         list: action.data,

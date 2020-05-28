@@ -24,7 +24,6 @@ const ListItem: React.FC<IListItem> = ({
       <ListGroup.Item
         key={id}
         className={id === constext.activeId ? `active` : undefined}
-        variant={!!level ? 'warning' : undefined}
       >
         <Row>
           <Col xs={9}>

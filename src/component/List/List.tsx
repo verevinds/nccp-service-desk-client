@@ -1,42 +1,66 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useState, Fragment } from 'react';
 import { IList, TList } from './interface';
 import ListItem from './ListItem';
 import { ListContext } from './context';
+import styles from './styles.module.css';
 
 //? Bootstrap
-import { ListGroup } from 'react-bootstrap';
+import { ListGroup, Col, Button } from 'react-bootstrap';
+import FilterQuery from '../FilterQuery/FilterQuery';
 
-const List: React.FC<IList> = ({ list, onClick, onDelete, onFavorites }) => {
+const List: React.FC<IList> = ({
+  title,
+  list,
+  onClick,
+  onDelete,
+  onFavorites,
+  xs,
+}) => {
   const [activeId, setActiveId] = useState<number | undefined>(undefined);
+  const [localList, setLocalList] = useState([]);
+  const [limit, setLimit] = useState(50);
   return (
-    <ListContext.Provider value={{ activeId, setActiveId }}>
-      <ListGroup variant="flush">
-        {!!list.length ? (
-          list
-            .sort((a: any, b: any) => {
-              if (b.id < a.id || b.name < a.name) {
-                return 1;
-              } else {
-                return -1;
-              }
-            })
-            .map((item: TList) => {
-              return (
-                <ListItem
-                  item={item}
-                  onClick={onClick}
-                  onDelete={onDelete}
-                  onFavorites={onFavorites}
-                  activeId={activeId}
-                  key={item.id}
-                />
-              );
-            })
-        ) : (
-          <small className="text-muted text-center">Данные отсутствуют</small>
-        )}
-      </ListGroup>
-    </ListContext.Provider>
+    <Col xs={xs || 3}>
+      <h3>{title}</h3>
+      <FilterQuery list={list} setList={setLocalList} />
+      <ListContext.Provider value={{ activeId, setActiveId }}>
+        <ListGroup variant="flush" className={`${styles.listGroup} `}>
+          {!!localList.length ? (
+            <>
+              {localList
+                .sort((a: any, b: any) => (b.id < a.id ? 1 : -1))
+                .sort((a: any, b: any) => (b.name < a.name ? 1 : -1))
+                .map((item: TList, index: number) => {
+                  if (index < limit)
+                    return (
+                      <ListItem
+                        item={item}
+                        onClick={onClick}
+                        onDelete={onDelete}
+                        onFavorites={onFavorites}
+                        activeId={activeId}
+                        key={item.id}
+                      />
+                    );
+                })}
+              {localList.length > 50 && localList.length > limit ? (
+                <Button
+                  variant={'light'}
+                  onClick={() => {
+                    setLimit(limit + 50);
+                  }}
+                  className={'mt-1'}
+                >
+                  Показать ещё
+                </Button>
+              ) : undefined}
+            </>
+          ) : (
+            <small className="text-muted text-center">Данные отсутствуют</small>
+          )}
+        </ListGroup>
+      </ListContext.Provider>
+    </Col>
   );
 };
 export default memo(List);

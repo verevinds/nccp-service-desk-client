@@ -1,9 +1,10 @@
-import React, { memo, useMemo } from 'react';
-import { Container } from 'react-bootstrap';
+import React, { memo, useMemo, useLayoutEffect } from 'react';
+import { Container, Row } from 'react-bootstrap';
 import List from '../List/List';
 import FilterQuery from '../FilterQuery/FilterQuery';
 import { usersRequestSeccessed } from '../../redux/actionCreators/usersAction';
-import { useSelector, shallowEqual } from 'react-redux';
+import { useSelector, shallowEqual, useDispatch } from 'react-redux';
+import { queryApi } from '../../redux/actionCreators/queryApiAction';
 
 type TList = {
   id: number;
@@ -16,8 +17,17 @@ interface ISettingAccessList {
   setId: (id: number) => void;
 }
 const SettingAccessList: React.FC<ISettingAccessList> = ({ setId }) => {
+  const dispatch = useDispatch();
   const users = useSelector((state: any) => state.users.list, shallowEqual);
-
+  useLayoutEffect(() => {
+    if (!users.length)
+      dispatch(
+        queryApi({
+          route: 'users',
+          actionSuccessed: usersRequestSeccessed,
+        }),
+      );
+  }, [users]);
   const list = useMemo(() => {
     return users.map((item: any) => {
       return {
@@ -31,15 +41,9 @@ const SettingAccessList: React.FC<ISettingAccessList> = ({ setId }) => {
   }, [users]);
 
   return (
-    <Container>
-      <h3>Поиск пользователей</h3>
-      <FilterQuery
-        actionSuccessed={usersRequestSeccessed}
-        route="users"
-        noFetchVoid
-      />
-      <List list={list} onClick={setId} />
-    </Container>
+    <Row>
+      <List title={`Поиск пользователей`} list={list} onClick={setId} xs={12} />
+    </Row>
   );
 };
 

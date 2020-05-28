@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import List from '../ListAnother/List';
+import List from '../List/List';
 import { useSelector, shallowEqual, useDispatch } from 'react-redux';
 import { queryApi } from '../../redux/actionCreators/queryApiAction';
 import { statusUpdate } from '../../redux/actionCreators/statusAction';
