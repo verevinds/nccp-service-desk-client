@@ -59,4 +59,4 @@ const Alert: React.FC<Props> = ({ text, type, autoClose }) => {
   return <ToastContainer />;
 };
 
-export default memo(Alert);
+export default Alert;
