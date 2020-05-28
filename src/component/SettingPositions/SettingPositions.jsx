@@ -15,14 +15,17 @@ const SettingPositions = (props) => {
   );
   const list = useSelector((state) => state.positions.list, shallowEqual);
   const [route] = useState('positions');
+
   useLayoutEffect(() => {
-    dispatch(
-      queryApi({
-        actionSuccessed: positionsRequestSeccessed,
-        route,
-      }),
-    );
-  }, [isUpdate, dispatch, route]);
+    if (!list.length || isUpdate)
+      dispatch(
+        queryApi({
+          actionSuccessed: positionsRequestSeccessed,
+          route,
+        }),
+      );
+  }, [isUpdate, dispatch, route, list]);
+
   const onFavorites = useCallback(
     (id) => {
       dispatch(

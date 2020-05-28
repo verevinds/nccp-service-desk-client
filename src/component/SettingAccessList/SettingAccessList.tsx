@@ -1,7 +1,6 @@
 import React, { memo, useMemo, useLayoutEffect } from 'react';
-import { Container, Row } from 'react-bootstrap';
+import { Row } from 'react-bootstrap';
 import List from '../List/List';
-import FilterQuery from '../FilterQuery/FilterQuery';
 import { usersRequestSeccessed } from '../../redux/actionCreators/usersAction';
 import { useSelector, shallowEqual, useDispatch } from 'react-redux';
 import { queryApi } from '../../redux/actionCreators/queryApiAction';
@@ -27,7 +26,7 @@ const SettingAccessList: React.FC<ISettingAccessList> = ({ setId }) => {
           actionSuccessed: usersRequestSeccessed,
         }),
       );
-  }, [users]);
+  }, [users, dispatch]);
   const list = useMemo(() => {
     return users.map((item: any) => {
       return {

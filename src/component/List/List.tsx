@@ -1,4 +1,4 @@
-import React, { memo, useState, Fragment } from 'react';
+import React, { memo, useState } from 'react';
 import { IList, TList } from './interface';
 import ListItem from './ListItem';
 import { ListContext } from './context';
@@ -18,6 +18,7 @@ const List: React.FC<IList> = ({
 }) => {
   const [activeId, setActiveId] = useState<number | undefined>(undefined);
   const [localList, setLocalList] = useState([]);
+
   const [limit, setLimit] = useState(50);
   return (
     <Col xs={xs || 3}>
@@ -27,22 +28,20 @@ const List: React.FC<IList> = ({
         <ListGroup variant="flush" className={`${styles.listGroup} `}>
           {!!localList.length ? (
             <>
-              {localList
-                .sort((a: any, b: any) => (b.id < a.id ? 1 : -1))
-                .sort((a: any, b: any) => (b.name < a.name ? 1 : -1))
-                .map((item: TList, index: number) => {
-                  if (index < limit)
-                    return (
-                      <ListItem
-                        item={item}
-                        onClick={onClick}
-                        onDelete={onDelete}
-                        onFavorites={onFavorites}
-                        activeId={activeId}
-                        key={item.id}
-                      />
-                    );
-                })}
+              {localList.map((item: TList, index: number) => {
+                if (index < limit) {
+                  return (
+                    <ListItem
+                      item={item}
+                      onClick={onClick}
+                      onDelete={onDelete}
+                      onFavorites={onFavorites}
+                      activeId={activeId}
+                      key={item.id}
+                    />
+                  );
+                } else return undefined;
+              })}
               {localList.length > 50 && localList.length > limit ? (
                 <Button
                   variant={'light'}
