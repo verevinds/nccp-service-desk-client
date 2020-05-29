@@ -28,71 +28,49 @@ const SettingCatalog = (props) => {
   const [categoryIdCurrent, setCategoryIdCurrent] = useState();
   // Обработчик состояния: хранит в себе jsx компоненту
   const [categoryJsx, setCategoryJsx] = useState();
-  const onSubmit = useCallback(
-    function (event, value) {
-      event = arguments[1];
-      value = arguments[2];
-      const { route } = arguments[0];
-      event.preventDefault();
+
+  const handleEvent = useCallback(
+    ({ route, list, setCurrent, fact }) => ({ id, value }) => {
+      let data;
+      let method = 'put';
       if (value) {
-        const data = {
+        data = {
           name: value,
           categoryId: categoryIdCurrent,
           departmentId: departmentIdCurrent,
         };
-        dispatch(
-          queryApi({
-            method: 'post',
-            route,
-            actionUpdate: categoryUpdate,
-            data,
-          }),
-        );
       }
-    },
-    [departmentIdCurrent, dispatch, categoryIdCurrent],
-  );
-  const onDelete = useCallback(
-    function () {
-      const { route } = arguments[0];
-      const id = arguments[1];
-      const conf = window.confirm(
-        'Все инциденты связаные с этим удаляться. Вы точно хотите удалить?',
-      );
-
-      if (conf) {
-        dispatch(
-          queryApi({
-            method: 'delete',
-            actionUpdate: categoryUpdate,
-            route,
-            id,
-          }),
-        );
+      switch (fact) {
+        case 'favorites':
+          data = {
+            level: Number(!list.find((item) => item.id === id).level),
+          };
+          break;
+        case 'archive':
+          data = {
+            isArchive: Number(!list.find((item) => item.id === id).isArchive),
+          };
+          if (setCurrent) setCurrent(undefined);
+          break;
+        case 'delete':
+          method = 'delete';
+          break;
+        default:
+          method = 'post';
+          break;
       }
-    },
-    [dispatch],
-  );
 
-  const onFavorites = useCallback(
-    ({ list, route }, id) => {
-      // console.log('id', id);
-      // console.log('actionUpdate', actionUpdate);
-      // console.log('list', list);
-      // console.log('route', route);
       dispatch(
         queryApi({
           id,
           actionUpdate: categoryUpdate,
           route,
-          method: 'put',
-          data: {
-            level: Number(!list.find((item) => item.id === id).level),
-          },
+          method,
+          data,
         }),
       );
     },
-    [dispatch],
+    [categoryIdCurrent, departmentIdCurrent, dispatch],
   );
 
   // Эффект отрисовки компонента
@@ -103,13 +81,20 @@ const SettingCatalog = (props) => {
         <List
           title={'Категории'}
           list={categoryList}
-          onSubmit={onSubmit.bind(null, { route })}
-          onDelete={onDelete.bind(null, { route })}
           onClick={setCategoryIdCurrent}
           activeId={categoryIdCurrent}
-          onFavorites={onFavorites.bind(null, {
+          onSubmit={handleEvent({ route })}
+          onDelete={handleEvent({ route, fact: 'delete' })}
+          onFavorites={handleEvent({
             route,
             list: categoryList,
+            fact: 'favorites',
+          })}
+          onArchive={handleEvent({
+            route,
+            list: categoryList,
+            fact: 'archive',
+            setCurrent: setCategoryIdCurrent,
           })}
           xs={3}
         />,
@@ -134,11 +119,17 @@ const SettingCatalog = (props) => {
         <List
           title="Параметры"
           list={categorySubList.properties}
-          onSubmit={onSubmit.bind(null, { route })}
-          onDelete={onDelete.bind(null, { route })}
-          onFavorites={onFavorites.bind(null, {
+          onSubmit={handleEvent({ route })}
+          onDelete={handleEvent({ route, fact: 'delete' })}
+          onFavorites={handleEvent({
             route,
             list: categorySubList.properties,
+            fact: 'favorites',
+          })}
+          onArchive={handleEvent({
+            route,
+            list: categorySubList.properties,
+            fact: 'archive',
           })}
           xs={3}
         />,
@@ -148,11 +139,17 @@ const SettingCatalog = (props) => {
         <List
           title="Опции"
           list={categorySubList.options}
-          onSubmit={onSubmit.bind(null, { route })}
-          onDelete={onDelete.bind(null, { route })}
-          onFavorites={onFavorites.bind(null, {
+          onSubmit={handleEvent({ route })}
+          onDelete={handleEvent({ route, fact: 'delete' })}
+          onFavorites={handleEvent({
             route,
             list: categorySubList.options,
+            fact: 'favorites',
+          })}
+          onArchive={handleEvent({
+            route,
+            list: categorySubList.options,
+            fact: 'archive',
           })}
           xs={3}
         />,
@@ -161,7 +158,7 @@ const SettingCatalog = (props) => {
       setPropertyJsx(null);
       setOptionJsx(null);
     }
-  }, [categorySubList, onDelete, onSubmit, onFavorites]);
+  }, [categorySubList, handleEvent]);
 
   return (
     <>

@@ -8,7 +8,12 @@ import { Navbar, Nav, Image, Button, Badge } from 'react-bootstrap';
 import { useSelector, shallowEqual } from 'react-redux';
 //? Font Awesome иконки
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCog } from '@fortawesome/free-solid-svg-icons';
+import {
+  faCog,
+  faClipboardList,
+  faEdit,
+  faHome,
+} from '@fortawesome/free-solid-svg-icons';
 
 const Header = (props) => {
   const user = useSelector((state) => state.auth.user, shallowEqual);
@@ -41,16 +46,22 @@ const Header = (props) => {
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className={`${styles.nav} mr-auto`}>
             <Nav.Item>
-              <NavLink
+              <Button
+                as={NavLink}
                 to="/"
-                className={`btn btn-link align-middle ${styles.nav__button} ${
-                  page === Number(1) ? 'btn-light' : undefined
-                }`}
+                className="mr-1"
+                variant={page === Number(1) ? 'light' : 'link'}
                 onClick={() => {
                   setPage(Number(1));
                 }}
+                active={false}
               >
-                Рабочая панель
+                <FontAwesomeIcon
+                  icon={faClipboardList}
+                  size="lg"
+                  className="mr-1"
+                />
+                {`Рабочая панель`}
                 {!!listIncident.length ? (
                   <Badge variant="primary" className={'ml-1'}>
                     {
@@ -59,21 +70,27 @@ const Header = (props) => {
                     }
                   </Badge>
                 ) : undefined}
-              </NavLink>
-              <NavLink
+              </Button>
+              <Button
+                as={NavLink}
                 to="/myincidents"
-                className={`btn btn-link align-middle ${styles.nav__button}  ${
-                  page === Number(2) ? 'btn-light' : undefined
-                }`}
+                className="mr-1"
+                variant={page === Number(2) ? 'light' : 'link'}
                 onClick={() => {
                   setPage(Number(2));
                 }}
               >
+                <FontAwesomeIcon icon={faHome} size="lg" className="mr-1" />
                 Мои инциденты
-              </NavLink>
+              </Button>
             </Nav.Item>{' '}
-            <Nav.Item>
-              <Button onClick={handleOpen}>Создать инцидент</Button>
+          </Nav>
+          <Nav>
+            <Nav.Item className="fcc">
+              <Button onClick={handleOpen} size="sm">
+                <FontAwesomeIcon icon={faEdit} size="sm" className="mr-1" />
+                Создать инцидент
+              </Button>
               {!!showModal && list.length && user ? (
                 <CreateIncidentModal
                   handleClose={handleClose}
@@ -83,8 +100,6 @@ const Header = (props) => {
                 />
               ) : null}
             </Nav.Item>
-          </Nav>
-          <Nav>
             <Nav.Item>
               <Nav.Link href="">
                 <div className={styles.user}>

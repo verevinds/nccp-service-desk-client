@@ -2,6 +2,31 @@
   height: 600px;
   overflow: scroll;
 }
+.borderLeft {
+  border-left-color: transparent;
+}
+.borderLeft:hover {
+  color: #17a2b8;
+}
+.active {
+  color: #17a2b8;
+}
+.icon {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.icon_right {
+  margin-left: 1em;
+}
+.icon_left {
+  margin-right: 1em;
+}
+.popup {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
 .item_pointer {
   cursor: pointer;
   width: 100%;

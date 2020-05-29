@@ -10,11 +10,12 @@ const CreateIncidentModalSelect = ({ onChange, list, title = '' }) => {
       <Form.Control as="select" onChange={onChange}>
         {list.length
           ? list.map((item) => {
-              return (
-                <option value={item.id} key={item.id}>
-                  {item.name}
-                </option>
-              );
+              if (!item.isArchive)
+                return (
+                  <option value={item.id} key={item.id}>
+                    {item.name}
+                  </option>
+                );
             })
           : null}
       </Form.Control>

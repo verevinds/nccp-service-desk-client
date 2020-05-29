@@ -6,6 +6,13 @@ pre {
     Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   font-size: 1em;
 }
+.textIncident {
+  word-break: break-all;
+  white-space: pre-wrap;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  -ms-hyphens: auto;
+}
 .table,
 .table pre {
   font-size: 0.9em;
