@@ -27,7 +27,7 @@ const SettingPositions = (props) => {
   }, [isUpdate, dispatch, route, list]);
 
   const onFavorites = useCallback(
-    (id) => {
+    ({ list }) => ({ id }) => {
       dispatch(
         queryApi({
           id,
@@ -45,7 +45,7 @@ const SettingPositions = (props) => {
   return (
     <>
       <h2>Должности</h2>
-      <List list={list} onFavorites={onFavorites} xs={12} />
+      <List list={list} onFavorites={onFavorites({ list })} xs={12} />
     </>
   );
 };
