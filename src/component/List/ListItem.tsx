@@ -73,9 +73,13 @@ const ListItem: React.FC<IListItem> = ({
   }, [onArchive, id, isArchive]);
   const content = useMemo(() => {
     if (!!buttonArchive || !!buttonDelete || !!buttonFavorites) {
-      if (isArchive) {
+      if (!!isArchive) {
         return [buttonArchive, buttonDelete];
-      } else return [buttonArchive, buttonFavorites];
+      } else if (!!buttonArchive) {
+        return [buttonArchive, buttonFavorites];
+      } else {
+        return [buttonFavorites];
+      }
     } else return undefined;
   }, [buttonArchive, buttonDelete, buttonFavorites, isArchive]);
   return (
