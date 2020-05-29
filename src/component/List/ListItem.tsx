@@ -8,8 +8,6 @@ import { Row, Col, ListGroup } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faTrash,
-  faStar,
-  faArchive,
   faAngleRight,
   faArrowUp,
   faArrowDown,
