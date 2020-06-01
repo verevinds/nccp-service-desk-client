@@ -65,9 +65,9 @@ const IncidentWindowBody = ({ incident, myincident, handleOpenModal }) => {
         {!!incident.option ? ` /  ${incident.option.name}` : null}
       </Card.Title>
       <Card.Text></Card.Text>
-
-      <Card.Text>
-        <span>Инициатор: </span>
+      <Card.Title as="h6">Инициатор:</Card.Title>
+      <Card.Text className={styles.info}>
+        <span>ФИО: </span>
         <OverlayTrigger
           placement="right"
           delay={{ show: 250, hide: 400 }}
@@ -83,19 +83,18 @@ const IncidentWindowBody = ({ incident, myincident, handleOpenModal }) => {
             } ${incident.initiatorUser.name3 || ''}`}
           </span>
         </OverlayTrigger>
-      </Card.Text>
-      <Card.Text>
+        <br />
         {!!incident.initiatorUser
           ? `Email: ${incident.initiatorUser.email} `
           : null}
-      </Card.Text>
-      <Card.Text>
+        <br />
         {!!incident.initiatorUser
           ? `Тел.: ${incident.initiatorUser.phone1} `
           : null}
       </Card.Text>
       {incident.text ? (
         <>
+          <Card.Title as="h6">Содержание:</Card.Title>
           <hr />
           <Card.Text as="pre" className={styles.textIncident}>
             {incident.text}

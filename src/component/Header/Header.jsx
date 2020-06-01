@@ -44,7 +44,14 @@ const Header = (props) => {
   return (
     <nav>
       <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
-        <Navbar.Brand>Service Desk</Navbar.Brand>
+        <Navbar.Brand>
+          <a href="http://www.c31.nccp.ru/">
+            <Image
+              src="http://api.nccp-eng.ru/images/logo.png"
+              className={styles.logo}
+            />
+          </a>
+        </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className={`${styles.nav} mr-auto`}>

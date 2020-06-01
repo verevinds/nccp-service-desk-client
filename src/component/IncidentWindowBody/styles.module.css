@@ -6,9 +6,14 @@ pre {
     Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   font-size: 1em;
 }
+.info {
+  padding: 0 1em;
+  font-size: 0.9em;
+}
 .textIncident {
   word-break: break-all;
   white-space: pre-wrap;
+  padding: 0 1em;
   -moz-hyphens: auto;
   -webkit-hyphens: auto;
   -ms-hyphens: auto;

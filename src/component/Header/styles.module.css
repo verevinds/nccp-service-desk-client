@@ -1,3 +1,7 @@
+.logo {
+  width: 300px;
+  cursor: pointer;
+}
 .nav {
   display: flex;
   flex-direction: row;
