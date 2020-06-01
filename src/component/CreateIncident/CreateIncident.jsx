@@ -129,7 +129,7 @@ const CreateIncidentModel = ({ handleClose, showModal, list, user }) => {
       });
     }
     await dispatch(incidentFetching(data, dataFile));
-    await socket.emit('newIncident', currentCategory[0].departmentId);
+    // await socket.emit('newIncident', currentCategory[0].departmentId);
     // socket.emit('departmentId', currentCategory[0].departmentId);
     await handleClose();
   };

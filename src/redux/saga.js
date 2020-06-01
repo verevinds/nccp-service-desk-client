@@ -10,6 +10,8 @@ import {
   fileRequestSuccessed,
 } from './actionCreators/fileAction';
 import { queryApi } from './actionCreators/queryApiAction';
+import openSocket from 'socket.io-client';
+const socket = openSocket('http://192.168.213.77:8000');
 
 export function* watchFetch() {
   yield takeEvery(QUERY_API, queryApiAsync);
@@ -128,6 +130,7 @@ function* fetchAsyncIncident({ data, dataFile }) {
     const newIncident = yield call(() =>
       axios.post(`${URL}/api/incidents`, data),
     );
+    yield socket.emit('newIncident', newIncident);
 
     if (dataFile.wasFile) {
       let bindFileIncident = {

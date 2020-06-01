@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo, useEffect, useState, useMemo } from 'react';
 import CreateIncidentModal from '../CreateIncident/CreateIncident';
 import { NavLink } from 'react-router-dom';
 import styles from './styles.module.css';
@@ -38,6 +38,9 @@ const Header = (props) => {
   }, [user]);
 
   const [page, setPage] = useState(undefined);
+  const newIncidentCount = useMemo(() => {
+    return listIncident.filter((item) => Number(item.statusId) === 0).length;
+  }, [listIncident]);
   return (
     <nav>
       <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
@@ -62,12 +65,9 @@ const Header = (props) => {
                   className="mr-1"
                 />
                 {`Рабочая панель`}
-                {!!listIncident.length ? (
+                {!!newIncidentCount ? (
                   <Badge variant="primary" className={'ml-1'}>
-                    {
-                      listIncident.filter((item) => Number(item.statusId) === 0)
-                        .length
-                    }
+                    {newIncidentCount}
                   </Badge>
                 ) : undefined}
               </Button>

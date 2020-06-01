@@ -7,9 +7,10 @@ interface Props {
   text: string;
   type?: 'default' | 'success' | 'info' | 'warn';
   autoClose?: number;
+  button?: any;
 }
 
-const Alert: React.FC<Props> = ({ text, type, autoClose }) => {
+const Alert: React.FC<Props> = ({ text, type, autoClose, button }) => {
   const body = useMemo(() => {
     const icon = [
       { emoji: '✅', type: 'success' },
@@ -25,7 +26,10 @@ const Alert: React.FC<Props> = ({ text, type, autoClose }) => {
           <span role="img" aria-label={iconSpan?.type}>
             {iconSpan?.emoji}
           </span>
-          <h6>{text}</h6>
+          <div className={'alertCustom__body'}>
+            <h6>{text}</h6>
+            <div className={'alertCustom__button'}>{button}</div>
+          </div>
         </div>
       </div>
     );

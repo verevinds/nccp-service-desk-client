@@ -66,6 +66,7 @@ const App = (props) => {
           text={alert.text}
           autoClose={alert.autoClose || undefined}
           type={alert.type || undefined}
+          button={alert.button}
         />
       );
   }, [alert]);

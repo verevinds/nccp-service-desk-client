@@ -1,32 +1,85 @@
-import React, { memo, useEffect, useContext } from 'react';
+import React, { memo, useEffect, useContext, useState, useMemo } from 'react';
 import { useSelector, shallowEqual, useDispatch } from 'react-redux';
 import { AlertContext } from '../Alert/AlertContext';
 // import SpeechOn from '../../sounds/SpeechOn.mp3';
+import { Button } from 'react-bootstrap';
+
+//? Font Awesome иконки
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye } from '@fortawesome/free-solid-svg-icons';
 
 import openSocket from 'socket.io-client';
-import { incidentCreate } from '../../redux/actionCreators/incidentAction';
+import {
+  incidentCreate,
+  incidentChoose,
+} from '../../redux/actionCreators/incidentAction';
+import ModalWindow from '../ModalWindow/ModalWindow';
+import IncidentWindow from '../IncidentWindow/IncidentWindow';
 
 const socket = openSocket('http://192.168.213.77:8000');
-interface Props {
-  data: any;
-  title: string;
-}
 
-const HandleSocket: React.FC<Props> = () => {
+const HandleSocket = () => {
   const setAlert = useContext(AlertContext);
   const user = useSelector((state: any) => state.auth.user, shallowEqual);
+  const { list } = useSelector((state: any) => state.incidents, shallowEqual);
   const dispatch = useDispatch();
+  const [show, setShow] = useState(false);
+  const [data, setData] = useState({ id: undefined });
+  const { incident, isChange } = useSelector(
+    (state: any) => state.incidents.current,
+    shallowEqual,
+  );
 
   useEffect(() => {
     const newAlert = (data: any) => {
       dispatch(incidentCreate());
-      setAlert({ type: 'info', text: `Поступил новый инцидент` });
+      setAlert({
+        type: 'info',
+        text: <>Поступил новый инцидент </>,
+        button: (
+          <>
+            <Button
+              size="sm"
+              variant="outline-info"
+              onClick={() => {
+                setShow(!show);
+                setData(data.data);
+              }}
+            >
+              <span>Посмотреть </span>
+              <FontAwesomeIcon icon={faEye} size="lg" />
+            </Button>
+          </>
+        ),
+      });
     };
 
     socket.on(String(user?.departmentId), newAlert);
-  }, [user, dispatch, setAlert]);
+  }, [user, dispatch, setAlert, show]);
 
-  return <></>;
+  useEffect(() => {
+    if (!!data.id || isChange || !incident) {
+      const newCurrentIncident = (() => {
+        let thisList = list.find((item: any) => item.id === data?.id);
+        if (thisList) return thisList;
+      })();
+      dispatch(incidentChoose(newCurrentIncident));
+    }
+  }, [list, data, dispatch, isChange, show]);
+
+  const jsx = useMemo(() => {
+    return (
+      <>
+        <ModalWindow show={!!show} onHide={() => setShow(false)} size="lg">
+          <IncidentWindow incident={incident} myincident={false} />
+        </ModalWindow>
+      </>
+    );
+  }, [show, incident]);
+
+  if (!!show) {
+    return jsx;
+  } else return <></>;
 };
 
 export default memo(HandleSocket);

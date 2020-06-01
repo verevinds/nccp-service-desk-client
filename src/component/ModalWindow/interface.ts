@@ -9,4 +9,5 @@ export interface IModalWindow {
   onSubmit?: (() => void) | void;
   children?: Element | React.ReactElement<any> | undefined;
   validated?: boolean | undefined;
+  size?: 'lg' | 'sm';
 }

@@ -40,7 +40,7 @@ const SettingPositions = (props) => {
         }),
       );
     },
-    [list, dispatch, route],
+    [dispatch, route],
   );
   return (
     <>

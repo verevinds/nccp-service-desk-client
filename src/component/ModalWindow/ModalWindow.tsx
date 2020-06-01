@@ -14,6 +14,7 @@ const ModalWindow: React.FC<IModalWindow> = ({
   textOk,
   textNot,
   validated,
+  size,
 }) => {
   return (
     <>
@@ -22,6 +23,7 @@ const ModalWindow: React.FC<IModalWindow> = ({
         centered
         show={show}
         onHide={onHide}
+        size={size}
       >
         {!!title ? (
           <Modal.Header closeButton>

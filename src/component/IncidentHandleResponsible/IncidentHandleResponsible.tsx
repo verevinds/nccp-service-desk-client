@@ -80,7 +80,7 @@ const IncidentHandleResponsible: React.FC<IIncidentHandleResponsible> = ({
         textOk={'Сохранить'}
         onOk={() => {
           onHide();
-          onClick.call(null, {
+          onClick.call({
             bodyData: { currentResponsible },
             comment: `Статус инцидента изменен на "В работе". Ответственным назначен: ${currentResponsibleFullname}`,
           });

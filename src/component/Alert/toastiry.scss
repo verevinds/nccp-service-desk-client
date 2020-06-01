@@ -19,7 +19,7 @@
 
 /** Classes for the displayed toast **/
 .Toastify__toast {
-  font-size: 0.8em;
+  font-size: 1em;
   padding: 0.75rem 1.25rem;
   margin-bottom: 1rem;
   border: 1px solid transparent;
@@ -28,10 +28,11 @@
   .alertCustom {
     margin: 0;
   }
-  span {
-    font-size: 1.2em;
+  .alertCustom__title > span {
+    font-size: 1.8em;
   }
   .alertCustom h6 {
+    font-size: 0.8em;
     padding-left: 1em;
     line-height: 25px;
     font-weight: 500;
@@ -46,6 +47,9 @@
     padding: 0 0.25em;
     color: #0c5460;
   }
+}
+.alertCustom__body {
+  width: 100%;
 }
 .Toastify__toast--rtl {
 }
@@ -103,4 +107,15 @@
 .Toastify__progress-bar--default {
 }
 .Toastify__progress-bar--dark {
+}
+.alertCustom__button {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+.alertCustom__button > button {
+  font-size: 0.6em;
+  padding: 2px 5px;
+  opacity: 0.8;
 }
