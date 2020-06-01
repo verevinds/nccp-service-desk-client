@@ -67,7 +67,7 @@ const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId }) => {
             className={`${styles.item} ${
               activeId === item.id ? styles.active : null
             }`}
-            variant={!item.status ? 'primary' : undefined}
+            variant={item.status === 0 ? 'primary' : undefined}
           >
             <div className={`${styles.icon} ${styles.icon_left}`}>
               {tags(item, color)?.map((item) => item)}
