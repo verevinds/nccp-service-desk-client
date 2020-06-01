@@ -20,9 +20,10 @@ const SettingCatalog = (props) => {
   const [categoryList, setCategoryList] = useState([]);
   // Изменяет текущий лист категорий, если изменился ID отдела или обновились данные в категориях
   useEffect(() => {
-    setCategoryList(
-      category.filter((item) => item.departmentId === departmentIdCurrent),
+    let updateCategory = category.filter(
+      (item) => item.departmentId === departmentIdCurrent,
     );
+    setCategoryList(updateCategory);
   }, [departmentIdCurrent, category]);
   // Обработчик состояния: хранит в себе id выбранной категории
   const [categoryIdCurrent, setCategoryIdCurrent] = useState();

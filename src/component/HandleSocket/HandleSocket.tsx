@@ -16,7 +16,7 @@ import {
 import ModalWindow from '../ModalWindow/ModalWindow';
 import IncidentWindow from '../IncidentWindow/IncidentWindow';
 
-const socket = openSocket('http://192.168.213.77:8000');
+const socket = openSocket('http://srv-sdesk.c31.nccp.ru:8000');
 
 const HandleSocket = () => {
   const setAlert = useContext(AlertContext);

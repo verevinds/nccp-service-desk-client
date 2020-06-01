@@ -15,9 +15,10 @@
   display: flex;
   justify-content: space-between;
   padding: 0.4em;
-  min-height: 62px;
+  min-height: 51px;
 }
 .item__body {
+  font-size: 0.8em;
   width: 100%;
   display: flex;
   flex-direction: row;

@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 import styles from './styles.module.css';
 
 /**Bootstrap component */
-import { Navbar, Nav, Image, Button, Badge } from 'react-bootstrap';
+import { Navbar, Nav, Image, Button } from 'react-bootstrap';
 import { useSelector, shallowEqual } from 'react-redux';
 //? Font Awesome иконки
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -14,6 +14,7 @@ import {
   faEdit,
   faHome,
 } from '@fortawesome/free-solid-svg-icons';
+import HeaderButton from '../HeaderButton/HeaderButton';
 
 const Header = (props) => {
   const user = useSelector((state) => state.auth.user, shallowEqual);
@@ -36,8 +37,8 @@ const Header = (props) => {
       setFullName(`Гость`);
     }
   }, [user]);
-
-  const [page, setPage] = useState(undefined);
+  // console.log(window.location);
+  const [page, setPage] = useState(window.location.pathname);
   const newIncidentCount = useMemo(() => {
     return listIncident.filter((item) => Number(item.statusId) === 0).length;
   }, [listIncident]);
@@ -56,40 +57,21 @@ const Header = (props) => {
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className={`${styles.nav} mr-auto`}>
             <Nav.Item>
-              <Button
-                as={NavLink}
-                to="/"
-                className="mr-1"
-                variant={page === Number(1) ? 'light' : 'link'}
-                onClick={() => {
-                  setPage(Number(1));
-                }}
-                active={false}
-              >
-                <FontAwesomeIcon
-                  icon={faClipboardList}
-                  size="lg"
-                  className="mr-1"
-                />
-                {`Рабочая панель`}
-                {!!newIncidentCount ? (
-                  <Badge variant="primary" className={'ml-1'}>
-                    {newIncidentCount}
-                  </Badge>
-                ) : undefined}
-              </Button>
-              <Button
-                as={NavLink}
-                to="/myincidents"
-                className="mr-1"
-                variant={page === Number(2) ? 'light' : 'link'}
-                onClick={() => {
-                  setPage(Number(2));
-                }}
-              >
-                <FontAwesomeIcon icon={faHome} size="lg" className="mr-1" />
-                Мои инциденты
-              </Button>
+              <HeaderButton
+                to={'/myincidents'}
+                faIcon={faHome}
+                page={page}
+                setPage={setPage}
+                text={'Мои инциденты'}
+              />
+              <HeaderButton
+                to={'/'}
+                faIcon={faClipboardList}
+                newIncidentCount={newIncidentCount}
+                page={page}
+                setPage={setPage}
+                text={'Рабочая панель'}
+              />
             </Nav.Item>{' '}
           </Nav>
           <Nav>
@@ -123,13 +105,12 @@ const Header = (props) => {
             </Nav.Item>
             {isAccess >= 1 ? (
               <Nav.Item className={styles.nav__item}>
-                <NavLink
-                  to="/setting"
-                  activeClassName={'btn-light'}
-                  className="btn btn-link align-middle"
-                >
-                  <FontAwesomeIcon icon={faCog} />
-                </NavLink>
+                <HeaderButton
+                  to={'/setting'}
+                  faIcon={faCog}
+                  page={page}
+                  setPage={setPage}
+                />
               </Nav.Item>
             ) : null}
           </Nav>

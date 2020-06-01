@@ -87,6 +87,8 @@ const Incident = ({ list, params, title, badge, actionSuccessed }) => {
           } ${item.option ? item.option.name : ''}`,
           createdAt: item.createdAt,
           responsible,
+          numberResponsible: item.currentResponsible,
+          consent: item.consent,
           status: item.statusId,
         };
         return newItem;

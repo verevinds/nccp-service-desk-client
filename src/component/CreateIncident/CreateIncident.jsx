@@ -1,5 +1,6 @@
 import React, { memo, useState, useEffect, useContext } from 'react';
 import { useDispatch } from 'react-redux';
+import queryString from 'query-string';
 
 //** My components */
 import CreateIncidentSelect from '../CreateIncidentSelect/CreateIncidentSelect';
@@ -16,6 +17,8 @@ import { Form } from 'react-bootstrap';
 
 const CreateIncidentModel = ({ handleClose, showModal, list, user }) => {
   const setAlert = useContext(AlertContext);
+  const parsed = queryString.parse(window.location.search);
+  console.log(parsed);
 
   const dateNow = new Date();
   const [incident, setIncident] = useState({

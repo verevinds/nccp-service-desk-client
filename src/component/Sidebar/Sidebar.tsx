@@ -1,5 +1,5 @@
 import React, { memo, useState, useEffect } from 'react';
-import { ListGroup } from 'react-bootstrap';
+import { ListGroup, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import Moment from 'react-moment';
 import styles from './siderbar.module.css';
 //Interface TypeScript for function Sidebar
@@ -11,27 +11,62 @@ import {
   faAngleRight,
   faTag,
   faUserClock,
+  faUserCheck,
 } from '@fortawesome/free-solid-svg-icons';
 
 const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId }) => {
-  const tags = (item: any, color?: any) => {
+  const tags = (item: any, color?: any, tooltip?: string) => {
     let tags = [];
     if (!!item.status || Number(item.status) === 0) {
       tags.push(
-        <FontAwesomeIcon
-          key={item.id + 't'}
-          icon={faTag}
-          color={color}
-          className={'mb-1'}
-        />,
+        <OverlayTrigger
+          placement="bottom"
+          delay={{ show: 250, hide: 400 }}
+          overlay={<Tooltip id="button-tooltip">{tooltip}</Tooltip>}
+        >
+          <FontAwesomeIcon
+            key={item.id + 't'}
+            icon={faTag}
+            color={color}
+            className={'mb-1'}
+          />
+        </OverlayTrigger>,
       );
       if (!!item.responsible && Number(item.status) === 0) {
         tags.push(
-          <FontAwesomeIcon
-            key={item.id + 'c'}
-            icon={faUserClock}
-            color={'#007bff'}
-          />,
+          <OverlayTrigger
+            placement="bottom"
+            delay={{ show: 250, hide: 400 }}
+            overlay={
+              <Tooltip id="button-tooltip">
+                Ответсвенный назначен. Ожидание согласования.
+              </Tooltip>
+            }
+          >
+            <FontAwesomeIcon
+              key={item.id + 'c'}
+              icon={faUserClock}
+              color={'#007bff'}
+            />
+          </OverlayTrigger>,
+        );
+      } else if (item.consent) {
+        tags.push(
+          <OverlayTrigger
+            placement="bottom"
+            delay={{ show: 250, hide: 400 }}
+            overlay={
+              <Tooltip id="button-tooltip">
+                Ответсвенный назначен. Согласован.
+              </Tooltip>
+            }
+          >
+            <FontAwesomeIcon
+              key={item.id + 'd'}
+              icon={faUserCheck}
+              color={'#c3e6cb'}
+            />
+          </OverlayTrigger>,
         );
       }
     }
@@ -50,14 +85,18 @@ const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId }) => {
           itemText = ` №${item.id} `;
         }
         let color;
+        let tooltip;
         if (item.status) {
           if (Number(item.status) === 8388608) {
             color = '#c3e6cb';
+            tooltip = `Готово`;
           } else {
             color = '#bee5eb';
+            tooltip = `В работе`;
           }
         } else if (item.status === 0) {
           color = '#007bff';
+          tooltip = `Новый инцидент. Нет ответственного.`;
         }
         return (
           <ListGroup.Item
@@ -70,7 +109,7 @@ const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId }) => {
             variant={item.status === 0 ? 'primary' : undefined}
           >
             <div className={`${styles.icon} ${styles.icon_left}`}>
-              {tags(item, color)?.map((item) => item)}
+              {tags(item, color, tooltip)?.map((item) => item)}
             </div>
             <div className={styles.item__body}>
               <div className={styles.item__id}>

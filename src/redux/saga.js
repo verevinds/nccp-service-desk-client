@@ -11,14 +11,14 @@ import {
 } from './actionCreators/fileAction';
 import { queryApi } from './actionCreators/queryApiAction';
 import openSocket from 'socket.io-client';
-const socket = openSocket('http://192.168.213.77:8000');
+const socket = openSocket('http://srv-sdesk.c31.nccp.ru:8000');
 
 export function* watchFetch() {
   yield takeEvery(QUERY_API, queryApiAsync);
   yield takeEvery(INCIDENT_FETCHING, fetchAsyncIncident);
   yield takeEvery(FILE_FETCHING, fetchAsyncFile);
 }
-const URL = 'http://192.168.213.77:8080';
+const URL = 'http://srv-sdesk.c31.nccp.ru:8080';
 
 function* fetchAsyncFile({ file, incidentId, userNumber }) {
   try {

@@ -44,22 +44,24 @@ const IncidentWindowComments = (props) => {
                 </tr>
               </thead>
               <tbody>
-                {comments.map((item, index) => (
-                  <tr key={item.id}>
-                    <td>{index + 1}</td>
-                    <td>
-                      <pre>{item.text}</pre>
-                    </td>
-                    <td>{`${item.user.name1} ${item.user.name2.charAt(
-                      0,
-                    )}. ${item.user.name3.charAt(0)}.`}</td>
-                    <td>
-                      <Moment locale="ru" format="hh:mm D.MM.YYг" withTitle>
-                        {item.createdAt}
-                      </Moment>
-                    </td>
-                  </tr>
-                ))}
+                {comments
+                  .sort((a, b) => (a.createdAt > b.createdAt ? 1 : -1))
+                  .map((item, index) => (
+                    <tr key={item.id}>
+                      <td>{index + 1}</td>
+                      <td>
+                        <pre>{item.text}</pre>
+                      </td>
+                      <td>{`${item.user.name1} ${item.user.name2.charAt(
+                        0,
+                      )}. ${item.user.name3.charAt(0)}.`}</td>
+                      <td>
+                        <Moment locale="ru" format="hh:mm D.MM.YYг" withTitle>
+                          {item.createdAt}
+                        </Moment>
+                      </td>
+                    </tr>
+                  ))}
               </tbody>
             </Table>
           </Accordion.Collapse>

@@ -79,6 +79,7 @@ export default memo(function IncidentWorkButton({ onClick, handleOpenModal }) {
                   variant="success"
                   onClick={onClick.bind({
                     comment: `Согласовано`,
+                    bodyData: { consent: true },
                   })}
                 >
                   Согласовать

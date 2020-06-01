@@ -14,7 +14,7 @@ const FilterQuery: React.FC<IFilterQuery> = ({ setList, list }) => {
   const [text, setText] = useState('');
 
   useEffect(() => {
-    if (list.length && setList) {
+    if (list && setList) {
       setList(
         list
           .filter(

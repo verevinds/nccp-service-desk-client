@@ -29,7 +29,7 @@ const fileUpload = async (
   const data = new FormData();
   data.append('file', file);
   statusUpload = await axios
-    .post('http://192.168.213.77:8080/upload', data)
+    .post('http://srv-sdesk.c31.nccp.ru:8080/upload', data)
     .then((response: AxiosResponse<IResponse>) => {
       !!onSuccess ? onSuccess(response) : console.log(response);
       if (response.statusText === 'OK') {

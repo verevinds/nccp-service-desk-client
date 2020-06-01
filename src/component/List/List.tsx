@@ -52,7 +52,7 @@ const List: React.FC<IList> = ({
       {onSubmit ? <InputFormSubmite onSubmit={onSubmit} /> : undefined}
       <ListContext.Provider value={{ activeId, setActiveId }}>
         <ListGroup variant="flush" className={`${styles.listGroup} `}>
-          {!!localList.length ? (
+          {!!localList ? (
             <>
               {localList.map((item: TList, index: number) => {
                 if (index < limit && !item.isArchive) {
