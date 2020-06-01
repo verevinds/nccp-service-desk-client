@@ -1,3 +1,4 @@
 .popover {
   width: 300px;
+  z-index: 99999;
 }

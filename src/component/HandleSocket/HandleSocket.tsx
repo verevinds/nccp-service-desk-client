@@ -35,7 +35,7 @@ const HandleSocket = () => {
       dispatch(incidentCreate());
       setAlert({
         type: 'info',
-        text: <>Поступил новый инцидент </>,
+        text: <>Поступил новый инцидент №{data.data.id}</>,
         button: (
           <>
             <Button

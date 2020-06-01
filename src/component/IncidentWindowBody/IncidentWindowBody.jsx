@@ -72,7 +72,7 @@ const IncidentWindowBody = ({ incident, myincident, handleOpenModal }) => {
           placement="right"
           delay={{ show: 250, hide: 400 }}
           overlay={
-            <div>
+            <div style={{ zIndex: 9999 }}>
               <PopoverCardUser id={incident.initiatorUser.number} />
             </div>
           }
