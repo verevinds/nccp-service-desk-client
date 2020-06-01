@@ -34,7 +34,7 @@ export default memo(function IncidentWorkButton({ onClick, handleOpenModal }) {
   const handleInWork = useMemo(() => {
     let { category, property, option } = currentIncident;
     if (category || property || option) {
-      if (category.level) {
+      if (category.level || property.level || option.level) {
         return onClick.bind({
           bodyData: { currentResponsible: user.number },
           comment: `${fullName} назначил себя ответственный. Ожидает согласования.`,
@@ -105,6 +105,7 @@ export default memo(function IncidentWorkButton({ onClick, handleOpenModal }) {
     onClick,
     user.position.level,
   ]);
+
   return (
     <>
       <hr />
