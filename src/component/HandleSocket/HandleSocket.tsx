@@ -65,7 +65,7 @@ const HandleSocket = () => {
       })();
       dispatch(incidentChoose(newCurrentIncident));
     }
-  }, [list, data, dispatch, isChange, show]);
+  }, [list, data, dispatch, isChange, show, incident]);
 
   const jsx = useMemo(() => {
     return (

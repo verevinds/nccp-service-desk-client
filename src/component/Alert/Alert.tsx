@@ -33,7 +33,7 @@ const Alert: React.FC<Props> = ({ text, type, autoClose, button }) => {
         </div>
       </div>
     );
-  }, [text, type]);
+  }, [text, type, button]);
 
   const options: ToastOptions = useMemo(() => {
     return {

@@ -1,6 +1,5 @@
 import React, { memo, useState, useEffect, useContext } from 'react';
 import { useDispatch } from 'react-redux';
-import openSocket from 'socket.io-client';
 
 //** My components */
 import CreateIncidentSelect from '../CreateIncidentSelect/CreateIncidentSelect';
@@ -14,8 +13,6 @@ import { incidentFetching } from '../../redux/actionCreators/incidentAction';
 
 /**Bootstrap components */
 import { Form } from 'react-bootstrap';
-
-const socket = openSocket('http://192.168.213.77:8000/');
 
 const CreateIncidentModel = ({ handleClose, showModal, list, user }) => {
   const setAlert = useContext(AlertContext);
@@ -129,8 +126,6 @@ const CreateIncidentModel = ({ handleClose, showModal, list, user }) => {
       });
     }
     await dispatch(incidentFetching(data, dataFile));
-    // await socket.emit('newIncident', currentCategory[0].departmentId);
-    // socket.emit('departmentId', currentCategory[0].departmentId);
     await handleClose();
   };
 
