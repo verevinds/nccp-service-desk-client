@@ -20,21 +20,18 @@ const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId }) => {
     if (!!item.status || Number(item.status) === 0) {
       tags.push(
         <OverlayTrigger
+          key={item.id + 't'}
           placement="bottom"
           delay={{ show: 250, hide: 400 }}
           overlay={<Tooltip id="button-tooltip">{tooltip}</Tooltip>}
         >
-          <FontAwesomeIcon
-            key={item.id + 't'}
-            icon={faTag}
-            color={color}
-            className={'mb-1'}
-          />
+          <FontAwesomeIcon icon={faTag} color={color} className={'mb-1'} />
         </OverlayTrigger>,
       );
       if (!!item.responsible && Number(item.status) === 0) {
         tags.push(
           <OverlayTrigger
+            key={item.id + 'c'}
             placement="bottom"
             delay={{ show: 250, hide: 400 }}
             overlay={
@@ -43,16 +40,13 @@ const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId }) => {
               </Tooltip>
             }
           >
-            <FontAwesomeIcon
-              key={item.id + 'c'}
-              icon={faUserClock}
-              color={'#007bff'}
-            />
+            <FontAwesomeIcon icon={faUserClock} color={'#007bff'} />
           </OverlayTrigger>,
         );
       } else if (item.consent) {
         tags.push(
           <OverlayTrigger
+            key={item.id + 'd'}
             placement="bottom"
             delay={{ show: 250, hide: 400 }}
             overlay={
@@ -61,11 +55,7 @@ const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId }) => {
               </Tooltip>
             }
           >
-            <FontAwesomeIcon
-              key={item.id + 'd'}
-              icon={faUserCheck}
-              color={'#c3e6cb'}
-            />
+            <FontAwesomeIcon icon={faUserCheck} color={'#c3e6cb'} />
           </OverlayTrigger>,
         );
       }

@@ -36,10 +36,6 @@ const SidebarWrapper: React.FC<ISidebarWrapper> = ({
       setBlogTitle(newBlogTitle);
     }
   }, [title, list]);
-  useEffect(() => {
-    console.log(user);
-    console.log(list);
-  }, [user, list]);
   return (
     <>
       <Container>
