@@ -1,6 +1,5 @@
-import React, { memo, useState } from 'react';
+import React, { memo } from 'react';
 import { NavLink } from 'react-router-dom';
-import Fade from 'react-reveal/Fade';
 import './styles.css';
 
 /**Bootstrap component */
@@ -17,8 +16,6 @@ const HeaderButton = ({
   text,
   to,
 }) => {
-  const [view, setView] = useState(false);
-
   return (
     <Button
       as={NavLink}
@@ -27,12 +24,6 @@ const HeaderButton = ({
       variant={page === to ? 'light' : 'link'}
       onClick={() => {
         setPage(to);
-      }}
-      onMouseOver={() => {
-        setView(true);
-      }}
-      onMouseOut={() => {
-        setView(false);
       }}
       active={false}
     >

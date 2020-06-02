@@ -10,33 +10,7 @@ const SettingStatus = (props) => {
   const { list } = useSelector((state) => state.status, shallowEqual);
   const dispatch = useDispatch();
   const route = 'status';
-  const actionUpdate = statusUpdate;
-  //! Определить функцию обработки события
-  // Define function handle submit
-  const onSubmit = ({ value }) => {
-    console.log(value);
-    if (value) {
-      const data = { name: value };
-      dispatch(
-        queryApi({
-          method: 'post',
-          route,
-          actionUpdate,
-          data,
-        }),
-      );
-    }
-  };
-  const onDelete = (id) => {
-    dispatch(
-      queryApi({
-        method: 'delete',
-        actionUpdate,
-        route,
-        id,
-      }),
-    );
-  };
+
   const handleEvent = useCallback(
     ({ route, list, fact }) => ({ id, value }) => {
       let data;

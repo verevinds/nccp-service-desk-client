@@ -68,7 +68,9 @@ const SidebarHistory: React.FC<ISidebarHistory> = ({
             <Card.Body className={styles.body}>
               {Array.isArray(sidebarList) && sidebarList.length ? (
                 <Sidebar
-                  list={sidebarList}
+                  list={sidebarList.sort((a: any, b: any) =>
+                    Number(a?.id) < Number(b?.id) ? 1 : -1,
+                  )}
                   onClick={onClick}
                   activeId={activeId}
                 />

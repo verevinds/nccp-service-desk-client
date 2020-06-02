@@ -11,6 +11,7 @@ import InputFormSubmite from '../InputFormSubmite/InputFormSubmite';
 export type THandle = {
   onSubmit?: (val: { value: string }) => void;
   onDelete?: (val: { id: number }) => void;
+  activeId?: number;
   onClick?: (id: number) => void;
   onFavorites?: (val: { id: number }) => void;
   onArchive?: (val: { id: number }) => void;

@@ -18,7 +18,9 @@ const MainPage = () => {
   }, [user]);
   return (
     <Incident
-      list={list}
+      list={list.sort((a, b) =>
+        Number(a.updatedAt) > Number(b.updatedAt) ? 1 : -1,
+      )}
       params={params}
       title={title}
       actionSuccessed={incidentRequestSuccessed}

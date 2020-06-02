@@ -15,9 +15,7 @@ const SidebarWrapper: React.FC<ISidebarWrapper> = ({
 }) => {
   const user = useSelector((state: any) => state.auth.user, shallowEqual);
   const [blogTitle, setBlogTitle] = useState<JSX.Element | null>(null);
-  const [myResponsibility, setMyResponsibility] = useState<JSX.Element | null>(
-    null,
-  );
+
   const responsibleList = useMemo(() => {
     if (title) {
       return list.filter((item: any) => item.numberResponsible === user.number);
