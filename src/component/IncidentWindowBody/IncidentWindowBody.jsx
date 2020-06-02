@@ -6,14 +6,22 @@ import dateNow from '../../js/dateNow';
 import IncidentWindowComments from '../IncidentWindowComments/IncidentWindowComments';
 import IncidentWindowFiles from '../IncidentWindowFiles/IncidentWindowFiles';
 import IncidentWorkButton from '../IncidentWorkButton/IncidentWorkButton';
-
 //ActionCreator
 import { incidentCreate } from '../../redux/actionCreators/incidentAction';
 import { queryApi } from '../../redux/actionCreators/queryApiAction';
 
 // Bootstrap
-import { Card, OverlayTrigger } from 'react-bootstrap';
+import { Card, OverlayTrigger, Table } from 'react-bootstrap';
 import PopoverCardUser from '../PopoverCardUser/PopoverCardUser';
+
+//? Font Awesome иконки
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faAddressCard,
+  faAt,
+  faPhone,
+  faDesktop,
+} from '@fortawesome/free-solid-svg-icons';
 
 const IncidentWindowBody = ({ incident, myincident, handleOpenModal }) => {
   //State изменений в инциденте
@@ -55,6 +63,7 @@ const IncidentWindowBody = ({ incident, myincident, handleOpenModal }) => {
       }),
     );
   }
+
   return (
     <Card.Body className={styles.window}>
       <Card.Title>
@@ -64,34 +73,82 @@ const IncidentWindowBody = ({ incident, myincident, handleOpenModal }) => {
 
         {!!incident.option ? ` /  ${incident.option.name}` : null}
       </Card.Title>
-      <Card.Text></Card.Text>
+      <br />
       <Card.Title as="h6">Инициатор:</Card.Title>
-      <Card.Text className={styles.info}>
-        <span>ФИО: </span>
-        <OverlayTrigger
-          placement="right"
-          delay={{ show: 250, hide: 400 }}
-          overlay={
-            <div style={{ zIndex: 9999 }}>
-              <PopoverCardUser id={incident.initiatorUser.number} />
-            </div>
-          }
-        >
-          <span className="pointer">
-            {`${incident.initiatorUser.name1 || ''} ${
-              incident.initiatorUser.name2 || ''
-            } ${incident.initiatorUser.name3 || ''}`}
-          </span>
-        </OverlayTrigger>
-        <br />
-        {!!incident.initiatorUser
-          ? `Email: ${incident.initiatorUser.email} `
-          : null}
-        <br />
-        {!!incident.initiatorUser
-          ? `Тел.: ${incident.initiatorUser.phone1} `
-          : null}
-      </Card.Text>
+      <div className={styles.info}>
+        <Table size={'sm'} borderless>
+          <tbody>
+            <tr>
+              <td>
+                <FontAwesomeIcon
+                  icon={faAddressCard}
+                  color="#6c757d"
+                  size="lg"
+                />
+              </td>
+              <td>
+                <OverlayTrigger
+                  placement="right"
+                  delay={{ show: 250, hide: 400 }}
+                  overlay={
+                    <div style={{ zIndex: 9999 }}>
+                      <PopoverCardUser id={incident.initiatorUser.number} />
+                    </div>
+                  }
+                >
+                  <span className="pointer">
+                    {`${incident.initiatorUser.name1 || ''} ${
+                      incident.initiatorUser.name2 || ''
+                    } ${incident.initiatorUser.name3 || ''}`}
+                  </span>
+                </OverlayTrigger>
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+                <FontAwesomeIcon icon={faAt} color="#6c757d" size="lg" />
+              </td>
+              <td>
+                {incident.initiatorUser.email ? (
+                  <a href={`mailto:${incident.initiatorUser.email}`}>
+                    {incident.initiatorUser.email}
+                  </a>
+                ) : (
+                  'email не указан'
+                )}
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+                <FontAwesomeIcon icon={faPhone} color="#6c757d" size="lg" />
+              </td>
+              <td>
+                {incident.initiatorUser.phone1 ? (
+                  <span>{incident.initiatorUser.phone1}</span>
+                ) : (
+                  'телефон не указан'
+                )}
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+                <FontAwesomeIcon icon={faDesktop} color="#6c757d" size="lg" />
+              </td>
+              <td>
+                {incident.initiatorUser.phone1 ? (
+                  <span>{incident.initiatorUser.computer}</span>
+                ) : (
+                  'номер компьютера не указан'
+                )}
+              </td>
+            </tr>
+          </tbody>
+        </Table>
+      </div>
+      <br />
       {incident.text ? (
         <>
           <Card.Title as="h6">Содержание:</Card.Title>

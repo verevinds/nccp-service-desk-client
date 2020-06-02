@@ -19,7 +19,7 @@ const IncidentWindowComments = (props) => {
   );
   return (
     <>
-      <Accordion defaultActiveKey="1">
+      <Accordion defaultActiveKey={'1'}>
         <Card>
           <Accordion.Toggle
             as={Card.Header}

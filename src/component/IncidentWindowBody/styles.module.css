@@ -7,8 +7,17 @@ pre {
   font-size: 1em;
 }
 .info {
-  padding: 0 1em;
+  padding: 0;
   font-size: 0.9em;
+  color: #6c757d;
+}
+.info > table td:first-child {
+  text-align: right;
+  width: 50px;
+}
+.info a,
+span {
+  color: #6c757d;
 }
 .textIncident {
   word-break: break-all;
