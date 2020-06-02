@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useState, Dispatch, SetStateAction } from 'react';
 import ListItem from './ListItem';
 import { ListContext } from './context';
 import styles from './styles.module.css';
@@ -7,16 +7,16 @@ import styles from './styles.module.css';
 import { ListGroup, Col, Button } from 'react-bootstrap';
 import FilterQuery from '../FilterQuery/FilterQuery';
 import InputFormSubmite from '../InputFormSubmite/InputFormSubmite';
+import { TFn } from '../SettingCatalog/SettingCatalog';
 
-export type THandle = {
-  onSubmit?: (val: { value: string }) => void;
-  onDelete?: (val: { id: number }) => void;
-  activeId?: number;
-  onClick?: (id: number) => void;
-  onFavorites?: (val: { id: number }) => void;
-  onArchive?: (val: { id: number }) => void;
-};
-
+export type THandle = ({ id, value }: TFn) => void;
+export interface IHandle {
+  onSubmit?: THandle;
+  onDelete?: THandle;
+  onClick?: Dispatch<SetStateAction<number | undefined>>;
+  onFavorites?: THandle;
+  onArchive?: THandle;
+}
 export type TList = {
   id: number;
   name: string;
@@ -26,10 +26,10 @@ export type TList = {
   isArchive?: boolean;
 };
 
-export interface IList extends THandle {
+export interface IList extends IHandle {
   title: string;
   xs?: number;
-  list: [] | never[];
+  list?: [] | never[];
 }
 
 const List: React.FC<IList> = ({

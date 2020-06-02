@@ -4,20 +4,11 @@ import { useDispatch } from 'react-redux';
 import { queryApi } from '../../redux/actionCreators/queryApiAction';
 import { categoryUpdate } from '../../redux/actionCreators/catalogAction';
 import { Row } from 'react-bootstrap';
+import { THandleEvent } from '../SettingCatalog/SettingCatalog';
 
-export interface ISettingCatalogOption {
+export interface ISettingCatalogOption extends THandleEvent {
   categorySubList: TCategorySubList;
-  handleEvent: (
-    arg0: THandleEventParams,
-  ) => ((val: { id?: number; value?: string }) => void) | undefined;
 }
-
-type THandleEventParams = {
-  route: string;
-  list?: [];
-  fact?: string;
-  setCurrent?: () => void;
-};
 
 type TCategorySubList = {
   id: number;

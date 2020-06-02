@@ -1,9 +1,9 @@
-import React, { memo } from 'react';
+import React, { memo, Dispatch, SetStateAction } from 'react';
 import List from '../List/List';
 import { useSelector, shallowEqual } from 'react-redux';
 
 export interface ISettingCatalogDepartment {
-  setDepartmentIdCurrent: () => void;
+  setDepartmentIdCurrent: Dispatch<SetStateAction<number | undefined>>;
 }
 
 const SettingCatalogDepartment: React.FC<ISettingCatalogDepartment> = ({

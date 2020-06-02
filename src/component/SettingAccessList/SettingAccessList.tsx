@@ -1,4 +1,10 @@
-import React, { memo, useMemo, useLayoutEffect } from 'react';
+import React, {
+  memo,
+  useMemo,
+  useLayoutEffect,
+  Dispatch,
+  SetStateAction,
+} from 'react';
 import { Row } from 'react-bootstrap';
 import List from '../List/List';
 import { usersRequestSeccessed } from '../../redux/actionCreators/usersAction';
@@ -13,7 +19,7 @@ type TList = {
   level: number | undefined;
 };
 interface ISettingAccessList {
-  setId: (id: number) => void;
+  setId: Dispatch<SetStateAction<number | undefined>>;
 }
 const SettingAccessList: React.FC<ISettingAccessList> = ({ setId }) => {
   const dispatch = useDispatch();

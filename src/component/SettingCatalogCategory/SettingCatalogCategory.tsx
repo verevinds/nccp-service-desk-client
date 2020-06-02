@@ -1,23 +1,18 @@
 import React, { memo, useEffect, useState } from 'react';
 import List from '../List/List';
 import { useSelector, shallowEqual } from 'react-redux';
+import { THandleEvent } from '../SettingCatalog/SettingCatalog';
 
-export interface ISettingCatalogCategory {
-  departmentIdCurrent: number;
-  categoryIdCurrent: number;
-  setCategoryIdCurrent: () => void;
-  categoryList: [];
+export interface ISettingCatalogCategory extends THandleEvent {
+  departmentIdCurrent?: number;
+  categoryIdCurrent?: number;
+  setCategoryIdCurrent: React.Dispatch<
+    React.SetStateAction<number | undefined>
+  >;
+  categoryList?: [] | never[];
   setCategoryList: (arg0: []) => void;
-  handleEvent: (
-    arg0: THandleEventParams,
-  ) => ((val: { id?: number; value?: string }) => void) | undefined;
 }
-type THandleEventParams = {
-  route: string;
-  list?: [];
-  fact?: string;
-  setCurrent?: () => void;
-};
+
 const SettingCatalogCategory: React.FC<ISettingCatalogCategory> = ({
   departmentIdCurrent,
   setCategoryIdCurrent,

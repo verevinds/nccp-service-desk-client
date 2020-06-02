@@ -8,7 +8,7 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 interface IFilterQuery {
   setList: (list: never[] | []) => void;
-  list: never[] | [];
+  list?: never[] | [];
 }
 const FilterQuery: React.FC<IFilterQuery> = ({ setList, list }) => {
   const [text, setText] = useState('');

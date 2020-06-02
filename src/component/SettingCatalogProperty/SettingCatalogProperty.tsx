@@ -1,31 +1,13 @@
 import React, { memo, useEffect, useState } from 'react';
 import List from '../List/List';
+import {
+  THandleEvent,
+  TCategorySubList,
+} from '../SettingCatalog/SettingCatalog';
 
-export interface ISettingCatalogProperty {
-  categorySubList: TCategorySubList;
-  handleEvent: (
-    arg0: THandleEventParams,
-  ) => ((val: { id?: number; value?: string }) => void) | undefined;
+export interface ISettingCatalogProperty extends THandleEvent {
+  categorySubList?: TCategorySubList;
 }
-
-type THandleEventParams = {
-  route: string;
-  list?: [];
-  fact?: string;
-  setCurrent?: () => void;
-};
-
-type TCategorySubList = {
-  id: number;
-  name: string;
-  departmentId: number;
-  level: number;
-  isArchive: boolean;
-  deadline: number;
-  createdAt: string;
-  updatedAt: string;
-  properties: [];
-};
 
 const SettingCatalogProperty: React.FC<ISettingCatalogProperty> = ({
   categorySubList,

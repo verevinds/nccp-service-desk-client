@@ -18,8 +18,8 @@ import { ListContext } from './context';
 import Fade from 'react-reveal/Fade';
 import Popup from '../Popup/Popup';
 
-import { THandle, TList } from './List';
-export interface IListItem extends THandle {
+import { TList, IHandle } from './List';
+export interface IListItem extends IHandle {
   item: TList;
   activeId?: number;
 }

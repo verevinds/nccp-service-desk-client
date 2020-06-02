@@ -10,11 +10,7 @@ const SettingAccess = () => {
       <h2>Доступ</h2>
       <Row>
         <Col xs={5}>
-          <SettingAccessList
-            setId={(id: number) => {
-              setId(id);
-            }}
-          />
+          <SettingAccessList setId={setId} />
         </Col>
 
         <Col xs={7}>{id ? <CardUser id={id} /> : undefined}</Col>
