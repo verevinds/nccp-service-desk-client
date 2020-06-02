@@ -14,10 +14,14 @@ const SettingCatalogProperty: React.FC<ISettingCatalogProperty> = ({
   handleEvent,
 }) => {
   const [propertyJsx, setPropertyJsx] = useState<JSX.Element | undefined>();
+
   useEffect(() => {
+    let newPropertyJsx;
+
     if (categorySubList) {
       let route = 'properties';
-      setPropertyJsx(
+
+      newPropertyJsx = (
         <List
           title="Параметры"
           list={categorySubList?.properties}
@@ -34,13 +38,13 @@ const SettingCatalogProperty: React.FC<ISettingCatalogProperty> = ({
             fact: 'archive',
           })}
           xs={3}
-        />,
+        />
       );
-      route = 'options';
-    } else {
-      setPropertyJsx(undefined);
     }
+
+    setPropertyJsx(newPropertyJsx);
   }, [categorySubList, handleEvent]);
+
   return <>{propertyJsx}</>;
 };
 

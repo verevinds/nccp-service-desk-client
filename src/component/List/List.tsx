@@ -1,13 +1,13 @@
 import React, { memo, useState, Dispatch, SetStateAction } from 'react';
 import ListItem from './ListItem';
 import { ListContext } from './context';
+import { TFn } from '../SettingCatalog/SettingCatalog';
+import FilterQuery from '../FilterQuery/FilterQuery';
+import InputFormSubmite from '../InputFormSubmite/InputFormSubmite';
 import styles from './styles.module.css';
 
 //? Bootstrap
 import { ListGroup, Col, Button } from 'react-bootstrap';
-import FilterQuery from '../FilterQuery/FilterQuery';
-import InputFormSubmite from '../InputFormSubmite/InputFormSubmite';
-import { TFn } from '../SettingCatalog/SettingCatalog';
 
 export type THandle = ({ id, value }: TFn) => void;
 export interface IHandle {
@@ -44,8 +44,8 @@ const List: React.FC<IList> = ({
 }) => {
   const [activeId, setActiveId] = useState<number | undefined>(undefined);
   const [localList, setLocalList] = useState([]);
-
   const [limit, setLimit] = useState(50);
+
   return (
     <Col xs={xs || 3}>
       <h3>{title}</h3>

@@ -1,6 +1,6 @@
 import React, { memo, Dispatch, SetStateAction } from 'react';
-import List from '../List/List';
 import { useSelector, shallowEqual } from 'react-redux';
+import List from '../List/List';
 
 export interface ISettingCatalogDepartment {
   setDepartmentIdCurrent: Dispatch<SetStateAction<number | undefined>>;
@@ -13,6 +13,7 @@ const SettingCatalogDepartment: React.FC<ISettingCatalogDepartment> = ({
     (state: any) => state.catalog,
     shallowEqual,
   );
+
   return (
     <List
       title={'Отделы'}

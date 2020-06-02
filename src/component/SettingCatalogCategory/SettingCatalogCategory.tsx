@@ -25,18 +25,23 @@ const SettingCatalogCategory: React.FC<ISettingCatalogCategory> = ({
     (state: any) => state.catalog.list,
     shallowEqual,
   );
+  const [categoryJsx, setCategoryJsx] = useState<JSX.Element | undefined>();
+
   useEffect(() => {
     let updateCategory: [] = category.filter(
       (item: any) => item.departmentId === departmentIdCurrent,
     );
+
     setCategoryList(updateCategory);
   }, [departmentIdCurrent, category, setCategoryList]);
-  const [categoryJsx, setCategoryJsx] = useState<JSX.Element | undefined>();
-  // Эффект отрисовки компонента
+
   useEffect(() => {
+    let newCategoryJsx;
+
     if (departmentIdCurrent) {
       let route = 'categories';
-      setCategoryJsx(
+
+      newCategoryJsx = (
         <List
           title={'Категории'}
           list={categoryList}
@@ -55,11 +60,18 @@ const SettingCatalogCategory: React.FC<ISettingCatalogCategory> = ({
             setCurrent: setCategoryIdCurrent,
           })}
           xs={3}
-        />,
+        />
       );
     }
-    // eslint-disable-next-line
-  }, [departmentIdCurrent, categoryList, categoryIdCurrent]);
+
+    setCategoryJsx(newCategoryJsx);
+  }, [
+    departmentIdCurrent,
+    categoryList,
+    categoryIdCurrent,
+    handleEvent,
+    setCategoryIdCurrent,
+  ]);
   return <> {categoryJsx}</>;
 };
 

@@ -14,6 +14,7 @@ import { Row } from 'react-bootstrap';
 import SettingCatalogDepartment from '../SettingCatalogDepartment/SettingCatalogDepartment';
 import SettingCatalogCategory from '../SettingCatalogCategory/SettingCatalogCategory';
 import SettingCatalogProperty from '../SettingCatalogProperty/SettingCatalogProperty';
+import SettingCatalogOption from '../SettingCatalogOption/SettingCatalogOption';
 
 export type TFn = {
   id?: number;
@@ -111,9 +112,11 @@ const SettingCatalog = () => {
 
   /** SIDE EFFECTS*/
   useEffect(() => {
-    setCategorySubList(
-      categoryList.find((item: any) => item.id === categoryIdCurrent),
+    let categorySubList = categoryList.find(
+      (item: any) => item.id === categoryIdCurrent,
     );
+
+    setCategorySubList(categorySubList);
   }, [categoryIdCurrent, categoryList]);
 
   return (
@@ -132,6 +135,10 @@ const SettingCatalog = () => {
           setCategoryList={setCategoryList}
         />
         <SettingCatalogProperty
+          categorySubList={categorySubList}
+          handleEvent={handleEvent}
+        />
+        <SettingCatalogOption
           categorySubList={categorySubList}
           handleEvent={handleEvent}
         />
