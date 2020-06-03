@@ -134,10 +134,12 @@ const SettingCatalog = () => {
           handleEvent={handleEvent}
           setCategoryList={setCategoryList}
         />
-        <SettingCatalogProperty
-          categorySubList={categorySubList}
-          handleEvent={handleEvent}
-        />
+        {!!categorySubList ? (
+          <SettingCatalogProperty
+            categorySubList={categorySubList}
+            handleEvent={handleEvent}
+          />
+        ) : undefined}
         <SettingCatalogOption
           categorySubList={categorySubList}
           handleEvent={handleEvent}

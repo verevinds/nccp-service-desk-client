@@ -6,46 +6,33 @@ import {
 } from '../SettingCatalog/SettingCatalog';
 
 export interface ISettingCatalogProperty extends THandleEvent {
-  categorySubList?: TCategorySubList;
+  categorySubList: TCategorySubList;
 }
 
 const SettingCatalogProperty: React.FC<ISettingCatalogProperty> = ({
   categorySubList,
   handleEvent,
 }) => {
-  const [propertyJsx, setPropertyJsx] = useState<JSX.Element | undefined>();
-
-  useEffect(() => {
-    let newPropertyJsx;
-
-    if (categorySubList) {
-      let route = 'properties';
-
-      newPropertyJsx = (
-        <List
-          title="Параметры"
-          list={categorySubList?.properties}
-          onSubmit={handleEvent({ route })}
-          onDelete={handleEvent({ route, fact: 'delete' })}
-          onFavorites={handleEvent({
-            route,
-            list: categorySubList.properties,
-            fact: 'favorites',
-          })}
-          onArchive={handleEvent({
-            route,
-            list: categorySubList.properties,
-            fact: 'archive',
-          })}
-          xs={3}
-        />
-      );
-    }
-
-    setPropertyJsx(newPropertyJsx);
-  }, [categorySubList, handleEvent]);
-
-  return <>{propertyJsx}</>;
+  let route = 'properties';
+  return (
+    <List
+      title="Параметры"
+      list={categorySubList?.properties}
+      onSubmit={handleEvent({ route })}
+      onDelete={handleEvent({ route, fact: 'delete' })}
+      onFavorites={handleEvent({
+        route,
+        list: categorySubList.properties,
+        fact: 'favorites',
+      })}
+      onArchive={handleEvent({
+        route,
+        list: categorySubList.properties,
+        fact: 'archive',
+      })}
+      xs={3}
+    />
+  );
 };
 
 export default memo(SettingCatalogProperty);

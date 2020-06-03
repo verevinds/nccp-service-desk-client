@@ -9,14 +9,13 @@ pre {
 .info {
   padding: 0;
   font-size: 0.9em;
-  color: #6c757d;
 }
 .info > table td:first-child {
   text-align: right;
   width: 50px;
 }
-.info a,
-span {
+.info > a,
+.info > span {
   color: #6c757d;
 }
 .textIncident {

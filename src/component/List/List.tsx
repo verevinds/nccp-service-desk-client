@@ -1,4 +1,10 @@
-import React, { memo, useState, Dispatch, SetStateAction } from 'react';
+import React, {
+  memo,
+  useState,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+} from 'react';
 import ListItem from './ListItem';
 import { ListContext } from './context';
 import { TFn } from '../SettingCatalog/SettingCatalog';
@@ -8,6 +14,7 @@ import styles from './styles.module.css';
 
 //? Bootstrap
 import { ListGroup, Col, Button } from 'react-bootstrap';
+import { TItemTag } from './ListItemTag';
 
 export type THandle = ({ id, value }: TFn) => void;
 export interface IHandle {
@@ -24,6 +31,7 @@ export type TList = {
   noChange?: boolean | undefined;
   level?: number;
   isArchive?: boolean;
+  bind: TItemTag[];
 };
 
 export interface IList extends IHandle {
@@ -45,7 +53,6 @@ const List: React.FC<IList> = ({
   const [activeId, setActiveId] = useState<number | undefined>(undefined);
   const [localList, setLocalList] = useState([]);
   const [limit, setLimit] = useState(50);
-
   return (
     <Col xs={xs || 3}>
       <h3>{title}</h3>

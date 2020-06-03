@@ -37,6 +37,9 @@ code {
 .red {
   color: var(--red);
 }
+.focus {
+  border: 1px solid var(--success);
+}
 :root {
   --blue: #597ba5;
   --indigo: #6610f2;
