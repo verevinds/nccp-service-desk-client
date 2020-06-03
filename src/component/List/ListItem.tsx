@@ -3,7 +3,7 @@ import styles from './styles.module.css';
 import ButtonFontAwesome from '../ButtonFontAwesome/ButtonFontAwesome';
 
 //? Bootstrap
-import { Row, Col, ListGroup, Container } from 'react-bootstrap';
+import { Row, Col, ListGroup } from 'react-bootstrap';
 //? Font Awesome иконки
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -21,21 +21,29 @@ import Popup from '../Popup/Popup';
 
 import { TList, IHandle } from './List';
 import ListItemTag from './ListItemTag';
-import ModalWindow from '../ModalWindow/ModalWindow';
+
 export interface IListItem extends IHandle {
   item: TList;
   activeId?: number;
+  handleBind?: THandleBind;
 }
 
+export type THandleBind = {
+  id: number;
+  subId?: number[] | [];
+  handleBind: (id: number) => void;
+};
 const ListItem: React.FC<IListItem> = ({
   item: { id, name, level, noChange, isArchive, bind },
   onClick,
   onDelete,
   onFavorites,
   onArchive,
+  handleBind,
 }) => {
+  const [cursor, setCursor] = useState<string | undefined>(undefined);
   const { activeId, setActiveId } = useContext(ListContext);
-  let handleBind = true;
+
   const buttonDelete = useMemo(() => {
     if (!!onDelete && !noChange)
       return (
@@ -106,37 +114,12 @@ const ListItem: React.FC<IListItem> = ({
 
     if (buttonArray.length) return buttonArray;
   }, [buttonArchive, buttonDelete, buttonFavorites, isArchive, buttonBind]);
-  let jsx = useMemo(() => {}, []);
-  const [cursor, setCursor] = useState<string | undefined>(undefined);
-  // const [focus, setFocus] = useState<string | undefined>(undefined);
-  // const [idFocus, setIdFocus] = useState<number | undefined>(undefined);
-
-  // useEffect(() => {
-  //   if (hasBind) {
-  //     console.log('idFocus', idFocus);
-  //   }
-  // }, [idFocus]);
-
-  useEffect(() => {
-    if (handleBind) {
-      document.addEventListener('keydown', (event: any) => {
-        if (event.ctrlKey) {
-          setCursor('pointer');
-        }
-      });
-      document.addEventListener('keyup', (event: any) => {
-        if (event.key === 'Control') {
-          setCursor(undefined);
-        }
-      });
-    }
-  }, [handleBind]);
 
   let jsxTags = useMemo(() => {
-    console.log(bind);
     if (!!bind)
       if (!!bind.length) if (bind[0].item) return <ListItemTag list={bind} />;
   }, [bind]);
+
   let color = useMemo(() => {
     if (!!isArchive) return '#e9ecef';
     if (!!bind) {
@@ -147,17 +130,42 @@ const ListItem: React.FC<IListItem> = ({
       }
     }
   }, [isArchive, bind]);
-  let borderColor = useMemo(() => {
-    if (!!bind)
-      if (!!bind[0]) if (!bind[0].item && !!bind[0].id) return '#ffc107';
-  }, [bind]);
+
+  let active = useMemo(() => {
+    if (handleBind) {
+      if (handleBind.id === id) return styles.active;
+    }
+    if (id === activeId) return styles.active;
+  }, [handleBind, activeId, id]);
+
+  const [ctrlKey, setCtrlKey] = useState(false);
+  useEffect(() => {
+    if (!!handleBind) {
+      document.addEventListener('keydown', (event: any) => {
+        if (event.ctrlKey) {
+          setCursor('pointer');
+          setCtrlKey(true);
+        }
+      });
+
+      document.addEventListener('keypress', (event: any) => {
+        console.log(event.keyCode);
+      });
+      document.addEventListener('keyup', (event: any) => {
+        if (event.key === 'Control') {
+          setCursor(undefined);
+          handleBind.handleBind(0);
+          setCtrlKey(false);
+        }
+      });
+    }
+  }, [handleBind]);
+
   return (
     <>
       <ListGroup.Item
         key={id}
-        className={`${styles.borderLeft} ${
-          id === activeId ? styles.active : ''
-        } ${cursor || ''} `}
+        className={`${styles.borderLeft} ${active || ''} ${cursor || ''} `}
         style={{
           borderLeftWidth: 3,
           borderBottomWidth: 0,
@@ -166,7 +174,9 @@ const ListItem: React.FC<IListItem> = ({
         }}
         onClick={(event: any) => {
           if (!!handleBind) {
-            if (event.ctrlKey) {
+            if (ctrlKey) {
+              handleBind.handleBind(id);
+              setCtrlKey(false);
             }
           }
         }}
@@ -201,8 +211,8 @@ const ListItem: React.FC<IListItem> = ({
               ) : undefined}
             </Col>
           </Row>
-          <Row>{jsxTags}</Row>
         </Fade>
+        <Row>{jsxTags}</Row>
       </ListGroup.Item>
     </>
   );

@@ -1,5 +1,7 @@
 import React, { memo } from 'react';
 import styles from './styles.module.css';
+import Fade from 'react-reveal/Fade';
+
 export interface IListItemTag {
   list: TItemTag[];
 }
@@ -9,18 +11,20 @@ export type TItemTag = {
 };
 
 const ListItemTag: React.FC<IListItemTag> = ({ list }) => {
-  console.log(list);
   return (
     <>
       <ul className={styles.tags}>
-        {list?.map((item: any, index: number) => {
-          console.log(item);
-          return (
-            <li className={styles.tag} key={index}>
-              {item?.item.name}
-            </li>
-          );
-        })}
+        {list
+          ?.sort((a: any, b: any) => (a.id < b.id ? -1 : 1))
+          .map((item: any, index: number) => {
+            return (
+              <Fade key={index} opposite collapse right>
+                <li className={styles.tag} key={index}>
+                  {item?.item.name}
+                </li>
+              </Fade>
+            );
+          })}
       </ul>
     </>
   );

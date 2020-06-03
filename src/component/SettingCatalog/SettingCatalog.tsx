@@ -15,6 +15,7 @@ import SettingCatalogDepartment from '../SettingCatalogDepartment/SettingCatalog
 import SettingCatalogCategory from '../SettingCatalogCategory/SettingCatalogCategory';
 import SettingCatalogProperty from '../SettingCatalogProperty/SettingCatalogProperty';
 import SettingCatalogOption from '../SettingCatalogOption/SettingCatalogOption';
+import { TItemTag } from '../List/ListItemTag';
 
 export type TFn = {
   id?: number;
@@ -47,7 +48,17 @@ export type TCategorySubList = {
   properties: [];
   options: [];
 };
-
+export type TProperty = {
+  bind: TItemTag[];
+  [key: string]: any;
+  categoryId: number;
+  deadline: number;
+  id: number;
+  isArchive: boolean;
+  level: number | null;
+  name: string;
+  priorityId: number | null;
+};
 const SettingCatalog = () => {
   const dispatch = useDispatch();
   const [departmentIdCurrent, setDepartmentIdCurrent] = useState<
@@ -118,7 +129,61 @@ const SettingCatalog = () => {
 
     setCategorySubList(categorySubList);
   }, [categoryIdCurrent, categoryList]);
+  const [parentId, setParentId] = useState(0);
+  const [childrenId, setChildrenId] = useState(0);
+  const handleBindParent = useCallback(
+    (id: number) => {
+      setParentId(id);
+    },
+    [setParentId],
+  );
+  const handleBindChild = useCallback(
+    (id: number) => {
+      setChildrenId(id);
+    },
+    [setChildrenId],
+  );
 
+  useEffect(() => {
+    let parent: TProperty | undefined = categorySubList?.properties.find(
+      (item: TProperty) => item.id === parentId,
+    );
+    console.log(parent);
+    if (parent && !!childrenId && !!parentId) {
+      let bindId = 0;
+      //@ts-ignore
+      parent?.bind.forEach((item, index) => {
+        console.log(item.item.id === childrenId);
+        if (item.item.id === childrenId) {
+          bindId = item.id;
+        }
+      });
+
+      if (!!bindId) {
+        dispatch(
+          queryApi({
+            route: 'properties/bind',
+            actionUpdate: categoryUpdate,
+            method: 'delete',
+            id: bindId,
+          }),
+        );
+      } else {
+        dispatch(
+          queryApi({
+            route: 'properties/bind',
+            actionUpdate: categoryUpdate,
+            method: 'post',
+            data: {
+              optionId: childrenId,
+              propertyId: parentId,
+            },
+          }),
+        );
+      }
+      setChildrenId(0);
+    }
+  }, [parentId, childrenId, categorySubList, dispatch]);
   return (
     <Fragment>
       <h2>Каталог</h2>
@@ -138,11 +203,13 @@ const SettingCatalog = () => {
           <SettingCatalogProperty
             categorySubList={categorySubList}
             handleEvent={handleEvent}
+            handleBind={{ id: parentId, handleBind: handleBindParent }}
           />
         ) : undefined}
         <SettingCatalogOption
           categorySubList={categorySubList}
           handleEvent={handleEvent}
+          handleBind={{ id: childrenId, handleBind: handleBindChild }}
         />
       </Row>
     </Fragment>

@@ -1,17 +1,20 @@
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo } from 'react';
 import List from '../List/List';
 import {
   THandleEvent,
   TCategorySubList,
 } from '../SettingCatalog/SettingCatalog';
+import { THandleBind } from '../List/ListItem';
 
 export interface ISettingCatalogProperty extends THandleEvent {
   categorySubList: TCategorySubList;
+  handleBind: THandleBind;
 }
 
 const SettingCatalogProperty: React.FC<ISettingCatalogProperty> = ({
   categorySubList,
   handleEvent,
+  handleBind,
 }) => {
   let route = 'properties';
   return (
@@ -30,6 +33,7 @@ const SettingCatalogProperty: React.FC<ISettingCatalogProperty> = ({
         list: categorySubList.properties,
         fact: 'archive',
       })}
+      handleBind={handleBind}
       xs={3}
     />
   );

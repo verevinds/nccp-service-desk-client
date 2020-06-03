@@ -1,11 +1,5 @@
-import React, {
-  memo,
-  useState,
-  Dispatch,
-  SetStateAction,
-  useEffect,
-} from 'react';
-import ListItem from './ListItem';
+import React, { memo, useState, Dispatch, SetStateAction } from 'react';
+import ListItem, { THandleBind } from './ListItem';
 import { ListContext } from './context';
 import { TFn } from '../SettingCatalog/SettingCatalog';
 import FilterQuery from '../FilterQuery/FilterQuery';
@@ -38,6 +32,7 @@ export interface IList extends IHandle {
   title: string;
   xs?: number;
   list?: [] | never[];
+  handleBind?: THandleBind;
 }
 
 const List: React.FC<IList> = ({
@@ -48,6 +43,7 @@ const List: React.FC<IList> = ({
   onFavorites,
   onSubmit,
   onArchive,
+  handleBind,
   xs,
 }) => {
   const [activeId, setActiveId] = useState<number | undefined>(undefined);
@@ -72,6 +68,7 @@ const List: React.FC<IList> = ({
                       onFavorites={onFavorites}
                       onArchive={onArchive}
                       activeId={activeId}
+                      handleBind={handleBind}
                       key={item.id}
                     />
                   );

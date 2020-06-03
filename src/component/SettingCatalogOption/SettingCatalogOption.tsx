@@ -4,14 +4,17 @@ import {
   THandleEvent,
   TCategorySubList,
 } from '../SettingCatalog/SettingCatalog';
+import { THandleBind } from '../List/ListItem';
 
 export interface ISettingCatalogOption extends THandleEvent {
   categorySubList?: TCategorySubList;
+  handleBind: THandleBind;
 }
 
 const SettingCatalogOption: React.FC<ISettingCatalogOption> = ({
   categorySubList,
   handleEvent,
+  handleBind,
 }) => {
   const [optionJsx, setOptionJsx] = useState<JSX.Element | undefined>();
 
@@ -37,13 +40,14 @@ const SettingCatalogOption: React.FC<ISettingCatalogOption> = ({
             list: categorySubList.options,
             fact: 'archive',
           })}
+          handleBind={handleBind}
           xs={3}
         />
       );
     }
 
     setOptionJsx(newOptionJsx);
-  }, [categorySubList, handleEvent]);
+  }, [categorySubList, handleEvent, handleBind]);
 
   return <>{optionJsx}</>;
 };
