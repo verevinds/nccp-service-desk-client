@@ -25,6 +25,8 @@ export default memo((props: IPopup) => {
         width,
         maxWidth: 180,
         borderRadius: '3px',
+        zIndex: 900,
+        boxShadow: 'none',
       }}
     >
       <span className={styles.popup}>

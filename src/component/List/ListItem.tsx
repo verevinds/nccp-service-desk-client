@@ -50,8 +50,7 @@ const ListItem: React.FC<IListItem> = ({
         <ButtonFontAwesome
           faIcon={faTrash}
           onClick={() => {
-            if (window.confirm(`Все связаные инциденты исчезнут! Удалить?`))
-              onDelete({ id });
+            if (window.confirm(`Все связаные инциденты исчезнут! Удалить?`)) onDelete({ id });
           }}
           variant={'danger'}
           tooltip={`Удалить`}
@@ -87,14 +86,7 @@ const ListItem: React.FC<IListItem> = ({
 
   const buttonBind = useMemo(() => {
     if (!!handleBind)
-      return (
-        <ButtonFontAwesome
-          faIcon={faLink}
-          onClick={() => {}}
-          variant={'primary'}
-          tooltip={'Связи'}
-        />
-      );
+      return <ButtonFontAwesome faIcon={faLink} onClick={() => {}} variant={'primary'} tooltip={'Связи'} />;
   }, [handleBind]);
 
   const content = useMemo(() => {
@@ -116,12 +108,12 @@ const ListItem: React.FC<IListItem> = ({
   }, [buttonArchive, buttonDelete, buttonFavorites, isArchive, buttonBind]);
 
   let jsxTags = useMemo(() => {
-    if (!!bind)
-      if (!!bind.length) if (bind[0].item) return <ListItemTag list={bind} />;
+    if (!!bind) if (!!bind.length) if (bind[0].item) return <ListItemTag list={bind} />;
   }, [bind]);
 
   let color = useMemo(() => {
     if (!!isArchive) return '#e9ecef';
+    if (!!cursor) return '#212529';
     if (!!bind) {
       if (!!bind[0]) {
         if (!bind[0].item && !!bind[0].id) {
@@ -129,7 +121,7 @@ const ListItem: React.FC<IListItem> = ({
         }
       }
     }
-  }, [isArchive, bind]);
+  }, [isArchive, bind, cursor]);
 
   let active = useMemo(() => {
     if (handleBind) {
@@ -163,14 +155,16 @@ const ListItem: React.FC<IListItem> = ({
 
   return (
     <>
+      <div className={cursor ? styles.overlay : ''}></div>
       <ListGroup.Item
         key={id}
-        className={`${styles.borderLeft} ${active || ''} ${cursor || ''} `}
+        className={`${styles.borderLeft} ${!!handleBind ? styles.focus : ''} ${active || ''} ${cursor || ''} ${
+          isArchive ? styles.isArchive : ''
+        }`}
         style={{
           borderLeftWidth: 3,
           borderBottomWidth: 0,
           borderColor: level ? '#ffc107' : 'transparent',
-          color,
         }}
         onClick={(event: any) => {
           if (!!handleBind) {
@@ -197,7 +191,7 @@ const ListItem: React.FC<IListItem> = ({
                 <span>{name}</span>
               </div>
             </Col>
-            {!!content ? (
+            {!!content && !cursor ? (
               <Col xs={1} className={styles.buttonGroup}>
                 <div className={styles.buttonGroup_flexRow}>
                   <Popup content={content} />
@@ -206,13 +200,11 @@ const ListItem: React.FC<IListItem> = ({
             ) : undefined}
 
             <Col xs={1} className={`${styles.icon}`}>
-              {id === activeId ? (
-                <FontAwesomeIcon icon={faAngleRight} />
-              ) : undefined}
+              {id === activeId ? <FontAwesomeIcon icon={faAngleRight} /> : undefined}
             </Col>
           </Row>
         </Fade>
-        <Row>{jsxTags}</Row>
+        {!isArchive ? <Row>{jsxTags}</Row> : undefined}
       </ListGroup.Item>
     </>
   );

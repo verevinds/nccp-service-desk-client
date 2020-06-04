@@ -19,7 +19,7 @@ const ListItemTag: React.FC<IListItemTag> = ({ list }) => {
           .map((item: any, index: number) => {
             return (
               <Fade key={index} opposite collapse right>
-                <li className={styles.tag} key={index}>
+                <li className={`${styles.tag} `} key={index}>
                   {item?.item.name}
                 </li>
               </Fade>

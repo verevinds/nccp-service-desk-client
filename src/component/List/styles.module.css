@@ -2,13 +2,31 @@
   height: 600px;
   overflow: scroll;
 }
-
+.overlay {
+  background-color: rgba(100, 100, 100, 0.01);
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 1000;
+}
+.focus {
+  z-index: 1010;
+}
+.borderLeft {
+  border-left-color: transparent;
+  border-top: none;
+}
+.borderLeft:hover {
+  color: #17a2b8;
+}
 .tags {
   list-style: none;
   margin: 0;
   padding: 0;
-  padding-top: 2px;
-  margin-top: 2px;
+  z-index: 1;
+  margin-top: 10px;
   overflow: hidden;
 }
 
@@ -54,27 +72,27 @@
   top: 0;
 }
 
-.tag:hover {
+.tagIsBind {
   background-color: crimson;
   color: white;
 }
 
-.tag:hover::after {
+.tagIsBind::after {
   border-left-color: crimson;
-}
-.borderLeft {
-  border-left-color: transparent;
-}
-.borderLeft:hover {
-  color: #17a2b8;
 }
 .active {
   color: #17a2b8;
+}
+.isArchive {
+  color: #e9ecef;
+}
+.isBind {
 }
 .icon {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  z-index: 900;
 }
 .icon_right {
   margin-left: 1em;

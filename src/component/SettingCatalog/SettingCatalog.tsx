@@ -148,12 +148,10 @@ const SettingCatalog = () => {
     let parent: TProperty | undefined = categorySubList?.properties.find(
       (item: TProperty) => item.id === parentId,
     );
-    console.log(parent);
     if (parent && !!childrenId && !!parentId) {
       let bindId = 0;
       //@ts-ignore
       parent?.bind.forEach((item, index) => {
-        console.log(item.item.id === childrenId);
         if (item.item.id === childrenId) {
           bindId = item.id;
         }
