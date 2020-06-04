@@ -72,12 +72,11 @@
   top: 0;
 }
 
-.tagIsBind {
+.tagbind {
   background-color: crimson;
   color: white;
 }
-
-.tagIsBind::after {
+.tagbind::after {
   border-left-color: crimson;
 }
 .active {
@@ -85,8 +84,7 @@
 }
 .isArchive {
   color: #e9ecef;
-}
-.isBind {
+  border: none;
 }
 .icon {
   display: flex;

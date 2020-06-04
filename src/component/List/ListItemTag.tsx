@@ -1,16 +1,19 @@
 import React, { memo } from 'react';
 import styles from './styles.module.css';
 import Fade from 'react-reveal/Fade';
+import { THandleBind } from './ListItem';
 
 export interface IListItemTag {
+  cursor: any;
   list: TItemTag[];
+  handleBind?: THandleBind;
 }
 export type TItemTag = {
   id: number;
   item?: { id: number; name: string; isArchive: boolean };
 };
 
-const ListItemTag: React.FC<IListItemTag> = ({ list }) => {
+const ListItemTag: React.FC<IListItemTag> = ({ list, cursor, handleBind }) => {
   return (
     <>
       <ul className={styles.tags}>
@@ -19,7 +22,13 @@ const ListItemTag: React.FC<IListItemTag> = ({ list }) => {
           .map((item: any, index: number) => {
             return (
               <Fade key={index} opposite collapse right>
-                <li className={`${styles.tag} `} key={index}>
+                <li
+                  className={`${styles.tag} ${!!cursor ? styles.tagbind : ''} `}
+                  key={index}
+                  onClick={(e) => {
+                    if (e.ctrlKey) if (handleBind) if (handleBind.bindDelete) handleBind.bindDelete(item.item.id);
+                  }}
+                >
                   {item?.item.name}
                 </li>
               </Fade>

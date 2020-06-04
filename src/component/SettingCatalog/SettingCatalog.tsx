@@ -1,12 +1,4 @@
-import React, {
-  memo,
-  useEffect,
-  useState,
-  useCallback,
-  Fragment,
-  Dispatch,
-  SetStateAction,
-} from 'react';
+import React, { memo, useEffect, useState, useCallback, Fragment, Dispatch, SetStateAction } from 'react';
 import { useDispatch } from 'react-redux';
 import { queryApi } from '../../redux/actionCreators/queryApiAction';
 import { categoryUpdate } from '../../redux/actionCreators/catalogAction';
@@ -28,12 +20,7 @@ type THandleEventParams = {
   setCurrent?: Dispatch<SetStateAction<number | undefined>>;
 };
 export interface THandleEvent {
-  handleEvent: ({
-    route,
-    list,
-    setCurrent,
-    fact,
-  }: THandleEventParams) => ({ id, value }: TFn) => void;
+  handleEvent: ({ route, list, setCurrent, fact }: THandleEventParams) => ({ id, value }: TFn) => void;
 }
 
 export type TCategorySubList = {
@@ -61,16 +48,10 @@ export type TProperty = {
 };
 const SettingCatalog = () => {
   const dispatch = useDispatch();
-  const [departmentIdCurrent, setDepartmentIdCurrent] = useState<
-    number | undefined
-  >(undefined);
-  const [categoryIdCurrent, setCategoryIdCurrent] = useState<
-    number | undefined
-  >(undefined);
+  const [departmentIdCurrent, setDepartmentIdCurrent] = useState<number | undefined>(undefined);
+  const [categoryIdCurrent, setCategoryIdCurrent] = useState<number | undefined>(undefined);
   const [categoryList, setCategoryList] = useState([]);
-  const [categorySubList, setCategorySubList] = useState<
-    TCategorySubList | undefined
-  >(undefined);
+  const [categorySubList, setCategorySubList] = useState<TCategorySubList | undefined>(undefined);
 
   //** CALLBACKS */
   const handleEvent = useCallback(
@@ -94,9 +75,7 @@ const SettingCatalog = () => {
           break;
         case 'archive':
           data = {
-            isArchive: Number(
-              !list.find((item: any) => item.id === id).isArchive,
-            ),
+            isArchive: Number(!list.find((item: any) => item.id === id).isArchive),
           };
           if (setCurrent) setCurrent(undefined);
           break;
@@ -123,9 +102,7 @@ const SettingCatalog = () => {
 
   /** SIDE EFFECTS*/
   useEffect(() => {
-    let categorySubList = categoryList.find(
-      (item: any) => item.id === categoryIdCurrent,
-    );
+    let categorySubList = categoryList.find((item: any) => item.id === categoryIdCurrent);
 
     setCategorySubList(categorySubList);
   }, [categoryIdCurrent, categoryList]);
@@ -145,9 +122,7 @@ const SettingCatalog = () => {
   );
 
   useEffect(() => {
-    let parent: TProperty | undefined = categorySubList?.properties.find(
-      (item: TProperty) => item.id === parentId,
-    );
+    let parent: TProperty | undefined = categorySubList?.properties.find((item: TProperty) => item.id === parentId);
     if (parent && !!childrenId && !!parentId) {
       let bindId = 0;
       //@ts-ignore
@@ -186,9 +161,7 @@ const SettingCatalog = () => {
     <Fragment>
       <h2>Каталог</h2>
       <Row>
-        <SettingCatalogDepartment
-          setDepartmentIdCurrent={setDepartmentIdCurrent}
-        />
+        <SettingCatalogDepartment setDepartmentIdCurrent={setDepartmentIdCurrent} />
         <SettingCatalogCategory
           categoryIdCurrent={categoryIdCurrent}
           setCategoryIdCurrent={setCategoryIdCurrent}
@@ -201,7 +174,7 @@ const SettingCatalog = () => {
           <SettingCatalogProperty
             categorySubList={categorySubList}
             handleEvent={handleEvent}
-            handleBind={{ id: parentId, handleBind: handleBindParent }}
+            handleBind={{ id: parentId, handleBind: handleBindParent, bindDelete: handleBindChild }}
           />
         ) : undefined}
         <SettingCatalogOption

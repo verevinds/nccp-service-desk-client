@@ -32,6 +32,7 @@ export type THandleBind = {
   id: number;
   subId?: number[] | [];
   handleBind: (id: number) => void;
+  bindDelete?: (id: number) => void;
 };
 const ListItem: React.FC<IListItem> = ({
   item: { id, name, level, noChange, isArchive, bind },
@@ -108,20 +109,10 @@ const ListItem: React.FC<IListItem> = ({
   }, [buttonArchive, buttonDelete, buttonFavorites, isArchive, buttonBind]);
 
   let jsxTags = useMemo(() => {
-    if (!!bind) if (!!bind.length) if (bind[0].item) return <ListItemTag list={bind} />;
-  }, [bind]);
-
-  let color = useMemo(() => {
-    if (!!isArchive) return '#e9ecef';
-    if (!!cursor) return '#212529';
-    if (!!bind) {
-      if (!!bind[0]) {
-        if (!bind[0].item && !!bind[0].id) {
-          return '#eee';
-        }
-      }
-    }
-  }, [isArchive, bind, cursor]);
+    if (!!bind)
+      if (!!bind.length)
+        if (bind[0].item) return <ListItemTag list={bind} cursor={Boolean(cursor)} handleBind={handleBind} />;
+  }, [bind, cursor, handleBind]);
 
   let active = useMemo(() => {
     if (handleBind) {
@@ -129,7 +120,15 @@ const ListItem: React.FC<IListItem> = ({
     }
     if (id === activeId) return styles.active;
   }, [handleBind, activeId, id]);
-
+  let color = useMemo(() => {
+    if (!!bind) {
+      if (!!bind[0]) {
+        if (!bind[0].item && !!bind[0].id) {
+          return styles.isArchive;
+        }
+      }
+    }
+  }, [bind]);
   const [ctrlKey, setCtrlKey] = useState(false);
   useEffect(() => {
     if (!!handleBind) {
@@ -140,9 +139,6 @@ const ListItem: React.FC<IListItem> = ({
         }
       });
 
-      document.addEventListener('keypress', (event: any) => {
-        console.log(event.keyCode);
-      });
       document.addEventListener('keyup', (event: any) => {
         if (event.key === 'Control') {
           setCursor(undefined);
@@ -158,8 +154,8 @@ const ListItem: React.FC<IListItem> = ({
       <div className={cursor ? styles.overlay : ''}></div>
       <ListGroup.Item
         key={id}
-        className={`${styles.borderLeft} ${!!handleBind ? styles.focus : ''} ${active || ''} ${cursor || ''} ${
-          isArchive ? styles.isArchive : ''
+        className={`${!!handleBind ? styles.focus : ''} ${active || ''} ${cursor || color} ${
+          isArchive ? styles.isArchive : styles.borderLeft
         }`}
         style={{
           borderLeftWidth: 3,
