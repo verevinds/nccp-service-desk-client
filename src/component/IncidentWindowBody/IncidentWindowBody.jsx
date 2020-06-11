@@ -46,7 +46,6 @@ const IncidentWindowBody = ({ incident, myincident, handleOpenModal }) => {
       queryApi({
         route: 'incidents',
         method: 'put',
-        actionUpdate: incidentCreate,
         data: incidentData,
         id: incident.id,
       }),

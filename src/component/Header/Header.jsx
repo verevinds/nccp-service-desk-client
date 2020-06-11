@@ -30,7 +30,7 @@ const Header = (props) => {
   }, [user]);
   const [page, setPage] = useState(window.location.pathname);
   const newIncidentCount = useMemo(() => {
-    return listIncident.filter((item) => Number(item.statusId) === 0).length;
+    if (listIncident) return listIncident.filter((item) => Number(item.statusId) === 0).length;
   }, [listIncident]);
   return (
     <nav>

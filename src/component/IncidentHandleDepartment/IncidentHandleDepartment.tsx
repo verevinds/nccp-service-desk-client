@@ -1,20 +1,10 @@
 import React, { memo, useState, useLayoutEffect, useEffect } from 'react';
 import ModalWindow from '../ModalWindow/ModalWindow';
-import {
-  IIncidentHandleDepartment,
-  ICategory,
-  IOption,
-  IDepartment,
-  IProperty,
-} from './interface';
+import { IIncidentHandleDepartment, ICategory, IOption, IDepartment, IProperty } from './interface';
 import { Form } from 'react-bootstrap';
 import { useSelector, shallowEqual } from 'react-redux';
 
-const IncidentHandleDepartment = ({
-  show,
-  onClick,
-  onHide,
-}: IIncidentHandleDepartment) => {
+const IncidentHandleDepartment = ({ show, onClick, onHide }: IIncidentHandleDepartment) => {
   const catalog = useSelector((state: any) => state.catalog, shallowEqual);
   const user = useSelector((state: any) => state.auth.user, shallowEqual);
   useLayoutEffect(() => {}, [catalog]);
@@ -25,9 +15,7 @@ const IncidentHandleDepartment = ({
   useLayoutEffect(() => {
     if (!!catalog && !!user) {
       if (!!catalog.department) {
-        let department = catalog.department.filter(
-          (item: any) => item.id !== user.departmentId,
-        );
+        let department = catalog.department.filter((item: any) => item.id !== user.departmentId);
         setDepartmentList(department);
         setCurrentDepartmentId(department[0].id);
       }
@@ -38,9 +26,7 @@ const IncidentHandleDepartment = ({
   const [currentCategoryId, setCurrentCategoryId] = useState(null);
   const [categoryList, setCategoryList] = useState<ICategory[]>([]);
   useEffect(() => {
-    let category = catalog.list.filter(
-      (item: any) => Number(item.departmentId) === Number(currentDepartmentId),
-    );
+    let category = catalog.list.filter((item: any) => Number(item.departmentId) === Number(currentDepartmentId));
     if (!!category.length) {
       setCategoryList(category);
       setCurrentCategoryId(category[0].id);
@@ -52,9 +38,7 @@ const IncidentHandleDepartment = ({
 
   //**Получение листа параметров и опций*/
   // Параметры
-  const [currentPropertyId, setCurrentPropertyId] = useState<number | null>(
-    null,
-  );
+  const [currentPropertyId, setCurrentPropertyId] = useState<number | null>(null);
   const [propertyList, setPropertyList] = useState<IProperty[]>([]);
 
   // Опции
@@ -62,9 +46,7 @@ const IncidentHandleDepartment = ({
   const [optionList, setOptionList] = useState<IOption[]>([]);
   useEffect(() => {
     if (!!categoryList) {
-      let currentCategory = categoryList.find(
-        (item: any) => Number(item.id) === Number(currentCategoryId),
-      );
+      let currentCategory = categoryList.find((item: any) => Number(item.id) === Number(currentCategoryId));
 
       if (!!currentCategory) {
         if (!!currentCategory.properties.length) {
@@ -93,12 +75,7 @@ const IncidentHandleDepartment = ({
   // console.log('currentPropertyId', currentPropertyId);
   // console.log('currentOptionId', currentOptionId);
   // console.groupEnd();
-  const jsxSelector = (
-    title: string,
-    defaultValue: number | null,
-    setId: (val: any) => void,
-    list: any,
-  ) => {
+  const jsxSelector = (title: string, defaultValue: number | null, setId: (val: any) => void, list: any) => {
     return (
       <>
         <Form.Group>
@@ -133,60 +110,33 @@ const IncidentHandleDepartment = ({
       title={'Передать инцидент'}
       show={show}
       onHide={onHide}
-      onOk={() => {
-        onClick.call(null, {
-          comment: `${user.name1} ${user.name2.charAt(0)} ${user.name3.charAt(
-            0,
-          )} передал инцидент в "${
-            departmentList.find(
-              (item: any) => Number(item.id) === Number(currentDepartmentId),
-            )?.name
-          }"`,
-          bodyData: {
-            categoryId: currentCategoryId,
-            propertyId: currentPropertyId,
-            optionId: currentOptionId,
-            currentResponsible: null,
-          },
-        });
-      }}
+      onOk={onClick.bind({
+        comment: `${user.name1} ${user.name2.charAt(0)} ${user.name3.charAt(0)} передал инцидент в "${
+          departmentList.find((item: any) => Number(item.id) === Number(currentDepartmentId))?.name
+        }"`,
+        bodyData: {
+          departmentId: currentDepartmentId,
+          categoryId: currentCategoryId,
+          propertyId: currentPropertyId,
+          optionId: currentOptionId,
+          currentResponsible: null,
+        },
+      })}
       textOk={'Передать'}
     >
       <>
         {!!departmentList.length
-          ? jsxSelector(
-              'Отделы',
-              currentDepartmentId,
-              setCurrentDepartmentId,
-              departmentList,
-            )
+          ? jsxSelector('Отделы', currentDepartmentId, setCurrentDepartmentId, departmentList)
           : undefined}
 
         {!!categoryList.length
-          ? jsxSelector(
-              'Категории',
-              currentCategoryId,
-              setCurrentCategoryId,
-              categoryList,
-            )
+          ? jsxSelector('Категории', currentCategoryId, setCurrentCategoryId, categoryList)
           : undefined}
 
         {!!propertyList.length
-          ? jsxSelector(
-              'Параметры',
-              currentPropertyId,
-              setCurrentPropertyId,
-              propertyList,
-            )
+          ? jsxSelector('Параметры', currentPropertyId, setCurrentPropertyId, propertyList)
           : undefined}
-        {!!optionList.length
-          ? jsxSelector(
-              'Опции',
-              currentOptionId,
-              setCurrentOptionId,
-              optionList,
-            )
-          : undefined}
+        {!!optionList.length ? jsxSelector('Опции', currentOptionId, setCurrentOptionId, optionList) : undefined}
       </>
     </ModalWindow>
   );

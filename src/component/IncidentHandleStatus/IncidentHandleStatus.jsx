@@ -72,7 +72,6 @@ const IncidentHandleStatus = ({ show, onHide, incident }) => {
         queryApi({
           route: 'comments',
           method: 'post',
-          actionUpdate: incidentCreate,
           data,
           id: incident.id,
         }),
@@ -82,11 +81,7 @@ const IncidentHandleStatus = ({ show, onHide, incident }) => {
       uploadFile(file);
 
       if (newStatus.statusId !== incident.statusId) {
-        fnNewComment(
-          `${fullName} изменил статус на "${
-            list.find((item) => item.id === newStatus.statusId).name
-          }"`,
-        );
+        fnNewComment(`${fullName} изменил статус на "${list.find((item) => item.id === newStatus.statusId).name}"`);
       }
       fnNewComment(newComment);
 
@@ -145,9 +140,7 @@ const IncidentHandleStatus = ({ show, onHide, incident }) => {
               setNewComment(event.target.value);
             }}
           />
-          <Form.Control.Feedback type="invalid">
-            Обязательно нужно указать комментарий!
-          </Form.Control.Feedback>
+          <Form.Control.Feedback type="invalid">Обязательно нужно указать комментарий!</Form.Control.Feedback>
         </Form.Group>
         <Form.Group>
           <UploadFiles setFile={setFile} />

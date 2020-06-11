@@ -4,7 +4,9 @@ import { categoryReducer } from './categoryReducer';
 import { incidentReducer } from './incidentReducer';
 import { statusReducer } from './statusReducer';
 import { usersReducer } from './usersReducer';
+import { positionReducer } from './positionReducer';
 import { accessReducer } from './accessReducer';
+import { fileReducer } from './fileReducer';
 import { progressReducer } from './progressReducer';
 import { errorReducer } from './errorReducer';
 
@@ -14,6 +16,8 @@ export const CombineReducers = combineReducers({
   incidents: incidentReducer,
   status: statusReducer,
   users: usersReducer,
+  file: fileReducer,
+  positions: positionReducer,
   access: accessReducer,
   progress: progressReducer,
   error: errorReducer,

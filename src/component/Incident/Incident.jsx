@@ -33,7 +33,7 @@ const Incident = ({ list, params, title, badge, actionSuccessed }) => {
   );
   useLayoutEffect(() => {
     if (!!params) {
-      fetchIncident(params, actionSuccessed);
+      // fetchIncident(params, actionSuccessed);
     }
     // eslint-disable-next-line
   }, [incidents.isUpdate, params]);

@@ -63,8 +63,8 @@ const App = (props) => {
   }, [error]);
 
   useLayoutEffect(() => {
-    // console.log(state);
-  }, [state]);
+    console.log(state.auth);
+  }, [state.auth]);
   useLayoutEffect(() => {
     if (!!cookies.get('auth')) {
       dispatch(authRequestSuccessed(cookies.get('auth')));

@@ -7,27 +7,17 @@ import { usersRequestSeccessed } from '../../redux/actionCreators/usersAction';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import styles from './styles.module.css';
 
-const IncidentHandleResponsible: React.FC<IIncidentHandleResponsible> = ({
-  show,
-  onHide,
-  onClick,
-}) => {
+const IncidentHandleResponsible: React.FC<IIncidentHandleResponsible> = ({ show, onHide, onClick }) => {
   const dispatch = useDispatch();
   const list = useSelector((state: any) => state.users.list, shallowEqual);
   const user = useSelector((state: any) => state.auth.user, shallowEqual);
-  const { incident } = useSelector(
-    (state: any) => state.incidents.current,
-    shallowEqual,
-  );
+  const { incident } = useSelector((state: any) => state.incidents.current, shallowEqual);
 
   const [filterList, setFilterList] = useState<IUser[]>([]);
   useLayoutEffect(() => {
     if (!!list) {
       setFilterList(
-        list.filter(
-          (item: any) =>
-            Number(item.number) !== Number(incident.currentResponsible),
-        ),
+        list.filter((item: any) => Number(item.number) !== Number(incident.currentResponsible) && !item.fired),
       );
     }
   }, [list, incident.currentResponsible]);
@@ -37,27 +27,18 @@ const IncidentHandleResponsible: React.FC<IIncidentHandleResponsible> = ({
       setCurrentResponsible(filterList[0].number);
     }
   }, [filterList]);
-  const [currentResponsibleFullname, setCurrentResponsibleFullname] = useState(
-    '',
-  );
+  const [currentResponsibleFullname, setCurrentResponsibleFullname] = useState('');
   useEffect(() => {
-    let currentUser = list.find(
-      (item: any) => Number(item.number) === Number(currentResponsible),
-    );
+    let currentUser = list.find((item: any) => Number(item.number) === Number(currentResponsible));
     if (currentUser) {
       setCurrentResponsibleFullname(
-        `${currentUser.name1} ${currentUser.name2.charAt(
-          0,
-        )}. ${currentUser.name3.charAt(0)}.`,
+        `${currentUser.name1} ${currentUser.name2.charAt(0)}. ${currentUser.name3.charAt(0)}.`,
       );
     }
     if (!!list.length) {
       if (!!list.number) {
         setCurrentResponsible(
-          list.filter(
-            (item: any) =>
-              Number(item.number) !== Number(incident.currentResponsible),
-          )[0].number,
+          list.filter((item: any) => Number(item.number) !== Number(incident.currentResponsible))[0].number,
         );
       }
     }
@@ -98,9 +79,9 @@ const IncidentHandleResponsible: React.FC<IIncidentHandleResponsible> = ({
               className={styles.select}
             >
               {filterList.map((item: any) => (
-                <option value={item.number} key={item.number}>{`${
-                  item.name1
-                } ${item.name2.charAt(0)}. ${item.name3.charAt(0)}.`}</option>
+                <option value={item.number} key={item.number}>{`${item.name1} ${item.name2.charAt(
+                  0,
+                )}. ${item.name3.charAt(0)}.`}</option>
               ))}
             </Form.Control>
           </Form.Group>
@@ -108,13 +89,7 @@ const IncidentHandleResponsible: React.FC<IIncidentHandleResponsible> = ({
       </ModalWindow>
     );
   } else {
-    return (
-      <ModalWindow
-        title={'В отделе нет других сотрудников'}
-        onHide={onHide}
-        show={show}
-      />
-    );
+    return <ModalWindow title={'В отделе нет других сотрудников'} onHide={onHide} show={show} />;
   }
 };
 

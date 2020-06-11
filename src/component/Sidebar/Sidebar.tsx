@@ -7,12 +7,7 @@ import { ISidebar } from './interface';
 
 //? Font Awesome иконки
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faAngleRight,
-  faTag,
-  faUserClock,
-  faUserCheck,
-} from '@fortawesome/free-solid-svg-icons';
+import { faAngleRight, faTag, faUserClock, faUserCheck } from '@fortawesome/free-solid-svg-icons';
 
 const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId }) => {
   const tags = (item: any, color?: any, tooltip?: string) => {
@@ -34,11 +29,7 @@ const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId }) => {
             key={item.id + 'c'}
             placement="bottom"
             delay={{ show: 250, hide: 400 }}
-            overlay={
-              <Tooltip id="button-tooltip">
-                Ответсвенный назначен. Ожидание согласования.
-              </Tooltip>
-            }
+            overlay={<Tooltip id="button-tooltip">Ответсвенный назначен. Ожидание согласования.</Tooltip>}
           >
             <FontAwesomeIcon icon={faUserClock} color={'#007bff'} />
           </OverlayTrigger>,
@@ -49,11 +40,7 @@ const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId }) => {
             key={item.id + 'd'}
             placement="bottom"
             delay={{ show: 250, hide: 400 }}
-            overlay={
-              <Tooltip id="button-tooltip">
-                Ответсвенный назначен. Согласован.
-              </Tooltip>
-            }
+            overlay={<Tooltip id="button-tooltip">Ответсвенный назначен. Согласован.</Tooltip>}
           >
             <FontAwesomeIcon icon={faUserCheck} color={'#c3e6cb'} />
           </OverlayTrigger>,
@@ -64,9 +51,9 @@ const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId }) => {
     return tags;
   };
 
-  const [jsxListItem, setJsxListItem] = useState<
-    JSX.Element[] | JSX.Element | void[]
-  >([<p key={0}>Загрузка данных</p>]);
+  const [jsxListItem, setJsxListItem] = useState<JSX.Element[] | JSX.Element | void[]>([
+    <p key={0}>Загрузка данных</p>,
+  ]);
   useEffect(() => {
     if (Array.isArray(list) && list.length) {
       const jsxItem: JSX.Element[] | void[] = list.map((item: any) => {
@@ -93,9 +80,7 @@ const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId }) => {
             key={item.id}
             //@ts-ignore
             onClick={onClick ? () => onClick(item.id) : null}
-            className={`${styles.item} ${
-              activeId === item.id ? styles.active : null
-            }`}
+            className={`${styles.item} ${activeId === item.id ? styles.active : null}`}
             variant={item.status === 0 ? 'primary' : undefined}
           >
             <div className={`${styles.icon} ${styles.icon_left}`}>
@@ -107,7 +92,7 @@ const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId }) => {
               </div>
               <div className={styles.item__text}>
                 <span className={styles.item__text_span}>
-                  {item.name ? item.name : 'N/A'} {item.responsible}
+                  {!!item.name.trim() ? item.name : 'Без категории'} {item.responsible}
                 </span>
               </div>
               <div className={styles.item__date}>
