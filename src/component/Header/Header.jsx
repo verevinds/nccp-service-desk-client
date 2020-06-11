@@ -1,28 +1,20 @@
 import React, { memo, useEffect, useState, useMemo } from 'react';
 import CreateIncidentModal from '../CreateIncident/CreateIncident';
 import styles from './styles.module.css';
-
+import logo from '../../images/logo.png';
 /**Bootstrap component */
 import { Navbar, Nav, Image, Button } from 'react-bootstrap';
 import { useSelector, shallowEqual } from 'react-redux';
 //? Font Awesome иконки
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faCog,
-  faClipboardList,
-  faEdit,
-  faHome,
-} from '@fortawesome/free-solid-svg-icons';
+import { faCog, faClipboardList, faEdit, faHome } from '@fortawesome/free-solid-svg-icons';
 import HeaderButton from '../HeaderButton/HeaderButton';
 
 const Header = (props) => {
   const user = useSelector((state) => state.auth.user, shallowEqual);
   const isAccess = useSelector((state) => state.access.isAccess, shallowEqual);
   const list = useSelector((state) => state.catalog.list, shallowEqual);
-  const listIncident = useSelector(
-    (state) => state.incidents.list,
-    shallowEqual,
-  );
+  const listIncident = useSelector((state) => state.incidents.list, shallowEqual);
   const [showModal, setShowModal] = useState(false);
   const handleClose = () => setShowModal(false);
   const handleOpen = () => setShowModal(true);
@@ -46,23 +38,14 @@ const Header = (props) => {
       <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
         <Navbar.Brand>
           <a href="http://www.c31.nccp.ru/">
-            <Image
-              src="http://api.nccp-eng.ru/images/logo.png"
-              className={styles.logo}
-            />
+            <Image src={logo} className={styles.logo} />
           </a>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className={`${styles.nav} mr-auto`}>
             <Nav.Item>
-              <HeaderButton
-                to={'/myincidents'}
-                faIcon={faHome}
-                page={page}
-                setPage={setPage}
-                text={'Мои инциденты'}
-              />
+              <HeaderButton to={'/myincidents'} faIcon={faHome} page={page} setPage={setPage} text={'Мои инциденты'} />
               <HeaderButton
                 to={'/'}
                 faIcon={faClipboardList}
@@ -80,12 +63,7 @@ const Header = (props) => {
                 Создать инцидент
               </Button>
               {!!showModal && list.length && user ? (
-                <CreateIncidentModal
-                  handleClose={handleClose}
-                  showModal={showModal}
-                  user={user}
-                  list={list}
-                />
+                <CreateIncidentModal handleClose={handleClose} showModal={showModal} user={user} list={list} />
               ) : null}
             </Nav.Item>
             <Nav.Item>
@@ -93,23 +71,14 @@ const Header = (props) => {
                 <div className={styles.user}>
                   <Navbar.Text className="pr-1">{`${fullName}`}</Navbar.Text>
                   <div className={styles.avatar}>
-                    <Image
-                      src={user ? user.photo : ''}
-                      roundedCircle
-                      className={styles.avatar__img}
-                    />
+                    {/* <Image src={user ? user.photo : ''} roundedCircle className={styles.avatar__img} /> */}
                   </div>
                 </div>
               </Nav.Link>
             </Nav.Item>
             {isAccess >= 1 ? (
               <Nav.Item className={styles.nav__item}>
-                <HeaderButton
-                  to={'/setting'}
-                  faIcon={faCog}
-                  page={page}
-                  setPage={setPage}
-                />
+                <HeaderButton to={'/setting'} faIcon={faCog} page={page} setPage={setPage} />
               </Nav.Item>
             ) : null}
           </Nav>

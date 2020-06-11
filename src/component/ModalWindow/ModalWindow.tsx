@@ -22,11 +22,11 @@ const ModalWindow: React.FC<IModalWindow> = ({
         aria-labelledby="contained-modal-title-vcenter"
         centered
         show={show}
-        onHide={onHide}
+        onHide={onHide ? onHide : () => {}}
         size={size}
       >
         {!!title ? (
-          <Modal.Header closeButton>
+          <Modal.Header closeButton={!!onHide}>
             <Modal.Title>{title}</Modal.Title>
           </Modal.Header>
         ) : null}

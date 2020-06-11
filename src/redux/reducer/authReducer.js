@@ -15,12 +15,16 @@ export const authReducer = (state = initialState, action) => {
         isRequest: true,
       };
     case AUTH_REQUEST_SUCCESSED:
-      return {
-        ...state,
-        user: action.data[0],
-        isLoading: true,
-        isRequest: false,
-      };
+      if (action.data[0] !== 'Error') {
+        return {
+          ...state,
+          user: action.data,
+          isLoading: true,
+          isRequest: false,
+        };
+      } else {
+        return state;
+      }
     default:
       return state;
   }

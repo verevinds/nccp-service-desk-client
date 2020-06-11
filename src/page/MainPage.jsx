@@ -16,15 +16,16 @@ const MainPage = () => {
       if (user.department) setTitle(`${user.department?.name}`);
     }
   }, [user]);
+
   return (
-    <Incident
-      list={list.sort((a, b) =>
-        Number(a.updatedAt) > Number(b.updatedAt) ? 1 : -1,
-      )}
-      params={params}
-      title={title}
-      actionSuccessed={incidentRequestSuccessed}
-    />
+    <div>
+      <Incident
+        list={list.sort((a, b) => (Number(a.updatedAt) > Number(b.updatedAt) ? 1 : -1))}
+        params={params}
+        title={title}
+        actionSuccessed={incidentRequestSuccessed}
+      />
+    </div>
   );
 };
 

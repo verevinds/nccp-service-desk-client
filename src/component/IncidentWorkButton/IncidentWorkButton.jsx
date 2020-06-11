@@ -27,10 +27,7 @@ export default memo(function IncidentWorkButton({ onClick, handleOpenModal }) {
     setShowHandleDepartment(false);
   };
 
-  const currentIncident = useSelector(
-    (state) => state.incidents.current.incident,
-    shallowEqual,
-  );
+  const currentIncident = useSelector((state) => state.incidents.current.incident, shallowEqual);
   const handleInWork = useMemo(() => {
     let { category, property, option } = currentIncident;
     if (category || property || option) {
@@ -50,10 +47,7 @@ export default memo(function IncidentWorkButton({ onClick, handleOpenModal }) {
   }, [currentIncident, fullName, onClick, user.number]);
 
   const responsibleButton = useMemo(() => {
-    if (
-      Number(currentIncident.statusId) > 0 &&
-      !!currentIncident.currentResponsible
-    ) {
+    if (Number(currentIncident.statusId) > 0 && !!currentIncident.currentResponsible) {
       return (
         <>
           <Button variant="outline-primary" onClick={handleOpenModal}>
@@ -98,53 +92,29 @@ export default memo(function IncidentWorkButton({ onClick, handleOpenModal }) {
           );
       }
     }
-  }, [
-    currentIncident,
-    handleInWork,
-    handleOpenModal,
-    onClick,
-    user.position.level,
-  ]);
+  }, [currentIncident, handleInWork, handleOpenModal, onClick, user.position]);
 
   return (
     <>
       <hr />
       <div className={styles.bar}>
         <div>
-          {user.position.level ? (
+          {user.position?.level ? (
             <>
-              <Button
-                variant={'outline-secondary'}
-                size="sm"
-                onClick={handleShowResponsible}
-                className={'m-1'}
-              >
+              <Button variant={'outline-secondary'} size="sm" onClick={handleShowResponsible} className={'m-1'}>
                 Назначить ответственного
               </Button>
               {showHanldeResponsible ? (
-                <SetResponsible
-                  show={showHanldeResponsible}
-                  onHide={handleCloseResponsible}
-                  onClick={onClick}
-                />
+                <SetResponsible show={showHanldeResponsible} onHide={handleCloseResponsible} onClick={onClick} />
               ) : undefined}
             </>
           ) : null}
 
-          <Button
-            variant={'outline-secondary'}
-            size="sm"
-            className={'m-1'}
-            onClick={handleShowDepartment}
-          >
+          <Button variant={'outline-secondary'} size="sm" className={'m-1'} onClick={handleShowDepartment}>
             Передать в другой отдел
           </Button>
           {showHandleDepartment ? (
-            <IncidentHandleDepartment
-              show={showHandleDepartment}
-              onHide={handleCloseDepartment}
-              onClick={onClick}
-            />
+            <IncidentHandleDepartment show={showHandleDepartment} onHide={handleCloseDepartment} onClick={onClick} />
           ) : undefined}
         </div>
         {responsibleButton}

@@ -1,14 +1,8 @@
-import React, {
-  memo,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useState,
-} from 'react';
+import React, { memo, useLayoutEffect, useMemo, useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { useSelector, shallowEqual } from 'react-redux';
-import axios from 'axios';
+
 import styles from './styles.module.css';
 
 //** Pages */
@@ -25,39 +19,36 @@ import { AlertContext } from './component/Alert/AlertContext';
 
 //** Action Creators */
 import { categoryRequestSuccessed } from './redux/actionCreators/catalogAction';
-import { authRequestSuccessed } from './redux/actionCreators/authAction';
-import { queryApi } from './redux/actionCreators/queryApiAction';
+import { authRequestSuccessed, authInitialApp } from './redux/actionCreators/authAction';
 import { departmentRequestSuccessed } from './redux/actionCreators/departmentAction';
 import { statusRequestSeccessed } from './redux/actionCreators/statusAction';
 import { accessRequestSeccessed } from './redux/actionCreators/accessAction';
-import {
-  progressStart,
-  progressStep,
-  progressFinish,
-} from './redux/actionCreators/progressAction';
 
 /**Bootstrap components */
 import { ProgressBar, Spinner } from 'react-bootstrap';
 import { incidentRequestSuccessed } from './redux/actionCreators/incidentAction';
+import Cookies from 'universal-cookie';
+import AuthModal from './component/AuthModal/AuthModal';
+import { queryApi } from './redux/actionCreators/queryApiAction';
+import { usersRequestSeccessed } from './redux/actionCreators/usersAction';
+
+import openSocket from 'socket.io-client';
 
 const App = (props) => {
+  const socket = openSocket('https://srv-sdesk.c31.nccp.ru:8000');
+  const cookies = new Cookies();
   const dispatch = useDispatch();
   //** Get State from Store */
-  const isUpdateCatalog = useSelector(
-    (state) => state.catalog.isUpdate,
-    shallowEqual,
-  ); // Получаем данные каталога при строгом изменение обекта isUpdate
-  const isUpdateStatus = useSelector(
-    (state) => state.status.isUpdate,
-    shallowEqual,
-  ); // Получаем данные каталога при строгом изменение обекта status
-  const user = useSelector((state) => state.auth?.user, shallowEqual); // Получаем данные каталога при строгом изменение обекта user
+  const isUpdateCatalog = useSelector((state) => state.catalog.isUpdate, shallowEqual);
+  const isUpdateStatus = useSelector((state) => state.status.isUpdate, shallowEqual);
   const state = useSelector((state) => state, shallowEqual); // Получаем данные каталога при строгом изменение обекта state
-  const { progress } = useSelector((state) => state); // Получаем данные каталога при строгом изменение обекта state
-
+  const { list } = useSelector((state) => state.incidents); // Получаем данные каталога при строгом изменение обекта state
+  const { progress } = useSelector((state) => state);
+  const { error } = useSelector((state) => state);
+  const { user } = useSelector((state) => state.auth);
   /** Local State */
   const [alert, setAlert] = useState();
-
+  const [auth, setAuth] = useState(undefined);
   //** Local variable */
   let alertJsx = useMemo(() => {
     if (alert)
@@ -70,95 +61,63 @@ const App = (props) => {
         />
       );
   }, [alert]);
-
-  //** Sider Effect */
-  useEffect(() => {
-    // console.log(state.incidents);
-  }, [state.incidents]); // For change state of the state
-
-  useEffect(() => {
-    if (!!user) {
-      dispatch(
-        queryApi({
-          route: 'access',
-          actionSuccessed: accessRequestSeccessed,
-          id: user.number,
-        }),
-      );
-      dispatch(progressStep(20));
-
-      dispatch(
-        queryApi({
-          route: 'incidents',
-          actionSuccessed: incidentRequestSuccessed,
-          params: { departmentId: user.departmentId },
-        }),
-      );
-      dispatch(progressFinish());
-    }
-  }, [user, dispatch]); // For change state of the user & dispatch
+  let errorAlert = useMemo(() => {
+    if (error) return <Alert text={`ОШИБКА: ${error}`} type={'warn'} />;
+  }, [error]);
 
   useLayoutEffect(() => {
-    dispatch(progressStart());
-    axios
-      .get('http://api.nccp-eng.ru/', {
-        params: {
-          method: 'auth.start',
-        },
-      })
-      .then((res) => {
-        dispatch(
-          queryApi({
-            route: 'users',
-            actionSuccessed: authRequestSuccessed,
-            params: { number: res.data.number },
-          }),
-        );
-        dispatch(progressStep(16));
-      });
-    dispatch(progressStep(16));
-
-    dispatch(
-      queryApi({
-        route: 'departments',
-        actionSuccessed: departmentRequestSuccessed,
-      }),
-    );
-    dispatch(progressStep(16));
+    // console.log(state);
+  }, [state]);
+  useLayoutEffect(() => {
+    if (!!cookies.get('auth')) {
+      dispatch(authRequestSuccessed(cookies.get('auth')));
+      dispatch(departmentRequestSuccessed(JSON.parse(localStorage.getItem('departments'))));
+      dispatch(categoryRequestSuccessed(JSON.parse(localStorage.getItem('categories'))));
+      dispatch(incidentRequestSuccessed(JSON.parse(localStorage.getItem('incidents'))));
+      dispatch(statusRequestSeccessed(JSON.parse(localStorage.getItem('status'))));
+      dispatch(accessRequestSeccessed(JSON.parse(localStorage.getItem('access'))));
+      dispatch(usersRequestSeccessed(JSON.parse(localStorage.getItem('users'))));
+      dispatch(authInitialApp(cookies.get('auth')));
+    } else {
+      setAuth(<AuthModal />);
+    }
     // eslint-disable-next-line
   }, [dispatch]); // For change state of the  dispatch
-
   useEffect(() => {
+    // console.log('isUpdateCatalog');
     if (isUpdateCatalog) {
-      dispatch(
-        queryApi({
-          route: 'categories',
-          actionSuccessed: categoryRequestSuccessed,
-        }),
-      );
-      dispatch(progressStep(16));
+      dispatch(queryApi({ route: 'categories', actionSuccessed: categoryRequestSuccessed }));
     }
-  }, [isUpdateCatalog, dispatch]); // For change state of the isUpdateCatalog, dispatch
+  }, [isUpdateCatalog, dispatch]);
 
   useEffect(() => {
+    // console.log('isUpdateStatus');
     if (isUpdateStatus) {
-      dispatch(
-        queryApi({ route: 'status', actionSuccessed: statusRequestSeccessed }),
-      );
-      dispatch(progressStep(16));
+      dispatch(queryApi({ route: 'status', actionSuccessed: statusRequestSeccessed }));
     }
-  }, [isUpdateStatus, dispatch]); // For change state of the isUpdateStatus, dispatch
+  }, [isUpdateStatus, dispatch]);
+
+  socket.on(String(user?.departmentId), (data) => {
+    new Notification('Андреsй Чернышёв', {
+      tag: 'ache-mail',
+      body: `Поступил новый инцидент №${!!data ? data.id : ''}`,
+      icon: 'https://www.protake.ch/website/image/product.template/19381_91169ff/image',
+    });
+  });
 
   return (
     <BrowserRouter>
       <AlertContext.Provider value={setAlert}>
+        {auth}
         <Header />
         {alertJsx}
         <HandleSocket />
+        {errorAlert}
         <div className={styles.progressBar}>
           <ProgressBar animated now={progress.now} hidden={progress.isFinish} />
         </div>
-        {progress.isFinish ? (
+
+        {!!list.length ? (
           <Switch>
             <Route exact path="/" component={MainPage} />
             <Route path="/setting" component={SettingPage} />

@@ -1,14 +1,10 @@
-import {
-  CATALOG_REQUEST_SENDD,
-  CATALOG_REQUEST_SUCCESSED,
-  CATALOG_UPDATE,
-} from '../constants';
+import { CATALOG_REQUEST_SENDD, CATALOG_REQUEST_SUCCESSED, CATALOG_UPDATE } from '../constants';
 import { DEPARTMENT_REQUEST_SUCCESSED } from '../constants';
 const initialState = {
   list: [],
   isRequest: false,
   isLoading: false,
-  isUpdate: true,
+  isUpdate: false,
   department: null,
 };
 

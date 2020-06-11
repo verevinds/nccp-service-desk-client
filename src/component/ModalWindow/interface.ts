@@ -6,7 +6,7 @@ export interface IModalWindow {
   onOk?: () => void;
   onHide?: () => void | undefined;
   show?: boolean;
-  onSubmit?: (() => void) | void;
+  onSubmit?: ((event: React.FormEvent<HTMLFormElement>) => void) | void;
   children?: Element | React.ReactElement<any> | undefined;
   validated?: boolean | undefined;
   size?: 'lg' | 'sm';

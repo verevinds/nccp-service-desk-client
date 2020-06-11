@@ -2,7 +2,7 @@ import { STATUS_REQUEST_SUCCESSED, STATUS_UPDATE } from '../constants';
 
 const initialState = {
   list: [],
-  isUpdate: true,
+  isUpdate: false,
 };
 
 export const statusReducer = (state = initialState, action) => {
