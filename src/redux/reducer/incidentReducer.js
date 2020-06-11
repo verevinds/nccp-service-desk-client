@@ -12,23 +12,25 @@ const initialState = {
   myList: [],
   history: [],
   current: {
-    incident: null,
+    incident: undefined,
     isChange: false,
   },
   isRequest: false,
   isLoading: false,
-  isUpdate: true,
+  isUpdate: false,
 };
 
 export const incidentReducer = (state = initialState, action) => {
   switch (action.type) {
     case INCIDENT_REQUEST_SENDD:
+      console.log(INCIDENT_REQUEST_SENDD);
       return {
         ...state,
         isLoading: false,
         isRequest: true,
       };
     case INCIDENT_REQUEST_SUCCESSED:
+      console.log(INCIDENT_REQUEST_SUCCESSED);
       return {
         ...state,
         list: action.data,
@@ -37,6 +39,7 @@ export const incidentReducer = (state = initialState, action) => {
         isRequest: false,
       };
     case MY_INCIDENT_REQUEST_SUCCESSED:
+      console.log(MY_INCIDENT_REQUEST_SUCCESSED);
       return {
         ...state,
         myList: action.data,
@@ -46,6 +49,7 @@ export const incidentReducer = (state = initialState, action) => {
       };
 
     case INCIDENT_HISTORY_REQUEST_SUCCESSED:
+      console.log(INCIDENT_HISTORY_REQUEST_SUCCESSED);
       return {
         ...state,
         history: action.data,
@@ -54,11 +58,13 @@ export const incidentReducer = (state = initialState, action) => {
         isUpdate: false,
       };
     case INCIDENT_CREATE:
+      console.log(INCIDENT_CREATE);
       return {
         ...state,
         isUpdate: true,
       };
     case INCIDENT_CHOOSE:
+      console.log(INCIDENT_CHOOSE);
       return {
         ...state,
         current: {

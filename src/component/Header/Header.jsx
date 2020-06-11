@@ -28,7 +28,6 @@ const Header = (props) => {
       setFullName(`Гость`);
     }
   }, [user]);
-  // console.log(window.location);
   const [page, setPage] = useState(window.location.pathname);
   const newIncidentCount = useMemo(() => {
     return listIncident.filter((item) => Number(item.statusId) === 0).length;

@@ -1,10 +1,4 @@
-import React, {
-  memo,
-  useState,
-  useEffect,
-  useCallback,
-  useLayoutEffect,
-} from 'react';
+import React, { memo, useState, useEffect, useCallback, useLayoutEffect } from 'react';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 
 /** Action creators */
@@ -20,10 +14,7 @@ import IncidentWindow from '../IncidentWindow/IncidentWindow';
 import { Row, Col, Container } from 'react-bootstrap';
 
 const Incident = ({ list, params, title, badge, actionSuccessed }) => {
-  const { history, current } = useSelector(
-    (state) => state.incidents,
-    shallowEqual,
-  );
+  const { history, current } = useSelector((state) => state.incidents, shallowEqual);
 
   const incidents = useSelector((state) => state.incidents, shallowEqual);
   const dispatch = useDispatch();
@@ -55,14 +46,16 @@ const Incident = ({ list, params, title, badge, actionSuccessed }) => {
 
   //currentIncident хранит текущий инцидент, setCurrentIncident изменяется состояние currentIncident
   useEffect(() => {
-    //Получаем новый выбранный инцидент
-    const newCurrentIncident = (() => {
-      let thisHistory = history.find((item) => item.id === chooseIncidentId);
-      let thisList = list.find((item) => item.id === chooseIncidentId);
-      if (thisHistory) return thisHistory;
-      if (thisList) return thisList;
-    })();
-    dispatch(incidentChoose(newCurrentIncident));
+    if (chooseIncidentId) {
+      //Получаем новый выбранный инцидент
+      const newCurrentIncident = (() => {
+        let thisHistory = history.find((item) => item.id === chooseIncidentId);
+        let thisList = list.find((item) => item.id === chooseIncidentId);
+        if (thisHistory) return thisHistory;
+        if (thisList) return thisList;
+      })();
+      dispatch(incidentChoose(newCurrentIncident));
+    }
     // eslint-disable-next-line
   }, [chooseIncidentId, list, history]); // Использовать эффект если изменились параметры chooseIncidentId, list поменяли свое состояние
   const [sidebarList, setSidebarList] = useState([]);
@@ -72,9 +65,7 @@ const Incident = ({ list, params, title, badge, actionSuccessed }) => {
       list.map((item) => {
         let responsible;
         if (item.responsibleUser) {
-          responsible = `(${
-            item.responsibleUser.name1
-          } ${item.responsibleUser.name2.charAt(
+          responsible = `(${item.responsibleUser.name1} ${item.responsibleUser.name2.charAt(
             0,
           )}. ${item.responsibleUser.name3.charAt(0)}.)`;
         } else {
@@ -82,9 +73,9 @@ const Incident = ({ list, params, title, badge, actionSuccessed }) => {
         }
         const newItem = {
           id: item.id,
-          name: `${item.category ? item.category.name : ''} ${
-            item.property ? item.property.name : ''
-          } ${item.option ? item.option.name : ''}`,
+          name: `${item.category ? item.category.name : ''} ${item.property ? item.property.name : ''} ${
+            item.option ? item.option.name : ''
+          }`,
           createdAt: item.createdAt,
           responsible,
           numberResponsible: item.currentResponsible,
@@ -111,9 +102,7 @@ const Incident = ({ list, params, title, badge, actionSuccessed }) => {
       </Col>
       <Col xs={7}>
         <Container>
-          {current.incident ? (
-            <IncidentWindow incident={current.incident} myincident={badge} />
-          ) : null}
+          {current.incident ? <IncidentWindow incident={current.incident} myincident={badge} /> : null}
         </Container>
       </Col>
     </Row>

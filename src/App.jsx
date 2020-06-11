@@ -2,7 +2,6 @@ import React, { memo, useLayoutEffect, useMemo, useState, useEffect } from 'reac
 import { useDispatch } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { useSelector, shallowEqual } from 'react-redux';
-
 import styles from './styles.module.css';
 
 //** Pages */
@@ -32,20 +31,18 @@ import AuthModal from './component/AuthModal/AuthModal';
 import { queryApi } from './redux/actionCreators/queryApiAction';
 import { usersRequestSeccessed } from './redux/actionCreators/usersAction';
 
-import openSocket from 'socket.io-client';
-
 const App = (props) => {
-  const socket = openSocket('https://srv-sdesk.c31.nccp.ru:8000');
   const cookies = new Cookies();
   const dispatch = useDispatch();
   //** Get State from Store */
   const isUpdateCatalog = useSelector((state) => state.catalog.isUpdate, shallowEqual);
   const isUpdateStatus = useSelector((state) => state.status.isUpdate, shallowEqual);
   const state = useSelector((state) => state, shallowEqual); // Получаем данные каталога при строгом изменение обекта state
-  const { list } = useSelector((state) => state.incidents); // Получаем данные каталога при строгом изменение обекта state
+  const { list, isUpdate } = useSelector((state) => state.incidents); // Получаем данные каталога при строгом изменение обекта state
   const { progress } = useSelector((state) => state);
   const { error } = useSelector((state) => state);
   const { user } = useSelector((state) => state.auth);
+
   /** Local State */
   const [alert, setAlert] = useState();
   const [auth, setAuth] = useState(undefined);
@@ -84,26 +81,20 @@ const App = (props) => {
     // eslint-disable-next-line
   }, [dispatch]); // For change state of the  dispatch
   useEffect(() => {
-    // console.log('isUpdateCatalog');
     if (isUpdateCatalog) {
       dispatch(queryApi({ route: 'categories', actionSuccessed: categoryRequestSuccessed }));
     }
   }, [isUpdateCatalog, dispatch]);
-
   useEffect(() => {
-    // console.log('isUpdateStatus');
+    if (isUpdate) {
+      dispatch(queryApi({ route: 'incidents', actionSuccessed: incidentRequestSuccessed }));
+    }
+  }, [isUpdate, dispatch]);
+  useEffect(() => {
     if (isUpdateStatus) {
       dispatch(queryApi({ route: 'status', actionSuccessed: statusRequestSeccessed }));
     }
   }, [isUpdateStatus, dispatch]);
-
-  socket.on(String(user?.departmentId), (data) => {
-    new Notification('Андреsй Чернышёв', {
-      tag: 'ache-mail',
-      body: `Поступил новый инцидент №${!!data ? data.id : ''}`,
-      icon: 'https://www.protake.ch/website/image/product.template/19381_91169ff/image',
-    });
-  });
 
   return (
     <BrowserRouter>

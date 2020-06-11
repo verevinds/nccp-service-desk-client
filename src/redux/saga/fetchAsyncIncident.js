@@ -12,14 +12,15 @@ export function* fetchAsyncIncident({ data, dataFile }) {
     const newIncident = yield call(() =>
       axios.post(`https://srv-sdesk.c31.nccp.ru:8443/api/incidents`, data).then((res) => {
         socket.emit('newIncident', res.data);
+        return res.data;
       }),
     );
     if (dataFile.wasFile) {
       let bindFileIncident = {
         name: dataFile.filename,
         url: dataFile.url,
-        userNumber: newIncident.data.userNumber,
-        incidentId: newIncident.data.id,
+        userNumber: newIncident.userNumber,
+        incidentId: newIncident.id,
       };
       yield call(() => axios.post(`https://srv-sdesk.c31.nccp.ru:8443/api/files`, bindFileIncident));
     }

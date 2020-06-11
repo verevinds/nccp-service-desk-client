@@ -30,19 +30,17 @@ export default memo(function IncidentWorkButton({ onClick, handleOpenModal }) {
   const currentIncident = useSelector((state) => state.incidents.current.incident, shallowEqual);
   const handleInWork = useMemo(() => {
     let { category, property, option } = currentIncident;
-    if (category || property || option) {
-      if (category.level || property.level || option.level) {
-        return onClick.bind({
-          bodyData: { currentResponsible: user.number },
-          comment: `${fullName} назначил себя ответственный. Ожидает согласования.`,
-          isConsent: true,
-        });
-      } else {
-        return onClick.bind({
-          bodyData: { currentResponsible: user.number },
-          comment: `Статус инцидента изменен на "В работе". Ответственным назначен: ${fullName}`,
-        });
-      }
+    if ((category && category.level) || (property && property.level) || (option && option.level)) {
+      return onClick.bind({
+        bodyData: { currentResponsible: user.number },
+        comment: `${fullName} назначил себя ответственный. Ожидает согласования.`,
+        isConsent: true,
+      });
+    } else {
+      return onClick.bind({
+        bodyData: { currentResponsible: user.number },
+        comment: `Статус инцидента изменен на "В работе". Ответственным назначен: ${fullName}`,
+      });
     }
   }, [currentIncident, fullName, onClick, user.number]);
 

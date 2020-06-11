@@ -50,7 +50,6 @@ const AuthModal: React.FC<AuthModal> = () => {
       onSubmit={(event) => {
         event.preventDefault();
 
-        // console.log(`${login}@c31.nccp.ru`, password);
         Axios.post(`https://srv-sdesk.c31.nccp.ru:8443/api/auth/`, {
           login: `${login}@c31.nccp.ru`,
           password: password,

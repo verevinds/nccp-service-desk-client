@@ -16,22 +16,24 @@ import PopoverCardUser from '../PopoverCardUser/PopoverCardUser';
 
 //? Font Awesome иконки
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faAddressCard,
-  faAt,
-  faPhone,
-  faDesktop,
-} from '@fortawesome/free-solid-svg-icons';
+import { faAddressCard, faAt, faPhone, faDesktop } from '@fortawesome/free-solid-svg-icons';
 
 const IncidentWindowBody = ({ incident, myincident, handleOpenModal }) => {
   //State изменений в инциденте
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth, shallowEqual);
+
   function onClick() {
     const incidentData = {
       startWork: dateNow(),
       statusId: Number(1),
     };
+    const data = {
+      text: this.comment,
+      userNumber: user.number,
+      incidentId: incident.id,
+    };
+
     if (this.isConsent) {
       incidentData.startWork = null;
       incidentData.statusId = 0;
@@ -39,6 +41,7 @@ const IncidentWindowBody = ({ incident, myincident, handleOpenModal }) => {
     if (!!this.bodyData) {
       Object.assign(incidentData, this.bodyData);
     }
+
     dispatch(
       queryApi({
         route: 'incidents',
@@ -48,11 +51,7 @@ const IncidentWindowBody = ({ incident, myincident, handleOpenModal }) => {
         id: incident.id,
       }),
     );
-    const data = {
-      text: this.comment,
-      userNumber: user.number,
-      incidentId: incident.id,
-    };
+
     dispatch(
       queryApi({
         route: 'comments',
@@ -80,11 +79,7 @@ const IncidentWindowBody = ({ incident, myincident, handleOpenModal }) => {
           <tbody>
             <tr>
               <td>
-                <FontAwesomeIcon
-                  icon={faAddressCard}
-                  color="#6c757d"
-                  size="lg"
-                />
+                <FontAwesomeIcon icon={faAddressCard} color="#6c757d" size="lg" />
               </td>
               <td>
                 <OverlayTrigger
@@ -97,9 +92,9 @@ const IncidentWindowBody = ({ incident, myincident, handleOpenModal }) => {
                   }
                 >
                   <span className="pointer">
-                    {`${incident.initiatorUser.name1 || ''} ${
-                      incident.initiatorUser.name2 || ''
-                    } ${incident.initiatorUser.name3 || ''}`}
+                    {`${incident.initiatorUser.name1 || ''} ${incident.initiatorUser.name2 || ''} ${
+                      incident.initiatorUser.name3 || ''
+                    }`}
                   </span>
                 </OverlayTrigger>
               </td>
@@ -111,9 +106,7 @@ const IncidentWindowBody = ({ incident, myincident, handleOpenModal }) => {
               </td>
               <td>
                 {incident.initiatorUser.email ? (
-                  <a href={`mailto:${incident.initiatorUser.email}`}>
-                    {incident.initiatorUser.email}
-                  </a>
+                  <a href={`mailto:${incident.initiatorUser.email}`}>{incident.initiatorUser.email}</a>
                 ) : (
                   'email не указан'
                 )}
@@ -125,11 +118,7 @@ const IncidentWindowBody = ({ incident, myincident, handleOpenModal }) => {
                 <FontAwesomeIcon icon={faPhone} color="#6c757d" size="lg" />
               </td>
               <td>
-                {incident.initiatorUser.phone1 ? (
-                  <span>{incident.initiatorUser.phone1}</span>
-                ) : (
-                  'телефон не указан'
-                )}
+                {incident.initiatorUser.phone1 ? <span>{incident.initiatorUser.phone1}</span> : 'телефон не указан'}
               </td>
             </tr>
 
@@ -160,12 +149,7 @@ const IncidentWindowBody = ({ incident, myincident, handleOpenModal }) => {
       ) : null}
 
       {!myincident ? (
-        <IncidentWorkButton
-          incident={incident}
-          handleOpenModal={handleOpenModal}
-          onClick={onClick}
-          user={user}
-        />
+        <IncidentWorkButton incident={incident} handleOpenModal={handleOpenModal} onClick={onClick} user={user} />
       ) : null}
       <br />
       <IncidentWindowComments />

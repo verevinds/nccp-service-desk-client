@@ -61,7 +61,6 @@ const CreateIncidentModel = ({ handleClose, showModal, list, user }) => {
 
   useEffect(() => {
     let options = currentCategory[0].options;
-    console.log('options', options);
     let newOptions = [];
 
     options.forEach((item) => {
@@ -91,7 +90,6 @@ const CreateIncidentModel = ({ handleClose, showModal, list, user }) => {
         return isBind;
       });
     }
-    console.log('newOptions', newOptions);
     setCurrentOptions(newOptions);
   }, [currentIdProperty, currentCategory]);
 
