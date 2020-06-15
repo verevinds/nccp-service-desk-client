@@ -17,6 +17,7 @@ export interface IHandle {
   onClick?: Dispatch<SetStateAction<number | undefined>>;
   onFavorites?: THandle;
   onArchive?: THandle;
+  handleDedline?: THandle;
 }
 export type TList = {
   id: number;
@@ -44,6 +45,7 @@ const List: React.FC<IList> = ({
   onSubmit,
   onArchive,
   handleBind,
+  handleDedline,
   xs,
 }) => {
   const [activeId, setActiveId] = useState<number | undefined>(undefined);
@@ -69,6 +71,7 @@ const List: React.FC<IList> = ({
                       onArchive={onArchive}
                       activeId={activeId}
                       handleBind={handleBind}
+                      handleDedline={handleDedline}
                       key={item.id}
                     />
                   );
@@ -77,14 +80,7 @@ const List: React.FC<IList> = ({
               <hr />
               {localList.map((item: TList, index: number) => {
                 if (index < limit && item.isArchive) {
-                  return (
-                    <ListItem
-                      item={item}
-                      onDelete={onDelete}
-                      onArchive={onArchive}
-                      key={item.id}
-                    />
-                  );
+                  return <ListItem item={item} onDelete={onDelete} onArchive={onArchive} key={item.id} />;
                 } else return undefined;
               })}
               {localList.length > 50 && localList.length > limit ? (

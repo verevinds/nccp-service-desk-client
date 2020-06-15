@@ -21,8 +21,6 @@ export function* fetchAsyncFile({ file, incidentId, userNumber }) {
         axios.post(`https://srv-sdesk.c31.nccp.ru:8443/api/files`, bindFileIncident).then((res) => res),
       );
     }
-    console.log('response', response);
-    console.log('response', response);
     if (response && response.statusText === 'OK') {
       const data = {
         text: `Прикреплено вложение: ${response.data?.name}`,

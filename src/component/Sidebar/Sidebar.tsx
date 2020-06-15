@@ -1,7 +1,7 @@
 import React, { memo, useState, useEffect } from 'react';
-import { ListGroup, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { ListGroup, OverlayTrigger, Tooltip, ProgressBar } from 'react-bootstrap';
 import Moment from 'react-moment';
-import styles from './siderbar.module.css';
+import styles from './siderbar.module.scss';
 //Interface TypeScript for function Sidebar
 import { ISidebar } from './interface';
 
@@ -58,6 +58,12 @@ const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId }) => {
     if (Array.isArray(list) && list.length) {
       const jsxItem: JSX.Element[] | void[] = list.map((item: any) => {
         let itemText: string = '';
+        const createData = new Date(item.createdAt);
+        const finishData = new Date(item.finishWork);
+        const nowData = new Date();
+        console.log('createData', createData);
+        console.log('finishData', finishData);
+        console.log('nowData', nowData);
         if (item.createdAt) {
           itemText = ` №${item.id} `;
         }
@@ -83,28 +89,51 @@ const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId }) => {
             className={`${styles.item} ${activeId === item.id ? styles.active : null}`}
             variant={item.status === 0 ? 'primary' : undefined}
           >
-            <div className={`${styles.icon} ${styles.icon_left}`}>
-              {tags(item, color, tooltip)?.map((item) => item)}
-            </div>
-            <div className={styles.item__body}>
-              <div className={styles.item__id}>
-                <span>{itemText}</span>
+            <div className={styles.bar}>
+              <div className={styles.bar__container_top}>
+                <div className={`${styles.icon} ${styles.icon_left}`}>
+                  {tags(item, color, tooltip)?.map((item) => item)}
+                </div>
+                <div className={styles.item__body}>
+                  <div className={styles.item__id}>
+                    <span>{itemText}</span>
+                  </div>
+                  <div className={styles.item__text}>
+                    <span className={styles.item__text_span}>
+                      {!!item.name.trim() ? item.name : 'Без категории'} {item.responsible}
+                    </span>
+                  </div>
+                </div>
               </div>
-              <div className={styles.item__text}>
-                <span className={styles.item__text_span}>
-                  {!!item.name.trim() ? item.name : 'Без категории'} {item.responsible}
-                </span>
+              <div className={styles.bar__container_down}>
+                <div className={`${styles.bar__date} ${styles.bar__date_left}`}>
+                  {item.finishWork ? (
+                    <Moment locale="ru" format="DD.MM.YY">
+                      {item.finishWork}
+                    </Moment>
+                  ) : null}
+                </div>
+                <div className={`${styles.bar__date} ${styles.bar__date_right}`}>
+                  {item.createdAt ? (
+                    <Moment locale="ru" format="DD.MM.YY">
+                      {item.createdAt}
+                    </Moment>
+                  ) : null}
+                </div>
+                <ProgressBar
+                  striped
+                  variant="info"
+                  now={+nowData}
+                  max={+finishData}
+                  min={+createData}
+                  className={styles.bar__progress}
+                />
               </div>
-              <div className={styles.item__date}>
-                {item.createdAt ? (
-                  <Moment locale="ru" format="DD.MM.YY">
-                    {item.createdAt}
-                  </Moment>
-                ) : null}
+              <div className={styles.bar__container_sideRight}>
+                <div className={`${styles.icon} ${styles.icon_right}`}>
+                  <FontAwesomeIcon icon={faAngleRight} />
+                </div>
               </div>
-            </div>
-            <div className={`${styles.icon} ${styles.icon_right}`}>
-              <FontAwesomeIcon icon={faAngleRight} />
             </div>
           </ListGroup.Item>
         );

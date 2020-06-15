@@ -81,6 +81,7 @@ const Incident = ({ list, params, title, badge, actionSuccessed }) => {
           numberResponsible: item.currentResponsible,
           consent: item.consent,
           status: item.statusId,
+          finishWork: item.finishWork,
         };
         return newItem;
       }),

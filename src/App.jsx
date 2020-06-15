@@ -63,7 +63,7 @@ const App = (props) => {
   }, [error]);
 
   useLayoutEffect(() => {
-    console.log(state.auth);
+    // console.log(state.auth);
   }, [state.auth]);
   useLayoutEffect(() => {
     if (!!cookies.get('auth')) {
@@ -108,20 +108,12 @@ const App = (props) => {
           <ProgressBar animated now={progress.now} hidden={progress.isFinish} />
         </div>
 
-        {!!list.length ? (
-          <Switch>
-            <Route exact path="/" component={MainPage} />
-            <Route path="/setting" component={SettingPage} />
-            <Route path="/myincidents" component={MyIncidentPage} />
-            <Route path="/test" component={TestPage} />
-          </Switch>
-        ) : (
-          <div className={styles.spinner}>
-            <Spinner animation="border" role="status" variant="primary">
-              <span className="sr-only">Loading...</span>
-            </Spinner>
-          </div>
-        )}
+        <Switch>
+          <Route exact path="/" component={MainPage} />
+          <Route path="/setting" component={SettingPage} />
+          <Route path="/myincidents" component={MyIncidentPage} />
+          <Route path="/test" component={TestPage} />
+        </Switch>
       </AlertContext.Provider>
     </BrowserRouter>
   );

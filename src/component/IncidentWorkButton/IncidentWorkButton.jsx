@@ -91,7 +91,6 @@ export default memo(function IncidentWorkButton({ onClick, handleOpenModal }) {
       }
     }
   }, [currentIncident, handleInWork, handleOpenModal, onClick, user.position]);
-  console.log(user);
   return (
     <>
       <hr />
