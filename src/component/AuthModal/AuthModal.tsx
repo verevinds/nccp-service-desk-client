@@ -7,7 +7,8 @@ import Cookies from 'universal-cookie';
 import { AlertContext } from '../Alert/AlertContext';
 
 import Axios from 'axios';
-import { authInitialApp } from '../../redux/actionCreators/authAction';
+import { authInitialApp, authRequestSuccessed } from '../../redux/actionCreators/authAction';
+import { queryApi } from '../../redux/actionCreators/queryApiAction';
 
 interface AuthModal {}
 const AuthModal: React.FC<AuthModal> = () => {
@@ -50,15 +51,19 @@ const AuthModal: React.FC<AuthModal> = () => {
       onSubmit={(event) => {
         event.preventDefault();
 
-        Axios.post(`https://srv-sdesk.c31.nccp.ru:8443/api/auth/`, {
-          login: `${login}@c31.nccp.ru`,
-          password: password,
+        Axios.get(`http://api.nccp-eng.ru/`, {
+          params: {
+            method: 'auth.direct',
+            login,
+            password,
+          },
         })
           .then((res) => {
             if (Array.isArray(res.data) && String(res.data[0]) === 'Error') {
               Alert().error();
             } else {
               Alert().success();
+              dispatch(queryApi({ route: 'users', actionSuccessed: authRequestSuccessed, id: res.data.number }));
               dispatch(authInitialApp(res.data));
               if (!cookies.get('auth') && res.data) {
                 cookies.set('auth', res.data, { path: '/' });

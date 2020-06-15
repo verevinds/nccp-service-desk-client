@@ -26,6 +26,7 @@ const CreateIncidentModel = ({ handleClose, showModal, list, user }) => {
   const parsed = queryString.parse(window.location.search);
   const dateNow = new Date();
 
+  const [currentIdDepartment, setCurrentIdDepartment] = useState(list[0] ? list[0].departmentId : null);
   const [currentIdCategory, setCurrentIdCategory] = useState(list[0] ? list[0].id : null);
   const [currentIdProperty, setCurrentIdProperty] = useState(list[0].properties[0] ? list[0].properties[0].id : null);
   const [currentIdOption, setCurrentIdOption] = useState(list[0].options[0] ? list[0].options[0].id : null);
@@ -43,7 +44,7 @@ const CreateIncidentModel = ({ handleClose, showModal, list, user }) => {
       text,
       level: 0,
       statusId: 0,
-      departmentId: null,
+      departmentId: currentIdDepartment,
       positionId: null,
       name: `${user.name1} ${user.name2} ${user.name3}`,
       email: user.email,
@@ -55,7 +56,7 @@ const CreateIncidentModel = ({ handleClose, showModal, list, user }) => {
       propertyId: currentIdProperty,
       optionId: currentIdOption,
     };
-  }, [currentIdCategory, currentIdOption, currentIdProperty, dateNow, finishWork, text, user]);
+  }, [currentIdDepartment, currentIdCategory, currentIdOption, currentIdProperty, dateNow, finishWork, text, user]);
   useEffect(() => {
     setCurrentProperties(currentCategory[0]?.properties);
   }, [currentCategory]);
@@ -110,23 +111,16 @@ const CreateIncidentModel = ({ handleClose, showModal, list, user }) => {
   useEffect(() => {
     const property = currentProperties.find((item) => item.id === currentIdProperty);
     const date = new Date();
-    console.log(property);
-    // console.log(moment(date, 'DD-MM-YYYY HH:MM:SS').businessAdd(property?.deadline - 1)._d);
-    // const newDate = new Date(moment(date, 'DD-MM-YYYY').businessAdd(property?.deadline - 1)._d);
-    // const finishWork = `${newDate.getFullYear()}-${
-    //   newDate.getMonth() + 1
-    // }-${newDate.getDate()} ${newDate.getHours()}:${newDate.getMinutes()}:${newDate.getSeconds()}`;
     const finishWork = new Date(moment(date, 'DD-MM-YYYY').businessAdd(property?.deadline - 1)._d).toISOString();
-    console.log(String(finishWork));
     property && setFinishWork(finishWork);
-    // eslint-disable-next-line
   }, [currentIdProperty, currentProperties]);
   useEffect(() => {
-    console.log(incident);
+    // console.log(incident);
   }, [incident]);
   //? Устанавливаем эффект на каждое изменение состояния номера текущей категории
   useEffect(() => {
     const newCurrentCategory = list.filter((item) => item.id === currentIdCategory);
+    setCurrentIdDepartment(newCurrentCategory[0].departmentId);
     setCurrentCategory(newCurrentCategory);
   }, [currentIdCategory, list]);
   useEffect(() => {

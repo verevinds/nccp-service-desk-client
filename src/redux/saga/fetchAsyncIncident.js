@@ -27,7 +27,7 @@ export function* fetchAsyncIncident({ data, dataFile }) {
 
     yield put(incidentCreate());
   } catch (error) {
-    console.log(error.message);
+    console.error(error.message);
     yield put(errorCreate(error.message));
   }
 }

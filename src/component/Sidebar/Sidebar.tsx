@@ -61,9 +61,6 @@ const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId }) => {
         const createData = new Date(item.createdAt);
         const finishData = new Date(item.finishWork);
         const nowData = new Date();
-        console.log('createData', createData);
-        console.log('finishData', finishData);
-        console.log('nowData', nowData);
         if (item.createdAt) {
           itemText = ` №${item.id} `;
         }

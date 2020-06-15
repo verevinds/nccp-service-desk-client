@@ -25,11 +25,12 @@ import { accessRequestSeccessed } from './redux/actionCreators/accessAction';
 
 /**Bootstrap components */
 import { ProgressBar, Spinner } from 'react-bootstrap';
-import { incidentRequestSuccessed } from './redux/actionCreators/incidentAction';
+import { incidentRequestSuccessed, myIncidentRequestSuccessed } from './redux/actionCreators/incidentAction';
 import Cookies from 'universal-cookie';
 import AuthModal from './component/AuthModal/AuthModal';
 import { queryApi } from './redux/actionCreators/queryApiAction';
 import { usersRequestSeccessed } from './redux/actionCreators/usersAction';
+import Axios from 'axios';
 
 const App = (props) => {
   const cookies = new Cookies();
@@ -67,16 +68,33 @@ const App = (props) => {
   }, [state.auth]);
   useLayoutEffect(() => {
     if (!!cookies.get('auth')) {
-      dispatch(authRequestSuccessed(cookies.get('auth')));
-      dispatch(departmentRequestSuccessed(JSON.parse(localStorage.getItem('departments'))));
-      dispatch(categoryRequestSuccessed(JSON.parse(localStorage.getItem('categories'))));
-      dispatch(incidentRequestSuccessed(JSON.parse(localStorage.getItem('incidents'))));
-      dispatch(statusRequestSeccessed(JSON.parse(localStorage.getItem('status'))));
-      dispatch(accessRequestSeccessed(JSON.parse(localStorage.getItem('access'))));
-      dispatch(usersRequestSeccessed(JSON.parse(localStorage.getItem('users'))));
-      dispatch(authInitialApp(cookies.get('auth')));
+      if (cookies.get('auth').ip) {
+        dispatch(queryApi({ route: 'users', actionSuccessed: authRequestSuccessed, id: cookies.get('auth').number }));
+      } else {
+        dispatch(authRequestSuccessed(cookies.get('auth')));
+        dispatch(departmentRequestSuccessed(JSON.parse(localStorage.getItem('departments'))));
+        dispatch(categoryRequestSuccessed(JSON.parse(localStorage.getItem('categories'))));
+        dispatch(incidentRequestSuccessed(JSON.parse(localStorage.getItem('incidents'))));
+        dispatch(statusRequestSeccessed(JSON.parse(localStorage.getItem('status'))));
+        dispatch(accessRequestSeccessed(JSON.parse(localStorage.getItem('access'))));
+        dispatch(usersRequestSeccessed(JSON.parse(localStorage.getItem('users'))));
+      }
     } else {
-      setAuth(<AuthModal />);
+      Axios('http://api.nccp-eng.ru/?method=auth.start')
+        .then((res) => {
+          if (!res.data) {
+            setAuth(<AuthModal />);
+          } else {
+            cookies.set('auth', res.data, { path: '/' });
+            dispatch(queryApi({ route: 'users', actionSuccessed: authRequestSuccessed, id: res.data.number }));
+            dispatch(authInitialApp(res.data));
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+          setAuth(<AuthModal />);
+        });
+      // setAuth(<AuthModal />);
     }
     // eslint-disable-next-line
   }, [dispatch]); // For change state of the  dispatch
@@ -87,7 +105,21 @@ const App = (props) => {
   }, [isUpdateCatalog, dispatch]);
   useEffect(() => {
     if (isUpdate) {
-      dispatch(queryApi({ route: 'incidents', actionSuccessed: incidentRequestSuccessed }));
+      dispatch(
+        queryApi({
+          route: 'incidents',
+          actionSuccessed: incidentRequestSuccessed,
+          params: { departmentId: user.departmentId },
+        }),
+      );
+
+      dispatch(
+        queryApi({
+          route: 'incidents',
+          actionSuccessed: myIncidentRequestSuccessed,
+          params: { userNumber: user.number },
+        }),
+      );
     }
   }, [isUpdate, dispatch]);
   useEffect(() => {
@@ -95,7 +127,10 @@ const App = (props) => {
       dispatch(queryApi({ route: 'status', actionSuccessed: statusRequestSeccessed }));
     }
   }, [isUpdateStatus, dispatch]);
-
+  useEffect(() => {
+    console.log('user', user);
+    user && dispatch(authInitialApp(user));
+  }, [user, dispatch]);
   return (
     <BrowserRouter>
       <AlertContext.Provider value={setAlert}>

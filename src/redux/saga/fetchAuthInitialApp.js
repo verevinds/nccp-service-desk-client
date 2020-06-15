@@ -26,7 +26,7 @@ export function* fetchAuthInitialApp({ response }) {
 
     // Access
     const access = yield call(() =>
-      axios.get(`https://srv-sdesk.c31.nccp.ru:8443/api/access/${response.number}`).then((res) => {
+      axios.get(`https://srv-sdesk.c31.nccp.ru:8443/api/access/${response?.number}`).then((res) => {
         return res.data;
       }),
     );
@@ -88,7 +88,7 @@ export function* fetchAuthInitialApp({ response }) {
 
     yield put(progressFinish());
   } catch (error) {
-    console.log(error.message);
+    console.error(error.message);
     yield put(errorCreate(error.message));
     yield put(progressFinish());
   }

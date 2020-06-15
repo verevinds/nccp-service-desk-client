@@ -45,7 +45,7 @@ export function* queryApiAsync({ route, actionSuccessed, actionUpdate, method, d
 
     return response;
   } catch (error) {
-    console.log(error.message);
+    console.error(error.message);
     yield put(errorCreate(error.message));
   }
 }

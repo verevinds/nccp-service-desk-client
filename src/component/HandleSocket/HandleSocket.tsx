@@ -24,11 +24,11 @@ import {
   TIncidents,
 } from '../../interface';
 
-const socket = openSocket('http://srv-sdesk.c31.nccp.ru:8000');
+const socket = openSocket('https://srv-sdesk.c31.nccp.ru:8000');
 
 const HandleSocket = () => {
   const setAlert = useContext(AlertContext);
-  const user: TUser = useSelector((state: IState) => state.auth.user, shallowEqual);
+  const user: TUser = useSelector((state: IState) => state.auth.user);
   const users: IUserInUsers[] = useSelector((state: IState) => state.users.list, shallowEqual);
   const catalog: TCategory[] | never[] = useSelector((state: IState) => state.catalog.list, shallowEqual);
   const { list, isUpdate }: TIncidents = useSelector((state: IState) => state.incidents);
