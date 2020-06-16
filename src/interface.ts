@@ -177,7 +177,7 @@ export type TStatus = {
 };
 /** Пользователи */
 export type TUsers = {
-  current: { user?: TUsers; isUpdate: boolean };
+  current: { user?: IUserInUsers; isUpdate: boolean };
   isUpdate: boolean;
   list: IUserInUsers[] | never[];
 };

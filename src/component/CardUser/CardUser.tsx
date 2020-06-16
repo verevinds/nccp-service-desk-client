@@ -1,25 +1,23 @@
-import React, {
-  memo,
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-} from 'react';
+import React, { memo, useCallback, useEffect, useLayoutEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Card, Image, Col, Row, Button, Container } from 'react-bootstrap';
+import { Card, Image, Col, Row, Button, Container, ButtonGroup, Dropdown, DropdownButton } from 'react-bootstrap';
 import styles from './styles.module.css';
 import { queryApi } from '../../redux/actionCreators/queryApiAction';
-import {
-  usersCurrentRequestSeccessed,
-  usersCurrentUpdate,
-} from '../../redux/actionCreators/usersAction';
+import { usersCurrentRequestSeccessed, usersCurrentUpdate } from '../../redux/actionCreators/usersAction';
+import { TUsers, IState, TAccess } from '../../interface';
+
+//? Font Awesome иконки
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheck, faMinus } from '@fortawesome/free-solid-svg-icons';
 
 interface ICardUser {
   id?: number;
   isPopover?: boolean;
 }
 const CardUser: React.FC<ICardUser> = ({ id, isPopover }) => {
-  const { user, isUpdate } = useSelector((state: any) => state.users.current);
+  const {
+    current: { user, isUpdate },
+  }: TUsers = useSelector((state: IState) => state.users);
   const dispatch = useDispatch();
 
   const fetchUser = useCallback(() => {
@@ -37,19 +35,22 @@ const CardUser: React.FC<ICardUser> = ({ id, isPopover }) => {
   }, [id, fetchUser]);
 
   useEffect(() => {
+    console.log('usersCurrentRequestSeccessed');
     if (isUpdate) fetchUser();
   }, [isUpdate, fetchUser]);
 
   const provideAccess = useCallback(
-    (method) => {
-      let data = { access: 1, userNumber: user?.number };
+    ({ method, access }) => {
+      let data = { access, userNumber: user?.number };
+      console.log(data);
       dispatch(
         queryApi({
           route: 'access',
           method,
           actionUpdate: usersCurrentUpdate,
-          data,
+          data: method === 'post' ? data : undefined,
           id: method === 'delete' ? user?.number : undefined,
+          params: method === 'delete' ? data : undefined,
         }),
       );
     },
@@ -69,14 +70,80 @@ const CardUser: React.FC<ICardUser> = ({ id, isPopover }) => {
       </>
     );
   }, []);
+
+  const buttonAccess = useMemo(() => {
+    let button = [];
+
+    if (user) {
+      if (~user.accesses.findIndex((item: any) => item.access === 1))
+        button[0] = {
+          variant: 'outline-danger',
+          check: true,
+          onClick: provideAccess.bind(null, { access: 1, method: 'delete' }),
+          text: 'Настройки отдела',
+        };
+      else
+        button[0] = {
+          variant: 'outline-primary',
+          onClick: provideAccess.bind(null, { access: 1, method: 'post' }),
+          text: 'Настройки отдела',
+        };
+      if (~user.accesses.findIndex((item: any) => item.access === 999))
+        button[1] = {
+          variant: 'outline-danger',
+          check: true,
+          onClick: provideAccess.bind(null, { access: 999, method: 'delete' }),
+          text: 'Суперпользователь',
+        };
+      else
+        button[1] = {
+          variant: 'outline-primary',
+          onClick: provideAccess.bind(null, { access: 999, method: 'post' }),
+          text: 'Суперпользователь',
+        };
+      // button[0] = ~user.accesses.findIndex((item: any) => item.access === 1) ? (
+      //   <Button variant="outline-danger" key={0} onClick={provideAccess.bind(null, { access: 1, method: 'delete' })}>
+      //     Убрать доступ
+      //   </Button>
+      // ) : (
+      //   <Button variant="outline-primary" key={0} onClick={provideAccess.bind(null, { access: 1, method: 'post' })}>
+      //     Предоставить доступ
+      //   </Button>
+      // );
+
+      // button[1] = ~user.accesses.findIndex((item: any) => item.access === 999) ? (
+      //   <Button variant="primary" key={1} onClick={provideAccess.bind(null, { access: 999, method: 'delete' })}>
+      //     Убрать Суперпользователь
+      //   </Button>
+      // ) : (
+      //   <Button variant="outline-primary" key={1} onClick={provideAccess.bind(null, { access: 999, method: 'post' })}>
+      //     Суперпользователь
+      //   </Button>
+      // );
+    }
+    return button;
+    // {
+    //   user.accesses.find((item: any) => item.access === 1) ? (
+    //     <>
+    //       <Button variant="outline-danger" onClick={provideAccess.bind(null, { access: 1, method: 'delete' })}>
+    //         Убрать доступ
+    //       </Button>
+
+    //     </>
+    //   ) : (
+    //     <Button variant="outline-primary" onClick={provideAccess.bind(null, { access: 1, method: 'post' })}>
+    //       Предоставить доступ
+    //     </Button>
+    //   );
+    // }
+  }, [provideAccess, user]);
+
   if (user) {
     if (!isPopover)
       return (
         <Card>
           <Card.Header>
-            <Card.Text as="h3">
-              {`${user.name1} ${user.name2} ${user.name3} `}{' '}
-            </Card.Text>
+            <Card.Text as="h3">{`${user.name1} ${user.name2} ${user.name3} `} </Card.Text>
           </Card.Header>
           <Card.Body>
             <Row>
@@ -93,27 +160,19 @@ const CardUser: React.FC<ICardUser> = ({ id, isPopover }) => {
               </Col>
             </Row>
             <hr />
-            {user.accesses.length ? (
-              <Button
-                variant="outline-danger"
-                onClick={provideAccess.bind(null, 'delete')}
-              >
-                Убрать доступ
-              </Button>
-            ) : (
-              <Button
-                variant="outline-primary"
-                onClick={provideAccess.bind(null, 'post')}
-              >
-                Предоставить доступ
-              </Button>
-            )}
+            <DropdownButton id="dropdown-basic-button" title="Доступы" size="sm">
+              {buttonAccess.map((item: any, index: number) => (
+                <Dropdown.Item key={index} as={Button} variant={item.variant} onClick={item.onClick} size="sm">
+                  {item.check ? <FontAwesomeIcon icon={faCheck} className={'mr-1'} color="green" /> : undefined}
+                  {item.text}
+                </Dropdown.Item>
+              ))}
+            </DropdownButton>
           </Card.Body>
           <Card.Footer className={styles.footer}>
             <div>
               <small className="text-muted">
-                <b>Доступ к настройкам Service Desk:</b>{' '}
-                {user.accesses.length ? 'Имеется' : 'Отсутствует'}
+                <b>Доступ к настройкам Service Desk:</b> {user.accesses.length ? 'Имеется' : 'Отсутствует'}
               </small>
             </div>
 

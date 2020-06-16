@@ -40,6 +40,8 @@ const App = (props) => {
   const isUpdateStatus = useSelector((state) => state.status.isUpdate, shallowEqual);
   const state = useSelector((state) => state, shallowEqual); // Получаем данные каталога при строгом изменение обекта state
   const { list, isUpdate } = useSelector((state) => state.incidents); // Получаем данные каталога при строгом изменение обекта state
+  const userCurrnet = useSelector((state) => state.users.current.user); // Получаем данные каталога при строгом изменение обекта state
+  const userCurrnetIsUpdate = useSelector((state) => state.users.current.isUpdate); // Получаем данные каталога при строгом изменение обекта state
   const { progress } = useSelector((state) => state);
   const { error } = useSelector((state) => state);
   const { user } = useSelector((state) => state.auth);
@@ -64,7 +66,7 @@ const App = (props) => {
   }, [error]);
 
   useLayoutEffect(() => {
-    // console.log(state.auth);
+    console.log(state.auth);
   }, [state.auth]);
   useLayoutEffect(() => {
     if (!!cookies.get('auth')) {
@@ -88,7 +90,6 @@ const App = (props) => {
         },
       })
         .then((res) => {
-          console.log(res);
           return res;
         })
         .then((res) => {
@@ -100,7 +101,6 @@ const App = (props) => {
             dispatch(authInitialApp(res.data));
           }
         })
-        .then((res) => console.log(res))
         .catch((err) => {
           console.error(err);
           setAuth(<AuthModal />);
@@ -139,9 +139,9 @@ const App = (props) => {
     }
   }, [isUpdateStatus, dispatch]);
   useEffect(() => {
-    console.log('user', user);
     user && dispatch(authInitialApp(user));
   }, [user, dispatch]);
+
   return (
     <BrowserRouter>
       <AlertContext.Provider value={setAlert}>
