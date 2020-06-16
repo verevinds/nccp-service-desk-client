@@ -7,8 +7,7 @@ import Cookies from 'universal-cookie';
 import { AlertContext } from '../Alert/AlertContext';
 
 import Axios from 'axios';
-import { authInitialApp, authRequestSuccessed } from '../../redux/actionCreators/authAction';
-import { queryApi } from '../../redux/actionCreators/queryApiAction';
+import { authInitialApp } from '../../redux/actionCreators/authAction';
 
 interface AuthModal {}
 const AuthModal: React.FC<AuthModal> = () => {
@@ -51,19 +50,20 @@ const AuthModal: React.FC<AuthModal> = () => {
       onSubmit={(event) => {
         event.preventDefault();
 
-        Axios.get(`http://api.nccp-eng.ru/`, {
-          params: {
-            method: 'auth.direct',
-            login,
-            password,
+        Axios.get(`http://api.nccp-eng.ru/?method=auth.direct`, {
+          headers: {
+            accept: '*/*',
+            'accept-language': 'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7',
+            'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
           },
+          data: { login, password },
         })
           .then((res) => {
             if (Array.isArray(res.data) && String(res.data[0]) === 'Error') {
               Alert().error();
             } else {
               Alert().success();
-              dispatch(queryApi({ route: 'users', actionSuccessed: authRequestSuccessed, id: res.data.number }));
+              console.log('res', res);
               dispatch(authInitialApp(res.data));
               if (!cookies.get('auth') && res.data) {
                 cookies.set('auth', res.data, { path: '/' });

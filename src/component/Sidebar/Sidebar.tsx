@@ -119,6 +119,7 @@ const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId }) => {
                 </div>
                 <ProgressBar
                   striped
+                  animated
                   variant="info"
                   now={+nowData}
                   max={+finishData}

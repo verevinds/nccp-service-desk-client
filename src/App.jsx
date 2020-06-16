@@ -80,7 +80,17 @@ const App = (props) => {
         dispatch(usersRequestSeccessed(JSON.parse(localStorage.getItem('users'))));
       }
     } else {
-      Axios('http://api.nccp-eng.ru/?method=auth.start')
+      Axios.get('https://api.nccp-eng.ru/?method=auth.start', {
+        headers: {
+          accept: '*/*',
+          'accept-language': 'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7',
+          'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        },
+      })
+        .then((res) => {
+          console.log(res);
+          return res;
+        })
         .then((res) => {
           if (!res.data) {
             setAuth(<AuthModal />);
@@ -90,6 +100,7 @@ const App = (props) => {
             dispatch(authInitialApp(res.data));
           }
         })
+        .then((res) => console.log(res))
         .catch((err) => {
           console.error(err);
           setAuth(<AuthModal />);
