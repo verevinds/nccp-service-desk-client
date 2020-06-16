@@ -7,7 +7,8 @@ import Cookies from 'universal-cookie';
 import { AlertContext } from '../Alert/AlertContext';
 
 import Axios from 'axios';
-import { authInitialApp } from '../../redux/actionCreators/authAction';
+import { authInitialApp, authRequestSuccessed } from '../../redux/actionCreators/authAction';
+import { queryApi } from '../../redux/actionCreators/queryApiAction';
 
 interface AuthModal {}
 const AuthModal: React.FC<AuthModal> = () => {
@@ -64,6 +65,8 @@ const AuthModal: React.FC<AuthModal> = () => {
             } else {
               Alert().success();
               console.log('res', res);
+              dispatch(queryApi({ route: 'users', actionSuccessed: authRequestSuccessed, id: res.data.number }));
+
               dispatch(authInitialApp(res.data));
               if (!cookies.get('auth') && res.data) {
                 cookies.set('auth', res.data, { path: '/' });

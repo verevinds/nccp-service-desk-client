@@ -63,7 +63,7 @@ export default memo(function IncidentWorkButton({ onClick, handleOpenModal }) {
           </>
         );
       } else {
-        if (user.position.level)
+        if (user.position?.level)
           return (
             <>
               <ButtonGroup aria-label="Basic example">

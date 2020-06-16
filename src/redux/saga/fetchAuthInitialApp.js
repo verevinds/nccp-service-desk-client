@@ -12,7 +12,7 @@ import { usersRequestSeccessed } from '../actionCreators/usersAction';
 
 export function* fetchAuthInitialApp({ response }) {
   try {
-    if (!!response) yield put(authRequestSuccessed(response));
+    // if (!!response) yield put(authRequestSuccessed(response));
     yield put(progressStart());
     // Departments
     const departments = yield call(() =>

@@ -1,6 +1,7 @@
 import React, { memo, useContext, useMemo, useEffect, useState } from 'react';
 import styles from './styles.module.css';
 import ButtonFontAwesome from '../ButtonFontAwesome/ButtonFontAwesome';
+import { useSelector, shallowEqual } from 'react-redux';
 
 //? Bootstrap
 import { Row, Col, ListGroup } from 'react-bootstrap';
@@ -22,6 +23,7 @@ import Popup from '../Popup/Popup';
 
 import { TList, IHandle } from './List';
 import ListItemTag from './ListItemTag';
+import { IState } from '../../interface';
 
 export interface IListItem extends IHandle {
   item: TList;
@@ -45,9 +47,11 @@ const ListItem: React.FC<IListItem> = ({
   handleBind,
 }) => {
   const [cursor, setCursor] = useState<string | undefined>(undefined);
+  const { user } = useSelector((state: IState) => state.auth, shallowEqual);
   const { activeId, setActiveId } = useContext(ListContext);
 
   const buttonDelete = useMemo(() => {
+    let access = user && Boolean(~user.accesses.findIndex((item: any) => item.access === 999));
     if (!!onDelete && !noChange)
       return (
         <ButtonFontAwesome
@@ -57,6 +61,7 @@ const ListItem: React.FC<IListItem> = ({
           }}
           variant={'danger'}
           tooltip={`Удалить`}
+          disabled={!access}
         />
       );
   }, [onDelete, noChange, id]);

@@ -35,14 +35,12 @@ const CardUser: React.FC<ICardUser> = ({ id, isPopover }) => {
   }, [id, fetchUser]);
 
   useEffect(() => {
-    console.log('usersCurrentRequestSeccessed');
     if (isUpdate) fetchUser();
   }, [isUpdate, fetchUser]);
 
   const provideAccess = useCallback(
     ({ method, access }) => {
       let data = { access, userNumber: user?.number };
-      console.log(data);
       dispatch(
         queryApi({
           route: 'access',
@@ -88,6 +86,7 @@ const CardUser: React.FC<ICardUser> = ({ id, isPopover }) => {
           onClick: provideAccess.bind(null, { access: 1, method: 'post' }),
           text: 'Настройки отдела',
         };
+
       if (~user.accesses.findIndex((item: any) => item.access === 999))
         button[1] = {
           variant: 'outline-danger',
@@ -101,41 +100,8 @@ const CardUser: React.FC<ICardUser> = ({ id, isPopover }) => {
           onClick: provideAccess.bind(null, { access: 999, method: 'post' }),
           text: 'Суперпользователь',
         };
-      // button[0] = ~user.accesses.findIndex((item: any) => item.access === 1) ? (
-      //   <Button variant="outline-danger" key={0} onClick={provideAccess.bind(null, { access: 1, method: 'delete' })}>
-      //     Убрать доступ
-      //   </Button>
-      // ) : (
-      //   <Button variant="outline-primary" key={0} onClick={provideAccess.bind(null, { access: 1, method: 'post' })}>
-      //     Предоставить доступ
-      //   </Button>
-      // );
-
-      // button[1] = ~user.accesses.findIndex((item: any) => item.access === 999) ? (
-      //   <Button variant="primary" key={1} onClick={provideAccess.bind(null, { access: 999, method: 'delete' })}>
-      //     Убрать Суперпользователь
-      //   </Button>
-      // ) : (
-      //   <Button variant="outline-primary" key={1} onClick={provideAccess.bind(null, { access: 999, method: 'post' })}>
-      //     Суперпользователь
-      //   </Button>
-      // );
     }
     return button;
-    // {
-    //   user.accesses.find((item: any) => item.access === 1) ? (
-    //     <>
-    //       <Button variant="outline-danger" onClick={provideAccess.bind(null, { access: 1, method: 'delete' })}>
-    //         Убрать доступ
-    //       </Button>
-
-    //     </>
-    //   ) : (
-    //     <Button variant="outline-primary" onClick={provideAccess.bind(null, { access: 1, method: 'post' })}>
-    //       Предоставить доступ
-    //     </Button>
-    //   );
-    // }
   }, [provideAccess, user]);
 
   if (user) {
