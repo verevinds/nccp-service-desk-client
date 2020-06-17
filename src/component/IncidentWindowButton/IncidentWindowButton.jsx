@@ -5,20 +5,14 @@ import styles from './styles.module.css';
 import IncidentHandleDepartment from '../IncidentHandleDepartment/IncidentHandleDepartment';
 import { shallowEqual, useSelector } from 'react-redux';
 import HandleMatches from './HandleMatches';
+import HandleResponsible from './HandleResponsible';
 
-export default memo(function IncidentWorkButton({ onClick, handleOpen, incident }) {
+export default memo(function IncidentWindowButton({ onClick, handleOpen, incident }) {
   const user = useSelector((state) => state.auth.user, shallowEqual);
   const [fullName, setFullName] = useState('');
   useLayoutEffect(() => {
     setFullName(`${user.name1} ${user.name2} ${user.name3}`);
   }, [user]);
-  const [showHanldeResponsible, SetShowHanldeResponsible] = useState(false);
-  const handleShowResponsible = () => {
-    SetShowHanldeResponsible(true);
-  };
-  function handleCloseResponsible() {
-    SetShowHanldeResponsible(false);
-  }
 
   const [showHandleDepartment, setShowHandleDepartment] = useState(false);
   const handleShowDepartment = () => {
@@ -73,7 +67,11 @@ export default memo(function IncidentWorkButton({ onClick, handleOpen, incident 
       <hr />
       <div className={styles.bar}>
         <div>
-          {user.position?.level ? <></> : null}
+          {user.position?.level ? (
+            <>
+              <HandleResponsible onClick={onClick} />
+            </>
+          ) : null}
 
           <Button variant={'outline-secondary'} size="sm" className={'m-1'} onClick={handleShowDepartment}>
             Передать в другой отдел

@@ -4,7 +4,7 @@ import styles from './styles.module.css';
 import dateNow from '../../js/dateNow';
 import IncidentWindowComments from '../IncidentWindowComments/IncidentWindowComments';
 import IncidentWindowFiles from '../IncidentWindowFiles/IncidentWindowFiles';
-import IncidentWorkButton from '../IncidentWorkButton/IncidentWorkButton';
+import IncidentWorkButton from '../IncidentWindowButton/IncidentWindowButton';
 import { IncidentContext } from '../Incident/IncidentContext';
 
 //ActionCreator
