@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useState, useMemo } from 'react';
-import CreateIncidentModal from '../CreateIncident/CreateIncident';
+import CreateIncident from '../CreateIncident/CreateIncident';
 import styles from './styles.module.css';
 import logo from '../../images/logo.png';
 /**Bootstrap component */
@@ -61,8 +61,8 @@ const Header = (props) => {
                 <FontAwesomeIcon icon={faEdit} size="sm" className="mr-1" />
                 Создать инцидент
               </Button>
-              {!!showModal && list.length && user ? (
-                <CreateIncidentModal handleClose={handleClose} showModal={showModal} user={user} list={list} />
+              {!!showModal && user ? (
+                <CreateIncident handleClose={handleClose} showModal={showModal} user={user} />
               ) : null}
             </Nav.Item>
             <Nav.Item>

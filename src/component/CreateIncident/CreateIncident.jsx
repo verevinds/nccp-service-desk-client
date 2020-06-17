@@ -9,6 +9,7 @@ import ModalWindow from '../ModalWindow/ModalWindow';
 import UploadFiles from '../UploadFiles/UploadFiles';
 import { fileUpload } from '../UploadFiles/fileUpload';
 import { AlertContext } from '../Alert/AlertContext';
+import { useSelector, shallowEqual } from 'react-redux';
 
 /** Action creators */
 import { incidentFetching } from '../../redux/actionCreators/incidentAction';
@@ -16,7 +17,8 @@ import { incidentFetching } from '../../redux/actionCreators/incidentAction';
 /**Bootstrap components */
 import { Form } from 'react-bootstrap';
 
-const CreateIncidentModel = ({ handleClose, showModal, list, user }) => {
+const CreateIncidentModel = ({ handleClose, showModal, user }) => {
+  const { list } = useSelector((state) => state.catalog);
   moment.updateLocale('ru', {
     workingWeekdays: [1, 2, 3, 4, 5],
   });
@@ -58,7 +60,9 @@ const CreateIncidentModel = ({ handleClose, showModal, list, user }) => {
     };
   }, [currentIdDepartment, currentIdCategory, currentIdOption, currentIdProperty, dateNow, finishWork, text, user]);
   useEffect(() => {
-    setCurrentProperties(currentCategory[0]?.properties);
+    let properties = currentCategory[0]?.properties.filter((item) => !item.isArchive);
+
+    setCurrentProperties(properties);
   }, [currentCategory]);
 
   useEffect(() => {
@@ -93,7 +97,8 @@ const CreateIncidentModel = ({ handleClose, showModal, list, user }) => {
       });
 
     if (!!newOptions.length) {
-      setCurrentOptions(newOptions);
+      let options = newOptions.filter((item) => !item.isArchive);
+      setCurrentOptions(options);
     } else {
       if (Array.isArray(options))
         newOptions = options.filter((item) => {
@@ -106,7 +111,9 @@ const CreateIncidentModel = ({ handleClose, showModal, list, user }) => {
           return isBind;
         });
     }
-    setCurrentOptions(newOptions);
+
+    options = newOptions.filter((item) => !item.isArchive);
+    setCurrentOptions(options);
   }, [currentIdProperty, currentCategory, currentProperties]);
   useEffect(() => {
     const property = currentProperties.find((item) => item.id === currentIdProperty);
@@ -115,13 +122,14 @@ const CreateIncidentModel = ({ handleClose, showModal, list, user }) => {
     property && setFinishWork(finishWork);
   }, [currentIdProperty, currentProperties]);
   useEffect(() => {
-    // console.log(incident);
+    console.log(incident);
   }, [incident]);
   //? Устанавливаем эффект на каждое изменение состояния номера текущей категории
   useEffect(() => {
     const newCurrentCategory = list.filter((item) => item.id === currentIdCategory);
     setCurrentIdDepartment(newCurrentCategory[0].departmentId);
-    setCurrentCategory(newCurrentCategory);
+    let categories = newCurrentCategory.filter((item) => !item.isArchive);
+    setCurrentCategory(categories);
   }, [currentIdCategory, list]);
   useEffect(() => {
     // setIncident({

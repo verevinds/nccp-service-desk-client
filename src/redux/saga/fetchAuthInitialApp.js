@@ -20,7 +20,7 @@ export function* fetchAuthInitialApp({ response }) {
       }),
     );
     yield localStorage.setItem('departments', JSON.stringify(departments));
-    yield put(progressStep(14));
+    yield put(progressStep(16));
     yield put(departmentRequestSuccessed(departments));
 
     // Access
@@ -31,7 +31,7 @@ export function* fetchAuthInitialApp({ response }) {
     );
     yield localStorage.setItem('access', JSON.stringify(access));
     yield put(accessRequestSeccessed(access));
-    yield put(progressStep(14));
+    yield put(progressStep(16));
 
     // Catalog
     const categories = yield call(() =>
@@ -41,7 +41,7 @@ export function* fetchAuthInitialApp({ response }) {
       }),
     );
     yield put(categoryRequestSuccessed(categories));
-    yield put(progressStep(14));
+    yield put(progressStep(16));
 
     // Status
     const status = yield call(() =>
@@ -51,7 +51,7 @@ export function* fetchAuthInitialApp({ response }) {
     );
     yield localStorage.setItem('status', JSON.stringify(status));
     yield put(statusRequestSeccessed(status));
-    yield put(progressStep(14));
+    yield put(progressStep(16));
 
     // Incidents
     const incidents = yield call(() =>
@@ -83,7 +83,7 @@ export function* fetchAuthInitialApp({ response }) {
     );
     yield localStorage.setItem('users', JSON.stringify(users));
     yield put(usersRequestSeccessed(users));
-    yield put(progressStep(14));
+    yield put(progressStep(16));
 
     yield put(progressFinish());
   } catch (error) {
