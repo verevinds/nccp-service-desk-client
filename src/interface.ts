@@ -32,7 +32,7 @@ export type TIncident = {
   currentResponsible: number | null;
   department: { name: string };
   departmentId: number | null;
-  files: IFile[] | never[];
+  files: (IFile | never)[];
   id: number;
   initiatorUser: TUser;
   isArchive: false;

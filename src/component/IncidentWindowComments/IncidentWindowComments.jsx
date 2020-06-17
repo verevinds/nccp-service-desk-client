@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useState, useContext } from 'react';
 import { useSelector, shallowEqual } from 'react-redux';
 import styles from './styles.module.css';
 import Moment from 'react-moment';
@@ -10,13 +10,12 @@ import { Card, Accordion, Table } from 'react-bootstrap';
 //? Font Awesome иконки
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleRight, faAngleDown } from '@fortawesome/free-solid-svg-icons';
+import { IncidentContext } from '../Incident/IncidentContext';
 
-const IncidentWindowComments = (props) => {
+const IncidentWindowComments = () => {
   const [accordion, setAccordion] = useState(false);
-  const comments = useSelector(
-    (state) => state.incidents.current.incident.comments,
-    shallowEqual,
-  );
+  const comments = useSelector((state) => state.incidents?.current.incident.comments, shallowEqual);
+
   return (
     <>
       <Accordion defaultActiveKey={'1'}>
@@ -30,8 +29,7 @@ const IncidentWindowComments = (props) => {
             }}
             className={styles.comment__header}
           >
-            <FontAwesomeIcon icon={accordion ? faAngleDown : faAngleRight} />{' '}
-            Комментарии
+            <FontAwesomeIcon icon={accordion ? faAngleDown : faAngleRight} /> Комментарии
           </Accordion.Toggle>
           <Accordion.Collapse eventKey="0">
             <Table striped bordered size="sm" className={styles.table}>
@@ -52,9 +50,7 @@ const IncidentWindowComments = (props) => {
                       <td>
                         <pre>{item.text}</pre>
                       </td>
-                      <td>{`${item.user.name1} ${item.user.name2.charAt(
-                        0,
-                      )}. ${item.user.name3.charAt(0)}.`}</td>
+                      <td>{`${item.user.name1} ${item.user.name2.charAt(0)}. ${item.user.name3.charAt(0)}.`}</td>
                       <td>
                         <Moment locale="ru" format="hh:mm D.MM.YYг" withTitle>
                           {item.createdAt}

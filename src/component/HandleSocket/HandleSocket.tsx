@@ -122,9 +122,7 @@ const HandleSocket = () => {
     return (
       <>
         <ModalWindow show={!!show} onHide={() => setShow(false)} size="lg">
-          <IncidentContext.Provider value={{ incident }}>
-            <IncidentWindow />
-          </IncidentContext.Provider>
+          <IncidentWindow />
         </ModalWindow>
       </>
     );

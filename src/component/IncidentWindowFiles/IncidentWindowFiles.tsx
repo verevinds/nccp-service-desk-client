@@ -1,38 +1,27 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useState, useContext } from 'react';
 import { useSelector, shallowEqual } from 'react-redux';
 import styles from './styles.module.css';
 import Moment from 'react-moment';
 import 'moment/locale/ru';
 import './styles.css';
 //Bootstrap
-import {
-  Card,
-  Accordion,
-  Table,
-  Image,
-  OverlayTrigger,
-  Tooltip,
-} from 'react-bootstrap';
+import { Card, Accordion, Table, Image, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 //? Font Awesome иконки
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faAngleRight,
-  faAngleDown,
-  faFileImage,
-  faFile,
-} from '@fortawesome/free-solid-svg-icons';
+import { faAngleRight, faAngleDown, faFileImage, faFile } from '@fortawesome/free-solid-svg-icons';
 import ModalWindow from '../ModalWindow/ModalWindow';
 import PopUpMenu from '../PopupMenu/PopUpMenu';
+import { IncidentContext } from '../Incident/IncidentContext';
+import { IState } from '../../interface';
 
 const IncidentWindowFiles = () => {
+  const files = useSelector((state: IState) => state.incidents?.current.incident.files, shallowEqual);
+
   const [accordion, setAccordion] = useState(false);
-  const files = useSelector(
-    (state: any) => state.incidents.current.incident.files,
-    shallowEqual,
-  );
   const [show, setShow] = useState(false);
   const [urlImg, setUrlImg] = useState<string | undefined>(undefined);
+
   return (
     <div className="window-file">
       <ModalWindow
@@ -54,8 +43,7 @@ const IncidentWindowFiles = () => {
             }}
             className={styles.header}
           >
-            <FontAwesomeIcon icon={accordion ? faAngleDown : faAngleRight} />{' '}
-            Вложения
+            <FontAwesomeIcon icon={accordion ? faAngleDown : faAngleRight} /> Вложения
           </Accordion.Toggle>
           <Accordion.Collapse eventKey="0">
             <Table borderless hover>
@@ -69,7 +57,7 @@ const IncidentWindowFiles = () => {
                 </tr>
               </thead>
               <tbody>
-                {files.map((item: any) => {
+                {files?.map((item: any) => {
                   let stateFile = { icon: faFile, isImg: false };
                   if (/\.(?:png|jpeg|jpg)/.test(item.name)) {
                     stateFile = { icon: faFileImage, isImg: true };
@@ -82,9 +70,7 @@ const IncidentWindowFiles = () => {
                           delay={{ show: 250, hide: 400 }}
                           overlay={
                             <Tooltip id="button-tooltip">
-                              {stateFile.isImg
-                                ? `Посмотреть картинку`
-                                : `Нажми, чтобы посмотреть`}
+                              {stateFile.isImg ? `Посмотреть картинку` : `Нажми, чтобы посмотреть`}
                             </Tooltip>
                           }
                         >
@@ -104,9 +90,7 @@ const IncidentWindowFiles = () => {
                       <td>
                         <pre>{item.name}</pre>
                       </td>
-                      <td>{`${item.user.name1} ${item.user.name2.charAt(
-                        0,
-                      )}. ${item.user.name3.charAt(0)}.`}</td>
+                      <td>{`${item.user.name1} ${item.user.name2.charAt(0)}. ${item.user.name3.charAt(0)}.`}</td>
                       <td>
                         <Moment locale="ru" format="HH:mm D.MM.YYг" withTitle>
                           {item.createdAt}

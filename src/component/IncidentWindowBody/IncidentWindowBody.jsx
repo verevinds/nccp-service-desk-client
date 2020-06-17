@@ -1,6 +1,5 @@
 import React, { memo, useContext } from 'react';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
-import 'moment/locale/ru';
 import styles from './styles.module.css';
 import dateNow from '../../js/dateNow';
 import IncidentWindowComments from '../IncidentWindowComments/IncidentWindowComments';
@@ -20,16 +19,12 @@ import PopoverCardUser from '../PopoverCardUser/PopoverCardUser';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAddressCard, faAt, faPhone, faDesktop } from '@fortawesome/free-solid-svg-icons';
 
-const IncidentWindowBody = ({ handleOpenModal }) => {
-  const {
-    incidents: {
-      current: { incident },
-    },
-    myIncident,
-  } = useContext(IncidentContext);
+const IncidentWindowBody = ({ handleOpen }) => {
+  const { myIncident } = useContext(IncidentContext);
   //State изменений в заявкае
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth, shallowEqual);
+  const incident = useSelector((state) => state.incidents?.current.incident, shallowEqual);
 
   function onClick() {
     const incidentData = {
@@ -155,9 +150,7 @@ const IncidentWindowBody = ({ handleOpenModal }) => {
         </>
       ) : null}
 
-      {!myIncident && (
-        <IncidentWorkButton incident={incident} handleOpenModal={handleOpenModal} onClick={onClick} user={user} />
-      )}
+      {!myIncident && <IncidentWorkButton incident={incident} handleOpen={handleOpen} onClick={onClick} user={user} />}
       <br />
       <IncidentWindowComments />
       <br />

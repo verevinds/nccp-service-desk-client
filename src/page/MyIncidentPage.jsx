@@ -22,9 +22,7 @@ const MyIncidentPage = (props) => {
 
   if (incidents) {
     return (
-      <IncidentContext.Provider
-        value={{ incidents, params, actionSuccessed: myIncidentRequestSuccessed, myIncident: true }}
-      >
+      <IncidentContext.Provider value={{ params, actionSuccessed: myIncidentRequestSuccessed, myIncident: true }}>
         <Incident />
       </IncidentContext.Provider>
     );

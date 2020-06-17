@@ -21,7 +21,6 @@ const MainPage = () => {
   // list.sort((a, b) => (Number(a.updatedAt) > Number(b.updatedAt) ? 1 : -1))
   const incident = useMemo(() => {
     return {
-      incidents,
       params,
       title,
       requestSuccessed: incidentRequestSuccessed,

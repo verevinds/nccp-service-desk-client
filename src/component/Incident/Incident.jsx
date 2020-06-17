@@ -15,17 +15,12 @@ import { Row, Col, Container } from 'react-bootstrap';
 import { IncidentContext } from './IncidentContext';
 
 const Incident = () => {
-  let {
-    incidents: { list },
-    params,
-    title,
-    requestSuccessed,
-    actionSuccessed,
-  } = useContext(IncidentContext);
+  let { params, title, myIncident } = useContext(IncidentContext);
+  let incidents = useSelector((state) => state.incidents, shallowEqual);
+  let list;
+  !myIncident ? (list = incidents?.list) : (list = incidents?.myList);
+  const { history } = useSelector((state) => state.incidents, shallowEqual);
 
-  const { history, current } = useSelector((state) => state.incidents, shallowEqual);
-
-  const incidents = useSelector((state) => state.incidents, shallowEqual);
   const dispatch = useDispatch();
   const fetchIncident = useCallback(
     (params, actionSuccessed) => {
@@ -63,8 +58,9 @@ const Incident = () => {
     // eslint-disable-next-line
   }, [chooseIncidentId, list, history]); // Использовать эффект если изменились параметры chooseIncidentId, list поменяли свое состояние
   const [sidebarList, setSidebarList] = useState([]);
+
   useEffect(() => {
-    // eslint-disable-next-line
+    console.log(list);
     setSidebarList(
       list.map((item) => {
         let responsible;

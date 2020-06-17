@@ -1,4 +1,5 @@
 import React, { memo, useEffect, useState, useContext } from 'react';
+import { useSelector, shallowEqual } from 'react-redux';
 import Moment from 'react-moment';
 import 'moment/locale/ru';
 import IncidentHandleStatus from '../IncidentHandleStatus/IncidentHandleStatus';
@@ -11,25 +12,21 @@ import IncidentWindowBody from '../IncidentWindowBody/IncidentWindowBody';
 import { IncidentContext } from '../Incident/IncidentContext';
 
 const IncidentWindow = () => {
-  const {
-    incidents: {
-      current: { incident },
-    },
-  } = useContext(IncidentContext);
-  useEffect(() => {}, [incident]);
-  const [showModal, setShowModal] = useState(false);
-  const handleCloseModal = () => setShowModal(false);
-  const handleOpenModal = () => setShowModal(true);
+  const incident = useSelector((state) => state.incidents?.current.incident, shallowEqual);
+
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleOpen = () => setShow(true);
 
   if (!!incident) {
     return (
       <>
-        {showModal ? <IncidentHandleStatus show={showModal} onHide={handleCloseModal} incident={incident} /> : null}
+        {show ? <IncidentHandleStatus show={show} onHide={handleClose} incident={incident} /> : null}
         <Container>
           <Card>
             <IncidentWindowHeader />
 
-            <IncidentWindowBody handleOpenModal={handleOpenModal} />
+            <IncidentWindowBody handleOpen={handleOpen} />
             <Card.Footer className="text-right">
               <small>
                 <i>

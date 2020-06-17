@@ -6,7 +6,7 @@ import IncidentHandleDepartment from '../IncidentHandleDepartment/IncidentHandle
 import { shallowEqual, useSelector } from 'react-redux';
 import HandleMatches from './HandleMatches';
 
-export default memo(function IncidentWorkButton({ onClick, handleOpenModal, incident }) {
+export default memo(function IncidentWorkButton({ onClick, handleOpen, incident }) {
   const user = useSelector((state) => state.auth.user, shallowEqual);
   const [fullName, setFullName] = useState('');
   useLayoutEffect(() => {
@@ -49,7 +49,7 @@ export default memo(function IncidentWorkButton({ onClick, handleOpenModal, inci
     if (Number(currentIncident.statusId) > 0 && !!currentIncident.currentResponsible) {
       return (
         <>
-          <Button variant="outline-primary" onClick={handleOpenModal}>
+          <Button variant="outline-primary" onClick={handleOpen}>
             Изменить
           </Button>
         </>
@@ -67,7 +67,7 @@ export default memo(function IncidentWorkButton({ onClick, handleOpenModal, inci
         if (user.position?.level) return <HandleMatches incident={incident} onClick={onClick} />;
       }
     }
-  }, [currentIncident, handleInWork, handleOpenModal, onClick, user.position]);
+  }, [currentIncident, handleInWork, handleOpen, onClick, user.position]);
   return (
     <>
       <hr />

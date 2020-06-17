@@ -1,5 +1,5 @@
 import React, { memo, useState, useEffect, useContext } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, shallowEqual } from 'react-redux';
 import { IIncidentStatus } from './interface';
 import styles from './styles.module.css';
 //Bootstrap
@@ -8,8 +8,7 @@ import { IncidentContext, IIncidentContext } from '../Incident/IncidentContext';
 import { IState, TStatusies } from '../../interface';
 
 const IncidentStatus: React.FC<IIncidentStatus> = () => {
-  const { incidents }: IIncidentContext = useContext(IncidentContext);
-  const status = incidents?.current.incident.statusId;
+  const status = useSelector((state: IState) => state.incidents?.current.incident.statusId, shallowEqual);
   const [variant, setVariant] = useState<'info' | 'success'>('info');
   const { list }: TStatusies = useSelector((state: IState) => state.status);
 

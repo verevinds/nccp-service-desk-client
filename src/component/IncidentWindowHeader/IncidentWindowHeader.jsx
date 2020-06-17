@@ -1,5 +1,6 @@
 import React, { memo, useContext } from 'react';
 
+import { useSelector, shallowEqual } from 'react-redux';
 import styles from './styles.module.css';
 
 import IncidentInWork from '../IncidentInWork/IncidentInWork';
@@ -9,11 +10,8 @@ import { Card } from 'react-bootstrap';
 import { IncidentContext } from '../Incident/IncidentContext';
 
 const IncidentWindowHeader = () => {
-  const {
-    incidents: {
-      current: { incident },
-    },
-  } = useContext(IncidentContext);
+  const incident = useSelector((state) => state.incidents?.current.incident, shallowEqual);
+
   return (
     <Card.Header className={styles.header}>
       <div>
