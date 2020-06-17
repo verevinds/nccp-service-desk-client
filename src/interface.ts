@@ -48,6 +48,14 @@ export type TIncident = {
   text: string;
   updatedAt: string;
   userNumber: number;
+  matches: (TMatch | never)[];
+};
+export type TMatch = {
+  isMatch: false;
+  id: number;
+  incidentId: number;
+  code: number;
+  params: object;
 };
 export interface IComment extends TDependUserAndIncident {
   text: string;

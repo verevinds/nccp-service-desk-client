@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useContext } from 'react';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import 'moment/locale/ru';
 import styles from './styles.module.css';
@@ -6,6 +6,8 @@ import dateNow from '../../js/dateNow';
 import IncidentWindowComments from '../IncidentWindowComments/IncidentWindowComments';
 import IncidentWindowFiles from '../IncidentWindowFiles/IncidentWindowFiles';
 import IncidentWorkButton from '../IncidentWorkButton/IncidentWorkButton';
+import { IncidentContext } from '../Incident/IncidentContext';
+
 //ActionCreator
 import { incidentCreate } from '../../redux/actionCreators/incidentAction';
 import { queryApi } from '../../redux/actionCreators/queryApiAction';
@@ -18,8 +20,14 @@ import PopoverCardUser from '../PopoverCardUser/PopoverCardUser';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAddressCard, faAt, faPhone, faDesktop } from '@fortawesome/free-solid-svg-icons';
 
-const IncidentWindowBody = ({ incident, myincident, handleOpenModal }) => {
-  //State изменений в инциденте
+const IncidentWindowBody = ({ handleOpenModal }) => {
+  const {
+    incidents: {
+      current: { incident },
+    },
+    myIncident,
+  } = useContext(IncidentContext);
+  //State изменений в заявкае
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth, shallowEqual);
 
@@ -147,9 +155,9 @@ const IncidentWindowBody = ({ incident, myincident, handleOpenModal }) => {
         </>
       ) : null}
 
-      {!myincident ? (
+      {!myIncident && (
         <IncidentWorkButton incident={incident} handleOpenModal={handleOpenModal} onClick={onClick} user={user} />
-      ) : null}
+      )}
       <br />
       <IncidentWindowComments />
       <br />

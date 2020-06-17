@@ -7,7 +7,6 @@ import { useSelector, shallowEqual } from 'react-redux';
 
 const SidebarHistory: React.FC<ISidebarHistory> = ({ onClick, activeId, onClickHistory }) => {
   const history = useSelector((state: any) => state.incidents.history, shallowEqual);
-  console.log(history);
   const [isLoadHistory, setIsLoadHistory] = useState(false);
   useEffect(() => {
     if (isLoadHistory) {

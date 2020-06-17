@@ -103,7 +103,7 @@ const IncidentHandleStatus = ({ show, onHide, incident }) => {
     return (
       <ModalWindow
         show={show}
-        title={'Изменение инцидента'}
+        title={'Изменение заявки'}
         onHide={onHide}
         textOk={'Сохранить'}
         onSubmit={handleSubmit}

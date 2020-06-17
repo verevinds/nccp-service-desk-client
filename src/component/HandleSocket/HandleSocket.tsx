@@ -23,6 +23,7 @@ import {
   TOption,
   TIncidents,
 } from '../../interface';
+import { IncidentContext } from '../Incident/IncidentContext';
 
 const socket = openSocket('https://srv-sdesk.c31.nccp.ru:8000');
 
@@ -51,7 +52,7 @@ const HandleSocket = () => {
     (data: TIncident) => {
       setAlert({
         type: 'info',
-        text: <>Поступил новый инцидент №{data.id}</>,
+        text: <>Поступила новая заявка №{data.id}</>,
         button: (
           <>
             <Button
@@ -87,7 +88,7 @@ const HandleSocket = () => {
       let option: TOption | undefined =
         category && category?.options.find((item: TOption) => item.id === data.optionId);
       let body =
-        'Направил Вам новый инцидент №' +
+        'Направил Вам новую заявку №' +
         `${!!data ? data.id : ''}` +
         '\n\n' +
         `Тип: ${category?.name} ${property?.name} ${option?.name} `;
@@ -121,7 +122,9 @@ const HandleSocket = () => {
     return (
       <>
         <ModalWindow show={!!show} onHide={() => setShow(false)} size="lg">
-          <IncidentWindow incident={incident} myincident={false} />
+          <IncidentContext.Provider value={{ incident }}>
+            <IncidentWindow />
+          </IncidentContext.Provider>
         </ModalWindow>
       </>
     );

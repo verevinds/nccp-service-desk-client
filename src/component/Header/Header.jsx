@@ -44,7 +44,7 @@ const Header = (props) => {
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className={`${styles.nav} mr-auto`}>
             <Nav.Item>
-              <HeaderButton to={'/myincidents'} faIcon={faHome} page={page} setPage={setPage} text={'Мои инциденты'} />
+              <HeaderButton to={'/myincidents'} faIcon={faHome} page={page} setPage={setPage} text={'Мои заявки'} />
               <HeaderButton
                 to={'/'}
                 faIcon={faClipboardList}
@@ -59,7 +59,7 @@ const Header = (props) => {
             <Nav.Item className="fcc">
               <Button onClick={handleOpen} size="sm">
                 <FontAwesomeIcon icon={faEdit} size="sm" className="mr-1" />
-                Создать инцидент
+                Создать заявку
               </Button>
               {!!showModal && user ? (
                 <CreateIncident handleClose={handleClose} showModal={showModal} user={user} />

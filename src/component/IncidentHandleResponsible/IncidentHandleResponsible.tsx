@@ -55,7 +55,7 @@ const IncidentHandleResponsible: React.FC<IIncidentHandleResponsible> = ({ show,
   if (list.length > 1) {
     return (
       <ModalWindow
-        title={`Изменение ответственного для инцидента №${incident.id}`}
+        title={`Изменение ответственного для заявки №${incident.id}`}
         show={show}
         onHide={onHide}
         textOk={'Сохранить'}
@@ -63,7 +63,7 @@ const IncidentHandleResponsible: React.FC<IIncidentHandleResponsible> = ({ show,
           onHide();
           onClick.call({
             bodyData: { currentResponsible },
-            comment: `Статус инцидента изменен на "В работе". Ответственным назначен: ${currentResponsibleFullname}`,
+            comment: `Статус заявки изменен на "В работе". Ответственным назначен: ${currentResponsibleFullname}`,
           });
         }}
       >

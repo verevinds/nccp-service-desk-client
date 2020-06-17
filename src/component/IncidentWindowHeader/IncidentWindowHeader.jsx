@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useContext } from 'react';
 
 import styles from './styles.module.css';
 
@@ -6,21 +6,25 @@ import IncidentInWork from '../IncidentInWork/IncidentInWork';
 import IncidentStatus from '../IncidentStatus/IncidentStatus';
 
 import { Card } from 'react-bootstrap';
+import { IncidentContext } from '../Incident/IncidentContext';
 
-const IncidentWindowHeader = ({ incident, myincident }) => {
+const IncidentWindowHeader = () => {
+  const {
+    incidents: {
+      current: { incident },
+    },
+  } = useContext(IncidentContext);
   return (
     <Card.Header className={styles.header}>
       <div>
-        Инцидент №{incident.id}{' '}
+        Заявка №{incident.id}{' '}
         {incident.responsibleUser ? (
           <>
             {'| '}
             <IncidentInWork
               startWork={incident.startWork}
               nameResponsible={`
-                ${
-                  incident.responsibleUser.name1
-                } ${incident.responsibleUser.name2.charAt(
+                ${incident.responsibleUser.name1} ${incident.responsibleUser.name2.charAt(
                 0,
               )}.${incident.responsibleUser.name3.charAt(0)}.`}
               number={incident.responsibleUser.number}
@@ -28,10 +32,7 @@ const IncidentWindowHeader = ({ incident, myincident }) => {
           </>
         ) : null}
       </div>
-      <IncidentStatus
-        myincident={myincident | undefined}
-        status={incident.statusId}
-      />
+      <IncidentStatus />
     </Card.Header>
   );
 };

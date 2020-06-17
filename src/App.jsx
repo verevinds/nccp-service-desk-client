@@ -24,7 +24,7 @@ import { statusRequestSeccessed } from './redux/actionCreators/statusAction';
 import { accessRequestSeccessed } from './redux/actionCreators/accessAction';
 
 /**Bootstrap components */
-import { ProgressBar, Spinner } from 'react-bootstrap';
+import { ProgressBar, Spinner, Button } from 'react-bootstrap';
 import { incidentRequestSuccessed, myIncidentRequestSuccessed } from './redux/actionCreators/incidentAction';
 import Cookies from 'universal-cookie';
 import AuthModal from './component/AuthModal/AuthModal';
@@ -66,8 +66,8 @@ const App = (props) => {
   }, [error]);
 
   useLayoutEffect(() => {
-    console.log(catalog);
-  }, [catalog]);
+    // console.log(state);
+  }, [state]);
   useLayoutEffect(() => {
     if (!!cookies.get('auth')) {
       if (cookies.get('auth').ip) {

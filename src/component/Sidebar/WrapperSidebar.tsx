@@ -36,14 +36,14 @@ const SidebarWrapper: React.FC<ISidebarWrapper> = ({ title, list, onClick, activ
           {responsibleList.length ? (
             <>
               <br />
-              {title ? <h6>Моя ответственность</h6> : <h6>Мои инциденты</h6>}
+              {title ? <h6>Моя ответственность</h6> : <h6>Мои заявки</h6>}
               <Sidebar list={responsibleList} onClick={onClick} activeId={activeId} />
             </>
           ) : undefined}
           {anotherList.length && title ? (
             <>
               <br />
-              <h6>Остальные инциденты</h6>
+              <h6>Остальные заявки</h6>
               <Sidebar list={anotherList} onClick={onClick} activeId={activeId} />
             </>
           ) : undefined}

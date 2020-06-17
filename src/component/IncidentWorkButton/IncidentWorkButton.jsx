@@ -4,8 +4,9 @@ import SetResponsible from '../IncidentHandleResponsible/IncidentHandleResponsib
 import styles from './styles.module.css';
 import IncidentHandleDepartment from '../IncidentHandleDepartment/IncidentHandleDepartment';
 import { shallowEqual, useSelector } from 'react-redux';
+import HandleMatches from './HandleMatches';
 
-export default memo(function IncidentWorkButton({ onClick, handleOpenModal }) {
+export default memo(function IncidentWorkButton({ onClick, handleOpenModal, incident }) {
   const user = useSelector((state) => state.auth.user, shallowEqual);
   const [fullName, setFullName] = useState('');
   useLayoutEffect(() => {
@@ -39,7 +40,7 @@ export default memo(function IncidentWorkButton({ onClick, handleOpenModal }) {
     } else {
       return onClick.bind({
         bodyData: { currentResponsible: user.number },
-        comment: `Статус инцидента изменен на "В работе". Ответственным назначен: ${fullName}`,
+        comment: `Статус заявки изменен на "В работе". Ответственным назначен: ${fullName}`,
       });
     }
   }, [currentIncident, fullName, onClick, user.number]);
@@ -63,32 +64,7 @@ export default memo(function IncidentWorkButton({ onClick, handleOpenModal }) {
           </>
         );
       } else {
-        console.log(user.position);
-        if (user.position?.level)
-          return (
-            <>
-              <ButtonGroup aria-label="Basic example">
-                <Button
-                  variant="success"
-                  onClick={onClick.bind({
-                    comment: `Согласовано`,
-                    bodyData: { consent: true },
-                  })}
-                >
-                  Согласовать
-                </Button>
-                <Button
-                  variant="outline-danger"
-                  onClick={onClick.bind({
-                    comment: `Отказано`,
-                    bodyData: { currentResponsible: null, statusId: 0 },
-                  })}
-                >
-                  Отказать
-                </Button>
-              </ButtonGroup>
-            </>
-          );
+        if (user.position?.level) return <HandleMatches incident={incident} onClick={onClick} />;
       }
     }
   }, [currentIncident, handleInWork, handleOpenModal, onClick, user.position]);
@@ -97,16 +73,7 @@ export default memo(function IncidentWorkButton({ onClick, handleOpenModal }) {
       <hr />
       <div className={styles.bar}>
         <div>
-          {user.position?.level ? (
-            <>
-              <Button variant={'outline-secondary'} size="sm" onClick={handleShowResponsible} className={'m-1'}>
-                Назначить ответственного
-              </Button>
-              {showHanldeResponsible ? (
-                <SetResponsible show={showHanldeResponsible} onHide={handleCloseResponsible} onClick={onClick} />
-              ) : undefined}
-            </>
-          ) : null}
+          {user.position?.level ? <></> : null}
 
           <Button variant={'outline-secondary'} size="sm" className={'m-1'} onClick={handleShowDepartment}>
             Передать в другой отдел

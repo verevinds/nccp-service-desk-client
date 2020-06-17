@@ -1,15 +1,16 @@
-import React, { memo, useState, useEffect } from 'react';
+import React, { memo, useState, useEffect, useMemo } from 'react';
 import { useSelector, shallowEqual } from 'react-redux';
 import { incidentRequestSuccessed } from '../redux/actionCreators/incidentAction';
 /**My components */
 import Incident from '../component/Incident/Incident';
+import { IncidentContext } from '../component/Incident/IncidentContext';
 
 const MainPage = () => {
-  const [params, setParams] = useState();
   const user = useSelector((state) => state.auth.user, shallowEqual);
-
-  const { list } = useSelector((state) => state.incidents, shallowEqual);
+  const { incidents } = useSelector((state) => state, shallowEqual);
+  const [params, setParams] = useState();
   const [title, setTitle] = useState(`Инциденты`);
+
   useEffect(() => {
     if (user) {
       setParams({ departmentId: user.departmentId });
@@ -17,15 +18,20 @@ const MainPage = () => {
     }
   }, [user]);
 
+  // list.sort((a, b) => (Number(a.updatedAt) > Number(b.updatedAt) ? 1 : -1))
+  const incident = useMemo(() => {
+    return {
+      incidents,
+      params,
+      title,
+      requestSuccessed: incidentRequestSuccessed,
+    };
+  }, [incidents, params, title, incidentRequestSuccessed]);
+
   return (
-    <div>
-      <Incident
-        list={list.sort((a, b) => (Number(a.updatedAt) > Number(b.updatedAt) ? 1 : -1))}
-        params={params}
-        title={title}
-        actionSuccessed={incidentRequestSuccessed}
-      />
-    </div>
+    <IncidentContext.Provider value={incident}>
+      <Incident />
+    </IncidentContext.Provider>
   );
 };
 

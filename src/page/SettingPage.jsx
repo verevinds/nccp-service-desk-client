@@ -5,15 +5,13 @@ import SettingStatus from '../component/SettingStatus/SettingStatus';
 /**Bootstrap components */
 import { Row, Col } from 'react-bootstrap';
 import SettingAccess from '../component/SettingAccess/SettingAccess';
-const SettingPositions = React.lazy(() =>
-  import('../component/SettingPositions/SettingPositions'),
-);
+const SettingPositions = React.lazy(() => import('../component/SettingPositions/SettingPositions'));
 
 const SettingPage = (props) => {
   const [activeId, setActiveId] = useState(0);
   const list = [
     { name: 'Каталог', id: 1 },
-    { name: 'Статус инцидента', id: 2 },
+    { name: 'Статус', id: 2 },
     { name: 'Должности', id: 3 },
     { name: 'Пользователи', id: 4 },
   ];
@@ -44,11 +42,7 @@ const SettingPage = (props) => {
         );
         break;
       default:
-        setJsxContent(
-          <p className="align-content-center">
-            Контент находиться в разработке
-          </p>,
-        );
+        setJsxContent(<p className="align-content-center">Контент находиться в разработке</p>);
         break;
     }
   }, [activeId]);

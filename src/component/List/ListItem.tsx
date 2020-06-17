@@ -57,7 +57,7 @@ const ListItem: React.FC<IListItem> = ({
         <ButtonFontAwesome
           faIcon={faTrash}
           onClick={() => {
-            if (window.confirm(`Все связаные инциденты исчезнут! Удалить?`)) onDelete({ id });
+            if (window.confirm(`Все связаные заявки исчезнут! Удалить?`)) onDelete({ id });
           }}
           variant={'danger'}
           tooltip={`Удалить`}

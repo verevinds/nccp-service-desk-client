@@ -1,4 +1,4 @@
-import React, { memo, useState, useEffect, useCallback, useLayoutEffect } from 'react';
+import React, { memo, useState, useEffect, useCallback, useLayoutEffect, useContext } from 'react';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 
 /** Action creators */
@@ -12,8 +12,17 @@ import IncidentWindow from '../IncidentWindow/IncidentWindow';
 
 /**Bootstrap components */
 import { Row, Col, Container } from 'react-bootstrap';
+import { IncidentContext } from './IncidentContext';
 
-const Incident = ({ list, params, title, badge, actionSuccessed }) => {
+const Incident = () => {
+  let {
+    incidents: { list },
+    params,
+    title,
+    requestSuccessed,
+    actionSuccessed,
+  } = useContext(IncidentContext);
+
   const { history, current } = useSelector((state) => state.incidents, shallowEqual);
 
   const incidents = useSelector((state) => state.incidents, shallowEqual);
@@ -31,12 +40,7 @@ const Incident = ({ list, params, title, badge, actionSuccessed }) => {
     // eslint-disable-next-line
     [dispatch],
   );
-  useLayoutEffect(() => {
-    if (!!params) {
-      // fetchIncident(params, actionSuccessed);
-    }
-    // eslint-disable-next-line
-  }, [incidents.isUpdate, params]);
+
   const onClickHistory = useCallback(() => {
     let historyParams = { ...params, history: 'true' };
     fetchIncident(historyParams, incidentHistoryRequestSuccessed);
@@ -44,10 +48,10 @@ const Incident = ({ list, params, title, badge, actionSuccessed }) => {
   }, [params, fetchIncident, incidents.isUpdate]);
   const [chooseIncidentId, setChooseIncidentId] = useState();
 
-  //currentIncident хранит текущий инцидент, setCurrentIncident изменяется состояние currentIncident
+  //currentIncident хранит текущий заявка, setCurrentIncident изменяется состояние currentIncident
   useEffect(() => {
     if (chooseIncidentId) {
-      //Получаем новый выбранный инцидент
+      //Получаем новый выбранный заявка
       const newCurrentIncident = (() => {
         let thisHistory = history.find((item) => item.id === chooseIncidentId);
         let thisList = list.find((item) => item.id === chooseIncidentId);
@@ -97,13 +101,12 @@ const Incident = ({ list, params, title, badge, actionSuccessed }) => {
           list={sidebarList}
           onClick={setChooseIncidentId}
           activeId={chooseIncidentId}
-          badge={!badge}
           onClickHistory={onClickHistory}
         />
       </Col>
       <Col xs={7}>
         <Container>
-          {current.incident ? <IncidentWindow incident={current.incident} myincident={badge} /> : null}
+          <IncidentWindow />
         </Container>
       </Col>
     </Row>

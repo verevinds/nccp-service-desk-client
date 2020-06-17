@@ -185,7 +185,7 @@ const CreateIncidentModel = ({ handleClose, showModal, user }) => {
     <ModalWindow
       show={showModal}
       onHide={handleClose}
-      title={'Создание инцидента'}
+      title={'Создание заявки'}
       onSubmit={onSubmit}
       textOk={'Отправить'}
       textNot={'Отменить'}

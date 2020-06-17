@@ -4,11 +4,12 @@ import { myIncidentRequestSuccessed } from '../redux/actionCreators/incidentActi
 
 /**My components */
 import Incident from '../component/Incident/Incident';
+import { IncidentContext } from '../component/Incident/IncidentContext';
 
 const MyIncidentPage = (props) => {
   const [params, setParams] = useState();
   const user = useSelector((state) => state.auth.user, shallowEqual);
-  const { myList } = useSelector((state) => state.incidents, shallowEqual);
+  const { incidents } = useSelector((state) => state, shallowEqual);
 
   useEffect(() => {
     if (user) {
@@ -19,8 +20,14 @@ const MyIncidentPage = (props) => {
     }
   }, [user]);
 
-  if (myList) {
-    return <Incident list={myList} params={params} badge={true} actionSuccessed={myIncidentRequestSuccessed} />;
+  if (incidents) {
+    return (
+      <IncidentContext.Provider
+        value={{ incidents, params, actionSuccessed: myIncidentRequestSuccessed, myIncident: true }}
+      >
+        <Incident />
+      </IncidentContext.Provider>
+    );
   } else {
     return <p>Загрузка данных</p>;
   }

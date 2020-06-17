@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo, useEffect, useState, useContext } from 'react';
 import Moment from 'react-moment';
 import 'moment/locale/ru';
 import IncidentHandleStatus from '../IncidentHandleStatus/IncidentHandleStatus';
@@ -8,8 +8,14 @@ import IncidentWindowHeader from '../IncidentWindowHeader/IncidentWindowHeader';
 // Bootstrap
 import { Container, Card } from 'react-bootstrap';
 import IncidentWindowBody from '../IncidentWindowBody/IncidentWindowBody';
+import { IncidentContext } from '../Incident/IncidentContext';
 
-const IncidentWindow = ({ incident, myincident }) => {
+const IncidentWindow = () => {
+  const {
+    incidents: {
+      current: { incident },
+    },
+  } = useContext(IncidentContext);
   useEffect(() => {}, [incident]);
   const [showModal, setShowModal] = useState(false);
   const handleCloseModal = () => setShowModal(false);
@@ -18,22 +24,12 @@ const IncidentWindow = ({ incident, myincident }) => {
   if (!!incident) {
     return (
       <>
-        {showModal ? (
-          <IncidentHandleStatus
-            show={showModal}
-            onHide={handleCloseModal}
-            incident={incident}
-          />
-        ) : null}
+        {showModal ? <IncidentHandleStatus show={showModal} onHide={handleCloseModal} incident={incident} /> : null}
         <Container>
           <Card>
-            <IncidentWindowHeader incident={incident} myincident={myincident} />
+            <IncidentWindowHeader />
 
-            <IncidentWindowBody
-              incident={incident}
-              myincident={myincident}
-              handleOpenModal={handleOpenModal}
-            />
+            <IncidentWindowBody handleOpenModal={handleOpenModal} />
             <Card.Footer className="text-right">
               <small>
                 <i>
@@ -56,7 +52,7 @@ const IncidentWindow = ({ incident, myincident }) => {
       </>
     );
   } else {
-    return <h2>Выберите инцидент</h2>;
+    return <h2>Выберите заявку</h2>;
   }
 };
 

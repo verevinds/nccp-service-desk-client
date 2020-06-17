@@ -77,7 +77,7 @@ const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId }) => {
           }
         } else if (item.status === 0) {
           color = '#007bff';
-          tooltip = `Новый инцидент. Нет ответственного.`;
+          tooltip = `Новая заявка. Нет ответственного.`;
         }
         return (
           <ListGroup.Item

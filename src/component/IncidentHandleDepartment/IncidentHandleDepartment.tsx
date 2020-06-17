@@ -109,11 +109,11 @@ const IncidentHandleDepartment = ({ show, onClick, onHide }: IIncidentHandleDepa
   };
   return (
     <ModalWindow
-      title={'Передать инцидент'}
+      title={'Передать заявку'}
       show={show}
       onHide={onHide}
       onOk={onClick.bind({
-        comment: `${user.name1} ${user.name2.charAt(0)} ${user.name3.charAt(0)} передал инцидент в "${
+        comment: `${user.name1} ${user.name2.charAt(0)} ${user.name3.charAt(0)} передал заявку в "${
           departmentList.find((item: any) => Number(item.id) === Number(currentDepartmentId))?.name
         }"`,
         bodyData: {
