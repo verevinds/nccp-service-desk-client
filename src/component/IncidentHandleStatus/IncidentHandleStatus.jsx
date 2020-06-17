@@ -1,4 +1,4 @@
-import React, { memo, useState, useContext } from 'react';
+import React, { memo, useState, useContext, useMemo } from 'react';
 import ModalWindow from '../ModalWindow/ModalWindow';
 import { useSelector, shallowEqual, useDispatch } from 'react-redux';
 import { queryApi } from '../../redux/actionCreators/queryApiAction';
@@ -11,8 +11,9 @@ import { fileFetching } from '../../redux/actionCreators/fileAction';
 
 const IncidentHandleStatus = ({ show, onHide, incident }) => {
   const dispatch = useDispatch();
-  const { list } = useSelector((state) => state.status, shallowEqual);
+  const status = useSelector((state) => state.status.list, shallowEqual);
   const { user } = useSelector((state) => state.auth, shallowEqual);
+  const list = useMemo(() => status.filter((item) => item.id !== 8388608), [status]);
   const [fullName] = useState(`${user.name1} ${user.name2} ${user.name3}`);
   const [validated, setValidated] = useState(false);
   const [newStatus, setNewStatus] = useState({ statusId: incident.statusId });

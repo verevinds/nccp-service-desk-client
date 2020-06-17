@@ -1,18 +1,12 @@
 import React, { memo, useState, useEffect, useMemo } from 'react';
-import { ISidebarWrapper } from './interface';
+import { ISidebarWrapper } from '../Sidebar/interface';
 import { useSelector, shallowEqual } from 'react-redux';
 import { Container } from 'react-bootstrap';
-import SidebarHistory from './SidebarHistory';
-import styles from './sidebarWrapper.module.css';
-import Sidebar from './Sidebar';
+import SidebarHistory from '../Sidebar/SidebarHistory';
+import styles from './wrapperSidebar.module.css';
+import Sidebar from '../Sidebar/Sidebar';
 
-const SidebarWrapper: React.FC<ISidebarWrapper> = ({
-  title,
-  list,
-  onClick,
-  activeId,
-  onClickHistory,
-}) => {
+const SidebarWrapper: React.FC<ISidebarWrapper> = ({ title, list, onClick, activeId, onClickHistory }) => {
   const user = useSelector((state: any) => state.auth.user, shallowEqual);
   const [blogTitle, setBlogTitle] = useState<JSX.Element | null>(null);
 
@@ -43,29 +37,17 @@ const SidebarWrapper: React.FC<ISidebarWrapper> = ({
             <>
               <br />
               {title ? <h6>Моя ответственность</h6> : <h6>Мои инциденты</h6>}
-              <Sidebar
-                list={responsibleList}
-                onClick={onClick}
-                activeId={activeId}
-              />
+              <Sidebar list={responsibleList} onClick={onClick} activeId={activeId} />
             </>
           ) : undefined}
           {anotherList.length && title ? (
             <>
               <br />
               <h6>Остальные инциденты</h6>
-              <Sidebar
-                list={anotherList}
-                onClick={onClick}
-                activeId={activeId}
-              />
+              <Sidebar list={anotherList} onClick={onClick} activeId={activeId} />
             </>
           ) : undefined}
-          <SidebarHistory
-            onClick={onClick}
-            activeId={activeId}
-            onClickHistory={onClickHistory}
-          />
+          <SidebarHistory onClick={onClick} activeId={activeId} onClickHistory={onClickHistory} />
         </div>
       </Container>
     </>

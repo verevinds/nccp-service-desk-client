@@ -8,6 +8,7 @@ import { ISidebar } from './interface';
 //? Font Awesome иконки
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleRight, faTag, faUserClock, faUserCheck } from '@fortawesome/free-solid-svg-icons';
+import SidebarDown from './SidebarDown';
 
 const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId }) => {
   const tags = (item: any, color?: any, tooltip?: string) => {
@@ -102,31 +103,7 @@ const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId }) => {
                   </div>
                 </div>
               </div>
-              <div className={styles.bar__container_down}>
-                <div className={`${styles.bar__date} ${styles.bar__date_left}`}>
-                  {item.finishWork ? (
-                    <Moment locale="ru" format="DD.MM.YY">
-                      {item.finishWork}
-                    </Moment>
-                  ) : null}
-                </div>
-                <div className={`${styles.bar__date} ${styles.bar__date_right}`}>
-                  {item.createdAt ? (
-                    <Moment locale="ru" format="DD.MM.YY">
-                      {item.createdAt}
-                    </Moment>
-                  ) : null}
-                </div>
-                <ProgressBar
-                  striped
-                  animated
-                  variant="info"
-                  now={+nowData}
-                  max={+finishData}
-                  min={+createData}
-                  className={styles.bar__progress}
-                />
-              </div>
+              <SidebarDown item={item} />
               <div className={styles.bar__container_sideRight}>
                 <div className={`${styles.icon} ${styles.icon_right}`}>
                   <FontAwesomeIcon icon={faAngleRight} />

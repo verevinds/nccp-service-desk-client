@@ -5,15 +5,9 @@ import styles from './sidebarHistory.module.css';
 import Sidebar from './Sidebar';
 import { useSelector, shallowEqual } from 'react-redux';
 
-const SidebarHistory: React.FC<ISidebarHistory> = ({
-  onClick,
-  activeId,
-  onClickHistory,
-}) => {
-  const history = useSelector(
-    (state: any) => state.incidents.history,
-    shallowEqual,
-  );
+const SidebarHistory: React.FC<ISidebarHistory> = ({ onClick, activeId, onClickHistory }) => {
+  const history = useSelector((state: any) => state.incidents.history, shallowEqual);
+  console.log(history);
   const [isLoadHistory, setIsLoadHistory] = useState(false);
   useEffect(() => {
     if (isLoadHistory) {
@@ -28,9 +22,7 @@ const SidebarHistory: React.FC<ISidebarHistory> = ({
       history.map((item: any) => {
         let responsible;
         if (item.responsibleUser) {
-          responsible = `(${
-            item.responsibleUser.name1
-          } ${item.responsibleUser.name2.charAt(
+          responsible = `(${item.responsibleUser.name1} ${item.responsibleUser.name2.charAt(
             0,
           )}. ${item.responsibleUser.name3.charAt(0)}.)`;
         } else {
@@ -38,12 +30,14 @@ const SidebarHistory: React.FC<ISidebarHistory> = ({
         }
         const newItem = {
           id: item.id,
-          name: `${item.category ? item.category.name : ''} ${
-            item.property ? item.property.name : ''
-          } ${item.option ? item.option.name : ''}`,
+          name: `${item.category ? item.category.name : ''} ${item.property ? item.property.name : ''} ${
+            item.option ? item.option.name : ''
+          }`,
           createdAt: item.createdAt,
           responsible,
           status: item.statusId,
+          finishWork: item.finishWork,
+          doneWork: item.doneWork,
         };
         return newItem;
       }),
@@ -68,9 +62,7 @@ const SidebarHistory: React.FC<ISidebarHistory> = ({
             <Card.Body className={styles.body}>
               {Array.isArray(sidebarList) && sidebarList.length ? (
                 <Sidebar
-                  list={sidebarList.sort((a: any, b: any) =>
-                    Number(a?.id) < Number(b?.id) ? 1 : -1,
-                  )}
+                  list={sidebarList.sort((a: any, b: any) => (Number(a?.id) < Number(b?.id) ? 1 : -1))}
                   onClick={onClick}
                   activeId={activeId}
                 />

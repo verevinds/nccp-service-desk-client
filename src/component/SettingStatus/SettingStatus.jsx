@@ -39,15 +39,19 @@ const SettingStatus = (props) => {
           break;
       }
 
-      dispatch(
-        queryApi({
-          id,
-          actionUpdate: statusUpdate,
-          route,
-          method,
-          data,
-        }),
-      );
+      if (Number(id) !== 8388608 && Number(id) !== 1) {
+        dispatch(
+          queryApi({
+            id,
+            actionUpdate: statusUpdate,
+            route,
+            method,
+            data,
+          }),
+        );
+      } else {
+        alert('Только администратор может это сделать!');
+      }
     },
     [dispatch],
   );

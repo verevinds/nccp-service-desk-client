@@ -7,7 +7,7 @@ import { queryApi } from '../../redux/actionCreators/queryApiAction';
 import { incidentHistoryRequestSuccessed } from '../../redux/actionCreators/incidentAction';
 
 /** My components */
-import SidebarWrapper from '../Sidebar/SidebarWrapper';
+import SidebarWrapper from '../Sidebar/WrapperSidebar';
 import IncidentWindow from '../IncidentWindow/IncidentWindow';
 
 /**Bootstrap components */

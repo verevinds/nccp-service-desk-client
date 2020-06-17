@@ -18,15 +18,9 @@ const MyIncidentPage = (props) => {
       });
     }
   }, [user]);
+
   if (myList) {
-    return (
-      <Incident
-        list={myList}
-        params={params}
-        badge={true}
-        actionSuccessed={myIncidentRequestSuccessed}
-      />
-    );
+    return <Incident list={myList} params={params} badge={true} actionSuccessed={myIncidentRequestSuccessed} />;
   } else {
     return <p>Загрузка данных</p>;
   }
