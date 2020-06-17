@@ -1,14 +1,14 @@
 import React, { memo, useCallback, useEffect, useLayoutEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Card, Image, Col, Row, Button, Container, ButtonGroup, Dropdown, DropdownButton } from 'react-bootstrap';
+import { Card, Image, Col, Row, Button, Container, Dropdown, DropdownButton } from 'react-bootstrap';
 import styles from './styles.module.css';
 import { queryApi } from '../../redux/actionCreators/queryApiAction';
 import { usersCurrentRequestSeccessed, usersCurrentUpdate } from '../../redux/actionCreators/usersAction';
-import { TUsers, IState, TAccess } from '../../interface';
+import { TUsers, IState } from '../../interface';
 
 //? Font Awesome иконки
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck, faMinus } from '@fortawesome/free-solid-svg-icons';
+import { faCheck } from '@fortawesome/free-solid-svg-icons';
 
 interface ICardUser {
   id?: number;

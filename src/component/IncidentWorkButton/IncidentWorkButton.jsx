@@ -63,6 +63,7 @@ export default memo(function IncidentWorkButton({ onClick, handleOpenModal }) {
           </>
         );
       } else {
+        console.log(user.position);
         if (user.position?.level)
           return (
             <>

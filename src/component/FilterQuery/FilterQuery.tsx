@@ -5,10 +5,11 @@ import { InputGroup, FormControl } from 'react-bootstrap';
 //? Font Awesome иконки
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { TOption } from '../../interface';
 
 interface IFilterQuery {
-  setList: (list: never[] | []) => void;
-  list?: never[] | [];
+  setList: (list: never[] | any[]) => void;
+  list: any[];
 }
 const FilterQuery: React.FC<IFilterQuery> = ({ setList, list }) => {
   const [text, setText] = useState('');
@@ -17,10 +18,7 @@ const FilterQuery: React.FC<IFilterQuery> = ({ setList, list }) => {
     if (list && setList) {
       setList(
         list
-          .filter(
-            (item: any) =>
-              ~item?.name.toLowerCase().indexOf(text.toLowerCase()),
-          )
+          .filter((item: any) => ~item?.name.toLowerCase().indexOf(text.toLowerCase()))
           .sort((a: any, b: any) => (b.id < a.id ? 1 : -1))
           .sort((a: any, b: any) => (b.name < a.name ? 1 : -1)),
       );

@@ -6,7 +6,6 @@ import { departmentRequestSuccessed } from '../actionCreators/departmentAction';
 import { accessRequestSeccessed } from '../actionCreators/accessAction';
 import { categoryRequestSuccessed } from '../actionCreators/catalogAction';
 import { statusRequestSeccessed } from '../actionCreators/statusAction';
-import { authRequestSuccessed } from '../actionCreators/authAction';
 import { errorCreate } from '../actionCreators/errorAction';
 import { usersRequestSeccessed } from '../actionCreators/usersAction';
 
@@ -16,7 +15,7 @@ export function* fetchAuthInitialApp({ response }) {
     yield put(progressStart());
     // Departments
     const departments = yield call(() =>
-      axios.get(`https://srv-sdesk.c31.nccp.ru:8443/api/departments`).then((res) => {
+      axios.get(`https://srv-sdesk.c31.nccp.ru:8443/api/catalogs`).then((res) => {
         return res.data;
       }),
     );

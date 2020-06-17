@@ -64,7 +64,7 @@ const ListItem: React.FC<IListItem> = ({
           disabled={!access}
         />
       );
-  }, [onDelete, noChange, id]);
+  }, [onDelete, noChange, id, user]);
 
   const buttonFavorites = useMemo(() => {
     if (!!onFavorites)

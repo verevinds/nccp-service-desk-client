@@ -42,7 +42,7 @@ const App = (props) => {
   const { list, isUpdate } = useSelector((state) => state.incidents); // Получаем данные каталога при строгом изменение обекта state
   const userCurrnet = useSelector((state) => state.users.current.user); // Получаем данные каталога при строгом изменение обекта state
   const userCurrnetIsUpdate = useSelector((state) => state.users.current.isUpdate); // Получаем данные каталога при строгом изменение обекта state
-  const { progress } = useSelector((state) => state);
+  const { progress, catalog } = useSelector((state) => state);
   const { error } = useSelector((state) => state);
   const { user } = useSelector((state) => state.auth);
 
@@ -66,8 +66,8 @@ const App = (props) => {
   }, [error]);
 
   useLayoutEffect(() => {
-    console.log(state.auth);
-  }, [state.auth]);
+    console.log(catalog);
+  }, [catalog]);
   useLayoutEffect(() => {
     if (!!cookies.get('auth')) {
       if (cookies.get('auth').ip) {
@@ -111,7 +111,7 @@ const App = (props) => {
   }, [dispatch]); // For change state of the  dispatch
   useEffect(() => {
     if (isUpdateCatalog) {
-      dispatch(queryApi({ route: 'categories', actionSuccessed: categoryRequestSuccessed }));
+      dispatch(queryApi({ route: 'catalogs', actionSuccessed: departmentRequestSuccessed }));
     }
   }, [isUpdateCatalog, dispatch]);
   useEffect(() => {
@@ -132,7 +132,7 @@ const App = (props) => {
         }),
       );
     }
-  }, [isUpdate, dispatch]);
+  }, [isUpdate, dispatch, user]);
   useEffect(() => {
     if (isUpdateStatus) {
       dispatch(queryApi({ route: 'status', actionSuccessed: statusRequestSeccessed }));

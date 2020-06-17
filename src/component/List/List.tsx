@@ -9,6 +9,7 @@ import styles from './styles.module.css';
 //? Bootstrap
 import { ListGroup, Col, Button } from 'react-bootstrap';
 import { TItemTag } from './ListItemTag';
+import { TOption } from '../../interface';
 
 export type THandle = ({ id, value }: TFn) => void;
 export interface IHandle {
@@ -32,7 +33,7 @@ export type TList = {
 export interface IList extends IHandle {
   title: string;
   xs?: number;
-  list?: [] | never[];
+  list: any[];
   handleBind?: THandleBind;
 }
 
@@ -49,7 +50,7 @@ const List: React.FC<IList> = ({
   xs,
 }) => {
   const [activeId, setActiveId] = useState<number | undefined>(undefined);
-  const [localList, setLocalList] = useState([]);
+  const [localList, setLocalList] = useState<any[]>([]);
   const [limit, setLimit] = useState(50);
   return (
     <Col xs={xs || 3}>

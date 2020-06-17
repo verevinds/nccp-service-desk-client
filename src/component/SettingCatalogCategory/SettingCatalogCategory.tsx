@@ -2,15 +2,14 @@ import React, { memo, useEffect, useState } from 'react';
 import List from '../List/List';
 import { useSelector, shallowEqual } from 'react-redux';
 import { THandleEvent } from '../SettingCatalog/SettingCatalog';
+import { IState, TDepartment, TCategory } from '../../interface';
 
 export interface ISettingCatalogCategory extends THandleEvent {
   departmentIdCurrent?: number;
   categoryIdCurrent?: number;
-  setCategoryIdCurrent: React.Dispatch<
-    React.SetStateAction<number | undefined>
-  >;
-  categoryList?: [] | never[];
-  setCategoryList: (arg0: []) => void;
+  setCategoryIdCurrent: React.Dispatch<React.SetStateAction<number | undefined>>;
+  categoryList: TCategory[] | undefined | [];
+  setCategoryList: (arg0: TCategory[] | undefined | never[]) => void;
 }
 
 const SettingCatalogCategory: React.FC<ISettingCatalogCategory> = ({
@@ -21,24 +20,21 @@ const SettingCatalogCategory: React.FC<ISettingCatalogCategory> = ({
   categoryList,
   setCategoryList,
 }) => {
-  const category = useSelector(
-    (state: any) => state.catalog.list,
-    shallowEqual,
-  );
+  const departments = useSelector((state: IState) => state.catalog.department, shallowEqual);
   const [categoryJsx, setCategoryJsx] = useState<JSX.Element | undefined>();
 
   useEffect(() => {
-    let updateCategory: [] = category.filter(
-      (item: any) => item.departmentId === departmentIdCurrent,
-    );
+    let department: TDepartment | undefined =
+      departments && departments.find((item: any) => item.id === departmentIdCurrent);
+    let updateCategory: TCategory[] | undefined | never[] = department && department.categories;
 
     setCategoryList(updateCategory);
-  }, [departmentIdCurrent, category, setCategoryList]);
+  }, [departmentIdCurrent, departments, setCategoryList]);
 
   useEffect(() => {
     let newCategoryJsx;
 
-    if (departmentIdCurrent) {
+    if (departmentIdCurrent && categoryList) {
       let route = 'categories';
 
       newCategoryJsx = (
@@ -65,13 +61,7 @@ const SettingCatalogCategory: React.FC<ISettingCatalogCategory> = ({
     }
 
     setCategoryJsx(newCategoryJsx);
-  }, [
-    departmentIdCurrent,
-    categoryList,
-    categoryIdCurrent,
-    handleEvent,
-    setCategoryIdCurrent,
-  ]);
+  }, [departmentIdCurrent, categoryList, categoryIdCurrent, handleEvent, setCategoryIdCurrent]);
   return <> {categoryJsx}</>;
 };
 

@@ -1,13 +1,14 @@
 import React, { memo, useEffect, useState, useCallback, Fragment, Dispatch, SetStateAction } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
+import { Row } from 'react-bootstrap';
 import { queryApi } from '../../redux/actionCreators/queryApiAction';
 import { categoryUpdate } from '../../redux/actionCreators/catalogAction';
-import { Row } from 'react-bootstrap';
 import SettingCatalogDepartment from '../SettingCatalogDepartment/SettingCatalogDepartment';
 import SettingCatalogCategory from '../SettingCatalogCategory/SettingCatalogCategory';
 import SettingCatalogProperty from '../SettingCatalogProperty/SettingCatalogProperty';
 import SettingCatalogOption from '../SettingCatalogOption/SettingCatalogOption';
 import { TItemTag } from '../List/ListItemTag';
+import { IState, TDepartment, TCategory, TProperty } from '../../interface';
 
 export type TFn = {
   id?: number;
@@ -15,7 +16,7 @@ export type TFn = {
 };
 type THandleEventParams = {
   route: string;
-  list?: [] | never[];
+  list?: any[];
   fact?: string;
   setCurrent?: Dispatch<SetStateAction<number | undefined>>;
 };
@@ -23,35 +24,36 @@ export interface THandleEvent {
   handleEvent: ({ route, list, setCurrent, fact }: THandleEventParams) => ({ id, value }: TFn) => void;
 }
 
-export type TCategorySubList = {
-  id: number;
-  name: string;
-  departmentId: number;
-  level: number;
-  isArchive: boolean;
-  deadline: number;
-  createdAt: string;
-  updatedAt: string;
-  properties: [];
-  options: [];
-};
-export type TProperty = {
-  bind: TItemTag[];
-  [key: string]: any;
-  categoryId: number;
-  deadline: number;
-  id: number;
-  isArchive: boolean;
-  level: number | null;
-  name: string;
-  priorityId: number | null;
-};
+// export type TCategorySubList = {
+//   id: number;
+//   name: string;
+//   departmentId: number;
+//   level: number;
+//   isArchive: boolean;
+//   deadline: number;
+//   createdAt: string;
+//   updatedAt: string;
+//   properties: [];
+//   options: [];
+// };
+// export type TProperty = {
+//   bind: TItemTag[];
+//   [key: string]: any;
+//   categoryId: number;
+//   deadline: number;
+//   id: number;
+//   isArchive: boolean;
+//   level: number | null;
+//   name: string;
+//   priorityId: number | null;
+// };
 const SettingCatalog = () => {
   const dispatch = useDispatch();
+  const { catalog }: IState = useSelector((state: IState) => state);
   const [departmentIdCurrent, setDepartmentIdCurrent] = useState<number | undefined>(undefined);
   const [categoryIdCurrent, setCategoryIdCurrent] = useState<number | undefined>(undefined);
-  const [categoryList, setCategoryList] = useState([]);
-  const [categorySubList, setCategorySubList] = useState<TCategorySubList | undefined>(undefined);
+  const [categoryList, setCategoryList] = useState<TCategory[] | undefined | never[]>(undefined);
+  const [categorySubList, setCategorySubList] = useState<TCategory | undefined>(undefined);
 
   //** CALLBACKS */
   const handleEvent = useCallback(
@@ -102,10 +104,12 @@ const SettingCatalog = () => {
 
   /** SIDE EFFECTS*/
   useEffect(() => {
-    let categorySubList = categoryList.find((item: any) => item.id === categoryIdCurrent);
+    let department: TDepartment | undefined = catalog.department.find((item: any) => item.id === departmentIdCurrent);
+    let category: TCategory | undefined =
+      department && department.categories.find((item: any) => item.id === categoryIdCurrent);
+    setCategorySubList(category);
+  }, [categoryIdCurrent, catalog, departmentIdCurrent]);
 
-    setCategorySubList(categorySubList);
-  }, [categoryIdCurrent, categoryList]);
   const [parentId, setParentId] = useState(0);
   const [childrenId, setChildrenId] = useState(0);
   const handleBindParent = useCallback(
@@ -122,7 +126,8 @@ const SettingCatalog = () => {
   );
 
   useEffect(() => {
-    let parent: TProperty | undefined = categorySubList?.properties.find((item: TProperty) => item.id === parentId);
+    let properties = categorySubList && categorySubList.properties;
+    let parent: TProperty | undefined = properties && properties.find((item: TProperty) => item.id === parentId);
     if (parent && !!childrenId && !!parentId) {
       let bindId = 0;
       //@ts-ignore
@@ -157,6 +162,14 @@ const SettingCatalog = () => {
       setChildrenId(0);
     }
   }, [parentId, childrenId, categorySubList, dispatch]);
+
+  useEffect(() => {
+    console.log(categorySubList);
+  }, [categorySubList]);
+
+  useEffect(() => {
+    console.log(categoryList);
+  }, [categoryList]);
   return (
     <Fragment>
       <h2>Каталог</h2>
