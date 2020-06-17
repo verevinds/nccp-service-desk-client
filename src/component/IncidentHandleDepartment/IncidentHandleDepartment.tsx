@@ -15,7 +15,9 @@ const IncidentHandleDepartment = ({ show, onClick, onHide }: IIncidentHandleDepa
   useLayoutEffect(() => {
     if (!!catalog && !!user) {
       if (!!catalog.department) {
-        let department = catalog.department.filter((item: any) => item.id !== user.departmentId);
+        let department = catalog.department.filter(
+          (item: any) => item.id !== user.departmentId && item.categories.length,
+        );
         setDepartmentList(department);
         setCurrentDepartmentId(department[0].id);
       }
