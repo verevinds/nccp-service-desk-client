@@ -9,7 +9,7 @@ export interface IHandleMatches {}
 
 const HandleMatches: React.FC<IHandleMatches> = () => {
   const {
-    incident: { matches },
+    incident: { matches, id },
   }: TIncidentCurrent = useSelector((state: IState) => state.incidents.current, shallowEqual);
   console.log(matches);
   const { onClick } = useContext(IncidentWindowContext);
@@ -39,20 +39,21 @@ const HandleMatches: React.FC<IHandleMatches> = () => {
               };
             case 2:
               return {
+                okText: 'Согласовать перевод',
                 okVariant: 'success',
                 okOnClick: onClick.bind({
-                  matchHandle: { method: 'put', data: { isMatch: true }, id: item.id },
+                  matchHandle: { method: 'delete', params: { incidentId: item.incidentId } },
                   incidentData: { startWork: null, statusId: 0, currentResponsible: null, ...item.params },
                   comment: `Перевод согласован`,
                 }),
-                okText: 'Согласовать перевод',
+
+                canselText: 'Отказать',
                 canselVariant: 'outline-danger',
                 canselOnClick: onClick.bind({
                   matchHandle: { method: 'delete', id: item.id },
                   incidentData: {},
                   comment: `Отказано в переводе`,
                 }),
-                canselText: 'Отказать',
               };
             default:
               break;

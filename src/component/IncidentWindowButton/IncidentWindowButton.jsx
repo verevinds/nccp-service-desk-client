@@ -56,21 +56,26 @@ const IncidentWindowButton = ({ handleOpen }) => {
       );
     }
   }, [statusId, currentResponsible, handleInWork, handleOpen]);
+
   const buttonMatch = useMemo(() => {
     if (!!~matches.findIndex((item) => item.isMatch === false)) {
-      if (level) return <HandleMatches onClick={onClick} />;
+      return <HandleMatches onClick={onClick} />;
     }
-  }, [matches, level, onClick]);
+  }, [matches, onClick]);
+  console.log(buttonMatch);
   return (
     <>
       <hr />
       <div className={styles.bar}>
         <div>
-          {buttonMatch ? (
-            buttonMatch
+          {!!buttonMatch ? (
+            level ? (
+              buttonMatch
+            ) : undefined
           ) : (
             <>
-              {level ? <HandleResponsible onClick={onClick} /> : undefined} <HandleDepartment onClick={onClick} />
+              {level ? <HandleResponsible onClick={onClick} /> : undefined}
+              <HandleDepartment onClick={onClick} />
             </>
           )}
         </div>

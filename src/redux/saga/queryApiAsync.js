@@ -22,7 +22,7 @@ export function* queryApiAsync({ route, actionSuccessed, actionUpdate, method, d
         break;
 
       case 'delete':
-        response = yield call(() => axios.delete(`https://srv-sdesk.c31.nccp.ru:8443/api/${route}/${id}`, data));
+        response = yield call(() => axios.delete(`https://srv-sdesk.c31.nccp.ru:8443/api/${route}/${id || ''}`, data));
         break;
 
       case 'put':
