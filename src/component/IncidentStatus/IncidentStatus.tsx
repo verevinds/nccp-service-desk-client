@@ -1,10 +1,9 @@
-import React, { memo, useState, useEffect, useContext } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import { useSelector, shallowEqual } from 'react-redux';
 import { IIncidentStatus } from './interface';
 import styles from './styles.module.css';
 //Bootstrap
 import { Button } from 'react-bootstrap';
-import { IncidentContext, IIncidentContext } from '../Incident/IncidentContext';
 import { IState, TStatusies } from '../../interface';
 
 const IncidentStatus: React.FC<IIncidentStatus> = () => {

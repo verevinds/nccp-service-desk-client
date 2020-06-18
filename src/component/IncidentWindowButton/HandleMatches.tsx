@@ -1,51 +1,82 @@
-import React, { memo, useMemo } from 'react';
+import React, { memo, useMemo, useContext } from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
 import { shallowEqual, useSelector } from 'react-redux';
 import { IState, TIncidentCurrent, TMatch } from '../../interface';
 
-export interface IHandleMatches {
-  incident: any;
-  onClick: () => void;
-}
+import { IncidentWindowContext } from '../IncidentWindow/IncidentWindowContext';
 
-const HandleMatches: React.FC<IHandleMatches> = ({ onClick }) => {
+export interface IHandleMatches {}
+
+const HandleMatches: React.FC<IHandleMatches> = () => {
   const {
     incident: { matches },
   }: TIncidentCurrent = useSelector((state: IState) => state.incidents.current, shallowEqual);
   console.log(matches);
+  const { onClick } = useContext(IncidentWindowContext);
+
   let jsxButton = useMemo(() => {
     if (matches)
+      // eslint-disable-next-line
       return matches.map((item: TMatch) => {
-        switch (item.code) {
-          case 1:
+        if (!item.isMatch)
+          switch (item.code) {
+            case 1:
+              return {
+                okVariant: 'success',
+                okOnClick: onClick.bind({
+                  matchHandle: { method: 'put', data: { isMatch: true }, id: item.id },
+                  incidentData: { startWork: new Date(), statusId: 1 },
+                  comment: `Ответственный согласован`,
+                }),
+                okText: 'Согласовать ответственного',
+                canselVariant: 'outline-danger',
+                canselOnClick: onClick.bind({
+                  matchHandle: { method: 'delete', id: item.id },
+                  incidentData: { startWork: null, statusId: 0, currentResponsible: null },
+                  comment: `Отказано в назначение ответственного`,
+                }),
+                canselText: 'Отказать',
+              };
+            case 2:
+              return {
+                okVariant: 'success',
+                okOnClick: onClick.bind({
+                  matchHandle: { method: 'put', data: { isMatch: true }, id: item.id },
+                  incidentData: { startWork: null, statusId: 0, currentResponsible: null, ...item.params },
+                  comment: `Перевод согласован`,
+                }),
+                okText: 'Согласовать перевод',
+                canselVariant: 'outline-danger',
+                canselOnClick: onClick.bind({
+                  matchHandle: { method: 'delete', id: item.id },
+                  incidentData: {},
+                  comment: `Отказано в переводе`,
+                }),
+                canselText: 'Отказать',
+              };
+            default:
+              break;
+          }
+      });
+  }, [matches, onClick]);
+  return (
+    <>
+      {jsxButton &&
+        jsxButton.map((item: any, index: number) => {
+          if (item)
             return (
-              <ButtonGroup aria-label="Basic example" key={1}>
-                <Button
-                  variant="success"
-                  onClick={onClick.bind({
-                    comment: `Согласовано`,
-                    bodyData: { consent: true },
-                  })}
-                >
-                  Согласовать
+              <ButtonGroup aria-label="Basic example" key={index}>
+                <Button variant={item.okVariant} onClick={item.okOnClick}>
+                  {item.okText}
                 </Button>
-                <Button
-                  variant="outline-danger"
-                  onClick={onClick.bind({
-                    comment: `Отказано`,
-                    bodyData: { currentResponsible: null, statusId: 0 },
-                  })}
-                >
-                  Отказать
+                <Button variant={item.canselVariant} onClick={item.canselOnClick}>
+                  {item.canselText}
                 </Button>
               </ButtonGroup>
             );
-          default:
-            break;
-        }
-      });
-  }, [matches]);
-  return <>{jsxButton && jsxButton.map((item: any) => item)}</>;
+        })}
+    </>
+  );
 };
 
 export default memo(HandleMatches);

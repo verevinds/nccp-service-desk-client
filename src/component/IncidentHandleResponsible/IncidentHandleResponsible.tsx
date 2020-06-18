@@ -1,4 +1,4 @@
-import React, { memo, useLayoutEffect, useState, useEffect } from 'react';
+import React, { memo, useLayoutEffect, useState, useEffect, useContext } from 'react';
 import ModalWindow from '../ModalWindow/ModalWindow';
 import { IIncidentHandleResponsible, IUser } from './interface';
 import { Form } from 'react-bootstrap';
@@ -6,9 +6,11 @@ import { queryApi } from '../../redux/actionCreators/queryApiAction';
 import { usersRequestSeccessed } from '../../redux/actionCreators/usersAction';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import styles from './styles.module.css';
+import { IncidentWindowContext } from '../IncidentWindow/IncidentWindowContext';
 
-const IncidentHandleResponsible: React.FC<IIncidentHandleResponsible> = ({ show, onHide, onClick }) => {
+const IncidentHandleResponsible: React.FC<IIncidentHandleResponsible> = ({ show, onHide }) => {
   const dispatch = useDispatch();
+  const { onClick } = useContext(IncidentWindowContext);
   const list = useSelector((state: any) => state.users.list, shallowEqual);
   const user = useSelector((state: any) => state.auth.user, shallowEqual);
   const { incident } = useSelector((state: any) => state.incidents.current, shallowEqual);
@@ -62,7 +64,7 @@ const IncidentHandleResponsible: React.FC<IIncidentHandleResponsible> = ({ show,
         onOk={() => {
           onHide();
           onClick.call({
-            bodyData: { currentResponsible },
+            incidentData: { currentResponsible },
             comment: `Статус заявки изменен на "В работе". Ответственным назначен: ${currentResponsibleFullname}`,
           });
         }}

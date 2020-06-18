@@ -4,7 +4,7 @@ export interface IIncidentHandleResponsible {
   currentResponsible?: number | undefined;
   onClick: (arg0?: TParams) => void;
 }
-type TParams = { bodyData?: any; comment?: string };
+type TParams = { incidentData?: any; comment?: string };
 export type IUser = {
   number: number;
 };

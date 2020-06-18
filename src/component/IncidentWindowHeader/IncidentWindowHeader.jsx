@@ -1,4 +1,4 @@
-import React, { memo, useContext } from 'react';
+import React, { memo } from 'react';
 
 import { useSelector, shallowEqual } from 'react-redux';
 import styles from './styles.module.css';
@@ -7,7 +7,6 @@ import IncidentInWork from '../IncidentInWork/IncidentInWork';
 import IncidentStatus from '../IncidentStatus/IncidentStatus';
 
 import { Card } from 'react-bootstrap';
-import { IncidentContext } from '../Incident/IncidentContext';
 
 const IncidentWindowHeader = () => {
   const incident = useSelector((state) => state.incidents?.current.incident, shallowEqual);

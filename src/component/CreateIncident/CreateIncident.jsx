@@ -9,7 +9,7 @@ import ModalWindow from '../ModalWindow/ModalWindow';
 import UploadFiles from '../UploadFiles/UploadFiles';
 import { fileUpload } from '../UploadFiles/fileUpload';
 import { AlertContext } from '../Alert/AlertContext';
-import { useSelector, shallowEqual } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 /** Action creators */
 import { incidentFetching } from '../../redux/actionCreators/incidentAction';

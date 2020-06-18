@@ -23,7 +23,6 @@ import {
   TOption,
   TIncidents,
 } from '../../interface';
-import { IncidentContext } from '../Incident/IncidentContext';
 
 const socket = openSocket('https://srv-sdesk.c31.nccp.ru:8000');
 
@@ -126,7 +125,7 @@ const HandleSocket = () => {
         </ModalWindow>
       </>
     );
-  }, [show, incident]);
+  }, [show]);
 
   if (!!show) {
     return jsx;

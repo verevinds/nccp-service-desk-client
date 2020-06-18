@@ -1,14 +1,7 @@
-import React, { memo, useState, useEffect, useMemo } from 'react';
-import { ListGroup, OverlayTrigger, Tooltip, ProgressBar } from 'react-bootstrap';
+import React, { memo, useMemo } from 'react';
+import { ProgressBar } from 'react-bootstrap';
 import Moment from 'react-moment';
 import styles from './siderbar.module.scss';
-//Interface TypeScript for function Sidebar
-import { ISidebar } from './interface';
-
-//? Font Awesome иконки
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleRight, faTag, faUserClock, faUserCheck } from '@fortawesome/free-solid-svg-icons';
-import { TList } from '../List/List';
 
 export interface ISidebarDown {
   item: any;
@@ -17,7 +10,6 @@ export interface ISidebarDown {
 const SidebarDown: React.FC<ISidebarDown> = ({ item }) => {
   const createData = new Date(item.createdAt);
   const finishData = new Date(item.finishWork);
-  const doneWork = new Date(item.doneWork);
   const nowData = new Date();
   // console.log(item);
   // console.log(new Date(Number(nowData) - Number(createData)).getDate());
@@ -29,7 +21,7 @@ const SidebarDown: React.FC<ISidebarDown> = ({ item }) => {
       if (new Date(Number(nowData) - Number(createData)).getDate() > 1) return 'warning';
       else return 'info';
     }
-  }, [nowData, finishData]);
+  }, [nowData, finishData, createData]);
 
   if (!item.doneWork)
     return (

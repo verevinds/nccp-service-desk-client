@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useState, useCallback, Fragment, Dispatch, SetStateAction } from 'react';
-import { useDispatch, useSelector, shallowEqual } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Row } from 'react-bootstrap';
 import { queryApi } from '../../redux/actionCreators/queryApiAction';
 import { categoryUpdate } from '../../redux/actionCreators/catalogAction';
@@ -7,7 +7,6 @@ import SettingCatalogDepartment from '../SettingCatalogDepartment/SettingCatalog
 import SettingCatalogCategory from '../SettingCatalogCategory/SettingCatalogCategory';
 import SettingCatalogProperty from '../SettingCatalogProperty/SettingCatalogProperty';
 import SettingCatalogOption from '../SettingCatalogOption/SettingCatalogOption';
-import { TItemTag } from '../List/ListItemTag';
 import { IState, TDepartment, TCategory, TProperty } from '../../interface';
 
 export type TFn = {

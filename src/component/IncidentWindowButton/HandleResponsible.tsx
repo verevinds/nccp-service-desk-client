@@ -1,5 +1,5 @@
 import React, { memo, useState } from 'react';
-import { Button, ButtonGroup } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import SetResponsible from '../IncidentHandleResponsible/IncidentHandleResponsible';
 
 export interface IHandleResponsible {

@@ -5,7 +5,6 @@ import { InputGroup, FormControl } from 'react-bootstrap';
 //? Font Awesome иконки
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import { TOption } from '../../interface';
 
 interface IFilterQuery {
   setList: (list: never[] | any[]) => void;

@@ -13,7 +13,6 @@ import HeaderButton from '../HeaderButton/HeaderButton';
 const Header = (props) => {
   const user = useSelector((state) => state.auth.user, shallowEqual);
   const isAccess = useSelector((state) => state.access.isAccess, shallowEqual);
-  const list = useSelector((state) => state.catalog.list, shallowEqual);
   const listIncident = useSelector((state) => state.incidents.list, shallowEqual);
   const [showModal, setShowModal] = useState(false);
   const handleClose = () => setShowModal(false);

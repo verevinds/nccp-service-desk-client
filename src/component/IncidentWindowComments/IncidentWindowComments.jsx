@@ -1,4 +1,4 @@
-import React, { memo, useState, useContext } from 'react';
+import React, { memo, useState } from 'react';
 import { useSelector, shallowEqual } from 'react-redux';
 import styles from './styles.module.css';
 import Moment from 'react-moment';
@@ -10,7 +10,6 @@ import { Card, Accordion, Table } from 'react-bootstrap';
 //? Font Awesome иконки
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleRight, faAngleDown } from '@fortawesome/free-solid-svg-icons';
-import { IncidentContext } from '../Incident/IncidentContext';
 
 const IncidentWindowComments = () => {
   const [accordion, setAccordion] = useState(false);

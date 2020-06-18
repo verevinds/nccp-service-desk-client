@@ -1,12 +1,16 @@
-import React, { memo, useState, useLayoutEffect, useEffect } from 'react';
+import React, { memo, useState, useLayoutEffect, useEffect, useContext } from 'react';
 import ModalWindow from '../ModalWindow/ModalWindow';
 import { IIncidentHandleDepartment, ICategory, IOption, IDepartment, IProperty } from './interface';
 import { Form } from 'react-bootstrap';
 import { useSelector, shallowEqual } from 'react-redux';
+import { IState } from '../../interface';
+import { IncidentWindowContext } from '../IncidentWindow/IncidentWindowContext';
 
-const IncidentHandleDepartment = ({ show, onClick, onHide }: IIncidentHandleDepartment) => {
-  const catalog = useSelector((state: any) => state.catalog, shallowEqual);
-  const user = useSelector((state: any) => state.auth.user, shallowEqual);
+const IncidentHandleDepartment = ({ show, onHide }: IIncidentHandleDepartment) => {
+  const catalog = useSelector((state: IState) => state.catalog, shallowEqual);
+  const user = useSelector((state: IState) => state.auth.user, shallowEqual);
+  const { id } = useSelector((state: IState) => state.incidents.current.incident, shallowEqual);
+  const { onClick } = useContext(IncidentWindowContext);
   useLayoutEffect(() => {}, [catalog]);
 
   //**Получение листа отделов */
@@ -107,6 +111,21 @@ const IncidentHandleDepartment = ({ show, onClick, onHide }: IIncidentHandleDepa
       </>
     );
   };
+  const matchHandle = {
+    method: 'post',
+    data: {
+      code: 2,
+      incidentId: id,
+      params: {
+        departmentId: currentDepartmentId,
+        categoryId: currentCategoryId,
+        propertyId: currentPropertyId,
+        optionId: currentOptionId,
+        currentResponsible: null,
+      },
+    },
+  };
+
   return (
     <ModalWindow
       title={'Передать заявку'}
@@ -116,13 +135,8 @@ const IncidentHandleDepartment = ({ show, onClick, onHide }: IIncidentHandleDepa
         comment: `${user.name1} ${user.name2.charAt(0)} ${user.name3.charAt(0)} передал заявку в "${
           departmentList.find((item: any) => Number(item.id) === Number(currentDepartmentId))?.name
         }"`,
-        bodyData: {
-          departmentId: currentDepartmentId,
-          categoryId: currentCategoryId,
-          propertyId: currentPropertyId,
-          optionId: currentOptionId,
-          currentResponsible: null,
-        },
+        incidentData: { startWork: null, statusId: Number(0) },
+        matchHandle,
       })}
       textOk={'Передать'}
     >

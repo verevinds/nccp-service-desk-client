@@ -1,4 +1,4 @@
-import React, { memo, useState, useContext } from 'react';
+import React, { memo, useState } from 'react';
 import { useSelector, shallowEqual } from 'react-redux';
 import styles from './styles.module.css';
 import Moment from 'react-moment';
@@ -12,7 +12,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleRight, faAngleDown, faFileImage, faFile } from '@fortawesome/free-solid-svg-icons';
 import ModalWindow from '../ModalWindow/ModalWindow';
 import PopUpMenu from '../PopupMenu/PopUpMenu';
-import { IncidentContext } from '../Incident/IncidentContext';
 import { IState } from '../../interface';
 
 const IncidentWindowFiles = () => {

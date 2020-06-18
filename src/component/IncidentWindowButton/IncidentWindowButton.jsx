@@ -1,87 +1,83 @@
-import React, { memo, useState, useLayoutEffect, useMemo } from 'react';
-import { Button, ButtonGroup } from 'react-bootstrap';
-import SetResponsible from '../IncidentHandleResponsible/IncidentHandleResponsible';
+import React, { memo, useState, useMemo, useContext } from 'react';
+import { Button } from 'react-bootstrap';
 import styles from './styles.module.css';
-import IncidentHandleDepartment from '../IncidentHandleDepartment/IncidentHandleDepartment';
 import { shallowEqual, useSelector } from 'react-redux';
 import HandleMatches from './HandleMatches';
 import HandleResponsible from './HandleResponsible';
+import HandleDepartment from './HandleDepartment';
+import { IncidentWindowContext } from '../IncidentWindow/IncidentWindowContext';
 
-export default memo(function IncidentWindowButton({ onClick, handleOpen, incident }) {
-  const user = useSelector((state) => state.auth.user, shallowEqual);
-  const [fullName, setFullName] = useState('');
-  useLayoutEffect(() => {
-    setFullName(`${user.name1} ${user.name2} ${user.name3}`);
-  }, [user]);
+const IncidentWindowButton = ({ handleOpen }) => {
+  const { onClick } = useContext(IncidentWindowContext);
+  const {
+    name1,
+    name2,
+    name3,
+    number,
+    position: { level },
+  } = useSelector((state) => state.auth.user, shallowEqual);
+  const incident = useSelector((state) => state.incidents.current.incident, shallowEqual);
+  const { category, property, option, currentResponsible, statusId, matches } = useSelector(
+    (state) => state.incidents.current.incident,
+    shallowEqual,
+  );
+  const [fullName] = useState(`${name1} ${name2} ${name3}`);
 
-  const [showHandleDepartment, setShowHandleDepartment] = useState(false);
-  const handleShowDepartment = () => {
-    setShowHandleDepartment(true);
-  };
-  const handleCloseDepartment = () => {
-    setShowHandleDepartment(false);
-  };
-
-  const currentIncident = useSelector((state) => state.incidents.current.incident, shallowEqual);
   const handleInWork = useMemo(() => {
-    let { category, property, option } = currentIncident;
     if ((category && category.level) || (property && property.level) || (option && option.level)) {
       return onClick.bind({
-        bodyData: { currentResponsible: user.number },
+        incidentData: { currentResponsible: number, statusId: 0 },
         comment: `${fullName} назначил себя ответственный. Ожидает согласования.`,
-        isConsent: true,
+        matchHandle: { method: 'post', data: { code: 1, incidentId: incident.id } },
       });
     } else {
       return onClick.bind({
-        bodyData: { currentResponsible: user.number },
+        incidentData: { currentResponsible: number },
         comment: `Статус заявки изменен на "В работе". Ответственным назначен: ${fullName}`,
       });
     }
-  }, [currentIncident, fullName, onClick, user.number]);
+  }, [category, option, property, fullName, onClick, number, incident.id]);
 
-  const responsibleButton = useMemo(() => {
-    if (Number(currentIncident.statusId) > 0 && !!currentIncident.currentResponsible) {
-      return (
-        <>
+  const mainButton = useMemo(() => {
+    if (!!currentResponsible) {
+      if (Number(statusId) > 0) {
+        return (
           <Button variant="outline-primary" onClick={handleOpen}>
             Изменить
           </Button>
-        </>
-      );
-    } else {
-      if (!currentIncident.currentResponsible) {
-        return (
-          <>
-            <Button variant="outline-success" onClick={handleInWork}>
-              Взять в работу
-            </Button>
-          </>
         );
-      } else {
-        if (user.position?.level) return <HandleMatches incident={incident} onClick={onClick} />;
       }
     }
-  }, [currentIncident, handleInWork, handleOpen, onClick, user.position]);
+    if (!Number(statusId) && !currentResponsible) {
+      return (
+        <Button variant="outline-success" onClick={handleInWork}>
+          Взять в работу
+        </Button>
+      );
+    }
+  }, [statusId, currentResponsible, handleInWork, handleOpen]);
+  const buttonMatch = useMemo(() => {
+    if (!!~matches.findIndex((item) => item.isMatch === false)) {
+      if (level) return <HandleMatches onClick={onClick} />;
+    }
+  }, [matches, level, onClick]);
   return (
     <>
       <hr />
       <div className={styles.bar}>
         <div>
-          {user.position?.level ? (
+          {buttonMatch ? (
+            buttonMatch
+          ) : (
             <>
-              <HandleResponsible onClick={onClick} />
+              {level ? <HandleResponsible onClick={onClick} /> : undefined} <HandleDepartment onClick={onClick} />
             </>
-          ) : null}
-
-          <Button variant={'outline-secondary'} size="sm" className={'m-1'} onClick={handleShowDepartment}>
-            Передать в другой отдел
-          </Button>
-          {showHandleDepartment ? (
-            <IncidentHandleDepartment show={showHandleDepartment} onHide={handleCloseDepartment} onClick={onClick} />
-          ) : undefined}
+          )}
         </div>
-        {responsibleButton}
+        {mainButton}
       </div>
     </>
   );
-});
+};
+
+export default memo(IncidentWindowButton);

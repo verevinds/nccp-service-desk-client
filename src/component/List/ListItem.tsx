@@ -14,7 +14,6 @@ import {
   faArrowDown,
   faBox,
   faBoxOpen,
-  faLink,
   faClock,
 } from '@fortawesome/free-solid-svg-icons';
 import { ListContext } from './context';

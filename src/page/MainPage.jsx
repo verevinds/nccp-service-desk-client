@@ -7,7 +7,6 @@ import { IncidentContext } from '../component/Incident/IncidentContext';
 
 const MainPage = () => {
   const user = useSelector((state) => state.auth.user, shallowEqual);
-  const { incidents } = useSelector((state) => state, shallowEqual);
   const [params, setParams] = useState();
   const [title, setTitle] = useState(`Инциденты`);
 
@@ -25,7 +24,7 @@ const MainPage = () => {
       title,
       requestSuccessed: incidentRequestSuccessed,
     };
-  }, [incidents, params, title, incidentRequestSuccessed]);
+  }, [params, title]);
 
   return (
     <IncidentContext.Provider value={incident}>

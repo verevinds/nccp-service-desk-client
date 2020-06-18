@@ -24,7 +24,7 @@ import { statusRequestSeccessed } from './redux/actionCreators/statusAction';
 import { accessRequestSeccessed } from './redux/actionCreators/accessAction';
 
 /**Bootstrap components */
-import { ProgressBar, Spinner, Button } from 'react-bootstrap';
+import { ProgressBar } from 'react-bootstrap';
 import { incidentRequestSuccessed, myIncidentRequestSuccessed } from './redux/actionCreators/incidentAction';
 import Cookies from 'universal-cookie';
 import AuthModal from './component/AuthModal/AuthModal';
@@ -39,10 +39,8 @@ const App = (props) => {
   const isUpdateCatalog = useSelector((state) => state.catalog.isUpdate, shallowEqual);
   const isUpdateStatus = useSelector((state) => state.status.isUpdate, shallowEqual);
   const state = useSelector((state) => state, shallowEqual); // Получаем данные каталога при строгом изменение обекта state
-  const { list, isUpdate } = useSelector((state) => state.incidents); // Получаем данные каталога при строгом изменение обекта state
-  const userCurrnet = useSelector((state) => state.users.current.user); // Получаем данные каталога при строгом изменение обекта state
-  const userCurrnetIsUpdate = useSelector((state) => state.users.current.isUpdate); // Получаем данные каталога при строгом изменение обекта state
-  const { progress, catalog } = useSelector((state) => state);
+  const { isUpdate } = useSelector((state) => state.incidents); // Получаем данные каталога при строгом изменение обекта state
+  const { progress } = useSelector((state) => state);
   const { error } = useSelector((state) => state);
   const { user } = useSelector((state) => state.auth);
 

@@ -2,12 +2,11 @@ export interface IIncidentHandleDepartment {
   show?: boolean;
   onHide?: (() => void) | undefined;
   currentResponsible?: number | undefined;
-  onClick: (arg0?: TParams) => void;
 }
 type TParams = {
   number?: number | null | undefined;
   comment?: string;
-  bodyData?: any;
+  incidentData?: any;
 };
 export type IDepartment = {
   categories: never[] | [];

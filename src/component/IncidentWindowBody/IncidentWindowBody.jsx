@@ -1,15 +1,10 @@
 import React, { memo, useContext } from 'react';
-import { useDispatch, useSelector, shallowEqual } from 'react-redux';
+import { useSelector, shallowEqual } from 'react-redux';
 import styles from './styles.module.css';
-import dateNow from '../../js/dateNow';
 import IncidentWindowComments from '../IncidentWindowComments/IncidentWindowComments';
 import IncidentWindowFiles from '../IncidentWindowFiles/IncidentWindowFiles';
 import IncidentWorkButton from '../IncidentWindowButton/IncidentWindowButton';
 import { IncidentContext } from '../Incident/IncidentContext';
-
-//ActionCreator
-import { incidentCreate } from '../../redux/actionCreators/incidentAction';
-import { queryApi } from '../../redux/actionCreators/queryApiAction';
 
 // Bootstrap
 import { Card, OverlayTrigger, Table } from 'react-bootstrap';
@@ -22,48 +17,8 @@ import { faAddressCard, faAt, faPhone, faDesktop } from '@fortawesome/free-solid
 const IncidentWindowBody = ({ handleOpen }) => {
   const { myIncident } = useContext(IncidentContext);
   //State изменений в заявкае
-  const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth, shallowEqual);
   const incident = useSelector((state) => state.incidents?.current.incident, shallowEqual);
-
-  function onClick() {
-    const incidentData = {
-      startWork: dateNow(),
-      statusId: Number(1),
-    };
-    const data = {
-      text: this.comment,
-      userNumber: user.number,
-      incidentId: incident.id,
-    };
-
-    if (this.isConsent) {
-      incidentData.startWork = null;
-      incidentData.statusId = 0;
-    }
-    if (!!this.bodyData) {
-      Object.assign(incidentData, this.bodyData);
-    }
-
-    dispatch(
-      queryApi({
-        route: 'incidents',
-        method: 'put',
-        data: incidentData,
-        id: incident.id,
-      }),
-    );
-
-    dispatch(
-      queryApi({
-        route: 'comments',
-        method: 'post',
-        actionUpdate: incidentCreate,
-        data,
-        id: incident.id,
-      }),
-    );
-  }
 
   return (
     <Card.Body className={styles.window}>
@@ -150,7 +105,7 @@ const IncidentWindowBody = ({ handleOpen }) => {
         </>
       ) : null}
 
-      {!myIncident && <IncidentWorkButton incident={incident} handleOpen={handleOpen} onClick={onClick} user={user} />}
+      {!myIncident && <IncidentWorkButton incident={incident} handleOpen={handleOpen} user={user} />}
       <br />
       <IncidentWindowComments />
       <br />

@@ -1,6 +1,5 @@
 import React, { memo, useState, useEffect } from 'react';
-import { ListGroup, OverlayTrigger, Tooltip, ProgressBar } from 'react-bootstrap';
-import Moment from 'react-moment';
+import { ListGroup, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import styles from './siderbar.module.scss';
 //Interface TypeScript for function Sidebar
 import { ISidebar } from './interface';
@@ -59,9 +58,7 @@ const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId }) => {
     if (Array.isArray(list) && list.length) {
       const jsxItem: JSX.Element[] | void[] = list.map((item: any) => {
         let itemText: string = '';
-        const createData = new Date(item.createdAt);
-        const finishData = new Date(item.finishWork);
-        const nowData = new Date();
+
         if (item.createdAt) {
           itemText = ` №${item.id} `;
         }

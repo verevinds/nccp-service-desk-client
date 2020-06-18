@@ -1,5 +1,4 @@
 import React from 'react';
-import { TIncident, TIncidents } from '../../interface';
 
 export interface IIncidentContext {
   params?: object;

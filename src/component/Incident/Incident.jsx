@@ -1,4 +1,4 @@
-import React, { memo, useState, useEffect, useCallback, useLayoutEffect, useContext } from 'react';
+import React, { memo, useState, useEffect, useCallback, useContext } from 'react';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 
 /** Action creators */
