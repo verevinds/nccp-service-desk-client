@@ -9,7 +9,7 @@ export interface IHandleMatches {}
 
 const HandleMatches: React.FC<IHandleMatches> = () => {
   const {
-    incident: { matches, id },
+    incident: { matches },
   }: TIncidentCurrent = useSelector((state: IState) => state.incidents.current, shallowEqual);
   console.log(matches);
   const { onClick } = useContext(IncidentWindowContext);
@@ -62,19 +62,18 @@ const HandleMatches: React.FC<IHandleMatches> = () => {
   }, [matches, onClick]);
   return (
     <>
-      {jsxButton &&
+      {jsxButton?.length &&
         jsxButton.map((item: any, index: number) => {
-          if (item)
-            return (
-              <ButtonGroup aria-label="Basic example" key={index}>
-                <Button variant={item.okVariant} onClick={item.okOnClick}>
-                  {item.okText}
-                </Button>
-                <Button variant={item.canselVariant} onClick={item.canselOnClick}>
-                  {item.canselText}
-                </Button>
-              </ButtonGroup>
-            );
+          return (
+            <ButtonGroup aria-label="Basic example" key={index}>
+              <Button variant={item.okVariant} onClick={item.okOnClick}>
+                {item.okText}
+              </Button>
+              <Button variant={item.canselVariant} onClick={item.canselOnClick}>
+                {item.canselText}
+              </Button>
+            </ButtonGroup>
+          );
         })}
     </>
   );

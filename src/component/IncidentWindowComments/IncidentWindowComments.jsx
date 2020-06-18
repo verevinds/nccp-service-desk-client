@@ -42,10 +42,10 @@ const IncidentWindowComments = () => {
               </thead>
               <tbody>
                 {comments
-                  .sort((a, b) => (a.createdAt > b.createdAt ? 1 : -1))
-                  .map((item, index) => (
+                  .sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1))
+                  .map((item, index, comments) => (
                     <tr key={item.id}>
-                      <td>{index + 1}</td>
+                      <td>{comments.length - index}</td>
                       <td>
                         <pre>{item.text}</pre>
                       </td>
