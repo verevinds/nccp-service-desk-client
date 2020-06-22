@@ -18,6 +18,7 @@ export interface IHandle {
   onFavorites?: THandle;
   onArchive?: THandle;
   handleDedline?: THandle;
+  handleTune?: ({ id }: { id: number }) => void;
 }
 export type TList = {
   id: number;
@@ -46,6 +47,7 @@ const List: React.FC<IList> = ({
   onArchive,
   handleBind,
   handleDedline,
+  handleTune,
   xs,
 }) => {
   const [activeId, setActiveId] = useState<number | undefined>(undefined);
@@ -72,6 +74,7 @@ const List: React.FC<IList> = ({
                       activeId={activeId}
                       handleBind={handleBind}
                       handleDedline={handleDedline}
+                      handleTune={handleTune}
                       key={item.id}
                     />
                   );

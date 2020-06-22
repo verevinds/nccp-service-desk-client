@@ -60,7 +60,6 @@ const Incident = () => {
   const [sidebarList, setSidebarList] = useState([]);
 
   useEffect(() => {
-    console.log(list);
     setSidebarList(
       list.map((item) => {
         let responsible;

@@ -6,9 +6,10 @@ import ModalWindow from '../ModalWindow/ModalWindow';
 import List from '../List/List';
 import { TProperty, TCategory } from '../../interface';
 import Axios from 'axios';
-import { Form } from 'react-bootstrap';
 import { queryApi } from '../../redux/actionCreators/queryApiAction';
 import { categoryUpdate } from '../../redux/actionCreators/catalogAction';
+import ModalDeadline from './ModalDeadline';
+import ModalTune from './ModalTune';
 
 export interface ISettingCatalogProperty extends THandleEvent {
   categorySubList: TCategory;
@@ -17,65 +18,24 @@ export interface ISettingCatalogProperty extends THandleEvent {
 
 const SettingCatalogProperty: React.FC<ISettingCatalogProperty> = ({ categorySubList, handleEvent, handleBind }) => {
   const route = 'properties';
-  const dispatch = useDispatch();
-  const [show, setShow] = useState(false);
+  const [modalDeadline, setModalDeadline] = useState(false);
+  const [modalTune, setModalTune] = useState(false);
   const [property, setProperty] = useState<TProperty | null>(null);
-  const [deadline, setDeadline] = useState(1);
+  const [id, setId] = useState(undefined);
   const handleDedline = useCallback(({ id }) => {
-    setShow(true);
+    setModalDeadline(true);
     Axios.get(`https://srv-sdesk.c31.nccp.ru:8443/api/properties/${id}`).then((res) => {
       setProperty(res.data);
     });
   }, []);
-
-  const onClick = useCallback(() => {
-    dispatch(
-      queryApi({
-        route,
-        method: 'put',
-        data: { deadline },
-        actionUpdate: categoryUpdate,
-        id: property?.id,
-      }),
-    );
-    setShow(false);
-  }, [deadline, property, route, dispatch]);
-
-  useEffect(() => {
-    property && setDeadline(property.deadline);
-  }, [property]);
-
+  const handleTune = useCallback(({ id }) => {
+    setId(id);
+    setModalTune(true);
+  }, []);
   return (
     <>
-      <ModalWindow
-        show={show}
-        title="Срок выполнения"
-        onHide={() => setShow(false)}
-        onOk={onClick}
-        textOk={'Сохранить'}
-        size={'sm'}
-      >
-        <Form.Group controlId="formBasicRange">
-          <Form.Label>Параметр: {property?.name}</Form.Label>
-          <Form.Control
-            type="number"
-            min={1}
-            value={deadline}
-            onChange={(event: React.FormEvent<HTMLInputElement>) => {
-              setDeadline(Number(event.currentTarget.value));
-            }}
-          />
-          <br />
-          <Form.Control
-            type="range"
-            min={1}
-            value={deadline}
-            onChange={(event: React.FormEvent<HTMLInputElement>) => {
-              setDeadline(Number(event.currentTarget.value));
-            }}
-          />
-        </Form.Group>
-      </ModalWindow>
+      <ModalDeadline route={route} setShow={setModalDeadline} show={modalDeadline} property={property} />
+      <ModalTune show={modalTune} setShow={setModalTune} id={id} />
       <List
         title="Параметры"
         list={categorySubList?.properties}
@@ -93,6 +53,7 @@ const SettingCatalogProperty: React.FC<ISettingCatalogProperty> = ({ categorySub
         })}
         handleBind={handleBind}
         handleDedline={handleDedline}
+        handleTune={handleTune}
         xs={3}
       />
     </>

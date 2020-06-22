@@ -154,6 +154,14 @@ export type TProperty = {
   level: number | null;
   name: string;
   priorityId: number | null;
+  params: (undefined | TPropertyParam)[];
+};
+export type TPropertyParam = {
+  type: string;
+  title: string;
+  required: boolean;
+  description: string;
+  placeholder: string;
 };
 export type TBindProperty = {
   id: number;

@@ -32,7 +32,7 @@ const IncidentWindowButton = ({ handleOpen }) => {
       });
     } else {
       return onClick.bind({
-        incidentData: { currentResponsible: number },
+        incidentData: { currentResponsible: number, statusId: 1 },
         comment: `Статус заявки изменен на "В работе". Ответственным назначен: ${fullName}`,
       });
     }
@@ -62,7 +62,6 @@ const IncidentWindowButton = ({ handleOpen }) => {
       return <HandleMatches onClick={onClick} />;
     }
   }, [matches, onClick]);
-  console.log(buttonMatch);
   return (
     <>
       <hr />

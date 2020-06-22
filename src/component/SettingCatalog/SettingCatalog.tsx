@@ -22,30 +22,6 @@ type THandleEventParams = {
 export interface THandleEvent {
   handleEvent: ({ route, list, setCurrent, fact }: THandleEventParams) => ({ id, value }: TFn) => void;
 }
-
-// export type TCategorySubList = {
-//   id: number;
-//   name: string;
-//   departmentId: number;
-//   level: number;
-//   isArchive: boolean;
-//   deadline: number;
-//   createdAt: string;
-//   updatedAt: string;
-//   properties: [];
-//   options: [];
-// };
-// export type TProperty = {
-//   bind: TItemTag[];
-//   [key: string]: any;
-//   categoryId: number;
-//   deadline: number;
-//   id: number;
-//   isArchive: boolean;
-//   level: number | null;
-//   name: string;
-//   priorityId: number | null;
-// };
 const SettingCatalog = () => {
   const dispatch = useDispatch();
   const { catalog }: IState = useSelector((state: IState) => state);
@@ -53,6 +29,8 @@ const SettingCatalog = () => {
   const [categoryIdCurrent, setCategoryIdCurrent] = useState<number | undefined>(undefined);
   const [categoryList, setCategoryList] = useState<TCategory[] | undefined | never[]>(undefined);
   const [categorySubList, setCategorySubList] = useState<TCategory | undefined>(undefined);
+  const [parentId, setParentId] = useState(0);
+  const [childrenId, setChildrenId] = useState(0);
 
   //** CALLBACKS */
   const handleEvent = useCallback(
@@ -101,6 +79,20 @@ const SettingCatalog = () => {
     [categoryIdCurrent, departmentIdCurrent, dispatch],
   );
 
+  const handleBindParent = useCallback(
+    (id: number) => {
+      setParentId(id);
+    },
+    [setParentId],
+  );
+
+  const handleBindChild = useCallback(
+    (id: number) => {
+      setChildrenId(id);
+    },
+    [setChildrenId],
+  );
+
   /** SIDE EFFECTS*/
   useEffect(() => {
     let department: TDepartment | undefined = catalog.department.find((item: any) => item.id === departmentIdCurrent);
@@ -108,21 +100,6 @@ const SettingCatalog = () => {
       department && department.categories.find((item: any) => item.id === categoryIdCurrent);
     setCategorySubList(category);
   }, [categoryIdCurrent, catalog, departmentIdCurrent]);
-
-  const [parentId, setParentId] = useState(0);
-  const [childrenId, setChildrenId] = useState(0);
-  const handleBindParent = useCallback(
-    (id: number) => {
-      setParentId(id);
-    },
-    [setParentId],
-  );
-  const handleBindChild = useCallback(
-    (id: number) => {
-      setChildrenId(id);
-    },
-    [setChildrenId],
-  );
 
   useEffect(() => {
     let properties = categorySubList && categorySubList.properties;
@@ -162,13 +139,6 @@ const SettingCatalog = () => {
     }
   }, [parentId, childrenId, categorySubList, dispatch]);
 
-  useEffect(() => {
-    console.log(categorySubList);
-  }, [categorySubList]);
-
-  useEffect(() => {
-    console.log(categoryList);
-  }, [categoryList]);
   return (
     <Fragment>
       <h2>Каталог</h2>

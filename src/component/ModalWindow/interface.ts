@@ -10,4 +10,5 @@ export interface IModalWindow {
   children?: Element | React.ReactElement<any> | undefined;
   validated?: boolean | undefined;
   size?: 'lg' | 'sm';
+  noValidate?: boolean | undefined;
 }

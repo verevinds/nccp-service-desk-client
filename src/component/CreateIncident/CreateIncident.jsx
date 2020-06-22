@@ -1,4 +1,4 @@
-import React, { memo, useState, useEffect, useContext, useMemo } from 'react';
+import React, { memo, useState, useEffect, useContext, useMemo, useLayoutEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import queryString from 'query-string';
 import moment from 'moment-business-days';
@@ -16,6 +16,8 @@ import { incidentFetching } from '../../redux/actionCreators/incidentAction';
 
 /**Bootstrap components */
 import { Form } from 'react-bootstrap';
+import CreateIncidentDefault from '../CreateIncidentDefault/CreateIncidentDefault';
+import CreateIncidentCustom from '../CreateIncidentCustom/CreateIncidentCustom';
 
 const CreateIncidentModel = ({ handleClose, showModal, user }) => {
   const { list } = useSelector((state) => state.catalog);
@@ -38,6 +40,10 @@ const CreateIncidentModel = ({ handleClose, showModal, user }) => {
   const [currentCategory, setCurrentCategory] = useState(list.filter((item) => item.id === currentIdCategory));
   const [currentOptions, setCurrentOptions] = useState([]);
   const [currentProperties, setCurrentProperties] = useState([]);
+  const [property, setProperty] = useState({});
+  const [params, setParams] = useState(null);
+  const [validated, setValidated] = useState(false);
+
   const incident = useMemo(() => {
     return {
       startWork: null,
@@ -57,8 +63,19 @@ const CreateIncidentModel = ({ handleClose, showModal, user }) => {
       categoryId: currentIdCategory,
       propertyId: currentIdProperty,
       optionId: currentIdOption,
+      params,
     };
-  }, [currentIdDepartment, currentIdCategory, currentIdOption, currentIdProperty, dateNow, finishWork, text, user]);
+  }, [
+    currentIdDepartment,
+    currentIdCategory,
+    currentIdOption,
+    currentIdProperty,
+    dateNow,
+    finishWork,
+    text,
+    user,
+    params,
+  ]);
   useEffect(() => {
     let properties = currentCategory[0]?.properties.filter((item) => !item.isArchive);
 
@@ -115,15 +132,16 @@ const CreateIncidentModel = ({ handleClose, showModal, user }) => {
     options = newOptions.filter((item) => !item.isArchive);
     setCurrentOptions(options);
   }, [currentIdProperty, currentCategory, currentProperties]);
+
   useEffect(() => {
     const property = currentProperties.find((item) => item.id === currentIdProperty);
     const date = new Date();
     const finishWork = new Date(moment(date, 'DD-MM-YYYY').businessAdd(property?.deadline - 1)._d).toISOString();
     property && setFinishWork(finishWork);
+
+    setProperty(currentProperties.find((item) => item.id === currentIdProperty));
   }, [currentIdProperty, currentProperties]);
-  useEffect(() => {
-    console.log(incident);
-  }, [incident]);
+
   //? Устанавливаем эффект на каждое изменение состояния номера текущей категории
   useEffect(() => {
     const newCurrentCategory = list.filter((item) => item.id === currentIdCategory);
@@ -131,17 +149,10 @@ const CreateIncidentModel = ({ handleClose, showModal, user }) => {
     let categories = newCurrentCategory.filter((item) => !item.isArchive);
     setCurrentCategory(categories);
   }, [currentIdCategory, list]);
-  useEffect(() => {
-    // setIncident({
-    //   ...incident,
-    //   departmentId: currentCategory[0].departmentId,
-    //   categoryId: currentIdCategory,
-    //   propertyId: currentIdProperty,
-    //   optionId: currentIdOption,
-    // });
-    // eslint-disable-next-line
-  }, [currentIdCategory, currentIdProperty, currentIdOption, currentCategory]);
 
+  useEffect(() => {
+    // console.log(property);
+  }, [property]);
   //Функция собирающая из списка и функции изменения состояния номера элемент html
   const listSelect = (list, setCurrent, title) => {
     if (list?.length)
@@ -151,34 +162,41 @@ const CreateIncidentModel = ({ handleClose, showModal, user }) => {
   };
 
   const onSubmit = async (event) => {
-    event.preventDefault();
-    let data = incident;
-    let dataFile;
-    let statusFileUpload = await fileUpload(file ? file[0] : '');
-    if (statusFileUpload.status === Number(200)) {
-      let type = undefined;
-      let text = undefined;
-      if (statusFileUpload.data.wasFile) {
-        type = 'success';
-        text = statusFileUpload.data.message;
-      } else {
-        text = `Вы не прикрепили файл`;
-      }
-      setAlert({
-        autoClose: 3000,
-        type,
-        text,
-      });
-      dataFile = statusFileUpload.data;
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
     } else {
-      setAlert({
-        autoClose: 5000,
-        type: 'warn',
-        text: `Невозможно прикрепить файл: ${statusFileUpload}`,
-      });
+      event.preventDefault();
+      let data = incident;
+      let dataFile;
+      let statusFileUpload = await fileUpload(file ? file[0] : '');
+      if (statusFileUpload.status === Number(200)) {
+        let type = undefined;
+        let text = undefined;
+        if (statusFileUpload.data.wasFile) {
+          type = 'success';
+          text = statusFileUpload.data.message;
+        } else {
+          text = `Вы не прикрепили файл`;
+        }
+        setAlert({
+          autoClose: 3000,
+          type,
+          text,
+        });
+        dataFile = statusFileUpload.data;
+      } else {
+        setAlert({
+          autoClose: 5000,
+          type: 'warn',
+          text: `Невозможно прикрепить файл: ${statusFileUpload}`,
+        });
+      }
+      await dispatch(incidentFetching(data, dataFile));
+      await handleClose();
     }
-    await dispatch(incidentFetching(data, dataFile));
-    await handleClose();
+    setValidated(true);
   };
 
   return (
@@ -189,6 +207,7 @@ const CreateIncidentModel = ({ handleClose, showModal, user }) => {
       onSubmit={onSubmit}
       textOk={'Отправить'}
       textNot={'Отменить'}
+      validated={validated}
     >
       <Form.Group controlId="formBasicEmail">
         <Form.Control type="text" disabled value={`${incident.name}`} />
@@ -201,18 +220,11 @@ const CreateIncidentModel = ({ handleClose, showModal, user }) => {
       {listSelect(currentProperties, setCurrentIdProperty)}
       {listSelect(currentOptions, setCurrentIdOption)}
 
-      <Form.Group controlId="exampleForm.ControlTextarea1">
-        <Form.Label>Содержание обращения</Form.Label>
-        <Form.Control
-          as="textarea"
-          rows="3"
-          value={text}
-          placeholder="Опишите подробно ситуацию"
-          onChange={(event) => {
-            setText(event.target.value);
-          }}
-        />
-      </Form.Group>
+      {Array.isArray(property?.params) && property.params.length ? (
+        <CreateIncidentCustom params={property.params} setParams={setParams} />
+      ) : (
+        <CreateIncidentDefault text={text} setText={setText} />
+      )}
       <Form.Group>
         <UploadFiles setFile={setFile} />
       </Form.Group>

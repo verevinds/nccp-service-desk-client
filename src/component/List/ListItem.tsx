@@ -15,6 +15,7 @@ import {
   faBox,
   faBoxOpen,
   faClock,
+  faPencilRuler,
 } from '@fortawesome/free-solid-svg-icons';
 import { ListContext } from './context';
 import Fade from 'react-reveal/Fade';
@@ -44,6 +45,7 @@ const ListItem: React.FC<IListItem> = ({
   onArchive,
   handleDedline,
   handleBind,
+  handleTune,
 }) => {
   const [cursor, setCursor] = useState<string | undefined>(undefined);
   const { user } = useSelector((state: IState) => state.auth, shallowEqual);
@@ -104,8 +106,26 @@ const ListItem: React.FC<IListItem> = ({
         />
       );
   }, [handleDedline, id]);
+
+  const buttonTune = useMemo(() => {
+    if (!!handleTune)
+      return (
+        <ButtonFontAwesome
+          faIcon={faPencilRuler}
+          onClick={() => {
+            handleTune({ id });
+          }}
+          variant={'primary'}
+          tooltip={'Настроить'}
+        />
+      );
+  }, [id, handleTune]);
+
   const content = useMemo(() => {
     let buttonArray = [];
+
+    buttonTune && buttonArray.push(buttonTune);
+    buttonDedline && buttonArray.push(buttonDedline);
 
     if (!!buttonArchive || !!buttonDelete || !!buttonFavorites) {
       if (!!isArchive) {
@@ -116,8 +136,6 @@ const ListItem: React.FC<IListItem> = ({
         buttonArray.push(buttonFavorites);
       }
     }
-
-    if (buttonDedline) buttonArray.push(buttonDedline);
 
     if (buttonArray.length) return buttonArray;
   }, [buttonArchive, buttonDelete, buttonFavorites, isArchive, buttonDedline]);

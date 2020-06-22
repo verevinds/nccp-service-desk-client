@@ -1,0 +1,25 @@
+.item {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.icon {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 0.5em;
+  color: var(--secondary);
+}
+.icon_red {
+  color: var(--danger);
+}
+.panel {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.formControl {
+  min-width: 250px;
+}

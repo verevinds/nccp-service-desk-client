@@ -11,7 +11,6 @@ const HandleMatches: React.FC<IHandleMatches> = () => {
   const {
     incident: { matches },
   }: TIncidentCurrent = useSelector((state: IState) => state.incidents.current, shallowEqual);
-  console.log(matches);
   const { onClick } = useContext(IncidentWindowContext);
 
   let jsxButton = useMemo(() => {
