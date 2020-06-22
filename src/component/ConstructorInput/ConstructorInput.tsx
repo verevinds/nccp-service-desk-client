@@ -1,4 +1,4 @@
-import React, { memo, Fragment, useState, useEffect } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import { Form } from 'react-bootstrap';
 
 export interface IConstructorInput {
@@ -42,11 +42,11 @@ const ConstructorInput: React.FC<IConstructorInput> = ({
   onChange,
 }) => {
   let formControl;
-  console.group('title', title, description);
-  console.log('placeholder', placeholder);
-  console.log('type', type);
-  console.log('required', !!required);
-  console.groupEnd();
+  // console.group('title', title, description);
+  // console.log('placeholder', placeholder);
+  // console.log('type', type);
+  // console.log('required', !!required);
+  // console.groupEnd();
   const [state, setState] = useState<string | undefined>('');
   const [isSwitchOn, setIsSwitchOn] = useState<boolean | undefined>(false);
 
@@ -57,14 +57,16 @@ const ConstructorInput: React.FC<IConstructorInput> = ({
   const handleChange = (event: React.FormEvent<HTMLInputElement>) => {
     setState(event.currentTarget.value);
   };
+
   useEffect(() => {
     if (onChange) {
-      if (type === 'switch') onChange(isSwitchOn);
-      else {
+      if (type === 'switch') {
+        onChange(isSwitchOn);
+      } else {
         onChange(state);
       }
     }
-  }, [state]);
+  }, [state, isSwitchOn, onChange, type]);
 
   switch (type) {
     case 'tel':

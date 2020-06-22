@@ -1,4 +1,4 @@
-import React, { memo, Fragment, SetStateAction } from 'react';
+import React, { memo, Fragment } from 'react';
 /**Bootstrap components */
 import { Form } from 'react-bootstrap';
 export interface ICreateIncidentDefault {

@@ -1,14 +1,10 @@
-import React, { memo, useState, useMemo, Fragment, useLayoutEffect, useEffect } from 'react';
-import { Form } from 'react-bootstrap';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import React, { memo, useState, useMemo, Fragment, useEffect } from 'react';
 import { useSelector, shallowEqual } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import ModalWindow from '../ModalWindow/ModalWindow';
-import ModalTuneList from './ModalTuneList';
 import ModalTunePanel from './ModalTunePanel';
-import ConstructorInput, { TConstructorInput, IConstructorInput } from '../ConstructorInput/ConstructorInput';
+import ConstructorInput from '../ConstructorInput/ConstructorInput';
 import ModalTuneDragList from './ModalTuneDragList';
-import { queries } from '@testing-library/react';
 import { queryApi } from '../../redux/actionCreators/queryApiAction';
 import { IState, TProperty, TCategory, TPropertyParam } from '../../interface';
 
@@ -54,15 +50,13 @@ const ModalTune: React.FC<IModalTune> = ({ show, setShow, id }) => {
     }
     if (propertyParams) {
       propertyParams.forEach((item: TPropertyParam | undefined, index: number) => {
-        {
-          if (item) {
-            const custom = {
-              id: `id-${index}`,
-              content: <ConstructorInput input={item} key={String(index)} />,
-            };
+        if (item) {
+          const custom = {
+            id: `id-${index}`,
+            content: <ConstructorInput input={item} key={String(index)} />,
+          };
 
-            newInitial.push(custom);
-          }
+          newInitial.push(custom);
         }
       });
 
@@ -82,7 +76,7 @@ const ModalTune: React.FC<IModalTune> = ({ show, setShow, id }) => {
       });
     console.log(state);
     setParams(newParams);
-  }, [state.quotes]);
+  }, [state]);
 
   return (
     <Fragment>

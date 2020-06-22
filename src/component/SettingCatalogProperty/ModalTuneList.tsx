@@ -1,6 +1,5 @@
-import React, { memo, useState } from 'react';
-import { Form } from 'react-bootstrap';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import React, { memo } from 'react';
+import { Draggable } from 'react-beautiful-dnd';
 import styles from './styles.module.scss';
 //? Font Awesome иконки
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

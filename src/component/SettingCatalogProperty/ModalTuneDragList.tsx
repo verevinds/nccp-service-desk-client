@@ -1,10 +1,6 @@
-import React, { memo, useState, useMemo, Fragment, useLayoutEffect, useEffect, useCallback } from 'react';
-import { Form } from 'react-bootstrap';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import ModalWindow from '../ModalWindow/ModalWindow';
+import React, { memo, Fragment } from 'react';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import ModalTuneList from './ModalTuneList';
-import ModalTunePanel from './ModalTunePanel';
-import ConstructorInput, { TConstructorInput, IConstructorInput } from '../ConstructorInput/ConstructorInput';
 export interface IModalTuneDragList {
   state: any;
   setState: any;
@@ -34,10 +30,7 @@ const ModalTuneDragList: React.FC<IModalTuneDragList> = ({ state, setState }) =>
   }
 
   function handleDelete(id: any) {
-    // console.log(state?.quotes);
     let newState = state?.quotes.filter((item: any) => item.id !== String(id));
-    // console.log(id);
-    // console.log(newState);
     setState({ quotes: newState });
   }
   return (

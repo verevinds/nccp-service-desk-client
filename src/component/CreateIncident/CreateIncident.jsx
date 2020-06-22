@@ -1,4 +1,4 @@
-import React, { memo, useState, useEffect, useContext, useMemo, useLayoutEffect } from 'react';
+import React, { memo, useState, useEffect, useContext, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import queryString from 'query-string';
 import moment from 'moment-business-days';

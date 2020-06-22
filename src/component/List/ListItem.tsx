@@ -138,7 +138,7 @@ const ListItem: React.FC<IListItem> = ({
     }
 
     if (buttonArray.length) return buttonArray;
-  }, [buttonArchive, buttonDelete, buttonFavorites, isArchive, buttonDedline]);
+  }, [buttonArchive, buttonDelete, buttonFavorites, isArchive, buttonDedline, buttonTune]);
 
   let jsxTags = useMemo(() => {
     if (!!bind)

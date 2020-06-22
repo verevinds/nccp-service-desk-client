@@ -1,7 +1,6 @@
-import React, { memo, Fragment, useState, useMemo, SetStateAction } from 'react';
+import React, { memo, useState, useMemo, SetStateAction } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import styles from './styles.module.scss';
-import { IObj } from './ModalTune';
 import ConstructorInput, { TConstructorInput, TTypeInput } from '../ConstructorInput/ConstructorInput';
 import { uid } from 'react-uid';
 export interface IModalTunePanel {
@@ -18,7 +17,7 @@ const ModalTunePanel: React.FC<IModalTunePanel> = ({ stateInput, setInput }) => 
   const [type, setType] = useState<TTypeInput | string>('');
   const [subType, setSubType] = useState('');
   const jsxSubType = useMemo(() => {
-    if (subType != 'switch' && subType != 'checkbox')
+    if (String(subType) !== 'switch' && String(subType) !== 'checkbox')
       return (
         <Form.Group controlId="exampleForm.ControlSelect0">
           <Form.Label>Тип формы</Form.Label>

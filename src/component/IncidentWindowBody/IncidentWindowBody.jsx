@@ -13,14 +13,13 @@ import PopoverCardUser from '../PopoverCardUser/PopoverCardUser';
 //? Font Awesome иконки
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAddressCard, faAt, faPhone, faDesktop } from '@fortawesome/free-solid-svg-icons';
-import ConstructorInput from '../ConstructorInput/ConstructorInput';
 
 const IncidentWindowBody = ({ handleOpen }) => {
   const { myIncident } = useContext(IncidentContext);
   //State изменений в заявкае
   const { user } = useSelector((state) => state.auth, shallowEqual);
   const incident = useSelector((state) => state.incidents?.current.incident, shallowEqual);
-  console.log(incident?.params);
+
   return (
     <Card.Body className={styles.window}>
       <Card.Title>

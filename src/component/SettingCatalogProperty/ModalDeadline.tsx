@@ -1,11 +1,9 @@
 import React, { memo, useState, useCallback, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Form } from 'react-bootstrap';
-import Axios from 'axios';
 import { queryApi } from '../../redux/actionCreators/queryApiAction';
 import { categoryUpdate } from '../../redux/actionCreators/catalogAction';
 import ModalWindow from '../ModalWindow/ModalWindow';
-import { TProperty, TCategory } from '../../interface';
 
 export interface IModalDeadline {
   route: string;

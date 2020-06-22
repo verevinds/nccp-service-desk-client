@@ -1,13 +1,9 @@
-import React, { memo, useCallback, useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { memo, useCallback, useState } from 'react';
 import { THandleEvent } from '../SettingCatalog/SettingCatalog';
 import { THandleBind } from '../List/ListItem';
-import ModalWindow from '../ModalWindow/ModalWindow';
 import List from '../List/List';
 import { TProperty, TCategory } from '../../interface';
 import Axios from 'axios';
-import { queryApi } from '../../redux/actionCreators/queryApiAction';
-import { categoryUpdate } from '../../redux/actionCreators/catalogAction';
 import ModalDeadline from './ModalDeadline';
 import ModalTune from './ModalTune';
 
