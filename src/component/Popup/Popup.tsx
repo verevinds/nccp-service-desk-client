@@ -3,10 +3,12 @@ import Popup from 'reactjs-popup';
 import styles from './styles.module.css';
 //? Font Awesome иконки
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEllipsisV } from '@fortawesome/free-solid-svg-icons';
 
 interface IPopup {
   content: any[];
+  trigger: any;
+  size?: 'lg' | 'xs' | 'sm' | '1x' | '2x' | '3x' | '4x' | '5x' | '6x' | '7x' | '8x' | '9x' | '10x';
+  color?: string;
 }
 export default memo((props: IPopup) => {
   const width = useMemo(() => {
@@ -17,7 +19,7 @@ export default memo((props: IPopup) => {
     <Popup
       trigger={
         <span className="pointer">
-          <FontAwesomeIcon icon={faEllipsisV} size="lg" color={'#007bff'} />
+          <FontAwesomeIcon icon={props.trigger} color={props.color || '#007bff'} size={props.size} />
         </span>
       }
       position="left center"

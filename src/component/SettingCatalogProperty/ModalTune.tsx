@@ -74,7 +74,6 @@ const ModalTune: React.FC<IModalTune> = ({ show, setShow, id }) => {
       state.quotes.map((item: any) => {
         return item.content.props.input;
       });
-    console.log(state);
     setParams(newParams);
   }, [state]);
 

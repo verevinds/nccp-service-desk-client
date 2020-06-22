@@ -7,6 +7,7 @@ export interface TList {
 }
 export interface ISidebar {
   list: TList[];
+  filter?: any;
   onClick: () => undefined;
   activeId: number;
 }

@@ -64,7 +64,6 @@ const AuthModal: React.FC<AuthModal> = () => {
               Alert().error();
             } else {
               Alert().success();
-              console.log('res', res);
               dispatch(queryApi({ route: 'users', actionSuccessed: authRequestSuccessed, id: res.data.number }));
 
               dispatch(authInitialApp(res.data));

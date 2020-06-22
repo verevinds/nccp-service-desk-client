@@ -17,6 +17,18 @@
 .item:hover {
   background-color: rgba(0, 0, 0, 0.02);
 }
+.title {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.icon {
+  color: var(--primary);
+  transition: ease-in;
+}
+.icon:hover {
+  color: var(--blue);
+}
 .active {
   color: #007bff;
 }

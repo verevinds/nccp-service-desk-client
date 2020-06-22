@@ -31,9 +31,11 @@ export interface IListButtonFavorites {
     | 'outline-dark'
     | 'outline-light';
   disabled?: boolean;
+  sizeIcon?: 'xs' | 'lg' | 'sm' | '1x' | '2x' | '3x' | '4x' | '5x' | '6x' | '7x' | '8x' | '9x' | '10x';
 }
 const ListButtonFavorites: React.FC<IListButtonFavorites> = ({
   size = 'sm',
+  sizeIcon,
   variant,
   tooltip,
   onClick,
@@ -45,7 +47,7 @@ const ListButtonFavorites: React.FC<IListButtonFavorites> = ({
       <>
         <OverlayTrigger key={'top'} placement={'top'} overlay={<Tooltip id={`tooltip-top`}>{tooltip}</Tooltip>}>
           <Button size={size} variant={variant} onClick={onClick} disabled={disabled}>
-            <FontAwesomeIcon icon={faIcon} />
+            <FontAwesomeIcon icon={faIcon} size={sizeIcon} />
           </Button>
         </OverlayTrigger>
       </>
@@ -53,7 +55,7 @@ const ListButtonFavorites: React.FC<IListButtonFavorites> = ({
   else
     return (
       <Button size={size} variant={variant} onClick={onClick} disabled={disabled}>
-        <FontAwesomeIcon icon={faIcon} />
+        <FontAwesomeIcon icon={faIcon} size={sizeIcon} />
       </Button>
     );
 };

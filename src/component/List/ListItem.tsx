@@ -20,6 +20,7 @@ import {
 import { ListContext } from './context';
 import Fade from 'react-reveal/Fade';
 import Popup from '../Popup/Popup';
+import { faEllipsisV } from '@fortawesome/free-solid-svg-icons';
 
 import { TList, IHandle } from './List';
 import ListItemTag from './ListItemTag';
@@ -222,7 +223,7 @@ const ListItem: React.FC<IListItem> = ({
             {!!content && !cursor ? (
               <Col xs={1} className={styles.buttonGroup}>
                 <div className={styles.buttonGroup_flexRow}>
-                  <Popup content={content} />
+                  <Popup content={content} trigger={faEllipsisV} />
                 </div>
               </Col>
             ) : undefined}

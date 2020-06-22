@@ -42,11 +42,6 @@ const ConstructorInput: React.FC<IConstructorInput> = ({
   onChange,
 }) => {
   let formControl;
-  // console.group('title', title, description);
-  // console.log('placeholder', placeholder);
-  // console.log('type', type);
-  // console.log('required', !!required);
-  // console.groupEnd();
   const [state, setState] = useState<string | undefined>('');
   const [isSwitchOn, setIsSwitchOn] = useState<boolean | undefined>(false);
 
