@@ -105,8 +105,7 @@ const IncidentWindowBody = ({ handleOpen }) => {
         </>
       ) : null}
       {Array.isArray(incident?.params) &&
-        incident?.params.map((item) => {
-          console.log(item.value, typeof item.value);
+        incident?.params.map((item, index) => {
           let value;
           if (typeof item.value === 'boolean') {
             value = item.value ? 'Да' : 'Нет';
@@ -114,11 +113,9 @@ const IncidentWindowBody = ({ handleOpen }) => {
             value = item.value ? item.value : ' - ';
           }
           return (
-            <>
-              <Card.Text>
-                <b>{item.title}</b>: {value}
-              </Card.Text>
-            </>
+            <Card.Text key={index}>
+              <b>{item.title}</b>: {value}
+            </Card.Text>
           );
         })}
       {!myIncident && <IncidentWorkButton incident={incident} handleOpen={handleOpen} user={user} />}
