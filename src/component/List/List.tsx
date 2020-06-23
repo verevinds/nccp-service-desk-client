@@ -31,7 +31,7 @@ export type TList = {
 };
 
 export interface IList extends IHandle {
-  title: string;
+  title?: string;
   xs?: number;
   list: any[];
   handleBind?: THandleBind;

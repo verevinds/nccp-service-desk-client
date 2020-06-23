@@ -9,18 +9,39 @@ import { fileUpload } from '../UploadFiles/fileUpload';
 import { AlertContext } from '../Alert/AlertContext';
 import { fileFetching } from '../../redux/actionCreators/fileAction';
 
-const IncidentHandleStatus = ({ show, onHide, incident }) => {
+const IncidentHandleStatus = ({ show, onHide }) => {
   const dispatch = useDispatch();
-  const status = useSelector((state) => state.status.list, shallowEqual);
+  let status = useSelector((state) => state.status.list, shallowEqual);
+  const { incident } = useSelector((state) => state.incidents.current, shallowEqual);
   const { user } = useSelector((state) => state.auth, shallowEqual);
-  const list = useMemo(() => status.filter((item) => item.id !== 8388608), [status]);
   const [fullName] = useState(`${user.name1} ${user.name2} ${user.name3}`);
   const [validated, setValidated] = useState(false);
   const [newStatus, setNewStatus] = useState({ statusId: incident.statusId });
   const [newComment, setNewComment] = useState();
-  //? Инициализируем состояние выбранного файла
   const [file, setFile] = useState(null);
   const setAlert = useContext(AlertContext);
+
+  let selectStatus = status;
+
+  status = [];
+  selectStatus.forEach((item) => {
+    let isBind = true;
+    let isBindItem = false;
+    if (!!item.bind.length) {
+      isBind = false;
+      item.bind.forEach((bind) => {
+        if (bind.item.id === incident.categoryId) {
+          isBindItem = true;
+        }
+      });
+    }
+    let newStatus = isBind || isBindItem ? item : undefined;
+    if (!!newStatus) return status.push(newStatus);
+    else return;
+  });
+
+  const list = useMemo(() => status.filter((item) => item.id !== 8388608), [status]);
+  //? Инициализируем состояние выбранного файла
   const handleStatus = (event) => {
     setNewStatus({ statusId: Number(event.target.value) });
   };
@@ -103,7 +124,7 @@ const IncidentHandleStatus = ({ show, onHide, incident }) => {
     return (
       <ModalWindow
         show={show}
-        title={'Изменение заявки'}
+        title={'Изменение заявgки'}
         onHide={onHide}
         textOk={'Сохранить'}
         onSubmit={handleSubmit}

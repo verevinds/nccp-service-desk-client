@@ -6,7 +6,7 @@ import ModalTunePanel from './ModalTunePanel';
 import ConstructorInput from '../ConstructorInput/ConstructorInput';
 import ModalTuneDragList from './ModalTuneDragList';
 import { queryApi } from '../../redux/actionCreators/queryApiAction';
-import { IState, TProperty, TCategory, TPropertyParam } from '../../interface';
+import { IState, TProperty, TCategory } from '../../interface';
 
 export interface IModalTune {
   setShow: (agr: boolean) => void;

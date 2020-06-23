@@ -8,10 +8,10 @@ export interface ISidebarDown {
 }
 
 const SidebarDown: React.FC<ISidebarDown> = ({ item }) => {
-  console.log(item);
   const createData = new Date(item.createdAt);
   const finishData = new Date(item.finishWork);
   const startWork = !!item.startWork ? new Date(item.startWork) : undefined;
+  const doneWork = !!item.doneWork ? new Date(item.doneWork) : undefined;
   const nowData = new Date();
   // console.log(item);
   // console.log(new Date(Number(nowData) - Number(createData)).getDate());
@@ -21,6 +21,7 @@ const SidebarDown: React.FC<ISidebarDown> = ({ item }) => {
   const deadline = finish - create;
   const start = ((Number(startWork) / (60 * 60 * 24 * 1000) - create) / deadline) * 100;
   const now = ((Number(nowData) / (60 * 60 * 24 * 1000) - create) / deadline) * 100;
+  const done = ((Number(doneWork) / (60 * 60 * 24 * 1000) - create) / deadline) * 100;
 
   const colorStart = useMemo(() => {
     if (start) return 'info';
@@ -28,24 +29,25 @@ const SidebarDown: React.FC<ISidebarDown> = ({ item }) => {
       return 'danger';
     } else {
       if (now > 40) {
-        if (start) return 'info';
+        if (start) return undefined;
         else return 'warning';
       } else {
       }
     }
-  }, [start, finishData, nowData]);
+  }, [start, now]);
 
   const colorEnd = useMemo(() => {
+    if (!!doneWork) return 'success';
     if (now - start > 100) {
       return 'danger';
     } else {
-      if (now - start < 20) {
+      if (now > 80) {
         return 'warning';
       } else return 'success';
     }
-  }, [start, finishData, nowData]);
+  }, [start, doneWork, now]);
 
-  if (!item.doneWork)
+  if (!doneWork)
     return (
       <div className={styles.bar__container_down}>
         <div className={`${styles.bar__date} ${styles.bar__date_left}`}>
@@ -64,7 +66,9 @@ const SidebarDown: React.FC<ISidebarDown> = ({ item }) => {
         </div>
         <ProgressBar className={styles.bar__progress}>
           <ProgressBar striped animated variant={colorStart} now={!!start ? start : now} key={1} />
-          {!!start ? <ProgressBar striped animated variant={colorEnd} now={now - start} key={2} /> : undefined}
+          {!!start ? (
+            <ProgressBar striped animated variant={colorEnd} now={!!done ? done - start : now - start} key={2} />
+          ) : undefined}
         </ProgressBar>
       </div>
     );

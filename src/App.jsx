@@ -95,6 +95,7 @@ const App = (props) => {
           if (!res.data) {
             setAuth(<AuthModal />);
           } else {
+            if (res.data.number == 0) throw new Error();
             cookies.set('auth', res.data, { path: '/' });
             dispatch(queryApi({ route: 'users', actionSuccessed: authRequestSuccessed, id: res.data.number }));
             dispatch(authInitialApp(res.data));
