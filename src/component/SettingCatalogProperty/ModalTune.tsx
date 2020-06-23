@@ -49,18 +49,7 @@ const ModalTune: React.FC<IModalTune> = ({ show, setShow, id }) => {
       return newInitial;
     }
     if (propertyParams) {
-      propertyParams.forEach((item: TPropertyParam | undefined, index: number) => {
-        if (item) {
-          const custom = {
-            id: `id-${index}`,
-            content: <ConstructorInput input={item} key={String(index)} />,
-          };
-
-          newInitial.push(custom);
-        }
-      });
-
-      return newInitial;
+      setInput(propertyParams);
     }
   }, [input, propertyParams]);
 
