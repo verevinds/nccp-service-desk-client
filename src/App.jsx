@@ -31,6 +31,7 @@ import AuthModal from './component/AuthModal/AuthModal';
 import { queryApi } from './redux/actionCreators/queryApiAction';
 import { usersRequestSeccessed } from './redux/actionCreators/usersAction';
 import Axios from 'axios';
+import InfoPage from './page/InfoPage';
 
 const App = (props) => {
   const cookies = new Cookies();
@@ -157,6 +158,7 @@ const App = (props) => {
           <Route path="/setting" component={SettingPage} />
           <Route path="/myincidents" component={MyIncidentPage} />
           <Route path="/test" component={TestPage} />
+          <Route path="/info" component={InfoPage} />
         </Switch>
       </AlertContext.Provider>
     </BrowserRouter>
