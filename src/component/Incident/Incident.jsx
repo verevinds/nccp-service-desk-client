@@ -81,6 +81,8 @@ const Incident = () => {
           consent: item.consent,
           status: item.statusId,
           finishWork: item.finishWork,
+          startWork: item.startWork,
+          doneWork: item.doneWork,
         };
         return newItem;
       }),

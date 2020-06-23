@@ -32,7 +32,7 @@ const IncidentWindowButton = ({ handleOpen }) => {
       });
     } else {
       return onClick.bind({
-        incidentData: { currentResponsible: number, statusId: 1 },
+        incidentData: { currentResponsible: number, statusId: 1, startWork: new Date().toISOString() },
         comment: `Статус заявки изменен на "В работе". Ответственным назначен: ${fullName}`,
       });
     }
