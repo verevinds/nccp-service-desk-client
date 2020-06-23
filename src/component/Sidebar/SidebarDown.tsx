@@ -24,10 +24,10 @@ const SidebarDown: React.FC<ISidebarDown> = ({ item }) => {
 
   const colorStart = useMemo(() => {
     if (start) return 'info';
-    if (nowData > finishData) {
+    if (now > 100) {
       return 'danger';
     } else {
-      if ((Number(nowData) - Number(createData)) / (60 * 60 * 24 * 1000) > 1) {
+      if (now > 40) {
         if (start) return 'info';
         else return 'warning';
       } else {
@@ -36,10 +36,10 @@ const SidebarDown: React.FC<ISidebarDown> = ({ item }) => {
   }, [start, finishData, nowData]);
 
   const colorEnd = useMemo(() => {
-    if (nowData > finishData) {
+    if (now - start > 100) {
       return 'danger';
     } else {
-      if ((Number(finishData) - Number(nowData)) / (60 * 60 * 24 * 1000) < 1) {
+      if (now - start < 20) {
         return 'warning';
       } else return 'success';
     }
