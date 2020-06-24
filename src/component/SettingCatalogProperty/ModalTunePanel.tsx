@@ -1,8 +1,9 @@
 import React, { memo, useState, useMemo, SetStateAction } from 'react';
-import { Button, Form } from 'react-bootstrap';
+import { Button, Form, InputGroup } from 'react-bootstrap';
 import styles from './styles.module.scss';
-import ConstructorInput, { TConstructorInput, TTypeInput } from '../ConstructorInput/ConstructorInput';
+import { TConstructorInput, TTypeInput } from '../ConstructorInput/ConstructorInput';
 import { uid } from 'react-uid';
+import ConstructorInputChange from '../ConstructorInputChange/ConstructorInputChange';
 export interface IModalTunePanel {
   setInput: SetStateAction<any>;
   stateInput: any;
@@ -19,10 +20,15 @@ const ModalTunePanel: React.FC<IModalTunePanel> = ({ stateInput, setInput }) => 
   const jsxSubType = useMemo(() => {
     if (String(subType) !== 'switch' && String(subType) !== 'checkbox')
       return (
-        <Form.Group controlId="exampleForm.ControlSelect0">
-          <Form.Label>Тип формы</Form.Label>
+        <>
+          <InputGroup.Prepend>
+            <InputGroup.Text id="basic-addon1" as="h5">
+              Тип
+            </InputGroup.Text>
+          </InputGroup.Prepend>
           <Form.Control
             as="select"
+            className={styles.formControl}
             onChange={(event: React.FormEvent<HTMLInputElement>) => {
               setType(event.currentTarget.value);
             }}
@@ -43,7 +49,7 @@ const ModalTunePanel: React.FC<IModalTunePanel> = ({ stateInput, setInput }) => 
             <option value="month">Месяц</option>
             <option value="week">Неделя</option>
           </Form.Control>
-        </Form.Group>
+        </>
       );
   }, [subType]);
 
@@ -63,79 +69,61 @@ const ModalTunePanel: React.FC<IModalTunePanel> = ({ stateInput, setInput }) => 
     // parent: 'string';
     return obj;
   }, [type, title, description, placeholder, required]);
-
+  console.log(input);
   return (
     <div>
-      <h6>Пример:</h6>
-      <ConstructorInput input={input} key={'fhfg1'} />
-      <hr />
-      <div className={styles.panel}>
-        <Form.Group controlId="exampleForm.ControlSelect2">
-          <Form.Label>Заголовок</Form.Label>
-          <Form.Control
-            className={styles.formControl}
-            onChange={(event: React.FormEvent<HTMLInputElement>) => {
-              setTitle(event.currentTarget.value);
-            }}
-          />
-        </Form.Group>
-        <Form.Group controlId="exampleForm.ControlSelect3">
-          <Form.Label>Подпись</Form.Label>
-          <Form.Control
-            className={styles.formControl}
-            onChange={(event: React.FormEvent<HTMLInputElement>) => {
-              setDescription(event.currentTarget.value);
-            }}
-          />
-          {type === 'switch' ? <Form.Text>Обязательно для заполнения</Form.Text> : undefined}
-        </Form.Group>
-
-        <Form.Group controlId="exampleForm.ControlSelect4">
-          <Form.Label>Текст заполнения</Form.Label>
-          <Form.Control
-            className={styles.formControl}
-            onChange={(event: React.FormEvent<HTMLInputElement>) => {
-              setPlaceholder(event.currentTarget.value);
-            }}
-          />
-          {type === 'switch' ? <Form.Text>Обязательно для заполнения</Form.Text> : undefined}
-        </Form.Group>
-        <Form.Group controlId="exampleForm.ControlSelect5">
-          <Form.Label>Вид формы</Form.Label>
-          <Form.Control
-            as="select"
-            className={styles.formControl}
-            onChange={(event: React.FormEvent<HTMLInputElement>) => {
-              let type = event.currentTarget.value;
-              type && setType(type);
-              setSubType(type);
-            }}
-          >
-            <option value="text">Строка</option>
-            <option value="checkbox">Множественный выбор</option>
-            <option value="switch">Переключатель</option>
-          </Form.Control>
-        </Form.Group>
-        {jsxSubType}
-      </div>
-      <Form.Group controlId="exampleForm.ControlSelect6">
-        <Form.Check
+      <InputGroup>
+        <InputGroup.Prepend>
+          <InputGroup.Text id="basic-addon1" as="h5">
+            Вид
+          </InputGroup.Text>
+        </InputGroup.Prepend>
+        <Form.Control
+          as="select"
           className={styles.formControl}
-          type="switch"
-          label="Обязательное поле"
           onChange={(event: React.FormEvent<HTMLInputElement>) => {
-            //@ts-ignore
-            setRequired(event.currentTarget.checked);
+            let type = event.currentTarget.value;
+            type && setType(type);
+            setSubType(type);
           }}
+        >
+          <option value="text">Строка</option>
+          <option value="checkbox">Множественный выбор</option>
+          <option value="switch">Переключатель</option>
+        </Form.Control>
+        {jsxSubType}
+      </InputGroup>
+      <hr />
+      <Form.Group controlId="exampleForm.ControlSelect10">
+        <ConstructorInputChange
+          input={input}
+          handleText={setDescription}
+          handleControl={setPlaceholder}
+          handleLabel={setTitle}
         />
       </Form.Group>
-      <Button
-        onClick={() => {
-          setInput({ ...stateInput, [`${uid(input)}`]: input });
-        }}
-      >
-        Добавить
-      </Button>
+      <hr />
+
+      <div className={styles.panel}>
+        <Form.Group controlId="exampleForm.ControlSelect6">
+          <Form.Check
+            className={styles.formControl}
+            type="switch"
+            label="Обязательное поле"
+            onChange={(event: React.FormEvent<HTMLInputElement>) => {
+              //@ts-ignore
+              setRequired(event.currentTarget.checked);
+            }}
+          />
+        </Form.Group>
+        <Button
+          onClick={() => {
+            setInput({ ...stateInput, [`${uid(input)}`]: input });
+          }}
+        >
+          Добавить
+        </Button>
+      </div>
     </div>
   );
 };

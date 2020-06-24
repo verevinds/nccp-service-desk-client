@@ -92,7 +92,7 @@ const ConstructorInput: React.FC<IConstructorInput> = ({
             required={!!required}
           />
           <label className="custom-control-label pointer" htmlFor="customSwitch1" onClick={onSwitchAction}>
-            {description}
+            {placeholder}
           </label>
         </div>
       );
@@ -102,7 +102,7 @@ const ConstructorInput: React.FC<IConstructorInput> = ({
         <Form.Check
           type={type}
           id={key}
-          label={description}
+          label={placeholder}
           defaultChecked={!!isSwitchOn}
           onChange={onSwitchAction}
           required={!!required}

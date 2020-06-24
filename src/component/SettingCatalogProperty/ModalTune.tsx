@@ -91,7 +91,7 @@ const ModalTune: React.FC<IModalTune> = ({ show, setShow, id }) => {
           {state.quotes ? <ModalTuneDragList state={state} setState={setState} /> : <i>Добавьте поле</i>}
 
           <hr />
-          <h5>Добавление поле ввода:</h5>
+          <h5>Добавление поля ввода:</h5>
           <ModalTunePanel setInput={setInput} stateInput={input} />
         </Fragment>
       </ModalWindow>
