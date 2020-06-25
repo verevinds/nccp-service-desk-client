@@ -7,7 +7,6 @@ import ConstructorInput from '../ConstructorInput/ConstructorInput';
 import ModalTuneDrag from './ModalTuneDrag';
 import { queryApi } from '../../redux/actionCreators/queryApiAction';
 import { IState, TProperty, TCategory } from '../../interface';
-import { Button } from 'react-bootstrap';
 
 export interface IModalTune {
   setShow: (agr: boolean) => void;
