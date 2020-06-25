@@ -22,7 +22,7 @@
 }
 .tunePanel_Panel {
   display: flex;
-  width: 300px;
+  width: 350px;
   justify-content: space-between;
   margin-bottom: 2em;
   opacity: 0.8;
@@ -63,4 +63,19 @@
   opacity: 0.8;
   flex-direction: row;
   justify-content: space-between;
+}
+.customInput {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 1px;
+}
+.required {
+  width: 3px;
+  height: 100%;
+  margin-right: 5px;
+}
+.required_red {
+  background-color: var(--red);
 }

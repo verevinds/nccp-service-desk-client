@@ -8,6 +8,7 @@ import ModalTuneDrag from './ModalTuneDrag';
 import { queryApi } from '../../redux/actionCreators/queryApiAction';
 import { IState, TProperty, TCategory } from '../../interface';
 import { categoryUpdate } from '../../redux/actionCreators/catalogAction';
+import styles from './styles.module.scss';
 
 export interface IModalTune {
   setShow: (agr: boolean) => void;
@@ -40,7 +41,12 @@ const ModalTune: React.FC<IModalTune> = ({ show, setShow, id }) => {
       for (var key in input) {
         const custom = {
           id: `id-${key}`,
-          content: <ConstructorInput input={input[key]} key={key} />,
+          content: (
+            <div className={styles.customInput}>
+              <div className={`${styles.required} ${input[key].required ? styles.required_red : undefined}`}></div>
+              <ConstructorInput input={input[key]} key={key} />
+            </div>
+          ),
         };
 
         newInitial.push(custom);

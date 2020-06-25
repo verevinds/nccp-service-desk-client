@@ -100,16 +100,19 @@ const ModalTunePanel: React.FC<IModalTunePanel> = ({ stateInput, setInput }) => 
       </Form.Group>
       <div className={styles.tunePanel__buttons}>
         <Form.Group controlId="exampleForm.ControlSelect6" className={`${styles.formCheck} pointer`}>
-          <Form.Check
-            type="switch"
-            className={`pointer`}
-            label="Обязательное поле"
-            onChange={(event: React.FormEvent<HTMLInputElement>) => {
-              //@ts-ignore
-              setRequired(event.currentTarget.checked);
-            }}
-          />
+          {String(subType) !== 'title' ? (
+            <Form.Check
+              type="switch"
+              className={`pointer`}
+              label="Обязательное поле"
+              onChange={(event: React.FormEvent<HTMLInputElement>) => {
+                //@ts-ignore
+                setRequired(event.currentTarget.checked);
+              }}
+            />
+          ) : undefined}
         </Form.Group>
+
         <Button
           onClick={() => {
             let newInput = [...stateInput];
