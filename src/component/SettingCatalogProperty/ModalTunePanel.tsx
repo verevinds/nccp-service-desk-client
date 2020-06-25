@@ -81,10 +81,10 @@ const ModalTunePanel: React.FC<IModalTunePanel> = ({ stateInput, setInput }) => 
               setSubType(type);
             }}
           >
-            <option value="text">Строка</option>
+            <option value="text">Текстовое поле</option>
             <option value="checkbox">Множественный выбор</option>
-            <option value="title">Заголовок</option>
             <option value="switch">Переключатель</option>
+            <option value="title">Заголовок</option>
           </Form.Control>
           {jsxSubType}
         </InputGroup>

@@ -15,6 +15,7 @@ const CreateIncidentDefault: React.FC<ICreateIncidentDefault> = ({ text, setText
           as="textarea"
           rows="3"
           value={text}
+          required
           placeholder="Опишите подробно ситуацию"
           onChange={(event: React.FormEvent<HTMLInputElement>) => {
             setText(event.currentTarget.value);
