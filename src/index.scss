@@ -38,6 +38,9 @@ code {
 .focus {
   border: 1px solid var(--success);
 }
+.custom-control-label {
+  cursor: pointer;
+}
 :root {
   --blue: #597ba5;
   --indigo: #6610f2;

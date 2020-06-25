@@ -4,9 +4,10 @@ import { useDispatch } from 'react-redux';
 import ModalWindow from '../ModalWindow/ModalWindow';
 import ModalTunePanel from './ModalTunePanel';
 import ConstructorInput from '../ConstructorInput/ConstructorInput';
-import ModalTuneDragList from './ModalTuneDragList';
+import ModalTuneDrag from './ModalTuneDrag';
 import { queryApi } from '../../redux/actionCreators/queryApiAction';
 import { IState, TProperty, TCategory } from '../../interface';
+import { Button } from 'react-bootstrap';
 
 export interface IModalTune {
   setShow: (agr: boolean) => void;
@@ -88,10 +89,9 @@ const ModalTune: React.FC<IModalTune> = ({ show, setShow, id }) => {
       >
         <Fragment>
           <h5>Форма:</h5>
-          {state.quotes ? <ModalTuneDragList state={state} setState={setState} /> : <i>Добавьте поле</i>}
+          {state.quotes ? <ModalTuneDrag state={state} setState={setState} /> : <i>Добавьте поле</i>}
 
           <hr />
-          <h5>Добавление поля ввода:</h5>
           <ModalTunePanel setInput={setInput} stateInput={input} />
         </Fragment>
       </ModalWindow>

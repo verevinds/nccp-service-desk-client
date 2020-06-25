@@ -35,7 +35,6 @@ const ModalTunePanel: React.FC<IModalTunePanel> = ({ stateInput, setInput }) => 
           >
             <option value="text">Текст</option>
             <option value="password">Пароль</option>
-            <option value="reset">Кнопка "Обнуления формы"</option>
             <option value="color">Палитра</option>
             <option value="date">Дата</option>
             <option value="datetime-local">Дата и время</option>
@@ -61,40 +60,37 @@ const ModalTunePanel: React.FC<IModalTunePanel> = ({ stateInput, setInput }) => 
     obj.placeholder = placeholder;
     obj.required = required;
 
-    // title: 'string';
-    // placeholder: 'string';
-    // type: 'string';
-    // required: 'string';
-    // description: 'string';
-    // parent: 'string';
     return obj;
   }, [type, title, description, placeholder, required]);
   console.log(input);
   return (
-    <div>
-      <InputGroup>
-        <InputGroup.Prepend>
-          <InputGroup.Text id="basic-addon1" as="h5">
-            Вид
-          </InputGroup.Text>
-        </InputGroup.Prepend>
-        <Form.Control
-          as="select"
-          className={styles.formControl}
-          onChange={(event: React.FormEvent<HTMLInputElement>) => {
-            let type = event.currentTarget.value;
-            type && setType(type);
-            setSubType(type);
-          }}
-        >
-          <option value="text">Строка</option>
-          <option value="checkbox">Множественный выбор</option>
-          <option value="switch">Переключатель</option>
-        </Form.Control>
-        {jsxSubType}
-      </InputGroup>
-      <hr />
-      <Form.Group controlId="exampleForm.ControlSelect10">
+    <div className={styles.tunePanel}>
+      <h5>Добавление поля ввода</h5>
+      <div className={styles.tunePanel_Panel}>
+        <InputGroup className={styles.inputGroup}>
+          <InputGroup.Prepend>
+            <InputGroup.Text id="basic-addon1" as="h5">
+              Вид
+            </InputGroup.Text>
+          </InputGroup.Prepend>
+          <Form.Control
+            as="select"
+            className={styles.formControl}
+            onChange={(event: React.FormEvent<HTMLInputElement>) => {
+              let type = event.currentTarget.value;
+              type && setType(type);
+              setSubType(type);
+            }}
+          >
+            <option value="text">Строка</option>
+            <option value="checkbox">Множественный выбор</option>
+            <option value="switch">Переключатель</option>
+          </Form.Control>
+          {jsxSubType}
+        </InputGroup>
+      </div>
+
+      <Form.Group controlId="exampleForm.ControlSelect10" className={styles.tunePanel_Body}>
         <ConstructorInputChange
           input={input}
           handleText={setDescription}
@@ -102,13 +98,11 @@ const ModalTunePanel: React.FC<IModalTunePanel> = ({ stateInput, setInput }) => 
           handleLabel={setTitle}
         />
       </Form.Group>
-      <hr />
-
-      <div className={styles.panel}>
-        <Form.Group controlId="exampleForm.ControlSelect6">
+      <div className={styles.tunePanel__buttons}>
+        <Form.Group controlId="exampleForm.ControlSelect6" className={`${styles.formCheck} pointer`}>
           <Form.Check
-            className={styles.formControl}
             type="switch"
+            className={`pointer`}
             label="Обязательное поле"
             onChange={(event: React.FormEvent<HTMLInputElement>) => {
               //@ts-ignore
@@ -120,6 +114,7 @@ const ModalTunePanel: React.FC<IModalTunePanel> = ({ stateInput, setInput }) => 
           onClick={() => {
             setInput({ ...stateInput, [`${uid(input)}`]: input });
           }}
+          variant="outline-light"
         >
           Добавить
         </Button>
