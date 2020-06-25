@@ -2,6 +2,7 @@ import React, { memo, useState, useEffect, useContext, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import queryString from 'query-string';
 import moment from 'moment-business-days';
+import Moment from 'react-moment';
 
 //** My components */
 import CreateIncidentSelect from '../CreateIncidentSelect/CreateIncidentSelect';
@@ -15,7 +16,7 @@ import { useSelector } from 'react-redux';
 import { incidentFetching } from '../../redux/actionCreators/incidentAction';
 
 /**Bootstrap components */
-import { Form } from 'react-bootstrap';
+import { Form, InputGroup } from 'react-bootstrap';
 import CreateIncidentDefault from '../CreateIncidentDefault/CreateIncidentDefault';
 import CreateIncidentCustom from '../CreateIncidentCustom/CreateIncidentCustom';
 
@@ -198,7 +199,7 @@ const CreateIncidentModel = ({ handleClose, showModal, user }) => {
     }
     setValidated(true);
   };
-
+  console.log(finishWork);
   return (
     <ModalWindow
       show={showModal}
@@ -228,6 +229,21 @@ const CreateIncidentModel = ({ handleClose, showModal, user }) => {
       <Form.Group>
         <UploadFiles setFile={setFile} />
       </Form.Group>
+      <InputGroup className="mb-3">
+        <InputGroup.Prepend>
+          <InputGroup.Text id="basic-addon1">Срок выполнения</InputGroup.Text>
+        </InputGroup.Prepend>
+        <Form.Control
+          type="date"
+          value={finishWork?.slice(0, 10)}
+          min={new Date(moment(new Date(), 'DD-MM-YYYY').businessAdd(property?.deadline - 1)._d)
+            .toISOString()
+            .slice(0, 10)}
+          onChange={(event) =>
+            setFinishWork(new Date(`${event.currentTarget.value}${finishWork?.slice(10)}`).toISOString())
+          }
+        />
+      </InputGroup>
     </ModalWindow>
   );
 };

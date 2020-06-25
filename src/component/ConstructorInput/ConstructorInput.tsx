@@ -136,7 +136,7 @@ const ConstructorInput: React.FC<IConstructorInput> = ({
 
   return (
     <Form.Group controlId={key} key={key} style={{ width: '100%' }}>
-      {!!title ? <Form.Label>{title}</Form.Label> : undefined}
+      {!!title ? <Form.Label>{type === 'title' ? <b>{title}</b> : title}</Form.Label> : undefined}
       {formControl}
     </Form.Group>
   );
