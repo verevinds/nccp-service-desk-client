@@ -5,6 +5,8 @@ import { errorCreate } from '../actionCreators/errorAction';
 export function* queryApiAsync({ route, actionSuccessed, actionUpdate, method, data = {}, id, params }) {
   try {
     let response;
+    let PORT = window.location.protocol === 'http:' ? '8080' : '8433';
+    const URL = `${window.location.protocol}//srv-sdesk.c31.nccp.ru:${PORT}`;
     if (params) {
       Object.assign(data, { params });
     }
@@ -18,19 +20,19 @@ export function* queryApiAsync({ route, actionSuccessed, actionUpdate, method, d
     // console.groupEnd();
     switch (method) {
       case 'post':
-        response = yield call(() => axios.post(`https://srv-sdesk.c31.nccp.ru:8443/api/${route}`, data));
+        response = yield call(() => axios.post(`${URL}/api/${route}`, data));
         break;
 
       case 'delete':
-        response = yield call(() => axios.delete(`https://srv-sdesk.c31.nccp.ru:8443/api/${route}/${id || ''}`, data));
+        response = yield call(() => axios.delete(`${URL}/api/${route}/${id || ''}`, data));
         break;
 
       case 'put':
-        response = yield call(() => axios.put(`https://srv-sdesk.c31.nccp.ru:8443/api/${route}/${id}`, data));
+        response = yield call(() => axios.put(`${URL}/api/${route}/${id}`, data));
         break;
 
       default:
-        response = yield call(() => axios.get(`https://srv-sdesk.c31.nccp.ru:8443/api/${route}/${id || ''}`, data));
+        response = yield call(() => axios.get(`${URL}/api/${route}/${id || ''}`, data));
         break;
     }
 

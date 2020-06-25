@@ -81,7 +81,7 @@ const App = (props) => {
         dispatch(usersRequestSeccessed(JSON.parse(localStorage.getItem('users'))));
       }
     } else {
-      Axios.get('https://api.nccp-eng.ru/?method=auth.start', {
+      Axios.get(`${window.location.protocol}//api.nccp-eng.ru/?method=auth.start`, {
         headers: {
           accept: '*/*',
           'accept-language': 'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7',
@@ -114,6 +114,7 @@ const App = (props) => {
       dispatch(queryApi({ route: 'catalogs', actionSuccessed: departmentRequestSuccessed }));
     }
   }, [isUpdateCatalog, dispatch]);
+
   useEffect(() => {
     if (isUpdate) {
       dispatch(
@@ -133,6 +134,7 @@ const App = (props) => {
       );
     }
   }, [isUpdate, dispatch, user]);
+
   useEffect(() => {
     if (isUpdateStatus) {
       dispatch(queryApi({ route: 'status', actionSuccessed: statusRequestSeccessed }));

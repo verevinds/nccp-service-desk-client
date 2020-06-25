@@ -12,10 +12,13 @@ import { usersRequestSeccessed } from '../actionCreators/usersAction';
 export function* fetchAuthInitialApp({ response }) {
   try {
     // if (!!response) yield put(authRequestSuccessed(response));
+    let PORT = window.location.protocol === 'http:' ? '8080' : '8433';
+    const URL = `${window.location.protocol}//srv-sdesk.c31.nccp.ru:${PORT}`;
+
     yield put(progressStart());
     // Departments
     const departments = yield call(() =>
-      axios.get(`https://srv-sdesk.c31.nccp.ru:8443/api/catalogs`).then((res) => {
+      axios.get(`${URL}/api/catalogs`).then((res) => {
         return res.data;
       }),
     );
@@ -25,7 +28,7 @@ export function* fetchAuthInitialApp({ response }) {
 
     // Access
     const access = yield call(() =>
-      axios.get(`https://srv-sdesk.c31.nccp.ru:8443/api/access/${response?.number}`).then((res) => {
+      axios.get(`${URL}/api/access/${response?.number}`).then((res) => {
         return res.data;
       }),
     );
@@ -35,7 +38,7 @@ export function* fetchAuthInitialApp({ response }) {
 
     // Catalog
     const categories = yield call(() =>
-      axios.get(`https://srv-sdesk.c31.nccp.ru:8443/api/categories/`).then((res) => {
+      axios.get(`${URL}/api/categories/`).then((res) => {
         localStorage.setItem('categories', JSON.stringify(res.data));
         return res.data;
       }),
@@ -45,7 +48,7 @@ export function* fetchAuthInitialApp({ response }) {
 
     // Status
     const status = yield call(() =>
-      axios.get(`https://srv-sdesk.c31.nccp.ru:8443/api/status/`).then((res) => {
+      axios.get(`${URL}/api/status/`).then((res) => {
         return res.data;
       }),
     );
@@ -55,29 +58,29 @@ export function* fetchAuthInitialApp({ response }) {
 
     // Incidents
     const incidents = yield call(() =>
-      axios
-        .get(`https://srv-sdesk.c31.nccp.ru:8443/api/incidents/`, { params: { departmentId: response.departmentId } })
-        .then((res) => {
-          return res.data;
-        }),
+      axios.get(`${URL}/api/incidents/`, { params: { departmentId: response.departmentId } }).then((res) => {
+        return res.data;
+      }),
     );
     yield localStorage.setItem('incidents', JSON.stringify(incidents));
     yield put(incidentRequestSuccessed(incidents));
     yield put(progressStep(15));
-
+    console.log(response.number);
     // MY Incidents
     const myIncidents = yield call(() =>
-      axios.get(`https://srv-sdesk.c31.nccp.ru:8443/api/incidents/`, { userNumber: response.number }).then((res) => {
+      axios.get(`${URL}/api/incidents/`, { params: { userNumber: response.number } }).then((res) => {
         return res.data;
       }),
     );
+    console.log(myIncidents);
+
     yield localStorage.setItem('myIncidents', JSON.stringify(myIncidents));
     yield put(myIncidentRequestSuccessed(myIncidents));
     yield put(progressStep(15));
 
     // Users
     const users = yield call(() =>
-      axios.get(`https://srv-sdesk.c31.nccp.ru:8443/api/users/`).then((res) => {
+      axios.get(`${URL}/api/users/`).then((res) => {
         return res.data;
       }),
     );

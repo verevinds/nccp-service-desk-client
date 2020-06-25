@@ -19,7 +19,6 @@ const MyIncidentPage = (props) => {
       });
     }
   }, [user]);
-
   if (incidents) {
     return (
       <IncidentContext.Provider value={{ params, actionSuccessed: myIncidentRequestSuccessed, myIncident: true }}>

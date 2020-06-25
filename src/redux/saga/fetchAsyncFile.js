@@ -17,8 +17,11 @@ export function* fetchAsyncFile({ file, incidentId, userNumber }) {
         userNumber,
         incidentId,
       };
+      let PORT = window.location.protocol === 'http:' ? '8080' : '8433';
       response = yield call(() =>
-        axios.post(`https://srv-sdesk.c31.nccp.ru:8443/api/files`, bindFileIncident).then((res) => res),
+        axios
+          .post(`${window.location.protocol}//srv-sdesk.c31.nccp.ru:${PORT}/api/files`, bindFileIncident)
+          .then((res) => res),
       );
     }
     if (response && response.statusText === 'OK') {

@@ -4,11 +4,14 @@ import SettingCatalog from '../component/SettingCatalog/SettingCatalog';
 import SettingStatus from '../component/SettingStatus/SettingStatus';
 /**Bootstrap components */
 import { Row, Col } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
 import SettingAccess from '../component/SettingAccess/SettingAccess';
 const SettingPositions = React.lazy(() => import('../component/SettingPositions/SettingPositions'));
 
 const SettingPage = (props) => {
   const [activeId, setActiveId] = useState(0);
+  const user = useSelector((state) => state.auth.user);
+  const access = user && user?.accesses?.find((item) => item.access >= 1)?.access;
   const list = [
     { name: 'Каталог', id: 1 },
     { name: 'Статус', id: 2 },
@@ -46,16 +49,24 @@ const SettingPage = (props) => {
         break;
     }
   }, [activeId]);
-  return (
-    <Row className={'m-1'}>
-      <Col xs={3}>
-        <h1>Настройки</h1>
-        <Sidebar list={list} activeId={activeId} onClick={setActiveId} />
-      </Col>
+  if (access >= 1)
+    return (
+      <Row className={'m-1'}>
+        <Col xs={3}>
+          <h1>Настройки</h1>
+          <Sidebar list={list} activeId={activeId} onClick={setActiveId} />
+        </Col>
 
-      <Col xs={9}>{jsxContent}</Col>
-    </Row>
-  );
+        <Col xs={9}>{jsxContent}</Col>
+      </Row>
+    );
+  else {
+    return (
+      <div>
+        <h1>У Вас недостаточно прав</h1>
+      </div>
+    );
+  }
 };
 
 export default memo(SettingPage);

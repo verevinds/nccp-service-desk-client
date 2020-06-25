@@ -69,7 +69,7 @@ const Header = (props) => {
                 <div className={styles.user}>
                   <Navbar.Text className="pr-1">{`${fullName}`}</Navbar.Text>
                   <div className={styles.avatar}>
-                    {/* <Image src={user ? user.photo : ''} roundedCircle className={styles.avatar__img} /> */}
+                    <Image src={user ? user.photo : ''} roundedCircle className={styles.avatar__img} />
                   </div>
                 </div>
               </Nav.Link>

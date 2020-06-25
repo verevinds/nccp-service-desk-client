@@ -24,7 +24,7 @@ import {
   TIncidents,
 } from '../../interface';
 
-const socket = openSocket('https://srv-sdesk.c31.nccp.ru:8000');
+const socket = openSocket(`${window.location.protocol}//srv-sdesk.c31.nccp.ru:8000`);
 
 const HandleSocket = () => {
   const setAlert = useContext(AlertContext);
@@ -106,17 +106,23 @@ const HandleSocket = () => {
             };
             break;
 
-          case 'denied':
-            newAlert(data);
-            break;
-
           case 'default':
           // спросить
         }
       }
     }
   }, [data, users, newAlert, catalog, list, show, dispatch, isUpdate]);
+  useEffect(() => {
+    if (data)
+      switch (Notification.permission.toLowerCase()) {
+        case 'denied':
+          newAlert(data);
+          break;
 
+        case 'default':
+        // спросить
+      }
+  }, [data]);
   const jsx = useMemo(() => {
     return (
       <>
