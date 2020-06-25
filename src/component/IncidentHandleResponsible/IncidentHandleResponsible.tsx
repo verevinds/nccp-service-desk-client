@@ -64,7 +64,7 @@ const IncidentHandleResponsible: React.FC<IIncidentHandleResponsible> = ({ show,
         onOk={() => {
           onHide();
           onClick.call({
-            incidentData: { currentResponsible },
+            incidentData: { currentResponsible, startWork: new Date().toISOString(), statusId: 1 },
             comment: `Статус заявки изменен на "В работе". Ответственным назначен: ${currentResponsibleFullname}`,
           });
         }}

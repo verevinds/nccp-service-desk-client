@@ -29,7 +29,7 @@ const CreateIncidentCustom: React.FC<ICreateIncidentCustom> = ({ params, setPara
     },
     [state, setState, setParams],
   );
-
+  console.log(params);
   return (
     <Fragment>
       {params.map((item: any, index: number) => {

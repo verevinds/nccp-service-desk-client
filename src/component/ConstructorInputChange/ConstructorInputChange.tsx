@@ -18,6 +18,7 @@ const ConstructorInputChange: React.FC<IConstructorInputChange> = ({
   handleText,
   input,
 }) => {
+  console.log(input);
   const [label, setLabel] = useState(false);
   const [control, setControl] = useState(false);
   const [text, setText] = useState(false);
@@ -39,12 +40,11 @@ const ConstructorInputChange: React.FC<IConstructorInputChange> = ({
   }, [input.description]);
 
   const controlPlaceholder = useMemo(() => {
-    if (input.placeholder) {
+    if (input.placeholder && !control) {
       return input.placeholder;
-    } else {
-      if (control) return 'Введите текст заполнителя, либо оставьте пустым, чтобы удалить.';
-      else return `Нажмите дважды, чтобы добавить текст заполнителя...`;
     }
+    if (control) return 'Введите текст заполнителя, либо оставьте пустым, чтобы удалить.';
+    else return `Нажмите дважды, чтобы добавить текст заполнителя...`;
   }, [input.placeholder, control]);
 
   return (
@@ -53,7 +53,6 @@ const ConstructorInputChange: React.FC<IConstructorInputChange> = ({
         <InputGroup className={`${styles.formCustom}`}>
           <Form.Control
             placeholder={'Введите текст заголовока, либо оставьте пустым, чтобы удалить.'}
-            defaultValue={labelText}
             value={labelText}
             onChange={(event: React.FormEvent<HTMLInputElement>) => setLabelText(event.currentTarget.value)}
           />
@@ -77,7 +76,10 @@ const ConstructorInputChange: React.FC<IConstructorInputChange> = ({
       ) : (
         <Form.Label
           style={input.title ? undefined : { color: 'rgba(255,255,255,0.5)', cursor: 'pointer' }}
-          onDoubleClick={(event: React.MouseEvent<HTMLElement, MouseEvent>) => setLabel(true)}
+          onDoubleClick={(event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+            setLabelText(input.title ? input.title : '');
+            setLabel(true);
+          }}
         >
           {input.title ? input.title : labelPlaceholder}
         </Form.Label>
@@ -92,7 +94,11 @@ const ConstructorInputChange: React.FC<IConstructorInputChange> = ({
               <Form.Label
                 className="pointer"
                 style={input.placeholder ? undefined : { color: 'rgba(255,255,255,0.5)' }}
-                onDoubleClick={(event: React.MouseEvent<HTMLElement, MouseEvent>) => setControl(true)}
+                onDoubleClick={(event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+                  setControlText(input.placeholder ? input.placeholder : '');
+
+                  setControl(true);
+                }}
               >
                 {input.placeholder ? input.placeholder : `Нажмите дважды, чтобы добавить текст...`}
               </Form.Label>
@@ -106,9 +112,12 @@ const ConstructorInputChange: React.FC<IConstructorInputChange> = ({
                 className={styles.input}
                 style={control ? { color: '#000', cursor: 'text' } : { cursor: 'pointer' }}
                 type={control ? 'text' : input.type}
-                value={!control ? '' : !!controlText ? controlText : saveControl}
+                value={!control ? '' : controlText}
                 placeholder={controlPlaceholder}
-                onDoubleClick={() => setControl(true)}
+                onDoubleClick={() => {
+                  saveControl && setControlText(saveControl);
+                  setControl(true);
+                }}
                 onChange={(event: React.FormEvent<HTMLInputElement>) =>
                   control && setControlText(event.currentTarget.value)
                 }
@@ -144,7 +153,6 @@ const ConstructorInputChange: React.FC<IConstructorInputChange> = ({
         <InputGroup className={`${styles.formCustom}`}>
           <Form.Control
             placeholder={'Введите текст подписи, либо оставьте пустым, чтобы удалить.'}
-            defaultValue={textText}
             value={textText}
             onChange={(event: React.FormEvent<HTMLInputElement>) => setTextText(event.currentTarget.value)}
           />
@@ -168,7 +176,11 @@ const ConstructorInputChange: React.FC<IConstructorInputChange> = ({
       ) : (
         <Form.Text
           style={input.description ? undefined : { color: 'rgba(255,255,255,0.5)', cursor: 'pointer' }}
-          onDoubleClick={(event: React.MouseEvent<HTMLElement, MouseEvent>) => setText(true)}
+          onDoubleClick={(event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+            setTextText(input.description ? input.description : '');
+
+            setText(true);
+          }}
         >
           {input.description ? input.description : textPlaceholder}
         </Form.Text>

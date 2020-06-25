@@ -27,6 +27,7 @@ export const categoryReducer = (state = initialState, action) => {
     case DEPARTMENT_REQUEST_SUCCESSED:
       return {
         ...state,
+        isUpdate: false,
         department: action.data,
       };
     case CATALOG_UPDATE:

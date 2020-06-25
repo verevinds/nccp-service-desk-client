@@ -13,9 +13,9 @@ const ModalTunePanel: React.FC<IModalTunePanel> = ({ stateInput, setInput }) => 
   const [description, setDescription] = useState('');
   const [placeholder, setPlaceholder] = useState('');
   const [required, setRequired] = useState(false);
-
   const [type, setType] = useState<TTypeInput | string>('');
   const [subType, setSubType] = useState('');
+
   const jsxSubType = useMemo(() => {
     if (String(subType) !== 'switch' && String(subType) !== 'checkbox' && String(subType) !== 'title')
       return (
@@ -28,6 +28,7 @@ const ModalTunePanel: React.FC<IModalTunePanel> = ({ stateInput, setInput }) => 
           <Form.Control
             as="select"
             className={styles.formControl}
+            value={type}
             onChange={(event: React.FormEvent<HTMLInputElement>) => {
               setType(event.currentTarget.value);
             }}
@@ -49,7 +50,7 @@ const ModalTunePanel: React.FC<IModalTunePanel> = ({ stateInput, setInput }) => 
           </Form.Control>
         </>
       );
-  }, [subType]);
+  }, [subType, type]);
 
   const input = useMemo(() => {
     let obj: TConstructorInput = {};
@@ -78,8 +79,9 @@ const ModalTunePanel: React.FC<IModalTunePanel> = ({ stateInput, setInput }) => 
             onChange={(event: React.FormEvent<HTMLInputElement>) => {
               let type = event.currentTarget.value;
               type && setType(type);
-              setSubType(type);
+              setSubType(subType);
             }}
+            value={type}
           >
             <option value="text">Текстовое поле</option>
             <option value="checkbox">Множественный выбор</option>
@@ -115,11 +117,25 @@ const ModalTunePanel: React.FC<IModalTunePanel> = ({ stateInput, setInput }) => 
 
         <Button
           onClick={() => {
-            let newInput = [...stateInput];
+            if (stateInput) {
+              let newInput = [...stateInput];
 
-            newInput.push(input);
+              newInput.push(input);
 
-            setInput(newInput);
+              setInput(newInput);
+            } else {
+              let newInput = [];
+
+              newInput.push(input);
+
+              setInput(newInput);
+            }
+            setTitle('');
+            setDescription('');
+            setPlaceholder('');
+            setRequired(false);
+            setType('');
+            setSubType('');
           }}
           variant="outline-light"
         >

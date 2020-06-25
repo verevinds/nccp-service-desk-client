@@ -137,8 +137,8 @@ const SettingCatalog = () => {
       }
       setChildrenId(0);
     }
-  }, [parentId, childrenId, categorySubList, dispatch]);
-
+  }, [parentId, childrenId, catalog, categorySubList, dispatch]);
+  console.log(catalog);
   return (
     <Fragment>
       <h2>Каталог</h2>

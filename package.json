@@ -46,6 +46,7 @@
     "socket.io-client": "^2.3.0",
     "tunnel": "0.0.6",
     "typescript": "^3.8.3",
+    "uid": "^1.0.0",
     "universal-cookie": "^4.0.3",
     "use-sound": "^1.0.2"
   },

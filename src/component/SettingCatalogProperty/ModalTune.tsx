@@ -20,10 +20,18 @@ const ModalTune: React.FC<IModalTune> = ({ show, setShow, id }) => {
   const dispatch = useDispatch();
   const [input, setInput] = useState<any[] | undefined>(undefined);
   const [state, setState] = useState<any>({ quotes: [] });
-  const [params, setParams] = useState(undefined);
   const catalogs: TCategory[] | undefined = useSelector((state: IState) => state.catalog.list, shallowEqual);
   console.log('input', input);
 
+  const handleDrag = useCallback((value: any) => {
+    setState(value);
+    let newParams =
+      Array.isArray(value.quotes) &&
+      value.quotes.map((item: any) => {
+        return item.content.props.children[1].props.input;
+      });
+    setInput(newParams);
+  }, []);
   const propertyParams = useMemo(() => {
     const findProperty = (item: TProperty) => item.id === id;
     let category = catalogs?.find((item: TCategory) => item.properties.find(findProperty));
@@ -63,15 +71,6 @@ const ModalTune: React.FC<IModalTune> = ({ show, setShow, id }) => {
     setState({ quotes: initial });
   }, [initial]);
 
-  useEffect(() => {
-    let newParams =
-      Array.isArray(state.quotes) &&
-      state.quotes.map((item: any) => {
-        return item.content.props.input;
-      });
-    setParams(newParams);
-  }, [state]);
-
   const handleDelete = useCallback(
     (id: any) => {
       let index = Number(id.slice(3));
@@ -99,11 +98,10 @@ const ModalTune: React.FC<IModalTune> = ({ show, setShow, id }) => {
               route: 'properties',
               method: 'put',
               actionUpdate: categoryUpdate,
-              data: { params },
+              data: { params: input },
               id,
             }),
           );
-
           setShow(false);
         }}
         textOk={'Сохранить'}
@@ -112,7 +110,7 @@ const ModalTune: React.FC<IModalTune> = ({ show, setShow, id }) => {
         <Fragment>
           <h5>Форма:</h5>
           {state.quotes ? (
-            <ModalTuneDrag state={state} setState={setState} handleDelete={handleDelete} />
+            <ModalTuneDrag state={state} setState={handleDrag} handleDelete={handleDelete} />
           ) : (
             <i>Добавьте поле</i>
           )}

@@ -22,7 +22,7 @@ const IncidentWindow = () => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleOpen = () => setShow(true);
-
+  console.log('incident', incident);
   const onClick = useCallback(
     function () {
       let incidentData = {

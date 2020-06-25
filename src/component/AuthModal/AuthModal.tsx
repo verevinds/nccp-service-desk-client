@@ -51,7 +51,7 @@ const AuthModal: React.FC<AuthModal> = () => {
       onSubmit={(event) => {
         event.preventDefault();
 
-        Axios.get(`${window.location.protocol}://api.nccp-eng.ru/?method=auth.direct`, {
+        Axios.get(`http://api.nccp-eng.ru/?method=auth.direct`, {
           headers: {
             accept: '*/*',
             'accept-language': 'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7',

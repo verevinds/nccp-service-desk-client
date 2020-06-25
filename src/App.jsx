@@ -112,6 +112,7 @@ const App = (props) => {
   useEffect(() => {
     if (isUpdateCatalog) {
       dispatch(queryApi({ route: 'catalogs', actionSuccessed: departmentRequestSuccessed }));
+      dispatch(queryApi({ route: 'categories', actionSuccessed: categoryRequestSuccessed }));
     }
   }, [isUpdateCatalog, dispatch]);
 
