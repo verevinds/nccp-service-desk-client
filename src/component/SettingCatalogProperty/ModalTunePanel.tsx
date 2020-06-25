@@ -2,7 +2,6 @@ import React, { memo, useState, useMemo, SetStateAction } from 'react';
 import { Button, Form, InputGroup } from 'react-bootstrap';
 import styles from './styles.module.scss';
 import { TConstructorInput, TTypeInput } from '../ConstructorInput/ConstructorInput';
-import { uid } from 'react-uid';
 import ConstructorInputChange from '../ConstructorInputChange/ConstructorInputChange';
 export interface IModalTunePanel {
   setInput: SetStateAction<any>;
@@ -18,7 +17,7 @@ const ModalTunePanel: React.FC<IModalTunePanel> = ({ stateInput, setInput }) => 
   const [type, setType] = useState<TTypeInput | string>('');
   const [subType, setSubType] = useState('');
   const jsxSubType = useMemo(() => {
-    if (String(subType) !== 'switch' && String(subType) !== 'checkbox')
+    if (String(subType) !== 'switch' && String(subType) !== 'checkbox' && String(subType) !== 'title')
       return (
         <>
           <InputGroup.Prepend>
@@ -62,7 +61,7 @@ const ModalTunePanel: React.FC<IModalTunePanel> = ({ stateInput, setInput }) => 
 
     return obj;
   }, [type, title, description, placeholder, required]);
-  console.log(input);
+
   return (
     <div className={styles.tunePanel}>
       <h5>Добавление поля ввода</h5>
@@ -84,6 +83,7 @@ const ModalTunePanel: React.FC<IModalTunePanel> = ({ stateInput, setInput }) => 
           >
             <option value="text">Строка</option>
             <option value="checkbox">Множественный выбор</option>
+            <option value="title">Заголовок</option>
             <option value="switch">Переключатель</option>
           </Form.Control>
           {jsxSubType}
@@ -112,7 +112,11 @@ const ModalTunePanel: React.FC<IModalTunePanel> = ({ stateInput, setInput }) => 
         </Form.Group>
         <Button
           onClick={() => {
-            setInput({ ...stateInput, [`${uid(input)}`]: input });
+            let newInput = [...stateInput];
+
+            newInput.push(input);
+
+            setInput(newInput);
           }}
           variant="outline-light"
         >

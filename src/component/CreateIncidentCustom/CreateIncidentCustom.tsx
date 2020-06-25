@@ -13,10 +13,11 @@ const CreateIncidentCustom: React.FC<ICreateIncidentCustom> = ({ params, setPara
 
   const handleChange = useCallback(
     (id: string, item: any) => (value: string) => {
-      const title = item.title ? item.title : item.description;
+      console.log(item);
+      const description = item.type === 'switch' || item.type === 'checkbox' ? item.placeholder : '';
       let newState = state;
       let index = newState.findIndex((item: any) => item.id === String(id));
-      const newStateItem = { id, type: item.type, title, value };
+      const newStateItem = { id, type: item.type, title: item.title, description, value };
       if (~index) {
         newState[index] = newStateItem;
       } else {

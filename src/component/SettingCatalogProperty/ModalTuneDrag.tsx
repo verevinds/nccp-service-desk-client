@@ -4,9 +4,10 @@ import ModalTuneDragList from './ModalTuneDragList';
 export interface IModalTuneDrag {
   state: any;
   setState: any;
+  handleDelete: (id: any) => void;
 }
 
-const ModalTuneDrag: React.FC<IModalTuneDrag> = ({ state, setState }) => {
+const ModalTuneDrag: React.FC<IModalTuneDrag> = ({ state, setState, handleDelete }) => {
   function reorder(list: any, startIndex: any, endIndex: any) {
     const result = Array.from(list);
     const [removed] = result.splice(startIndex, 1);
@@ -27,11 +28,6 @@ const ModalTuneDrag: React.FC<IModalTuneDrag> = ({ state, setState }) => {
     const quotes = reorder(state.quotes, result.source.index, result.destination.index);
 
     setState({ quotes });
-  }
-
-  function handleDelete(id: any) {
-    let newState = state?.quotes.filter((item: any) => item.id !== String(id));
-    setState({ quotes: newState });
   }
 
   return (

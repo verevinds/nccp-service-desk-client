@@ -114,7 +114,14 @@ const IncidentWindowBody = ({ handleOpen }) => {
           }
           return (
             <Card.Text key={index}>
-              <b>{item.title}</b>: {value}
+              {item.title ? (
+                <b>
+                  {`${item.title}: `} {item.description ? <br /> : undefined}
+                </b>
+              ) : undefined}
+
+              {item.description ? `${item.description}: ` : undefined}
+              {item.type !== 'title' ? value : undefined}
             </Card.Text>
           );
         })}

@@ -44,7 +44,7 @@ const ConstructorInput: React.FC<IConstructorInput> = ({
   let formControl;
   const [state, setState] = useState<string | undefined>('');
   const [isSwitchOn, setIsSwitchOn] = useState<boolean | undefined>(false);
-
+  console.log(state);
   const onSwitchAction = () => {
     setIsSwitchOn(!Boolean(isSwitchOn));
   };
@@ -55,7 +55,7 @@ const ConstructorInput: React.FC<IConstructorInput> = ({
 
   useEffect(() => {
     if (onChange) {
-      if (type === 'switch') {
+      if (type === 'switch' || type === 'checkbox') {
         onChange(isSwitchOn);
       } else {
         onChange(state);
@@ -108,6 +108,13 @@ const ConstructorInput: React.FC<IConstructorInput> = ({
           required={!!required}
           key={`c-${key}`}
         />
+      );
+      break;
+    case 'title':
+      formControl = (
+        <div key={`fdg-${key}`}>
+          {!!description ? <Form.Text className="text-muted">{description}</Form.Text> : undefined}
+        </div>
       );
       break;
     default:

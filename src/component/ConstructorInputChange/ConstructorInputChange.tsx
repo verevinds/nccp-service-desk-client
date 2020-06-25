@@ -83,60 +83,62 @@ const ConstructorInputChange: React.FC<IConstructorInputChange> = ({
         </Form.Label>
       )}
 
-      <InputGroup>
-        {(input.type === 'checkbox' || input.type === 'switch') && !control ? (
-          <>
-            <Form.Check type={input.type} label="" />
-
-            <Form.Label
-              className="pointer"
-              style={input.placeholder ? undefined : { color: 'rgba(255,255,255,0.5)' }}
-              onDoubleClick={(event: React.MouseEvent<HTMLElement, MouseEvent>) => setControl(true)}
-            >
-              {input.placeholder ? input.placeholder : `Нажмите дважды, чтобы добавить текст...`}
-            </Form.Label>
-          </>
-        ) : (
-          <>
-            {input.type === 'checkbox' || input.type === 'switch' ? (
+      {input.type !== 'title' ? (
+        <InputGroup>
+          {(input.type === 'checkbox' || input.type === 'switch') && !control ? (
+            <>
               <Form.Check type={input.type} label="" />
-            ) : undefined}
-            <Form.Control
-              className={styles.input}
-              style={control ? { color: '#000', cursor: 'text' } : { cursor: 'pointer' }}
-              type={control ? 'text' : input.type}
-              value={!control ? '' : !!controlText ? controlText : saveControl}
-              placeholder={controlPlaceholder}
-              onDoubleClick={() => setControl(true)}
-              onChange={(event: React.FormEvent<HTMLInputElement>) =>
-                control && setControlText(event.currentTarget.value)
-              }
-            />
-            {controlText || control ? (
-              <>
-                <ButtonFontAwesome
-                  faIcon={faCheck}
-                  variant={'success'}
-                  onClick={() => {
-                    handleControl && handleControl(controlText);
-                    setControlText('');
-                    setControl(false);
-                  }}
-                />
-                <ButtonFontAwesome
-                  faIcon={faTimes}
-                  variant={'danger'}
-                  onClick={() => {
-                    setControlText('');
-                    handleControl && handleControl(saveControl ? saveControl : '');
-                    setControl(false);
-                  }}
-                />
-              </>
-            ) : undefined}
-          </>
-        )}
-      </InputGroup>
+
+              <Form.Label
+                className="pointer"
+                style={input.placeholder ? undefined : { color: 'rgba(255,255,255,0.5)' }}
+                onDoubleClick={(event: React.MouseEvent<HTMLElement, MouseEvent>) => setControl(true)}
+              >
+                {input.placeholder ? input.placeholder : `Нажмите дважды, чтобы добавить текст...`}
+              </Form.Label>
+            </>
+          ) : (
+            <>
+              {input.type === 'checkbox' || input.type === 'switch' ? (
+                <Form.Check type={input.type} label="" />
+              ) : undefined}
+              <Form.Control
+                className={styles.input}
+                style={control ? { color: '#000', cursor: 'text' } : { cursor: 'pointer' }}
+                type={control ? 'text' : input.type}
+                value={!control ? '' : !!controlText ? controlText : saveControl}
+                placeholder={controlPlaceholder}
+                onDoubleClick={() => setControl(true)}
+                onChange={(event: React.FormEvent<HTMLInputElement>) =>
+                  control && setControlText(event.currentTarget.value)
+                }
+              />
+              {controlText || control ? (
+                <>
+                  <ButtonFontAwesome
+                    faIcon={faCheck}
+                    variant={'success'}
+                    onClick={() => {
+                      handleControl && handleControl(controlText);
+                      setControlText('');
+                      setControl(false);
+                    }}
+                  />
+                  <ButtonFontAwesome
+                    faIcon={faTimes}
+                    variant={'danger'}
+                    onClick={() => {
+                      setControlText('');
+                      handleControl && handleControl(saveControl ? saveControl : '');
+                      setControl(false);
+                    }}
+                  />
+                </>
+              ) : undefined}
+            </>
+          )}
+        </InputGroup>
+      ) : undefined}
 
       {text ? (
         <InputGroup className={`${styles.formCustom}`}>

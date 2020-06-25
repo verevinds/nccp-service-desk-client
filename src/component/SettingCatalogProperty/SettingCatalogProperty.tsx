@@ -30,8 +30,10 @@ const SettingCatalogProperty: React.FC<ISettingCatalogProperty> = ({ categorySub
   }, []);
   return (
     <>
-      <ModalDeadline route={route} setShow={setModalDeadline} show={modalDeadline} property={property} />
-      <ModalTune show={modalTune} setShow={setModalTune} id={id} />
+      {!!modalDeadline ? (
+        <ModalDeadline route={route} setShow={setModalDeadline} show={modalDeadline} property={property} />
+      ) : undefined}
+      {!!modalTune ? <ModalTune show={modalTune} setShow={setModalTune} id={id} /> : undefined}
       <List
         title="Параметры"
         list={categorySubList?.properties}
