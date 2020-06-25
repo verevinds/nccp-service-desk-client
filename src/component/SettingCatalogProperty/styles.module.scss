@@ -25,6 +25,7 @@
   width: 300px;
   justify-content: space-between;
   margin-bottom: 2em;
+  opacity: 0.8;
 }
 .tunePanel_Body {
   height: 100px;
@@ -59,6 +60,7 @@
 }
 .tunePanel__buttons {
   display: flex;
+  opacity: 0.8;
   flex-direction: row;
   justify-content: space-between;
 }
