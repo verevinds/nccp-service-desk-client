@@ -1,5 +1,7 @@
 import React, { memo, useState, useEffect } from 'react';
 import { Form } from 'react-bootstrap';
+import { IState, TDepartment } from '../../interface';
+import { useSelector } from 'react-redux';
 
 export interface IConstructorInput {
   input: TConstructorInput;
@@ -47,6 +49,7 @@ const ConstructorInput: React.FC<IConstructorInput> = ({
   let formControl;
   const [state, setState] = useState<string | undefined>('');
   const [isSwitchOn, setIsSwitchOn] = useState<boolean | undefined>(false);
+  const department: TDepartment[] = useSelector((state: IState) => state.catalog.department);
   const onSwitchAction = () => {
     setIsSwitchOn(!Boolean(isSwitchOn));
   };
@@ -117,6 +120,23 @@ const ConstructorInput: React.FC<IConstructorInput> = ({
         <div key={`fdg-${id}`}>
           {!!description ? <Form.Text className="text-muted">{description}</Form.Text> : undefined}
         </div>
+      );
+      break;
+
+    case 'list':
+      formControl = (
+        <Form.Control as="select" onChange={handleChange} required={!!required}>
+          <option selected disabled value="">
+            Выберите отдел
+          </option>
+          {department
+            .filter((item: TDepartment) => item.name !== 'НЕ ИСПОЛЬЗОВАТЬ')
+            .map((item: TDepartment, index: number) => (
+              <option value={item.name} key={index}>
+                {item.name}
+              </option>
+            ))}
+        </Form.Control>
       );
       break;
     default:
