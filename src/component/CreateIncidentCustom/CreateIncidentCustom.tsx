@@ -1,7 +1,6 @@
 import React, { memo, Fragment, useState, useCallback } from 'react';
 /**Bootstrap components */
 import ConstructorInput from '../ConstructorInput/ConstructorInput';
-import { uid } from 'react-uid';
 
 export interface ICreateIncidentCustom {
   params: any[];
@@ -9,32 +8,29 @@ export interface ICreateIncidentCustom {
 }
 
 const CreateIncidentCustom: React.FC<ICreateIncidentCustom> = ({ params, setParams }) => {
-  const [state, setState] = useState<any>([...params]);
+  const [state, setState] = useState([...params]);
 
   const handleChange = useCallback(
     (id: string, item: any) => (value: string) => {
-      // console.group(id);
-      // console.log(item);
-      // console.log(value);
-      // console.groupEnd();
-      // const description = item.type === 'switch' || item.type === 'checkbox' ? item.placeholder : '';
-      // let newState = state;
-      // let index = newState.findIndex((item: any) => item.id === String(id));
-      // const newStateItem = { id, type: item.type, title: item.title, description, value };
-      // if (~index) {
-      //   newState[index] = newStateItem;
-      // } else {
-      //   newState.push(newStateItem);
-      // }
-      // setState(newState);
-      // setParams(newState);
+      const description = item.type === 'switch' || item.type === 'checkbox' ? item.placeholder : '';
+      let newState = state;
+
+      const newStateItem = { id, type: item.type, title: item.title, description, value };
+      if (~id) {
+        newState[Number(id)] = newStateItem;
+      } else {
+        newState.push(newStateItem);
+      }
+      setState(newState);
+      setParams(newState);
     },
-    [],
+    [state, setParams],
   );
+
   return (
     <Fragment>
       {params.map((item: any, index: number) => {
-        let id = `uid-${index}`;
+        let id = `${index}`;
         return <ConstructorInput input={item} id={id} onChange={handleChange(id, item)} />;
       })}
     </Fragment>

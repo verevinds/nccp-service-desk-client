@@ -1,0 +1,23 @@
+.formCustom {
+  margin-bottom: 1px;
+  input {
+    height: 27px;
+    line-height: 10px;
+    background-color: transparent;
+    color: #fff;
+    border: none;
+    border-bottom: 1px solid #fff;
+    border-radius: 0;
+    &::placeholder {
+      color: rgba(255, 255, 255, 0.5);
+    }
+    &:focus {
+      background-color: transparent;
+      color: #fff;
+    }
+  }
+  button {
+    width: 30px;
+    margin: 0 1px;
+  }
+}

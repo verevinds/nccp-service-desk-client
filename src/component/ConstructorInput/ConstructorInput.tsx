@@ -7,12 +7,13 @@ export interface IConstructorInput {
   onChange?: (arg: any) => void;
 }
 export type TConstructorInput = {
-  title?: string;
-  placeholder?: string;
-  type?: TTypeInput;
-  required?: boolean;
-  description?: string;
-  parent?: string;
+  title: string;
+  placeholder: string;
+  type: TTypeInput;
+  required: boolean;
+  description: string;
+  parent: string;
+  select: string;
 };
 export type TTypeInput =
   | 'button'

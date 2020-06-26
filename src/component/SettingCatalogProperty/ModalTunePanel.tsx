@@ -15,9 +15,15 @@ const ModalTunePanel: React.FC<IModalTunePanel> = ({ stateInput, setInput }) => 
   const [required, setRequired] = useState(false);
   const [type, setType] = useState<TTypeInput | string>('');
   const [subType, setSubType] = useState('');
+  const [listType, setListType] = useState('');
 
   const jsxSubType = useMemo(() => {
-    if (String(subType) !== 'switch' && String(subType) !== 'checkbox' && String(subType) !== 'title')
+    if (
+      String(subType) !== 'switch' &&
+      String(subType) !== 'checkbox' &&
+      String(subType) !== 'title' &&
+      String(type) !== 'list'
+    )
       return (
         <>
           <InputGroup.Prepend>
@@ -52,16 +58,46 @@ const ModalTunePanel: React.FC<IModalTunePanel> = ({ stateInput, setInput }) => 
       );
   }, [subType, type]);
 
+  const jsxListType = useMemo(() => {
+    if (type === 'list') {
+      let initialList = 'departments';
+      setListType(initialList);
+
+      return (
+        <>
+          <InputGroup.Prepend>
+            <InputGroup.Text id="basic-addon1" as="h5">
+              Тип
+            </InputGroup.Text>
+          </InputGroup.Prepend>
+          <Form.Control
+            as="select"
+            className={styles.formControl}
+            onChange={(event: React.FormEvent<HTMLInputElement>) => {
+              let listType = event.currentTarget.value;
+              setListType(listType);
+            }}
+            value={listType}
+          >
+            <option value={initialList}>Отделы</option>
+          </Form.Control>
+        </>
+      );
+    }
+  }, [type, listType]);
   const input = useMemo(() => {
-    let obj: TConstructorInput = {};
-    obj.type = type;
-    obj.title = title;
-    obj.description = description;
-    obj.placeholder = placeholder;
-    obj.required = required;
+    let obj: TConstructorInput = {
+      title,
+      placeholder,
+      type,
+      required,
+      description,
+      parent: '',
+      select: listType,
+    };
 
     return obj;
-  }, [type, title, description, placeholder, required]);
+  }, [type, title, description, placeholder, required, listType]);
 
   return (
     <div className={styles.tunePanel}>
@@ -79,16 +115,19 @@ const ModalTunePanel: React.FC<IModalTunePanel> = ({ stateInput, setInput }) => 
             onChange={(event: React.FormEvent<HTMLInputElement>) => {
               let type = event.currentTarget.value;
               type && setType(type);
-              setSubType(subType);
+              setSubType(type);
+              if (type !== 'list') setListType('');
             }}
             value={type}
           >
             <option value="text">Текстовое поле</option>
             <option value="checkbox">Множественный выбор</option>
+            <option value="list">Список</option>
             <option value="switch">Переключатель</option>
             <option value="title">Заголовок</option>
           </Form.Control>
           {jsxSubType}
+          {jsxListType}
         </InputGroup>
       </div>
 
