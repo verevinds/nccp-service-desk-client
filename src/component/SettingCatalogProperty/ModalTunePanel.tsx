@@ -122,7 +122,7 @@ const ModalTunePanel: React.FC<IModalTunePanel> = ({ stateInput, setInput }) => 
           >
             <option value="text">Текстовое поле</option>
             <option value="checkbox">Множественный выбор</option>
-            <option value="list">Список</option>
+            <option value="list">Выпадающий список</option>
             <option value="switch">Переключатель</option>
             <option value="title">Заголовок</option>
           </Form.Control>
