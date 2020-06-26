@@ -1,4 +1,4 @@
-import React, { memo, Fragment } from 'react';
+import React, { memo, Fragment, useLayoutEffect } from 'react';
 
 import { Card, Accordion, Button } from 'react-bootstrap';
 import styles from './styles.module.css';
@@ -7,6 +7,16 @@ export interface IInfo {}
 
 const Info: React.FC<IInfo> = () => {
   const info = [
+    {
+      version: '1.4.3',
+      date: '25.06.2020',
+      body: [
+        {
+          title: 'Приложение > Заявки > Заведение заявки',
+          text: ' Исправлены мелкие ошибки.',
+        },
+      ],
+    },
     {
       version: '1.4.2',
       date: '24.06.2020',
@@ -141,6 +151,10 @@ const Info: React.FC<IInfo> = () => {
   ];
   let news = info[0];
   info.splice(0, 1);
+
+  useLayoutEffect(() => {
+    process.env.REACT_APP_VERSION && localStorage.setItem('version', process.env.REACT_APP_VERSION);
+  }, []);
   return (
     <Fragment>
       <h6>Текущая версия: {`${news.version}`}</h6>

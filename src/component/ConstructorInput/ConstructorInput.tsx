@@ -3,7 +3,7 @@ import { Form } from 'react-bootstrap';
 
 export interface IConstructorInput {
   input: TConstructorInput;
-  key: string;
+  id: string;
   onChange?: (arg: any) => void;
 }
 export type TConstructorInput = {
@@ -38,13 +38,14 @@ export type TTypeInput =
   | string;
 const ConstructorInput: React.FC<IConstructorInput> = ({
   input: { title, placeholder, type, required, description, parent },
-  key,
+  id,
   onChange,
 }) => {
+  console.log(id);
+
   let formControl;
   const [state, setState] = useState<string | undefined>('');
   const [isSwitchOn, setIsSwitchOn] = useState<boolean | undefined>(false);
-  console.log(state);
   const onSwitchAction = () => {
     setIsSwitchOn(!Boolean(isSwitchOn));
   };
@@ -66,11 +67,11 @@ const ConstructorInput: React.FC<IConstructorInput> = ({
   switch (type) {
     case 'tel':
       formControl = (
-        <div key={`sf-${key}`}>
+        <div key={`sf-${id}`}>
           <Form.Control
             type={type}
             placeholder={placeholder}
-            key={`f-${key}`}
+            key={`f-${id}`}
             required={!!required}
             pattern="/^(\s*)?(\+)?([- _():=+]?\d[- _():=+]?){10,14}(\s*)?$/"
             value={state}
@@ -87,11 +88,11 @@ const ConstructorInput: React.FC<IConstructorInput> = ({
           <input
             type="checkbox"
             className="custom-control-input pointer"
-            id="customSwitch1"
+            id={`customSwitch${id}`}
             defaultChecked={!!isSwitchOn}
             required={!!required}
           />
-          <label className="custom-control-label pointer" htmlFor="customSwitch1" onClick={onSwitchAction}>
+          <label className="custom-control-label pointer" htmlFor={`customSwitch${id}`} onClick={onSwitchAction}>
             {placeholder}
           </label>
         </div>
@@ -101,32 +102,32 @@ const ConstructorInput: React.FC<IConstructorInput> = ({
       formControl = (
         <Form.Check
           type={type}
-          id={key}
+          id={id}
           label={placeholder}
           defaultChecked={!!isSwitchOn}
           onChange={onSwitchAction}
           required={!!required}
-          key={`c-${key}`}
+          key={`c-${id}`}
         />
       );
       break;
     case 'title':
       formControl = (
-        <div key={`fdg-${key}`}>
+        <div key={`fdg-${id}`}>
           {!!description ? <Form.Text className="text-muted">{description}</Form.Text> : undefined}
         </div>
       );
       break;
     default:
       formControl = (
-        <div key={`fdg-${key}`}>
+        <div key={`fdg-${id}`}>
           <Form.Control
             type={type}
             placeholder={placeholder}
             required={!!required}
             value={state}
             onChange={handleChange}
-            key={`dfg-${key}`}
+            key={`dfg-${id}`}
           />
 
           {!!description ? <Form.Text className="text-muted">{description}</Form.Text> : undefined}
@@ -135,7 +136,7 @@ const ConstructorInput: React.FC<IConstructorInput> = ({
   }
 
   return (
-    <Form.Group controlId={key} key={key} style={{ width: '100%' }}>
+    <Form.Group controlId={id} key={id} style={{ width: '100%' }}>
       {!!title ? <Form.Label>{type === 'title' ? <b>{title}</b> : title}</Form.Label> : undefined}
       {formControl}
     </Form.Group>

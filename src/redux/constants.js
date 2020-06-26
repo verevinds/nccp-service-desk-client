@@ -1,3 +1,6 @@
+/** VERSION */
+export const VERSION_SET = 'VERSION_SET';
+
 /** Константы для авторизации */
 export const AUTH_FETCHING = 'AUTH_FETCHING';
 export const AUTH_REQUEST_SENDD = 'AUTH_REQUEST_SENDD';

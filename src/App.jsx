@@ -32,6 +32,7 @@ import { queryApi } from './redux/actionCreators/queryApiAction';
 import { usersRequestSeccessed } from './redux/actionCreators/usersAction';
 import Axios from 'axios';
 import InfoPage from './page/InfoPage';
+import { versionSet } from './redux/actionCreators/versionAction';
 
 const App = (props) => {
   const cookies = new Cookies();
@@ -107,8 +108,10 @@ const App = (props) => {
         });
       // setAuth(<AuthModal />);
     }
+    dispatch(versionSet(process.env.REACT_APP_VERSION));
     // eslint-disable-next-line
   }, [dispatch]); // For change state of the  dispatch
+
   useEffect(() => {
     if (isUpdateCatalog) {
       dispatch(queryApi({ route: 'catalogs', actionSuccessed: departmentRequestSuccessed }));

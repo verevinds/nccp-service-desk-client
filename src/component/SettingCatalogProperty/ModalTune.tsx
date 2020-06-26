@@ -52,7 +52,7 @@ const ModalTune: React.FC<IModalTune> = ({ show, setShow, id }) => {
           content: (
             <div className={styles.customInput}>
               <div className={`${styles.required} ${input[key].required ? styles.required_red : undefined}`}></div>
-              <ConstructorInput input={input[key]} key={key} />
+              <ConstructorInput input={input[key]} id={key} />
             </div>
           ),
         };

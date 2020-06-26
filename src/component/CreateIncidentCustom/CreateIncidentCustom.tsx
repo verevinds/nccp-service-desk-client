@@ -9,33 +9,33 @@ export interface ICreateIncidentCustom {
 }
 
 const CreateIncidentCustom: React.FC<ICreateIncidentCustom> = ({ params, setParams }) => {
-  const [state, setState] = useState<any>([]);
+  const [state, setState] = useState<any>([...params]);
 
   const handleChange = useCallback(
     (id: string, item: any) => (value: string) => {
-      console.log(item);
-      const description = item.type === 'switch' || item.type === 'checkbox' ? item.placeholder : '';
-      let newState = state;
-      let index = newState.findIndex((item: any) => item.id === String(id));
-      const newStateItem = { id, type: item.type, title: item.title, description, value };
-      if (~index) {
-        newState[index] = newStateItem;
-      } else {
-        newState.push(newStateItem);
-      }
-
-      setState(newState);
-      setParams(newState);
+      // console.group(id);
+      // console.log(item);
+      // console.log(value);
+      // console.groupEnd();
+      // const description = item.type === 'switch' || item.type === 'checkbox' ? item.placeholder : '';
+      // let newState = state;
+      // let index = newState.findIndex((item: any) => item.id === String(id));
+      // const newStateItem = { id, type: item.type, title: item.title, description, value };
+      // if (~index) {
+      //   newState[index] = newStateItem;
+      // } else {
+      //   newState.push(newStateItem);
+      // }
+      // setState(newState);
+      // setParams(newState);
     },
-    [state, setState, setParams],
+    [],
   );
-  console.log(params);
   return (
     <Fragment>
       {params.map((item: any, index: number) => {
-        let id = uid(item);
-
-        return <ConstructorInput input={item} key={id} onChange={handleChange(id, item)} />;
+        let id = `uid-${index}`;
+        return <ConstructorInput input={item} id={id} onChange={handleChange(id, item)} />;
       })}
     </Fragment>
   );
