@@ -65,14 +65,12 @@ export function* fetchAuthInitialApp({ response }) {
     yield localStorage.setItem('incidents', JSON.stringify(incidents));
     yield put(incidentRequestSuccessed(incidents));
     yield put(progressStep(15));
-    console.log(response.number);
     // MY Incidents
     const myIncidents = yield call(() =>
       axios.get(`${URL}/api/incidents/`, { params: { userNumber: response.number } }).then((res) => {
         return res.data;
       }),
     );
-    console.log(myIncidents);
 
     yield localStorage.setItem('myIncidents', JSON.stringify(myIncidents));
     yield put(myIncidentRequestSuccessed(myIncidents));

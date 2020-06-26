@@ -22,7 +22,6 @@
 }
 .tunePanel_Panel {
   display: flex;
-  width: 350px;
   justify-content: space-between;
   margin-bottom: 2em;
   opacity: 0.8;
@@ -32,6 +31,7 @@
 }
 .inputGroup {
   height: 10px;
+  margin-right: 1em;
   select {
     height: 30px;
     line-height: 10px;

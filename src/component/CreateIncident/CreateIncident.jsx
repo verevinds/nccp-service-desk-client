@@ -193,12 +193,12 @@ const CreateIncidentModel = ({ handleClose, showModal, user }) => {
           text: `Невозможно прикрепить файл: ${statusFileUpload}`,
         });
       }
+
       await dispatch(incidentFetching(data, dataFile));
       await handleClose();
     }
     setValidated(true);
   };
-  console.log(finishWork);
   return (
     <ModalWindow
       show={showModal}

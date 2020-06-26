@@ -1,11 +1,11 @@
-import React, { memo, useState, useMemo, SetStateAction } from 'react';
+import React, { memo, useState, useMemo, SetStateAction, useEffect } from 'react';
 import { Button, Form, InputGroup } from 'react-bootstrap';
 import styles from './styles.module.scss';
-import { TConstructorInput, TTypeInput } from '../ConstructorInput/ConstructorInput';
 import ConstructorInputChange from '../ConstructorInputChange/ConstructorInputChange';
+import { TTypeInput, TPropertyParam } from '../../interface';
 export interface IModalTunePanel {
   setInput: SetStateAction<any>;
-  stateInput: any;
+  stateInput: (TPropertyParam | never)[];
 }
 
 const ModalTunePanel: React.FC<IModalTunePanel> = ({ stateInput, setInput }) => {
@@ -13,6 +13,7 @@ const ModalTunePanel: React.FC<IModalTunePanel> = ({ stateInput, setInput }) => 
   const [description, setDescription] = useState('');
   const [placeholder, setPlaceholder] = useState('');
   const [required, setRequired] = useState(false);
+  const [parent, setParent] = useState('');
   const [type, setType] = useState<TTypeInput | string>('');
   const [subType, setSubType] = useState('');
   const [listType, setListType] = useState('');
@@ -86,18 +87,19 @@ const ModalTunePanel: React.FC<IModalTunePanel> = ({ stateInput, setInput }) => 
     }
   }, [type, listType]);
   const input = useMemo(() => {
-    let obj: TConstructorInput = {
+    let obj: TPropertyParam = {
       title,
       placeholder,
       type,
       required,
       description,
-      parent: '',
+      parent,
       select: listType,
+      value: '',
     };
 
     return obj;
-  }, [type, title, description, placeholder, required, listType]);
+  }, [type, title, description, placeholder, required, listType, parent]);
 
   return (
     <div className={styles.tunePanel}>
@@ -128,6 +130,39 @@ const ModalTunePanel: React.FC<IModalTunePanel> = ({ stateInput, setInput }) => 
           </Form.Control>
           {jsxSubType}
           {jsxListType}
+        </InputGroup>
+
+        <InputGroup className={styles.inputGroup}>
+          <InputGroup.Prepend>
+            <InputGroup.Text id="basic-addon1" as="h5">
+              активно, если поле
+            </InputGroup.Text>
+          </InputGroup.Prepend>
+          <Form.Control
+            as="select"
+            className={styles.formControl}
+            onChange={(event: React.FormEvent<HTMLInputElement>) => {
+              let value = event.currentTarget.value;
+              setParent(value);
+            }}
+          >
+            <option selected value=""></option>
+            {stateInput?.map((item: TPropertyParam, index) => {
+              let { type, description, title, placeholder } = item;
+              if (type !== 'title')
+                return (
+                  <option value={index}>{`№ ${index + 1} ${title} ${description} ${placeholder} ${
+                    !title && !description && !placeholder && ' без обозначений'
+                  }`}</option>
+                );
+              else return <></>;
+            })}
+          </Form.Control>
+          <InputGroup.Append>
+            <InputGroup.Text id="basic-addon1" as="h5">
+              пустое
+            </InputGroup.Text>
+          </InputGroup.Append>
         </InputGroup>
       </div>
 

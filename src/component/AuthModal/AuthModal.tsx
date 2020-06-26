@@ -60,7 +60,6 @@ const AuthModal: React.FC<AuthModal> = () => {
           params: { login, password },
         })
           .then((res) => {
-            console.log(res);
             if (Array.isArray(res.data) && String(res.data[0]) === 'Error') {
               Alert().error();
             } else {

@@ -114,13 +114,16 @@ const IncidentWindowBody = ({ handleOpen }) => {
           }
           return (
             <Card.Text key={index}>
-              {item.title ? (
+              {item.type === 'title' && item.title ? (
                 <b>
-                  {`${item.title}: `} {item.description ? <br /> : undefined}
+                  {`${item.title}`} {item.description ? <br /> : undefined}
                 </b>
               ) : undefined}
-
-              {item.description ? `${item.description}: ` : undefined}
+              {(item.type === 'switch' || item.type === 'checkbox') && item.type !== 'title'
+                ? `${item.placeholder}:`
+                : `${
+                    item.title && item.type !== 'title' && !item.description ? `${item.title}:` : `${item.description}:`
+                  } `}
               {item.type !== 'title' ? value : undefined}
             </Card.Text>
           );

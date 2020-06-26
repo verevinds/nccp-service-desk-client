@@ -1,14 +1,15 @@
-import React, { memo, useState, useMemo, Fragment, useEffect, useCallback } from 'react';
+import React, { memo, useState, useMemo, Fragment, useEffect, useCallback, useLayoutEffect } from 'react';
 import { useSelector, shallowEqual } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import ModalWindow from '../ModalWindow/ModalWindow';
 import ModalTunePanel from './ModalTunePanel';
-import ConstructorInput from '../ConstructorInput/ConstructorInput';
+import ConstructorInputfrom from '../ConstructorInput/ConstructorInput';
 import ModalTuneDrag from './ModalTuneDrag';
 import { queryApi } from '../../redux/actionCreators/queryApiAction';
-import { IState, TProperty, TCategory } from '../../interface';
+import { IState, TProperty, TCategory, TPropertyParam } from '../../interface';
 import { categoryUpdate } from '../../redux/actionCreators/catalogAction';
 import styles from './styles.module.scss';
+import ConstructorInput from '../ConstructorInput/ConstructorInput';
 
 export interface IModalTune {
   setShow: (agr: boolean) => void;
@@ -18,13 +19,13 @@ export interface IModalTune {
 
 const ModalTune: React.FC<IModalTune> = ({ show, setShow, id }) => {
   const dispatch = useDispatch();
-  const [input, setInput] = useState<any[] | undefined>(undefined);
+  const [input, setInput] = useState<(TPropertyParam | never)[]>([]);
   const [state, setState] = useState<any>({ quotes: [] });
   const catalogs: TCategory[] | undefined = useSelector((state: IState) => state.catalog.list, shallowEqual);
-  console.log('input', input);
 
   const handleDrag = useCallback((value: any) => {
     setState(value);
+
     let newParams =
       Array.isArray(value.quotes) &&
       value.quotes.map((item: any) => {
@@ -32,20 +33,18 @@ const ModalTune: React.FC<IModalTune> = ({ show, setShow, id }) => {
       });
     setInput(newParams);
   }, []);
-  const propertyParams = useMemo(() => {
+
+  useLayoutEffect(() => {
     const findProperty = (item: TProperty) => item.id === id;
     let category = catalogs?.find((item: TCategory) => item.properties.find(findProperty));
     let property = category?.properties.find(findProperty);
 
-    return property?.params;
+    property?.params && setInput(property.params);
   }, [catalogs, id]);
-  useEffect(() => {
-    console.log('input', input);
-  }, [input]);
 
   const initial = useMemo(() => {
     let newInitial: any[] = [];
-    if (input) {
+    if (input.length) {
       for (var key in input) {
         const custom = {
           id: `id-${key}`,
@@ -62,10 +61,7 @@ const ModalTune: React.FC<IModalTune> = ({ show, setShow, id }) => {
 
       return newInitial;
     }
-    if (propertyParams) {
-      setInput(propertyParams);
-    }
-  }, [input, propertyParams]);
+  }, [input]);
 
   useEffect(() => {
     setState({ quotes: initial });
@@ -74,7 +70,7 @@ const ModalTune: React.FC<IModalTune> = ({ show, setShow, id }) => {
   const handleDelete = useCallback(
     (id: any) => {
       let index = Number(id.slice(3));
-
+      console.log('index', index);
       if (input) {
         let newInput = [...input];
 

@@ -1,11 +1,11 @@
+import { TPropertyParam } from './../../interface';
 import React from 'react';
-import { TConstructorInput } from '../ConstructorInput/ConstructorInput';
 
 export interface IConstructorInputChangeContext {
   handleLabel?: (agr: string) => void;
   handleControl?: (agr: string) => void;
   handleText?: (agr: string) => void;
-  input: TConstructorInput;
+  input: TPropertyParam;
 }
 export const ConstructorInputChangeContext = React.createContext<IConstructorInputChangeContext>({
   input: {
@@ -16,5 +16,6 @@ export const ConstructorInputChangeContext = React.createContext<IConstructorInp
     description: '',
     parent: '',
     select: '',
+    value: '',
   },
 });

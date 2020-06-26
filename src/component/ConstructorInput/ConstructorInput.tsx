@@ -1,85 +1,44 @@
 import React, { memo, useState, useEffect } from 'react';
 import { Form } from 'react-bootstrap';
-import { IState, TDepartment } from '../../interface';
+import { IState, TDepartment, TPropertyParam } from '../../interface';
 import { useSelector } from 'react-redux';
 
 export interface IConstructorInput {
-  input: TConstructorInput;
+  input: TPropertyParam;
   id: string;
-  onChange?: (arg: any) => void;
+  onChange?: (id: string, input: TPropertyParam, value: any) => void;
+  parentValue?: any;
 }
-export type TConstructorInput = {
-  title: string;
-  placeholder: string;
-  type: TTypeInput;
-  required: boolean;
-  description: string;
-  parent: string;
-  select: string;
-};
-export type TTypeInput =
-  | 'button'
-  | 'checkbox'
-  | 'password'
-  | 'reset'
-  | 'text'
-  | 'color'
-  | 'date'
-  | 'datetime'
-  | 'datetime-local'
-  | 'email'
-  | 'number'
-  | 'range'
-  | 'search'
-  | 'tel'
-  | 'time'
-  | 'url'
-  | 'month'
-  | 'week'
-  | 'switch'
-  | ''
-  | string;
-const ConstructorInput: React.FC<IConstructorInput> = ({
-  input: { title, placeholder, type, required, description, parent },
-  id,
-  onChange,
-}) => {
-  console.log(id);
 
+const ConstructorInput: React.FC<IConstructorInput> = ({ input, id, onChange, parentValue }) => {
   let formControl;
+  console.log('parentValue', parentValue);
   const [state, setState] = useState<string | undefined>('');
   const [isSwitchOn, setIsSwitchOn] = useState<boolean | undefined>(false);
   const department: TDepartment[] = useSelector((state: IState) => state.catalog.department);
   const onSwitchAction = () => {
     setIsSwitchOn(!Boolean(isSwitchOn));
+    onChange && onChange(id, input, !Boolean(isSwitchOn));
   };
 
   const handleChange = (event: React.FormEvent<HTMLInputElement>) => {
     setState(event.currentTarget.value);
+    onChange && onChange(id, input, event.currentTarget.value);
   };
 
-  useEffect(() => {
-    if (onChange) {
-      if (type === 'switch' || type === 'checkbox') {
-        onChange(isSwitchOn);
-      } else {
-        onChange(state);
-      }
-    }
-  }, [state, isSwitchOn, onChange, type]);
-
-  switch (type) {
+  switch (input.type) {
     case 'tel':
       formControl = (
         <div key={`sf-${id}`}>
           <Form.Control
-            type={type}
-            placeholder={placeholder}
+            type={input.type}
+            placeholder={input.placeholder}
             key={`f-${id}`}
-            required={!!required}
+            required={!!input.required}
             pattern="/^(\s*)?(\+)?([- _():=+]?\d[- _():=+]?){10,14}(\s*)?$/"
             value={state}
             onChange={handleChange}
+            disabled={!!parentValue}
           />
 
           <Form.Text className="text-muted">Введите номер телефона в формате: +7(903)888-88-88</Form.Text>
@@ -94,10 +53,11 @@ const ConstructorInput: React.FC<IConstructorInput> = ({
             className="custom-control-input pointer"
             id={`customSwitch${id}`}
             defaultChecked={!!isSwitchOn}
-            required={!!required}
+            required={!!input.required}
+            disabled={!!parentValue}
           />
           <label className="custom-control-label pointer" htmlFor={`customSwitch${id}`} onClick={onSwitchAction}>
-            {placeholder}
+            {input.placeholder}
           </label>
         </div>
       );
@@ -105,28 +65,35 @@ const ConstructorInput: React.FC<IConstructorInput> = ({
     case 'checkbox':
       formControl = (
         <Form.Check
-          type={type}
+          type={input.type}
           id={id}
-          label={placeholder}
+          label={input.placeholder}
           defaultChecked={!!isSwitchOn}
           onChange={onSwitchAction}
-          required={!!required}
+          required={!!input.required}
           key={`c-${id}`}
+          disabled={!!parentValue}
         />
       );
       break;
     case 'title':
       formControl = (
         <div key={`fdg-${id}`}>
-          {!!description ? <Form.Text className="text-muted">{description}</Form.Text> : undefined}
+          {!!input.description ? <Form.Text className="text-muted">{input.description}</Form.Text> : undefined}
         </div>
       );
       break;
 
     case 'list':
       formControl = (
-        <Form.Control as="select" onChange={handleChange} required={!!required}>
-          <option selected disabled value="">
+        <Form.Control
+          as="select"
+          onChange={handleChange}
+          required={!!input.required}
+          disabled={!!parentValue}
+          defaultValue=""
+        >
+          <option disabled value="">
             Выберите отдел
           </option>
           {department
@@ -143,22 +110,25 @@ const ConstructorInput: React.FC<IConstructorInput> = ({
       formControl = (
         <div key={`fdg-${id}`}>
           <Form.Control
-            type={type}
-            placeholder={placeholder}
-            required={!!required}
+            type={input.type}
+            placeholder={input.placeholder}
+            required={!!input.required}
             value={state}
             onChange={handleChange}
+            disabled={!!parentValue}
             key={`dfg-${id}`}
           />
 
-          {!!description ? <Form.Text className="text-muted">{description}</Form.Text> : undefined}
+          {!!input.description ? <Form.Text className="text-muted">{input.description}</Form.Text> : undefined}
         </div>
       );
   }
 
   return (
     <Form.Group controlId={id} key={id} style={{ width: '100%' }}>
-      {!!title ? <Form.Label>{type === 'title' ? <b>{title}</b> : title}</Form.Label> : undefined}
+      {!!input.title ? (
+        <Form.Label>{input.type === 'title' ? <b>{input.title}</b> : input.title}</Form.Label>
+      ) : undefined}
       {formControl}
     </Form.Group>
   );

@@ -76,8 +76,7 @@ const SettingStatus = () => {
 
   useEffect(() => {
     let parent: TStatus | undefined = list && list.find((item: TStatus) => item.id === parentId);
-    console.log('parentId', parentId);
-    console.log('parent', parent);
+
     if (parent && !!childrenId && !!parentId) {
       let bindId = 0;
       //@ts-ignore
@@ -87,7 +86,6 @@ const SettingStatus = () => {
         }
       });
 
-      console.log('childrenId', childrenId);
       if (!!bindId) {
         dispatch(
           queryApi({

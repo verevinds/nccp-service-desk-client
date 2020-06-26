@@ -154,15 +154,40 @@ export type TProperty = {
   level: number | null;
   name: string;
   priorityId: number | null;
-  params: (undefined | TPropertyParam)[];
+  params: (never | TPropertyParam)[];
 };
 export type TPropertyParam = {
-  type: string;
   title: string;
+  placeholder: string;
+  type: TTypeInput;
   required: boolean;
   description: string;
-  placeholder: string;
+  parent: string;
+  select: string;
+  value: any;
 };
+export type TTypeInput =
+  | 'button'
+  | 'checkbox'
+  | 'password'
+  | 'reset'
+  | 'text'
+  | 'color'
+  | 'date'
+  | 'datetime'
+  | 'datetime-local'
+  | 'email'
+  | 'number'
+  | 'range'
+  | 'search'
+  | 'tel'
+  | 'time'
+  | 'url'
+  | 'month'
+  | 'week'
+  | 'switch'
+  | ''
+  | string;
 export type TBindProperty = {
   id: number;
   item: {

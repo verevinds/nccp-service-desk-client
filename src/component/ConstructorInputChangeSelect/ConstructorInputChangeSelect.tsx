@@ -1,9 +1,6 @@
-import React, { memo, useState, useMemo, Fragment, useContext } from 'react';
+import React, { memo, Fragment, useContext } from 'react';
 import { useSelector } from 'react-redux';
-import { TConstructorInput } from '../ConstructorInput/ConstructorInput';
-import { Form, InputGroup } from 'react-bootstrap';
-import ButtonFontAwesome from '../ButtonFontAwesome/ButtonFontAwesome';
-import { faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { Form } from 'react-bootstrap';
 import { ConstructorInputChangeContext } from '../ConstructorInputChange/ConstructorInputChangeContext';
 import { IState, TDepartment } from '../../interface';
 export interface IConstructorInputChangeSelect {}

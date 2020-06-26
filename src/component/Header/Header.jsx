@@ -18,7 +18,6 @@ const Header = (props) => {
   const [showModal, setShowModal] = useState(false);
   const handleClose = () => setShowModal(false);
   const handleOpen = () => setShowModal(true);
-  console.log(version);
   /**Получаем полное имя при изменение сущности users в store */
   const [fullName, setFullName] = useState('');
   useEffect(() => {
