@@ -3,7 +3,6 @@ import { useSelector, shallowEqual } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import ModalWindow from '../ModalWindow/ModalWindow';
 import ModalTunePanel from './ModalTunePanel';
-import ConstructorInputfrom from '../ConstructorInput/ConstructorInput';
 import ModalTuneDrag from './ModalTuneDrag';
 import { queryApi } from '../../redux/actionCreators/queryApiAction';
 import { IState, TProperty, TCategory, TPropertyParam } from '../../interface';

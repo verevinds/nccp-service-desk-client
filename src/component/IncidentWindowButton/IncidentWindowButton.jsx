@@ -1,11 +1,12 @@
 import React, { memo, useState, useMemo, useContext } from 'react';
-import { Button } from 'react-bootstrap';
+import { Button, Dropdown, ButtonGroup, DropdownButton } from 'react-bootstrap';
 import styles from './styles.module.css';
 import { shallowEqual, useSelector } from 'react-redux';
 import HandleMatches from './HandleMatches';
 import HandleResponsible from './HandleResponsible';
 import HandleDepartment from './HandleDepartment';
 import { IncidentWindowContext } from '../IncidentWindow/IncidentWindowContext';
+import HandleVise from './HandleVise';
 
 const IncidentWindowButton = ({ handleOpen }) => {
   const { onClick } = useContext(IncidentWindowContext);
@@ -72,10 +73,19 @@ const IncidentWindowButton = ({ handleOpen }) => {
               buttonMatch
             ) : undefined
           ) : (
-            <>
-              {level ? <HandleResponsible onClick={onClick} /> : undefined}
-              <HandleDepartment onClick={onClick} />
-            </>
+            <DropdownButton as={ButtonGroup} title={'Дополнительные действия'} variant={'info'}>
+              {level ? (
+                <Dropdown.Item eventKey="1">
+                  <HandleResponsible />
+                </Dropdown.Item>
+              ) : undefined}
+              <Dropdown.Item eventKey="2">
+                <HandleDepartment />
+              </Dropdown.Item>
+              <Dropdown.Item eventKey="2">
+                <HandleVise />
+              </Dropdown.Item>
+            </DropdownButton>
           )}
         </div>
         {mainButton}

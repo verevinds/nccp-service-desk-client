@@ -1,19 +1,16 @@
 import React, { memo, useState } from 'react';
-import { Button } from 'react-bootstrap';
 import IncidentHandleResponsible from '../IncidentHandleResponsible/IncidentHandleResponsible';
 
 export interface IHandleResponsible {
   onClick: any;
 }
 
-const HandleResponsible: React.FC<IHandleResponsible> = ({ onClick }) => {
+const HandleResponsible: React.FC<IHandleResponsible> = () => {
   const [show, setShow] = useState(false);
   return (
     <>
-      <Button variant={'outline-secondary'} size="sm" onClick={() => setShow(true)} className={'m-1'}>
-        Назначить ответственного
-      </Button>
-      <IncidentHandleResponsible show={show} onHide={() => setShow(false)} onClick={onClick} />
+      <div onClick={() => setShow(true)}>Назначить ответственного</div>
+      {show ? <IncidentHandleResponsible show={show} onHide={() => setShow(false)} /> : undefined}
     </>
   );
 };

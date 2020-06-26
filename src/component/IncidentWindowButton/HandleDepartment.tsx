@@ -1,5 +1,4 @@
 import React, { memo, useState } from 'react';
-import { Button } from 'react-bootstrap';
 import IncidentHandleDepartment from '../IncidentHandleDepartment/IncidentHandleDepartment';
 export interface IHandleDepartment {}
 
@@ -8,9 +7,7 @@ const HandleDepartment: React.FC<IHandleDepartment> = () => {
 
   return (
     <>
-      <Button variant={'outline-secondary'} size="sm" className={'m-1'} onClick={() => setShow(true)}>
-        Передать в другой отдел
-      </Button>
+      <div onClick={() => setShow(true)}>Передать в другой отдел</div>
       {show ? <IncidentHandleDepartment show={show} onHide={() => setShow(false)} /> : undefined}
     </>
   );

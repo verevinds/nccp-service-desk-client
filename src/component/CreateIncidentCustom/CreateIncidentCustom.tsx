@@ -1,4 +1,4 @@
-import React, { memo, Fragment, useEffect, useCallback, useState, useMemo } from 'react';
+import React, { memo, Fragment, useCallback, useState } from 'react';
 /**Bootstrap components */
 import ConstructorInput from '../ConstructorInput/ConstructorInput';
 import { TPropertyParam } from '../../interface';

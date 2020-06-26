@@ -122,7 +122,7 @@ const HandleSocket = () => {
         case 'default':
         // спросить
       }
-  }, [data]);
+  }, [data, newAlert]);
   const jsx = useMemo(() => {
     return (
       <>
