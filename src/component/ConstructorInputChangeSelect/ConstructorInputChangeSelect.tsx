@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 import { Form } from 'react-bootstrap';
 import { IState, TDepartment, IUserInUsers } from '../../interface';
 import { ConstructorInputChangeContext } from '../ConstructorInputChange/ConstructorInputChangeContext';
-import ConstructorInput from '../ConstructorInput/ConstructorInput';
 export interface IConstructorInputChangeSelect {}
 
 const ConstructorInputChangeSelect: React.FC<IConstructorInputChangeSelect> = () => {

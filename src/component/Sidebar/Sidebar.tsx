@@ -69,11 +69,14 @@ const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId, filter }) => {
           let color;
           let tooltip;
           if (item.status) {
-            if (Number(item.status) === 8388608) {
+            if (Number(item.status) === 8388607) {
               color = '#c3e6cb';
-              tooltip = `Готово`;
+              tooltip = `Готово. Ждёт закрытия.`;
             } else {
-              color = '#bee5eb';
+              if (Number(item.status) === 8388608) {
+                color = '#c3e6cb';
+                tooltip = `Закрыт`;
+              } else color = '#bee5eb';
               tooltip = `В работе`;
             }
           } else if (item.status === 0) {

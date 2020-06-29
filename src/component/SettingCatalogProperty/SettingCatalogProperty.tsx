@@ -5,7 +5,6 @@ import List from '../List/List';
 import { TProperty, TCategory } from '../../interface';
 import Axios from 'axios';
 import ModalDeadline from './ModalDeadline';
-import ModalTune from '../ModalTune/ModalTune';
 
 export interface ISettingCatalogProperty extends THandleEvent {
   categorySubList: TCategory;
@@ -15,9 +14,7 @@ export interface ISettingCatalogProperty extends THandleEvent {
 const SettingCatalogProperty: React.FC<ISettingCatalogProperty> = ({ categorySubList, handleEvent, handleBind }) => {
   const route = 'properties';
   const [modalDeadline, setModalDeadline] = useState(false);
-  const [modalTune, setModalTune] = useState(false);
   const [property, setProperty] = useState<TProperty | null>(null);
-  const [id, setId] = useState(undefined);
   const handleDedline = useCallback(({ id }) => {
     setModalDeadline(true);
     let PORT = window.location.protocol === 'http:' ? '8080' : '8433';

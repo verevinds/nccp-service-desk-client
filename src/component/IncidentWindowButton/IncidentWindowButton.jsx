@@ -7,9 +7,10 @@ import HandleResponsible from './HandleResponsible';
 import HandleDepartment from './HandleDepartment';
 import { IncidentWindowContext } from '../IncidentWindow/IncidentWindowContext';
 import HandleVise from './HandleVise';
+import IncidentHandleVise from '../IncidentHandleVise/IncidentHandleVise';
 
-const IncidentWindowButton = ({ handleOpen }) => {
-  const { onClick } = useContext(IncidentWindowContext);
+const IncidentWindowButton = ({ handleOpen, myIncident }) => {
+  const { onClick, handleVise } = useContext(IncidentWindowContext);
   const {
     name1,
     name2,
@@ -41,15 +42,31 @@ const IncidentWindowButton = ({ handleOpen }) => {
 
   const mainButton = useMemo(() => {
     if (!!currentResponsible) {
-      if (Number(statusId) > 0) {
+      if (Number(statusId) > 0 && Number(statusId) < 8000000 && currentResponsible === number && !myIncident) {
         return (
           <Button variant="outline-primary" onClick={handleOpen}>
             Изменить
           </Button>
         );
       }
+      if (Number(statusId) === 8388607 && currentResponsible === number && !!myIncident) {
+        return (
+          <ButtonGroup aria-label="Basic example">
+            <Button
+              variant="outline-primary"
+              onClick={onClick.bind({
+                incidentData: { statusId: 8388608, closeWork: new Date().toISOString() },
+                comment: `Заявка закрыта.`,
+              })}
+            >
+              Закрыть
+            </Button>
+            <Button onClick={handleOpen.bind({ inWork: true })}>Вернуть в работу</Button>
+          </ButtonGroup>
+        );
+      }
     }
-    if (!Number(statusId) && !currentResponsible) {
+    if (!Number(statusId) && !currentResponsible && !myIncident) {
       return (
         <Button variant="outline-success" onClick={handleInWork}>
           Взять в работу
@@ -63,16 +80,15 @@ const IncidentWindowButton = ({ handleOpen }) => {
       return <HandleMatches onClick={onClick} />;
     }
   }, [matches, onClick]);
+
   return (
     <>
       <hr />
       <div className={styles.bar}>
         <div>
-          {!!buttonMatch ? (
-            level ? (
-              buttonMatch
-            ) : undefined
-          ) : (
+          {!!buttonMatch && Number(statusId) < 8000000 && !myIncident ? (
+            buttonMatch
+          ) : Number(statusId) < 8000000 && !myIncident ? (
             <DropdownButton as={ButtonGroup} title={'Дополнительные действия'} variant={'outline-info'}>
               {level ? (
                 <Dropdown.Item eventKey="1">
@@ -84,13 +100,12 @@ const IncidentWindowButton = ({ handleOpen }) => {
               </Dropdown.Item>
               <Dropdown.Divider />
 
-              <Dropdown.Item eventKey="2">
-                <HandleVise />
+              <Dropdown.Item eventKey="2" onClick={() => handleVise.setVise(true)}>
+                Отправить на согласование
               </Dropdown.Item>
-              <Dropdown.Item eventKey="2">Отправить на доработку</Dropdown.Item>
-              <Dropdown.Item eventKey="2">Отправить на исполнение</Dropdown.Item>
+              <Dropdown.Item eventKey="3">Отправить на доработку</Dropdown.Item>
             </DropdownButton>
-          )}
+          ) : undefined}
         </div>
         {mainButton}
       </div>

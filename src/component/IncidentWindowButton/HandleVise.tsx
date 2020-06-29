@@ -8,7 +8,6 @@ const HandleVise: React.FC<IHandleVise> = () => {
   return (
     <>
       <div onClick={() => setShow(true)}>Оправить на визирование</div>
-      {show ? <IncidentHandleVise show={show} onHide={() => setShow(false)} /> : undefined}
     </>
   );
 };

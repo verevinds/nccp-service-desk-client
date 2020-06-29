@@ -8,6 +8,7 @@ import { IncidentWindowContext } from '../IncidentWindow/IncidentWindowContext';
 
 const IncidentHandleDepartment = ({ show, onHide }: IIncidentHandleDepartment) => {
   const catalog = useSelector((state: IState) => state.catalog, shallowEqual);
+  const incident = useSelector((state: IState) => state.incidents.current.incident);
   const user = useSelector((state: IState) => state.auth.user, shallowEqual);
   const { id } = useSelector((state: IState) => state.incidents.current.incident, shallowEqual);
   const { onClick } = useContext(IncidentWindowContext);
@@ -88,7 +89,7 @@ const IncidentHandleDepartment = ({ show, onHide }: IIncidentHandleDepartment) =
           <Form.Label>{title}</Form.Label>
           <Form.Control
             as="select"
-            defaultValue={defaultValue}
+            defaultValue={'defaultValue'}
             onChange={(event: any) => {
               setId(event.target.value);
             }}
@@ -135,7 +136,6 @@ const IncidentHandleDepartment = ({ show, onHide }: IIncidentHandleDepartment) =
         comment: `${user.name1} ${user.name2.charAt(0)} ${user.name3.charAt(0)} передал заявку в "${
           departmentList.find((item: any) => Number(item.id) === Number(currentDepartmentId))?.name
         }"`,
-        incidentData: { startWork: null, statusId: Number(0) },
         matchHandle,
       })}
       textOk={'Передать'}

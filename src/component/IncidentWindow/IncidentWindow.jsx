@@ -13,15 +13,23 @@ import { queryApi } from '../../redux/actionCreators/queryApiAction';
 import { Container, Card } from 'react-bootstrap';
 import IncidentWindowBody from '../IncidentWindowBody/IncidentWindowBody';
 import { IncidentWindowContext } from './IncidentWindowContext';
+import IncidentHandleVise from '../IncidentHandleVise/IncidentHandleVise';
 
 const IncidentWindow = () => {
+  const [inWork, setInWork] = useState(false);
   const incident = useSelector((state) => state.incidents?.current.incident, shallowEqual);
   const { user } = useSelector((state) => state.auth, shallowEqual);
   const dispatch = useDispatch();
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
-  const handleOpen = () => setShow(true);
+  const handleOpen = function () {
+    if (this?.inWork) {
+      setInWork(true);
+      console.log(this?.inWork);
+    }
+    setShow(true);
+  };
   const onClick = useCallback(
     function () {
       let incidentData = {
@@ -68,13 +76,14 @@ const IncidentWindow = () => {
         }),
       );
     },
-    [user, dispatch, incident],
+    [user, dispatch, incident, inWork],
   );
-
+  const [vise, setVise] = useState(false);
   if (!!incident) {
     return (
-      <IncidentWindowContext.Provider value={{ onClick }}>
-        {show ? <IncidentHandleStatus show={show} onHide={handleClose} incident={incident} /> : null}
+      <IncidentWindowContext.Provider value={{ onClick, handleVise: { vise, setVise } }}>
+        {show ? <IncidentHandleStatus show={show} onHide={handleClose} incident={incident} inWork={inWork} /> : null}
+        {vise ? <IncidentHandleVise /> : undefined}
         <Container>
           <Card>
             <IncidentWindowHeader />

@@ -12,7 +12,7 @@ const IncidentStatus: React.FC<IIncidentStatus> = () => {
   const { list }: TStatusies = useSelector((state: IState) => state.status);
 
   useEffect(() => {
-    if (status === 8388608) {
+    if (status === 8388608 || status === 8388607) {
       setVariant('success');
     } else {
       setVariant('info');

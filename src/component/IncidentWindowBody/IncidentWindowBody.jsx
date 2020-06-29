@@ -106,7 +106,7 @@ const IncidentWindowBody = ({ handleOpen }) => {
         </>
       ) : null}
       <IncidentWindowBodyCustom />
-      {!myIncident && <IncidentWorkButton incident={incident} handleOpen={handleOpen} user={user} />}
+      <IncidentWorkButton incident={incident} handleOpen={handleOpen} user={user} myIncident={myIncident} />
       <br />
       <IncidentWindowComments />
       <br />

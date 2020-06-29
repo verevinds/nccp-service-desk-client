@@ -1,12 +1,11 @@
-import React, { memo, useContext, useState, useMemo, useRef } from 'react';
-import ModalWindow from '../ModalWindow/ModalWindow';
-import { IncidentWindowContext } from '../IncidentWindow/IncidentWindowContext';
+import React, { memo, useContext, useState, useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { TPropertyParam, TDepartment, IState, IUserInUsers, TUser, TIncident } from '../../interface';
-import { Form, Modal, Button, Col, Row } from 'react-bootstrap';
-interface IIncidentHandleVise {}
-const IncidentHandleVise: React.FC<IIncidentHandleVise> = () => {
-  const { handleVise } = useContext(IncidentWindowContext);
+import { Form } from 'react-bootstrap';
+import { TIncident, IState, TDepartment, IUserInUsers, TUser, TPropertyParam } from '../interface';
+import { IncidentWindowContext } from '../component/IncidentWindow/IncidentWindowContext';
+import ModalWindow from '../component/ModalWindow/ModalWindow';
+
+const TestPage = () => {
   const [validated, setValidated] = useState(false);
   const [chooseDepartment, setChooseDepartment] = useState('');
   const [chooseUser, setChooseUser] = useState('');
@@ -15,11 +14,6 @@ const IncidentHandleVise: React.FC<IIncidentHandleVise> = () => {
   const users: IUserInUsers[] = useSelector((state: IState) => state.users.list);
   const user: TUser = useSelector((state: IState) => state.auth.user);
   const { onClick } = useContext(IncidentWindowContext);
-
-  const visePerson = useMemo(() => {
-    return users.find((item: TUser) => item.number === Number(chooseUser));
-  }, [chooseUser]);
-
   let input: TPropertyParam = {
     title: '',
     description: '',
@@ -39,7 +33,6 @@ const IncidentHandleVise: React.FC<IIncidentHandleVise> = () => {
         incidentId: incident?.id,
         params: {
           currentResponsible: user?.number,
-          departmentId: user?.departmentId,
         },
       },
     };
@@ -55,10 +48,10 @@ const IncidentHandleVise: React.FC<IIncidentHandleVise> = () => {
       event.preventDefault();
       console.log('ok');
       onClick.call({
-        comment:
-          `${user.name1} ${user.name2.charAt(0)} ${user.name3.charAt(0)} отправил(а) заявку на визирование` +
-          ` ${visePerson?.name1} ${user.name2.charAt(0)} ${user.name3.charAt(0)}`,
-        incidentData: { currentResponsible: chooseUser, statusId: 8388606, departmentId: chooseDepartment },
+        comment: `${user.name1} ${user.name2.charAt(0)} ${user.name3.charAt(
+          0,
+        )} отправил(а) заявку в на согласование ${chooseUser}`,
+        incidentData: { currentResponsible: chooseUser },
         matchHandle,
       });
     }
@@ -73,8 +66,8 @@ const IncidentHandleVise: React.FC<IIncidentHandleVise> = () => {
 
   return (
     <ModalWindow
-      show={handleVise?.vise}
-      onHide={() => handleVise?.setVise(false)}
+      show={true}
+      onHide={() => {}}
       title={'Создание заявки'}
       onSubmit={onSubmit}
       textOk={'Отправить'}
@@ -125,4 +118,4 @@ const IncidentHandleVise: React.FC<IIncidentHandleVise> = () => {
   );
 };
 
-export default memo(IncidentHandleVise);
+export default memo(TestPage);

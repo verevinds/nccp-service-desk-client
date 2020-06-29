@@ -81,7 +81,7 @@ const CreateIncidentModel = ({ handleClose, showModal, user }) => {
 
   useEffect(() => {
     Array.isArray(options?.params) && setState([...options?.params]);
-  }, [options?.params]);
+  }, [options]);
 
   useEffect(() => {
     let properties = currentCategory[0]?.properties.filter((item) => !item.isArchive);

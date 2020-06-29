@@ -103,6 +103,19 @@ export type TUser = {
   positionId: number;
   sex: number;
   updatedAt: string;
+  department: {
+    id: number;
+    name: string;
+    createdAt: string;
+    updatedAt: string;
+  };
+  position: {
+    id: number;
+    name: string;
+    level: number;
+    createdAt: string;
+    updatedAt: string;
+  };
 };
 /** Каталог */
 export type TCatalog = {

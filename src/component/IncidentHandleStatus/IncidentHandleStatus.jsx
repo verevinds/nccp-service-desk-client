@@ -9,14 +9,14 @@ import { fileUpload } from '../UploadFiles/fileUpload';
 import { AlertContext } from '../Alert/AlertContext';
 import { fileFetching } from '../../redux/actionCreators/fileAction';
 
-const IncidentHandleStatus = ({ show, onHide }) => {
+const IncidentHandleStatus = ({ show, onHide, inWork }) => {
   const dispatch = useDispatch();
   let status = useSelector((state) => state.status.list, shallowEqual);
   const { incident } = useSelector((state) => state.incidents.current, shallowEqual);
   const { user } = useSelector((state) => state.auth, shallowEqual);
   const [fullName] = useState(`${user.name1} ${user.name2} ${user.name3}`);
   const [validated, setValidated] = useState(false);
-  const [newStatus, setNewStatus] = useState({ statusId: incident.statusId });
+  const [newStatus, setNewStatus] = useState({ statusId: inWork ? 1 : incident.statusId });
   const [newComment, setNewComment] = useState();
   const [file, setFile] = useState(null);
   const setAlert = useContext(AlertContext);
@@ -40,10 +40,16 @@ const IncidentHandleStatus = ({ show, onHide }) => {
     else return;
   });
 
-  const list = useMemo(() => status.filter((item) => item.id !== 8388608), [status]);
+  const list = useMemo(
+    () => status.filter((item) => item.id !== 8388608 && item.id !== 8388605 && item.id !== 8388606),
+    [status],
+  );
   //? Инициализируем состояние выбранного файла
   const handleStatus = (event) => {
-    setNewStatus({ statusId: Number(event.target.value) });
+    setNewStatus({
+      statusId: Number(event.target.value),
+      doneWork: Number(event.target.value) === 8388607 ? new Date() : null,
+    });
   };
 
   const uploadFile = async (file) => {
@@ -134,8 +140,9 @@ const IncidentHandleStatus = ({ show, onHide }) => {
           <Form.Label>Изменить статус</Form.Label>
           <Form.Control
             as="select"
-            defaultValue={list.find((item) => item.id === incident.statusId).id}
+            defaultValue={inWork ? 1 : list.find((item) => item.id === incident.statusId).id}
             onChange={handleStatus}
+            disabled={inWork}
           >
             {list
               .sort((a, b) => {
@@ -152,6 +159,7 @@ const IncidentHandleStatus = ({ show, onHide }) => {
               ))}
           </Form.Control>
         </Form.Group>
+
         <Form.Group>
           <Form.Label>Комментарий</Form.Label>
           <Form.Control
@@ -164,6 +172,7 @@ const IncidentHandleStatus = ({ show, onHide }) => {
           />
           <Form.Control.Feedback type="invalid">Обязательно нужно указать комментарий!</Form.Control.Feedback>
         </Form.Group>
+
         <Form.Group>
           <UploadFiles setFile={setFile} />
         </Form.Group>
