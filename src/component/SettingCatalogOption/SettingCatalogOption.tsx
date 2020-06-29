@@ -1,8 +1,9 @@
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo, useEffect, useState, useCallback } from 'react';
 import List from '../List/List';
 import { THandleEvent } from '../SettingCatalog/SettingCatalog';
 import { THandleBind } from '../List/ListItem';
 import { TCategory } from '../../interface';
+import ModalTune from '../ModalTune/ModalTune';
 
 export interface ISettingCatalogOption extends THandleEvent {
   categorySubList?: TCategory;
@@ -10,7 +11,14 @@ export interface ISettingCatalogOption extends THandleEvent {
 }
 
 const SettingCatalogOption: React.FC<ISettingCatalogOption> = ({ categorySubList, handleEvent, handleBind }) => {
+  const [modalTune, setModalTune] = useState(false);
+  const [id, setId] = useState(undefined);
   const [optionJsx, setOptionJsx] = useState<JSX.Element | undefined>();
+
+  const handleTune = useCallback(({ id }) => {
+    setId(id);
+    setModalTune(true);
+  }, []);
 
   useEffect(() => {
     let newOptionJsx;
@@ -35,6 +43,7 @@ const SettingCatalogOption: React.FC<ISettingCatalogOption> = ({ categorySubList
             fact: 'archive',
           })}
           handleBind={handleBind}
+          handleTune={handleTune}
           xs={3}
         />
       );
@@ -43,7 +52,13 @@ const SettingCatalogOption: React.FC<ISettingCatalogOption> = ({ categorySubList
     setOptionJsx(newOptionJsx);
   }, [categorySubList, handleEvent, handleBind]);
 
-  return <>{optionJsx}</>;
+  return (
+    <>
+      {!!modalTune ? <ModalTune show={modalTune} setShow={setModalTune} id={id} /> : undefined}
+
+      {optionJsx}
+    </>
+  );
 };
 
 export default memo(SettingCatalogOption);

@@ -5,7 +5,7 @@ import List from '../List/List';
 import { TProperty, TCategory } from '../../interface';
 import Axios from 'axios';
 import ModalDeadline from './ModalDeadline';
-import ModalTune from './ModalTune';
+import ModalTune from '../ModalTune/ModalTune';
 
 export interface ISettingCatalogProperty extends THandleEvent {
   categorySubList: TCategory;
@@ -25,16 +25,12 @@ const SettingCatalogProperty: React.FC<ISettingCatalogProperty> = ({ categorySub
       setProperty(res.data);
     });
   }, []);
-  const handleTune = useCallback(({ id }) => {
-    setId(id);
-    setModalTune(true);
-  }, []);
+
   return (
     <>
       {!!modalDeadline ? (
         <ModalDeadline route={route} setShow={setModalDeadline} show={modalDeadline} property={property} />
       ) : undefined}
-      {!!modalTune ? <ModalTune show={modalTune} setShow={setModalTune} id={id} /> : undefined}
       <List
         title="Параметры"
         list={categorySubList?.properties}
@@ -52,7 +48,6 @@ const SettingCatalogProperty: React.FC<ISettingCatalogProperty> = ({ categorySub
         })}
         handleBind={handleBind}
         handleDedline={handleDedline}
-        handleTune={handleTune}
         xs={3}
       />
     </>

@@ -20,19 +20,21 @@ const ConstructorInputChange: React.FC<IConstructorInputChange> = ({
   handleText,
   input,
 }) => {
-  return (
-    <ConstructorInputChangeContext.Provider value={{ handleControl, handleLabel, handleText, input }}>
-      <ConstructorInputChangeTitle />
-      {input.type !== 'title' ? (
-        input.type === 'list' ? (
-          <ConstructorInputChangeSelect />
-        ) : (
-          <ConstructorInputChangeInput />
-        )
-      ) : undefined}
-      <ConstructorInputChangeText />
-    </ConstructorInputChangeContext.Provider>
-  );
+  if (input.type !== 'void')
+    return (
+      <ConstructorInputChangeContext.Provider value={{ handleControl, handleLabel, handleText, input }}>
+        <ConstructorInputChangeTitle />
+        {input.type !== 'title' ? (
+          input.type === 'list' ? (
+            <ConstructorInputChangeSelect />
+          ) : (
+            <ConstructorInputChangeInput />
+          )
+        ) : undefined}
+        <ConstructorInputChangeText />
+      </ConstructorInputChangeContext.Provider>
+    );
+  else return <></>;
 };
 
 export default memo(ConstructorInputChange);

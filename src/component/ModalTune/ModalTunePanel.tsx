@@ -1,14 +1,17 @@
-import React, { memo, useState, useMemo, SetStateAction } from 'react';
+import React, { memo, useState, useMemo, useContext } from 'react';
 import { Button, Form, InputGroup } from 'react-bootstrap';
 import styles from './styles.module.scss';
 import ConstructorInputChange from '../ConstructorInputChange/ConstructorInputChange';
 import { TTypeInput, TPropertyParam } from '../../interface';
+import { BoardContext } from '../Board/BoardContext';
 export interface IModalTunePanel {
-  setInput: SetStateAction<any>;
+  // setInput: SetStateAction<any>;
   stateInput: (TPropertyParam | never)[];
 }
 
-const ModalTunePanel: React.FC<IModalTunePanel> = ({ stateInput, setInput }) => {
+const ModalTunePanel: React.FC<IModalTunePanel> = ({ stateInput }) => {
+  const { state, setState, getItems } = useContext(BoardContext);
+
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [placeholder, setPlaceholder] = useState('');
@@ -16,7 +19,7 @@ const ModalTunePanel: React.FC<IModalTunePanel> = ({ stateInput, setInput }) => 
   const [parent, setParent] = useState('');
   const [type, setType] = useState<TTypeInput | string>('');
   const [subType, setSubType] = useState('');
-  const [listType, setListType] = useState('');
+  const [listType, setListType] = useState('departments');
 
   const jsxSubType = useMemo(() => {
     if (
@@ -49,7 +52,6 @@ const ModalTunePanel: React.FC<IModalTunePanel> = ({ stateInput, setInput }) => 
             <option value="number">Числовая строка</option>
             <option value="range">Диапозон</option>
             <option value="search">Строка (Быстроя очистка)</option>
-            <option value="tel">Телефон</option>
             <option value="time">Время</option>
             <option value="url">Ссылка</option>
             <option value="month">Месяц</option>
@@ -61,9 +63,6 @@ const ModalTunePanel: React.FC<IModalTunePanel> = ({ stateInput, setInput }) => 
 
   const jsxListType = useMemo(() => {
     if (type === 'list') {
-      let initialList = 'departments';
-      setListType(initialList);
-
       return (
         <>
           <InputGroup.Prepend>
@@ -80,7 +79,7 @@ const ModalTunePanel: React.FC<IModalTunePanel> = ({ stateInput, setInput }) => 
             }}
             value={listType}
           >
-            <option value={initialList}>Отделы</option>
+            <option value="departments">Отделы</option>
             <option value="users">Сотрудники</option>
           </Form.Control>
         </>
@@ -88,6 +87,7 @@ const ModalTunePanel: React.FC<IModalTunePanel> = ({ stateInput, setInput }) => 
     }
   }, [type, listType]);
   const input = useMemo(() => {
+    console.log(description);
     let obj: TPropertyParam = {
       title,
       placeholder,
@@ -124,6 +124,7 @@ const ModalTunePanel: React.FC<IModalTunePanel> = ({ stateInput, setInput }) => 
             value={type}
           >
             <option value="text">Текстовое поле</option>
+            <option value="void">Заглушка</option>
             <option value="checkbox">Множественный выбор</option>
             <option value="list">Выпадающий список</option>
             <option value="switch">Переключатель</option>
@@ -192,19 +193,14 @@ const ModalTunePanel: React.FC<IModalTunePanel> = ({ stateInput, setInput }) => 
 
         <Button
           onClick={() => {
-            if (stateInput) {
-              let newInput = [...stateInput];
-
-              newInput.push(input);
-
-              setInput(newInput);
+            let newState = [...state];
+            console.log('input', input);
+            if (newState.length) {
+              newState[0].push(getItems([input])[0]);
             } else {
-              let newInput = [];
-
-              newInput.push(input);
-
-              setInput(newInput);
+              newState.push([getItems([input])[0]]);
             }
+            setState([...newState]);
             setTitle('');
             setDescription('');
             setPlaceholder('');

@@ -82,9 +82,13 @@ const IncidentWindowButton = ({ handleOpen }) => {
               <Dropdown.Item eventKey="2">
                 <HandleDepartment />
               </Dropdown.Item>
+              <Dropdown.Divider />
+
               <Dropdown.Item eventKey="2">
                 <HandleVise />
               </Dropdown.Item>
+              <Dropdown.Item eventKey="2">Отправить на доработку</Dropdown.Item>
+              <Dropdown.Item eventKey="2">Отправить на исполнение</Dropdown.Item>
             </DropdownButton>
           )}
         </div>

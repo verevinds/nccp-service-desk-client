@@ -36,6 +36,7 @@ export type TIncident = {
   id: number;
   initiatorUser: TUser;
   isArchive: false;
+  params: TPropertyParam[][] | null;
   level: number;
   option: TOption;
   optionId: number | null;
@@ -134,6 +135,7 @@ export type TOption = {
   isArchive: boolean;
   level: number | null;
   name: string;
+  params: (never | TPropertyParam)[];
 };
 export type TBindOption = {
   createdAt: string;
@@ -154,7 +156,7 @@ export type TProperty = {
   level: number | null;
   name: string;
   priorityId: number | null;
-  params: (never | TPropertyParam)[];
+  params: (never | TPropertyParam)[][];
 };
 export type TPropertyParam = {
   title: string;
@@ -186,6 +188,8 @@ export type TTypeInput =
   | 'month'
   | 'week'
   | 'switch'
+  | 'title'
+  | 'list'
   | ''
   | string;
 export type TBindProperty = {

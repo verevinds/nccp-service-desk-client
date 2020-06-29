@@ -20,6 +20,7 @@ import CreateIncidentDefault from '../CreateIncidentDefault/CreateIncidentDefaul
 import CreateIncidentCustom from '../CreateIncidentCustom/CreateIncidentCustom';
 
 const CreateIncidentModel = ({ handleClose, showModal, user }) => {
+  const [state, setState] = useState([]);
   const { list } = useSelector((state) => state.catalog);
   moment.updateLocale('ru', {
     workingWeekdays: [1, 2, 3, 4, 5],
@@ -41,6 +42,7 @@ const CreateIncidentModel = ({ handleClose, showModal, user }) => {
   const [currentOptions, setCurrentOptions] = useState([]);
   const [currentProperties, setCurrentProperties] = useState([]);
   const [property, setProperty] = useState({});
+  const [options, setOptions] = useState({});
   const [params, setParams] = useState(null);
   const [validated, setValidated] = useState(false);
 
@@ -76,6 +78,11 @@ const CreateIncidentModel = ({ handleClose, showModal, user }) => {
     user,
     params,
   ]);
+
+  useEffect(() => {
+    Array.isArray(options?.params) && setState([...options?.params]);
+  }, [options?.params]);
+
   useEffect(() => {
     let properties = currentCategory[0]?.properties.filter((item) => !item.isArchive);
 
@@ -142,6 +149,9 @@ const CreateIncidentModel = ({ handleClose, showModal, user }) => {
     setProperty(currentProperties.find((item) => item.id === currentIdProperty));
   }, [currentIdProperty, currentProperties]);
 
+  useEffect(() => {
+    setOptions(currentOptions.find((item) => item.id === currentIdOption));
+  }, [currentIdOption, currentOptions]);
   //? Устанавливаем эффект на каждое изменение состояния номера текущей категории
   useEffect(() => {
     const newCurrentCategory = list.filter((item) => item.id === currentIdCategory);
@@ -195,6 +205,7 @@ const CreateIncidentModel = ({ handleClose, showModal, user }) => {
       }
 
       await dispatch(incidentFetching(data, dataFile));
+      await setState([]);
       await handleClose();
     }
     setValidated(true);
@@ -208,6 +219,7 @@ const CreateIncidentModel = ({ handleClose, showModal, user }) => {
       textOk={'Отправить'}
       textNot={'Отменить'}
       validated={validated}
+      size={options?.params?.length > 2 ? 'lg' : undefined}
     >
       <Form.Group controlId="formBasicEmail">
         <Form.Control type="text" disabled value={`${incident.name}`} />
@@ -219,9 +231,8 @@ const CreateIncidentModel = ({ handleClose, showModal, user }) => {
       {listSelect(list, setCurrentIdCategory, 'Выберите категорию')}
       {listSelect(currentProperties, setCurrentIdProperty)}
       {listSelect(currentOptions, setCurrentIdOption)}
-
-      {Array.isArray(property?.params) && property.params.length ? (
-        <CreateIncidentCustom params={property.params} setParams={setParams} />
+      {Array.isArray(state) && state.length ? (
+        <CreateIncidentCustom setParams={setParams} state={state} setState={setState} />
       ) : (
         <CreateIncidentDefault text={text} setText={setText} />
       )}

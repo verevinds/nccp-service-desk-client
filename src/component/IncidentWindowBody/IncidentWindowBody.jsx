@@ -13,6 +13,7 @@ import PopoverCardUser from '../PopoverCardUser/PopoverCardUser';
 //? Font Awesome иконки
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAddressCard, faAt, faPhone, faDesktop } from '@fortawesome/free-solid-svg-icons';
+import IncidentWindowBodyCustom from '../IncidentWindowBodyCustom/IncidentWindowBodyCustom';
 
 const IncidentWindowBody = ({ handleOpen }) => {
   const { myIncident } = useContext(IncidentContext);
@@ -104,30 +105,7 @@ const IncidentWindowBody = ({ handleOpen }) => {
           </Card.Text>
         </>
       ) : null}
-      {Array.isArray(incident?.params) &&
-        incident?.params.map((item, index) => {
-          let value;
-          if (typeof item.value === 'boolean') {
-            value = item.value ? 'Да' : 'Нет';
-          } else {
-            value = item.value ? item.value : ' - ';
-          }
-          return (
-            <Card.Text key={index}>
-              {item.type === 'title' && item.title ? (
-                <b>
-                  {`${item.title}`} {item.description ? <br /> : undefined}
-                </b>
-              ) : undefined}
-              {(item.type === 'switch' || item.type === 'checkbox') && item.type !== 'title'
-                ? `${item.placeholder}:`
-                : `${
-                    item.title && item.type !== 'title' && !item.description ? `${item.title}:` : `${item.description}:`
-                  } `}
-              {item.type !== 'title' ? value : undefined}
-            </Card.Text>
-          );
-        })}
+      <IncidentWindowBodyCustom />
       {!myIncident && <IncidentWorkButton incident={incident} handleOpen={handleOpen} user={user} />}
       <br />
       <IncidentWindowComments />
