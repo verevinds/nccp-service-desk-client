@@ -14,11 +14,16 @@ import { Container, Card } from 'react-bootstrap';
 import IncidentWindowBody from '../IncidentWindowBody/IncidentWindowBody';
 import { IncidentWindowContext } from './IncidentWindowContext';
 import IncidentHandleVise from '../IncidentHandleVise/IncidentHandleVise';
+import CreateIncident from '../CreateIncident/CreateIncident';
 
 const IncidentWindow = () => {
   const [inWork, setInWork] = useState(false);
   const [isModify, setIsModify] = useState(false);
-  const incident = useSelector((state) => state.incidents?.current.incident, shallowEqual);
+  const [modify, setModify] = useState(false);
+  const incident = useSelector(
+    (state) => state.incidents?.current.incident,
+    shallowEqual,
+  );
   const { user } = useSelector((state) => state.auth, shallowEqual);
   const dispatch = useDispatch();
 
@@ -27,9 +32,6 @@ const IncidentWindow = () => {
   const handleOpen = function () {
     if (this?.inWork) {
       setInWork(true);
-    }
-    if (this?.isModify) {
-      setIsModify(true);
     }
     setShow(true);
   };
@@ -79,19 +81,31 @@ const IncidentWindow = () => {
         }),
       );
     },
-    [user, dispatch, incident, inWork],
+    [user, dispatch, incident],
   );
   const [vise, setVise] = useState(false);
   if (!!incident) {
     return (
-      <IncidentWindowContext.Provider value={{ onClick, handleVise: { vise, setVise } }}>
+      <IncidentWindowContext.Provider
+        value={{
+          onClick,
+          handleVise: { vise, setVise },
+          handleModify: { setIsModify },
+        }}
+      >
+        {isModify ? (
+          <CreateIncident
+            showModal={isModify}
+            handleClose={() => setIsModify(false)}
+            isModify={isModify}
+          />
+        ) : undefined}
         {show ? (
           <IncidentHandleStatus
             show={show}
             onHide={handleClose}
             incident={incident}
             inWork={inWork}
-            isModify={isModify}
           />
         ) : null}
         {vise ? <IncidentHandleVise /> : undefined}

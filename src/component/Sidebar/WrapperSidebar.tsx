@@ -7,7 +7,13 @@ import styles from './wrapperSidebar.module.css';
 import Sidebar from '../Sidebar/Sidebar';
 import SidebarFilter from '../SidebarFilter/SidebarFilter';
 
-const SidebarWrapper: React.FC<ISidebarWrapper> = ({ title, list, onClick, activeId, onClickHistory }) => {
+const SidebarWrapper: React.FC<ISidebarWrapper> = ({
+  title,
+  list,
+  onClick,
+  activeId,
+  onClickHistory,
+}) => {
   const user = useSelector((state: any) => state.auth.user, shallowEqual);
   const [blogTitle, setBlogTitle] = useState<JSX.Element | null>(null);
   const [anotherFilter, setAnotherFilter] = useState<any>(undefined);
@@ -20,7 +26,7 @@ const SidebarWrapper: React.FC<ISidebarWrapper> = ({ title, list, onClick, activ
       return list;
     }
   }, [list, user, title]);
-  console.log('list', list);
+
   const anotherList = useMemo(() => {
     return list.filter((item: any) => item.numberResponsible !== user.number);
   }, [list, user]);
@@ -43,7 +49,12 @@ const SidebarWrapper: React.FC<ISidebarWrapper> = ({ title, list, onClick, activ
                 {title ? <h6>Моя ответственность</h6> : <h6>Мои заявки</h6>}
                 <SidebarFilter setFilter={setFilter} />
               </div>
-              <Sidebar list={responsibleList} onClick={onClick} activeId={activeId} filter={filter} />
+              <Sidebar
+                list={responsibleList}
+                onClick={onClick}
+                activeId={activeId}
+                filter={filter}
+              />
             </Fragment>
           ) : undefined}
 
@@ -54,11 +65,20 @@ const SidebarWrapper: React.FC<ISidebarWrapper> = ({ title, list, onClick, activ
                 <h6>Остальные заявки</h6>
                 <SidebarFilter setFilter={setAnotherFilter} />
               </div>
-              <Sidebar list={anotherList} filter={anotherFilter} onClick={onClick} activeId={activeId} />
+              <Sidebar
+                list={anotherList}
+                filter={anotherFilter}
+                onClick={onClick}
+                activeId={activeId}
+              />
             </Fragment>
           ) : undefined}
 
-          <SidebarHistory onClick={onClick} activeId={activeId} onClickHistory={onClickHistory} />
+          <SidebarHistory
+            onClick={onClick}
+            activeId={activeId}
+            onClickHistory={onClickHistory}
+          />
         </div>
       </Container>
     </Fragment>

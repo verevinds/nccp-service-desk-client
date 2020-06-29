@@ -12,16 +12,24 @@ import { AlertContext } from '../Alert/AlertContext';
 import { useSelector } from 'react-redux';
 
 /** Action creators */
-import { incidentFetching } from '../../redux/actionCreators/incidentAction';
+import {
+  incidentFetching,
+  incidentCreate,
+} from '../../redux/actionCreators/incidentAction';
 
 /**Bootstrap components */
 import { Form, InputGroup } from 'react-bootstrap';
 import CreateIncidentDefault from '../CreateIncidentDefault/CreateIncidentDefault';
 import CreateIncidentCustom from '../CreateIncidentCustom/CreateIncidentCustom';
+import { queryApi } from '../../redux/actionCreators/queryApiAction';
 
-const CreateIncidentModel = ({ handleClose, showModal, user }) => {
+const CreateIncidentModel = ({ handleClose, showModal, isModify }) => {
   const [state, setState] = useState([]);
+  const user = useSelector((state) => state.auth.user);
   const { list } = useSelector((state) => state.catalog);
+  const chooseIncident = useSelector(
+    (state) => state.incidents.current.incident,
+  );
   moment.updateLocale('ru', {
     workingWeekdays: [1, 2, 3, 4, 5],
   });
@@ -31,26 +39,59 @@ const CreateIncidentModel = ({ handleClose, showModal, user }) => {
   const parsed = queryString.parse(window.location.search);
   const dateNow = new Date();
 
-  const [currentIdDepartment, setCurrentIdDepartment] = useState(list[0] ? list[0].departmentId : null);
-  const [currentIdCategory, setCurrentIdCategory] = useState(list[0] ? list[0].id : null);
-  const [currentIdProperty, setCurrentIdProperty] = useState(list[0].properties[0] ? list[0].properties[0].id : null);
-  const [currentIdOption, setCurrentIdOption] = useState(list[0].options[0] ? list[0].options[0].id : null);
-  const [finishWork, setFinishWork] = useState(null);
-  const [text, setText] = useState('');
+  const [currentIdDepartment, setCurrentIdDepartment] = useState(
+    isModify ? chooseIncident?.departmentId : '',
+  );
+  const [currentIdCategory, setCurrentIdCategory] = useState(
+    isModify ? chooseIncident?.categoryId : '',
+  );
+  const [currentIdProperty, setCurrentIdProperty] = useState(
+    isModify ? chooseIncident?.propertyId : '',
+  );
+  const [currentIdOption, setCurrentIdOption] = useState(null);
+  const [finishWork, setFinishWork] = useState(
+    isModify ? chooseIncident.finishWork : '',
+  );
+  const [text, setText] = useState(isModify ? chooseIncident?.text : '');
   const [file, setFile] = useState(null);
-  const [currentCategory, setCurrentCategory] = useState(list.filter((item) => item.id === currentIdCategory));
+  const [currentCategory, setCurrentCategory] = useState([]);
   const [currentOptions, setCurrentOptions] = useState([]);
   const [currentProperties, setCurrentProperties] = useState([]);
   const [property, setProperty] = useState({});
   const [options, setOptions] = useState({});
-  const [params, setParams] = useState(null);
+  const [params, setParams] = useState(isModify ? chooseIncident.params : null);
   const [validated, setValidated] = useState(false);
 
   const incident = useMemo(() => {
+    // if (isModify) {
+    //   return {
+    //     startWork: chooseIncident.startWork,
+    //     dateCreate: chooseIncident.dateCreate,
+    //     currentResponsible: chooseIncident.currentResponsible,
+    //     text: chooseIncident.text,
+    //     level: chooseIncident.level,
+    //     statusId: chooseIncident.statusId,
+    //     departmentId: chooseIncident.departmentId,
+    //     positionId: chooseIncident.positionId,
+    //     name: `${user.name1} ${user.name2} ${user.name3}`,
+    //     email: chooseIncident.email,
+    //     userNumber: chooseIncident.userNumber,
+    //     phone1: chooseIncident.phone1,
+    //     phone2: chooseIncident.phone2,
+    //     finishWork: chooseIncident.finishWork,
+    //     categoryId: currentIdCategory,
+    //     propertyId: currentIdProperty,
+    //     optionId: currentIdOption,
+    //     params: chooseIncident.params,
+    //   };
+    // }
+
     return {
-      startWork: null,
-      dateCreate: `${dateNow.getFullYear()}-${dateNow.getMonth()}-${dateNow.getDate()} ${dateNow.getHours()}:${dateNow.getMinutes()}:${dateNow.getSeconds()}`,
-      currentResponsible: null,
+      startWork: isModify ? chooseIncident.startWork : null,
+      dateCreate: isModify
+        ? chooseIncident.dateCreate
+        : `${dateNow.getFullYear()}-${dateNow.getMonth()}-${dateNow.getDate()} ${dateNow.getHours()}:${dateNow.getMinutes()}:${dateNow.getSeconds()}`,
+      currentResponsible: isModify ? chooseIncident.currentResponsible : null,
       text,
       level: 0,
       statusId: 0,
@@ -77,76 +118,95 @@ const CreateIncidentModel = ({ handleClose, showModal, user }) => {
     text,
     user,
     params,
+    chooseIncident,
+    isModify,
   ]);
+
+  useEffect(() => {
+    if (isModify) {
+      setCurrentIdDepartment(chooseIncident?.departmentId);
+      setCurrentIdCategory(chooseIncident?.categoryId);
+      setCurrentIdProperty(chooseIncident?.propertyId);
+      setCurrentIdOption(chooseIncident?.optionId);
+    }
+  }, [chooseIncident]);
+
+  useEffect(() => {
+    !isModify && setCurrentIdProperty(null);
+  }, [currentIdCategory]);
+  useEffect(() => {
+    !isModify && setCurrentIdOption(null);
+  }, [currentIdProperty]);
+  useEffect(() => {}, [currentIdOption]);
 
   useEffect(() => {
     Array.isArray(options?.params) && setState([...options?.params]);
   }, [options]);
 
   useEffect(() => {
-    let properties = currentCategory[0]?.properties.filter((item) => !item.isArchive);
+    let properties = currentCategory[0]?.properties.filter(
+      (item) => !item.isArchive,
+    );
 
     setCurrentProperties(properties);
   }, [currentCategory]);
 
   useEffect(() => {
-    Array.isArray(currentProperties) && currentProperties[0]
-      ? setCurrentIdProperty(currentProperties[0].id)
-      : setCurrentIdProperty(null);
-  }, [currentProperties]);
+    if (currentCategory) {
+      let options = currentCategory[0]?.options;
+      let newOptions = [];
 
-  useEffect(() => {
-    Array.isArray(currentOptions) && currentOptions[0]
-      ? setCurrentIdOption(currentOptions[0].id)
-      : setCurrentIdOption(null);
-  }, [currentOptions]);
+      Array.isArray(options) &&
+        options.forEach((item) => {
+          if (item.bind.length) {
+            let isBind = false;
 
-  useEffect(() => {
-    let options = currentCategory[0]?.options;
-    let newOptions = [];
+            item.bind.forEach((item) => {
+              if (item.propertyId === currentIdProperty) {
+                isBind = true;
+              }
+            });
 
-    Array.isArray(options) &&
-      options.forEach((item) => {
-        if (item.bind.length) {
-          let isBind = false;
-
-          item.bind.forEach((item) => {
-            if (item.propertyId === currentIdProperty) {
-              isBind = true;
-            }
-          });
-
-          if (isBind) newOptions.push(item);
-        }
-      });
-
-    if (!!newOptions.length) {
-      let options = newOptions.filter((item) => !item.isArchive);
-      setCurrentOptions(options);
-    } else {
-      if (Array.isArray(options))
-        newOptions = options.filter((item) => {
-          let isBind = true;
-
-          item.bind.forEach((item) => {
-            if (item.propertyId !== currentIdProperty) isBind = false;
-          });
-
-          return isBind;
+            if (isBind) newOptions.push(item);
+          }
         });
-    }
 
-    options = newOptions.filter((item) => !item.isArchive);
-    setCurrentOptions(options);
-  }, [currentIdProperty, currentCategory, currentProperties]);
+      if (!!newOptions.length) {
+        let options = newOptions.filter((item) => !item.isArchive);
+        setCurrentOptions(options);
+      } else {
+        if (Array.isArray(options))
+          newOptions = options.filter((item) => {
+            let isBind = true;
+
+            item.bind.forEach((item) => {
+              if (item.propertyId !== currentIdProperty) isBind = false;
+            });
+
+            return isBind;
+          });
+      }
+
+      options = newOptions.filter((item) => !item.isArchive);
+      setCurrentOptions(options);
+    }
+  }, [currentIdProperty, currentCategory]);
 
   useEffect(() => {
-    const property = currentProperties.find((item) => item.id === currentIdProperty);
-    const date = new Date();
-    const finishWork = new Date(moment(date, 'DD-MM-YYYY').businessAdd(property?.deadline - 1)._d).toISOString();
-    property && setFinishWork(finishWork);
+    if (currentProperties) {
+      const property = currentProperties.find(
+        (item) => item.id === currentIdProperty,
+      );
+      const date = new Date();
+      const finishWork = new Date(
+        moment(date, 'DD-MM-YYYY').businessAdd(property?.deadline - 1)._d,
+      ).toISOString();
+      property && !isModify && setFinishWork(finishWork);
 
-    setProperty(currentProperties.find((item) => item.id === currentIdProperty));
+      setProperty(
+        currentProperties.find((item) => item.id === currentIdProperty),
+      );
+    }
   }, [currentIdProperty, currentProperties]);
 
   useEffect(() => {
@@ -154,20 +214,30 @@ const CreateIncidentModel = ({ handleClose, showModal, user }) => {
   }, [currentIdOption, currentOptions]);
   //? Устанавливаем эффект на каждое изменение состояния номера текущей категории
   useEffect(() => {
-    const newCurrentCategory = list.filter((item) => item.id === currentIdCategory);
-    setCurrentIdDepartment(newCurrentCategory[0].departmentId);
-    let categories = newCurrentCategory.filter((item) => !item.isArchive);
-    setCurrentCategory(categories);
+    if (currentIdCategory) {
+      const newCurrentCategory = list.filter(
+        (item) => item.id === currentIdCategory,
+      );
+      setCurrentIdDepartment(newCurrentCategory[0].departmentId);
+      let categories = newCurrentCategory.filter((item) => !item.isArchive);
+      setCurrentCategory(categories);
+    }
   }, [currentIdCategory, list]);
 
   useEffect(() => {
     // console.log(property);
   }, [property]);
   //Функция собирающая из списка и функции изменения состояния номера элемент html
-  const listSelect = (list, setCurrent, title) => {
+  const listSelect = (list, setCurrent, title, currentId) => {
     if (list?.length)
       return (
-        <CreateIncidentSelect list={list} onChange={(event) => setCurrent(Number(event.target.value))} title={title} />
+        <CreateIncidentSelect
+          list={list}
+          onChange={(event) => setCurrent(Number(event.target.value))}
+          currentId={currentId}
+          title={title}
+          isModify={isModify}
+        />
       );
   };
 
@@ -203,8 +273,17 @@ const CreateIncidentModel = ({ handleClose, showModal, user }) => {
           text: `Невозможно прикрепить файл: ${statusFileUpload}`,
         });
       }
-
-      await dispatch(incidentFetching(data, dataFile));
+      if (isModify) {
+        dispatch(
+          queryApi({
+            route: 'incidents',
+            method: 'put',
+            actionUpdate: incidentCreate,
+            data: { ...incident, statusId: 1 },
+            id: chooseIncident.id,
+          }),
+        );
+      } else await dispatch(incidentFetching(data, dataFile));
       await setState([]);
       await handleClose();
     }
@@ -216,7 +295,7 @@ const CreateIncidentModel = ({ handleClose, showModal, user }) => {
       onHide={handleClose}
       title={'Создание заявки'}
       onSubmit={onSubmit}
-      textOk={'Отправить'}
+      textOk={isModify ? 'Сохранить' : 'Отправить'}
       textNot={'Отменить'}
       validated={validated}
       size={options?.params?.length > 2 ? 'lg' : undefined}
@@ -224,36 +303,67 @@ const CreateIncidentModel = ({ handleClose, showModal, user }) => {
       <Form.Group controlId="formBasicEmail">
         <Form.Control type="text" disabled value={`${incident.name}`} />
         <Form.Text className="text-muted">
-          Если имя в этом поле не совпадает с Вашим, обратитесь к администратору.
+          Если имя в этом поле не совпадает с Вашим, обратитесь к
+          администратору.
         </Form.Text>
       </Form.Group>
 
-      {listSelect(list, setCurrentIdCategory, 'Выберите категорию')}
-      {listSelect(currentProperties, setCurrentIdProperty)}
-      {listSelect(currentOptions, setCurrentIdOption)}
+      {listSelect(
+        list,
+        setCurrentIdCategory,
+        'Выберите категорию',
+        currentIdCategory,
+      )}
+      {listSelect(
+        currentProperties,
+        setCurrentIdProperty,
+        '',
+        currentIdProperty,
+      )}
+      {!!currentIdProperty
+        ? listSelect(currentOptions, setCurrentIdOption, '', currentIdOption)
+        : undefined}
       {Array.isArray(state) && state.length ? (
-        <CreateIncidentCustom setParams={setParams} state={state} setState={setState} />
+        <CreateIncidentCustom
+          setParams={setParams}
+          state={state}
+          setState={setState}
+        />
       ) : (
         <CreateIncidentDefault text={text} setText={setText} />
       )}
-      <Form.Group>
-        <UploadFiles setFile={setFile} />
-      </Form.Group>
-      <InputGroup className="mb-3">
-        <InputGroup.Prepend>
-          <InputGroup.Text id="basic-addon1">Срок выполнения</InputGroup.Text>
-        </InputGroup.Prepend>
-        <Form.Control
-          type="date"
-          value={finishWork?.slice(0, 10)}
-          min={new Date(moment(new Date(), 'DD-MM-YYYY').businessAdd(property?.deadline - 1)._d)
-            .toISOString()
-            .slice(0, 10)}
-          onChange={(event) =>
-            setFinishWork(new Date(`${event.currentTarget.value}${finishWork?.slice(10)}`).toISOString())
-          }
-        />
-      </InputGroup>
+      {!isModify ? (
+        <>
+          <Form.Group>
+            <UploadFiles setFile={setFile} />
+          </Form.Group>
+          <InputGroup className="mb-3">
+            <InputGroup.Prepend>
+              <InputGroup.Text id="basic-addon1">
+                Срок выполнения
+              </InputGroup.Text>
+            </InputGroup.Prepend>
+            <Form.Control
+              type="date"
+              value={finishWork?.slice(0, 10)}
+              min={new Date(
+                moment(new Date(), 'DD-MM-YYYY').businessAdd(
+                  property?.deadline - 1,
+                )._d,
+              )
+                .toISOString()
+                .slice(0, 10)}
+              onChange={(event) =>
+                setFinishWork(
+                  new Date(
+                    `${event.currentTarget.value}${finishWork?.slice(10)}`,
+                  ).toISOString(),
+                )
+              }
+            />
+          </InputGroup>
+        </>
+      ) : undefined}
     </ModalWindow>
   );
 };
