@@ -68,21 +68,31 @@ const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId, filter }) => {
           }
           let color;
           let tooltip;
-          if (item.status) {
-            if (Number(item.status) === 8388607) {
-              color = '#c3e6cb';
-              tooltip = `Готово. Ждёт закрытия.`;
-            } else {
-              if (Number(item.status) === 8388608) {
+          if (item.status >= 0) {
+            switch (Number(item.status)) {
+              case 0:
+                color = '#007bff';
+                tooltip = `Новая заявка. Нет ответственного.`;
+                break;
+              case 8388607:
+                color = '#c3e6cb';
+                tooltip = `Готово. Ждёт закрытия.`;
+                break;
+              case 8388608:
                 color = '#c3e6cb';
                 tooltip = `Закрыт`;
-              } else color = '#bee5eb';
-              tooltip = `В работе`;
+                break;
+              case 8388604:
+                color = '#dc3545';
+                tooltip = `Отказано. Причина в комментариях`;
+                break;
+              default:
+                color = '#bee5eb';
+                tooltip = `В работе`;
+                break;
             }
-          } else if (item.status === 0) {
-            color = '#007bff';
-            tooltip = `Новая заявка. Нет ответственного.`;
           }
+
           return (
             <ListGroup.Item
               key={item.id}

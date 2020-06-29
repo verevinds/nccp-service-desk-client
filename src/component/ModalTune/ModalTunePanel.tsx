@@ -87,7 +87,6 @@ const ModalTunePanel: React.FC<IModalTunePanel> = ({ stateInput }) => {
     }
   }, [type, listType]);
   const input = useMemo(() => {
-    console.log(description);
     let obj: TPropertyParam = {
       title,
       placeholder,
@@ -194,7 +193,6 @@ const ModalTunePanel: React.FC<IModalTunePanel> = ({ stateInput }) => {
         <Button
           onClick={() => {
             let newState = [...state];
-            console.log('input', input);
             if (newState.length) {
               newState[0].push(getItems([input])[0]);
             } else {

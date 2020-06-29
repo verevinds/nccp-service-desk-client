@@ -92,8 +92,7 @@ const HandleMatches: React.FC<IHandleMatches> = () => {
       });
     if (!!button[0]) return button;
   }, [matches, onClick]);
-  console.log('jsxButton', jsxButton);
-  console.log('jsxVise', jsxVise);
+
   return (
     <>
       {!!jsxVise

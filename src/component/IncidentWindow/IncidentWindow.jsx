@@ -17,6 +17,7 @@ import IncidentHandleVise from '../IncidentHandleVise/IncidentHandleVise';
 
 const IncidentWindow = () => {
   const [inWork, setInWork] = useState(false);
+  const [isModify, setIsModify] = useState(false);
   const incident = useSelector((state) => state.incidents?.current.incident, shallowEqual);
   const { user } = useSelector((state) => state.auth, shallowEqual);
   const dispatch = useDispatch();
@@ -26,7 +27,9 @@ const IncidentWindow = () => {
   const handleOpen = function () {
     if (this?.inWork) {
       setInWork(true);
-      console.log(this?.inWork);
+    }
+    if (this?.isModify) {
+      setIsModify(true);
     }
     setShow(true);
   };
@@ -82,7 +85,15 @@ const IncidentWindow = () => {
   if (!!incident) {
     return (
       <IncidentWindowContext.Provider value={{ onClick, handleVise: { vise, setVise } }}>
-        {show ? <IncidentHandleStatus show={show} onHide={handleClose} incident={incident} inWork={inWork} /> : null}
+        {show ? (
+          <IncidentHandleStatus
+            show={show}
+            onHide={handleClose}
+            incident={incident}
+            inWork={inWork}
+            isModify={isModify}
+          />
+        ) : null}
         {vise ? <IncidentHandleVise /> : undefined}
         <Container>
           <Card>

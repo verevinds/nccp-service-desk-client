@@ -6,7 +6,6 @@ export interface IIncidentWindowBodyCustom {}
 
 const IncidentWindowBodyCustom: React.FC<IIncidentWindowBodyCustom> = (props) => {
   const incident: TIncident = useSelector((state: IState) => state.incidents?.current.incident);
-  console.log(incident?.params);
   return (
     <Row>
       {Array.isArray(incident?.params) &&
@@ -14,7 +13,6 @@ const IncidentWindowBodyCustom: React.FC<IIncidentWindowBodyCustom> = (props) =>
           return (
             <Col>
               {row.map((col: TPropertyParam, indexCol: number) => {
-                console.log(col);
                 let value;
                 if (typeof col.value === 'boolean') {
                   value = col.value ? 'Да' : 'Нет';

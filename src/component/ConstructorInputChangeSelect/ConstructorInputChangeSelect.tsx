@@ -9,7 +9,6 @@ const ConstructorInputChangeSelect: React.FC<IConstructorInputChangeSelect> = ()
   const { input } = useContext(ConstructorInputChangeContext);
   const department: TDepartment[] = useSelector((state: IState) => state.catalog.department);
   const users: IUserInUsers[] = useSelector((state: IState) => state.users.list);
-  console.log(input);
   return (
     <Fragment>
       <Form.Control as="select" defaultValue="Выберите..." readOnly>

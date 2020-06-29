@@ -20,7 +20,7 @@ const SidebarWrapper: React.FC<ISidebarWrapper> = ({ title, list, onClick, activ
       return list;
     }
   }, [list, user, title]);
-
+  console.log('list', list);
   const anotherList = useMemo(() => {
     return list.filter((item: any) => item.numberResponsible !== user.number);
   }, [list, user]);
@@ -31,7 +31,6 @@ const SidebarWrapper: React.FC<ISidebarWrapper> = ({ title, list, onClick, activ
       setBlogTitle(newBlogTitle);
     }
   }, [title, list]);
-
   return (
     <Fragment>
       <Container>

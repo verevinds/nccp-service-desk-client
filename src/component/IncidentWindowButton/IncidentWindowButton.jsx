@@ -65,6 +65,13 @@ const IncidentWindowButton = ({ handleOpen, myIncident }) => {
           </ButtonGroup>
         );
       }
+      if (Number(statusId) === 8388605 && currentResponsible === number && !!myIncident) {
+        return (
+          <ButtonGroup aria-label="Basic example">
+            <Button onClick={handleOpen.bind({ isModify: true })}>Доработать</Button>
+          </ButtonGroup>
+        );
+      }
     }
     if (!Number(statusId) && !currentResponsible && !myIncident) {
       return (
@@ -98,12 +105,15 @@ const IncidentWindowButton = ({ handleOpen, myIncident }) => {
               <Dropdown.Item eventKey="2">
                 <HandleDepartment />
               </Dropdown.Item>
-              <Dropdown.Divider />
+              {Number(statusId) > 0 ? (
+                <>
+                  <Dropdown.Divider />
 
-              <Dropdown.Item eventKey="2" onClick={() => handleVise.setVise(true)}>
-                Отправить на согласование
-              </Dropdown.Item>
-              <Dropdown.Item eventKey="3">Отправить на доработку</Dropdown.Item>
+                  <Dropdown.Item eventKey="2" onClick={() => handleVise.setVise(true)}>
+                    Отправить на согласование
+                  </Dropdown.Item>
+                </>
+              ) : undefined}
             </DropdownButton>
           ) : undefined}
         </div>

@@ -26,9 +26,6 @@ const ModalTune: React.FC<IModalTune> = ({ show, setShow, id }) => {
 
   const catalogs: TCategory[] | undefined = useSelector((state: IState) => state.catalog.list, shallowEqual);
 
-  useEffect(() => {
-    console.log('state', state);
-  }, [state]);
   // fake data generator
   const getItems = (inputs: any, offset = 0) =>
     inputs.map((row: any, keyRow: number) => {
@@ -71,7 +68,6 @@ const ModalTune: React.FC<IModalTune> = ({ show, setShow, id }) => {
   }, [state]);
 
   useEffect(() => {
-    optionsParams && console.log(getItems(optionsParams));
     optionsParams && setState(getItems(optionsParams));
     optionsParams && setInput(optionsParams);
   }, [optionsParams]);

@@ -113,7 +113,6 @@ const ConstructorInput: React.FC<IConstructorInput> = ({ input, id, onChange, pa
             className={styles.input}
             defaultValue={''}
           >
-            {console.log('input', input)}
             <option value="">
               {input.select === 'departments' && 'Выберите отдел'}
               {input.select === 'users' && 'Выберите сотрудника'}

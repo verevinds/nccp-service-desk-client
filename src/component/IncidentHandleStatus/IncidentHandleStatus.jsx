@@ -9,14 +9,14 @@ import { fileUpload } from '../UploadFiles/fileUpload';
 import { AlertContext } from '../Alert/AlertContext';
 import { fileFetching } from '../../redux/actionCreators/fileAction';
 
-const IncidentHandleStatus = ({ show, onHide, inWork }) => {
+const IncidentHandleStatus = ({ show, onHide, inWork, isModify }) => {
   const dispatch = useDispatch();
   let status = useSelector((state) => state.status.list, shallowEqual);
   const { incident } = useSelector((state) => state.incidents.current, shallowEqual);
   const { user } = useSelector((state) => state.auth, shallowEqual);
   const [fullName] = useState(`${user.name1} ${user.name2} ${user.name3}`);
   const [validated, setValidated] = useState(false);
-  const [newStatus, setNewStatus] = useState({ statusId: inWork ? 1 : incident.statusId });
+  const [newStatus, setNewStatus] = useState({ statusId: inWork || isModify ? 1 : incident.statusId });
   const [newComment, setNewComment] = useState();
   const [file, setFile] = useState(null);
   const setAlert = useContext(AlertContext);
@@ -40,10 +40,7 @@ const IncidentHandleStatus = ({ show, onHide, inWork }) => {
     else return;
   });
 
-  const list = useMemo(
-    () => status.filter((item) => item.id !== 8388608 && item.id !== 8388605 && item.id !== 8388606),
-    [status],
-  );
+  const list = useMemo(() => status.filter((item) => item.id !== 8388608 && item.id !== 8388606), [status]);
   //? Инициализируем состояние выбранного файла
   const handleStatus = (event) => {
     setNewStatus({
@@ -126,6 +123,10 @@ const IncidentHandleStatus = ({ show, onHide, inWork }) => {
     }
     setValidated(true);
   };
+
+  console.log(inWork);
+  console.log(isModify);
+
   if (list.length) {
     return (
       <ModalWindow
@@ -140,9 +141,9 @@ const IncidentHandleStatus = ({ show, onHide, inWork }) => {
           <Form.Label>Изменить статус</Form.Label>
           <Form.Control
             as="select"
-            defaultValue={inWork ? 1 : list.find((item) => item.id === incident.statusId).id}
+            defaultValue={inWork || isModify ? 1 : list.find((item) => item.id === incident.statusId).id}
             onChange={handleStatus}
-            disabled={inWork}
+            disabled={inWork || isModify}
           >
             {list
               .sort((a, b) => {

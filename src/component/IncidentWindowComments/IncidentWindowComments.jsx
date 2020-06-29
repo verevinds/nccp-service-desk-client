@@ -14,7 +14,6 @@ import { faAngleRight, faAngleDown } from '@fortawesome/free-solid-svg-icons';
 const IncidentWindowComments = () => {
   const [accordion, setAccordion] = useState(false);
   const comments = useSelector((state) => state.incidents?.current.incident.comments, shallowEqual);
-  console.log(comments);
   return (
     <>
       <Accordion defaultActiveKey={'1'}>

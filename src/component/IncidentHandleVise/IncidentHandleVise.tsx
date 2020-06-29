@@ -50,10 +50,8 @@ const IncidentHandleVise: React.FC<IIncidentHandleVise> = () => {
     if (form.checkValidity() === false) {
       event.preventDefault();
       event.stopPropagation();
-      console.log('NOT');
     } else {
       event.preventDefault();
-      console.log('ok');
       onClick.call({
         comment:
           `${user.name1} ${user.name2.charAt(0)} ${user.name3.charAt(0)} отправил(а) заявку на визирование` +
