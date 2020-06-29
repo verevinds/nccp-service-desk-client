@@ -81,9 +81,21 @@ const List: React.FC<IList> = ({
                 } else return undefined;
               })}
               <hr />
+              {~localList.findIndex(
+                (item: TList, index: number) => item.isArchive,
+              ) ? (
+                <h6>В архиве</h6>
+              ) : undefined}
               {localList.map((item: TList, index: number) => {
                 if (index < limit && item.isArchive) {
-                  return <ListItem item={item} onDelete={onDelete} onArchive={onArchive} key={item.id} />;
+                  return (
+                    <ListItem
+                      item={item}
+                      onDelete={onDelete}
+                      onArchive={onArchive}
+                      key={item.id}
+                    />
+                  );
                 } else return undefined;
               })}
               {localList.length > 50 && localList.length > limit ? (
