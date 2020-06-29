@@ -73,7 +73,7 @@ const IncidentWindowButton = ({ handleOpen }) => {
               buttonMatch
             ) : undefined
           ) : (
-            <DropdownButton as={ButtonGroup} title={'Дополнительные действия'} variant={'info'}>
+            <DropdownButton as={ButtonGroup} title={'Дополнительные действия'} variant={'outline-info'}>
               {level ? (
                 <Dropdown.Item eventKey="1">
                   <HandleResponsible />

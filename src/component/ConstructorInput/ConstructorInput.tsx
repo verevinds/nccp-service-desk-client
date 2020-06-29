@@ -1,6 +1,6 @@
 import React, { memo, useState } from 'react';
 import { Form } from 'react-bootstrap';
-import { IState, TDepartment, TPropertyParam } from '../../interface';
+import { IState, TDepartment, TPropertyParam, IUserInUsers } from '../../interface';
 import { useSelector } from 'react-redux';
 
 export interface IConstructorInput {
@@ -16,6 +16,7 @@ const ConstructorInput: React.FC<IConstructorInput> = ({ input, id, onChange, pa
   const [state, setState] = useState<string | undefined>('');
   const [isSwitchOn, setIsSwitchOn] = useState<boolean | undefined>(false);
   const department: TDepartment[] = useSelector((state: IState) => state.catalog.department);
+  const users: IUserInUsers[] = useSelector((state: IState) => state.users.list);
   const onSwitchAction = () => {
     setIsSwitchOn(!Boolean(isSwitchOn));
     onChange && onChange(id, input, !Boolean(isSwitchOn));
@@ -93,14 +94,22 @@ const ConstructorInput: React.FC<IConstructorInput> = ({ input, id, onChange, pa
           disabled={!!parentValue}
           defaultValue=""
         >
-          <option disabled value="">
-            Выберите отдел
+          <option value="">
+            {input.select === 'departments' && 'Выберите отдел'}
+            {input.select === 'users' && 'Выберите сотрудника'}
           </option>
-          {department
-            .filter((item: TDepartment) => item.name !== 'НЕ ИСПОЛЬЗОВАТЬ')
-            .map((item: TDepartment, index: number) => (
-              <option value={item.name} key={index}>
-                {item.name}
+          {input.select === 'departments' &&
+            department
+              .filter((item: TDepartment) => item.name !== 'НЕ ИСПОЛЬЗОВАТЬ')
+              .map((item: TDepartment, index: number) => (
+                <option value={item.name} key={index}>
+                  {item.name}
+                </option>
+              ))}
+          {input.select === 'users' &&
+            users.map((item: IUserInUsers, index: number) => (
+              <option value={`${item.name1} ${item.name2} ${item.name3}`} key={index}>
+                {`${item.name1} ${item.name2} ${item.name3}`}
               </option>
             ))}
         </Form.Control>

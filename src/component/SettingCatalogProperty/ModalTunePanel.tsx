@@ -81,6 +81,7 @@ const ModalTunePanel: React.FC<IModalTunePanel> = ({ stateInput, setInput }) => 
             value={listType}
           >
             <option value={initialList}>Отделы</option>
+            <option value="users">Сотрудники</option>
           </Form.Control>
         </>
       );

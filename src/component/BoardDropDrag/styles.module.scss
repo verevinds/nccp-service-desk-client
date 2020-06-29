@@ -1,0 +1,81 @@
+.item {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.icon {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 0.5em;
+  color: var(--secondary);
+}
+.icon_red {
+  color: var(--danger);
+}
+.tunePanel {
+  background-color: var(--blue);
+  padding: 1em;
+  color: var(--light);
+  border-radius: 5px;
+}
+.tunePanel_Panel {
+  display: flex;
+  width: 350px;
+  justify-content: space-between;
+  margin-bottom: 2em;
+  opacity: 0.8;
+}
+.tunePanel_Body {
+  height: 100px;
+}
+.inputGroup {
+  height: 10px;
+  select {
+    height: 30px;
+    line-height: 10px;
+    padding: 2px;
+    font-size: 13px;
+  }
+  input {
+    height: 30px;
+    line-height: 10px;
+    padding: 2px;
+    font-size: 13px;
+  }
+  h5 {
+    font-size: 13px;
+    padding: 3px 5px;
+  }
+  button {
+    height: 30px;
+    line-height: 10px;
+    padding: 2px;
+    font-size: 13px;
+  }
+}
+.formCheck {
+  margin: auto 0;
+}
+.tunePanel__buttons {
+  display: flex;
+  opacity: 0.8;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.customInput {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 1px;
+}
+.required {
+  width: 3px;
+  height: 100%;
+  margin-right: 5px;
+}
+.required_red {
+  background-color: var(--red);
+}
