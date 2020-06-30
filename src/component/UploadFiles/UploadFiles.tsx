@@ -1,7 +1,6 @@
 import React, { memo, useRef, useState, useEffect, useContext } from 'react';
 import './styles.css';
 
-import { AlertContext } from '../Alert/AlertContext';
 //? Font Awesome иконки
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUpload, faCheck } from '@fortawesome/free-solid-svg-icons';
@@ -12,16 +11,8 @@ interface IInputFile {
 const InputFile: React.FC<IInputFile> = ({ setFile }) => {
   const file = useRef<HTMLInputElement>(null);
   const [fileName, setFileName] = useState<string | undefined>(undefined);
-  const setAlert = useContext(AlertContext);
 
-  useEffect(() => {
-    if (!!fileName)
-      setAlert({
-        type: 'success',
-        text: `Выбран файл ${fileName}`,
-        autoClose: 4000,
-      });
-  }, [fileName, setAlert]);
+  useEffect(() => {}, [fileName]);
 
   const onChange = (event: React.FormEvent<HTMLInputElement>) => {
     if (!!file)
@@ -41,19 +32,9 @@ const InputFile: React.FC<IInputFile> = ({ setFile }) => {
           </span>
         </div>
         <div className="files-input">
-          <input
-            type="file"
-            name="file"
-            id="file"
-            className="input-file"
-            ref={file}
-            onChange={onChange}
-          />
+          <input type="file" name="file" id="file" className="input-file" ref={file} onChange={onChange} />
           <label htmlFor="file" className="btn btn-tertiary js-labelFile">
-            <FontAwesomeIcon
-              icon={fileName ? faCheck : faUpload}
-              color={fileName ? '#155724' : '#495057'}
-            />{' '}
+            <FontAwesomeIcon icon={fileName ? faCheck : faUpload} color={fileName ? '#155724' : '#495057'} />{' '}
             <span className="js-fileName">{fileName || `Загрузить файл`}</span>
           </label>
         </div>

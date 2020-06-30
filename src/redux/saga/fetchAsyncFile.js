@@ -42,7 +42,7 @@ export function* fetchAsyncFile({ file, incidentId, userNumber }) {
     }
     yield put(fileRequestSuccessed());
   } catch (error) {
-    console.error(error.message);
+    console.error('You?', error.message);
     yield put(errorCreate(error.message));
   }
 }

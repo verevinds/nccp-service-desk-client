@@ -2,20 +2,17 @@ import React, { memo, useState, useEffect, useContext, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import queryString from 'query-string';
 import moment from 'moment-business-days';
+import { toast } from 'react-toastify';
 
 //** My components */
 import CreateIncidentSelect from '../CreateIncidentSelect/CreateIncidentSelect';
 import ModalWindow from '../ModalWindow/ModalWindow';
 import UploadFiles from '../UploadFiles/UploadFiles';
 import { fileUpload } from '../UploadFiles/fileUpload';
-import { AlertContext } from '../Alert/AlertContext';
 import { useSelector } from 'react-redux';
 
 /** Action creators */
-import {
-  incidentFetching,
-  incidentCreate,
-} from '../../redux/actionCreators/incidentAction';
+import { incidentFetching, incidentCreate } from '../../redux/actionCreators/incidentAction';
 
 /**Bootstrap components */
 import { Form, InputGroup } from 'react-bootstrap';
@@ -24,34 +21,23 @@ import CreateIncidentCustom from '../CreateIncidentCustom/CreateIncidentCustom';
 import { queryApi } from '../../redux/actionCreators/queryApiAction';
 
 const CreateIncidentModel = ({ handleClose, showModal, isModify }) => {
-  const [state, setState] = useState([]);
   const user = useSelector((state) => state.auth.user);
   const { list } = useSelector((state) => state.catalog);
-  const chooseIncident = useSelector(
-    (state) => state.incidents.current.incident,
-  );
+  const chooseIncident = useSelector((state) => state.incidents.current.incident);
   moment.updateLocale('ru', {
     workingWeekdays: [1, 2, 3, 4, 5],
   });
+  const [state, setState] = useState(isModify && chooseIncident.params ? [...chooseIncident.params] : []);
   const dispatch = useDispatch();
-  const setAlert = useContext(AlertContext);
   // eslint-disable-next-line
   const parsed = queryString.parse(window.location.search);
   const dateNow = new Date();
 
-  const [currentIdDepartment, setCurrentIdDepartment] = useState(
-    isModify ? chooseIncident?.departmentId : '',
-  );
-  const [currentIdCategory, setCurrentIdCategory] = useState(
-    isModify ? chooseIncident?.categoryId : '',
-  );
-  const [currentIdProperty, setCurrentIdProperty] = useState(
-    isModify ? chooseIncident?.propertyId : '',
-  );
+  const [currentIdDepartment, setCurrentIdDepartment] = useState(isModify ? chooseIncident?.departmentId : '');
+  const [currentIdCategory, setCurrentIdCategory] = useState(isModify ? chooseIncident?.categoryId : '');
+  const [currentIdProperty, setCurrentIdProperty] = useState(isModify ? chooseIncident?.propertyId : '');
   const [currentIdOption, setCurrentIdOption] = useState(null);
-  const [finishWork, setFinishWork] = useState(
-    isModify ? chooseIncident.finishWork : '',
-  );
+  const [finishWork, setFinishWork] = useState(isModify ? chooseIncident.finishWork : '');
   const [text, setText] = useState(isModify ? chooseIncident?.text : '');
   const [file, setFile] = useState(null);
   const [currentCategory, setCurrentCategory] = useState([]);
@@ -63,29 +49,6 @@ const CreateIncidentModel = ({ handleClose, showModal, isModify }) => {
   const [validated, setValidated] = useState(false);
 
   const incident = useMemo(() => {
-    // if (isModify) {
-    //   return {
-    //     startWork: chooseIncident.startWork,
-    //     dateCreate: chooseIncident.dateCreate,
-    //     currentResponsible: chooseIncident.currentResponsible,
-    //     text: chooseIncident.text,
-    //     level: chooseIncident.level,
-    //     statusId: chooseIncident.statusId,
-    //     departmentId: chooseIncident.departmentId,
-    //     positionId: chooseIncident.positionId,
-    //     name: `${user.name1} ${user.name2} ${user.name3}`,
-    //     email: chooseIncident.email,
-    //     userNumber: chooseIncident.userNumber,
-    //     phone1: chooseIncident.phone1,
-    //     phone2: chooseIncident.phone2,
-    //     finishWork: chooseIncident.finishWork,
-    //     categoryId: currentIdCategory,
-    //     propertyId: currentIdProperty,
-    //     optionId: currentIdOption,
-    //     params: chooseIncident.params,
-    //   };
-    // }
-
     return {
       startWork: isModify ? chooseIncident.startWork : null,
       dateCreate: isModify
@@ -144,9 +107,7 @@ const CreateIncidentModel = ({ handleClose, showModal, isModify }) => {
   }, [options]);
 
   useEffect(() => {
-    let properties = currentCategory[0]?.properties.filter(
-      (item) => !item.isArchive,
-    );
+    let properties = currentCategory[0]?.properties.filter((item) => !item.isArchive);
 
     setCurrentProperties(properties);
   }, [currentCategory]);
@@ -194,18 +155,12 @@ const CreateIncidentModel = ({ handleClose, showModal, isModify }) => {
 
   useEffect(() => {
     if (currentProperties) {
-      const property = currentProperties.find(
-        (item) => item.id === currentIdProperty,
-      );
+      const property = currentProperties.find((item) => item.id === currentIdProperty);
       const date = new Date();
-      const finishWork = new Date(
-        moment(date, 'DD-MM-YYYY').businessAdd(property?.deadline - 1)._d,
-      ).toISOString();
+      const finishWork = new Date(moment(date, 'DD-MM-YYYY').businessAdd(property?.deadline - 1)._d).toISOString();
       property && !isModify && setFinishWork(finishWork);
 
-      setProperty(
-        currentProperties.find((item) => item.id === currentIdProperty),
-      );
+      setProperty(currentProperties.find((item) => item.id === currentIdProperty));
     }
   }, [currentIdProperty, currentProperties]);
 
@@ -215,9 +170,7 @@ const CreateIncidentModel = ({ handleClose, showModal, isModify }) => {
   //? Устанавливаем эффект на каждое изменение состояния номера текущей категории
   useEffect(() => {
     if (currentIdCategory) {
-      const newCurrentCategory = list.filter(
-        (item) => item.id === currentIdCategory,
-      );
+      const newCurrentCategory = list.filter((item) => item.id === currentIdCategory);
       setCurrentIdDepartment(newCurrentCategory[0].departmentId);
       let categories = newCurrentCategory.filter((item) => !item.isArchive);
       setCurrentCategory(categories);
@@ -260,18 +213,9 @@ const CreateIncidentModel = ({ handleClose, showModal, isModify }) => {
         } else {
           text = `Вы не прикрепили файл`;
         }
-        setAlert({
-          autoClose: 3000,
-          type,
-          text,
-        });
+        toast.error(text, { autoClose: 5000 });
         dataFile = statusFileUpload.data;
       } else {
-        setAlert({
-          autoClose: 5000,
-          type: 'warn',
-          text: `Невозможно прикрепить файл: ${statusFileUpload}`,
-        });
       }
       if (isModify) {
         dispatch(
@@ -289,6 +233,8 @@ const CreateIncidentModel = ({ handleClose, showModal, isModify }) => {
     }
     setValidated(true);
   };
+  console.log('state', state);
+  console.log('choose', chooseIncident.params);
   return (
     <ModalWindow
       show={showModal}
@@ -303,32 +249,15 @@ const CreateIncidentModel = ({ handleClose, showModal, isModify }) => {
       <Form.Group controlId="formBasicEmail">
         <Form.Control type="text" disabled value={`${incident.name}`} />
         <Form.Text className="text-muted">
-          Если имя в этом поле не совпадает с Вашим, обратитесь к
-          администратору.
+          Если имя в этом поле не совпадает с Вашим, обратитесь к администратору.
         </Form.Text>
       </Form.Group>
 
-      {listSelect(
-        list,
-        setCurrentIdCategory,
-        'Выберите категорию',
-        currentIdCategory,
-      )}
-      {listSelect(
-        currentProperties,
-        setCurrentIdProperty,
-        '',
-        currentIdProperty,
-      )}
-      {!!currentIdProperty
-        ? listSelect(currentOptions, setCurrentIdOption, '', currentIdOption)
-        : undefined}
+      {listSelect(list, setCurrentIdCategory, 'Выберите категорию', currentIdCategory)}
+      {listSelect(currentProperties, setCurrentIdProperty, '', currentIdProperty)}
+      {!!currentIdProperty ? listSelect(currentOptions, setCurrentIdOption, '', currentIdOption) : undefined}
       {Array.isArray(state) && state.length ? (
-        <CreateIncidentCustom
-          setParams={setParams}
-          state={state}
-          setState={setState}
-        />
+        <CreateIncidentCustom setParams={setParams} state={state} setState={setState} />
       ) : (
         <CreateIncidentDefault text={text} setText={setText} />
       )}
@@ -339,26 +268,16 @@ const CreateIncidentModel = ({ handleClose, showModal, isModify }) => {
           </Form.Group>
           <InputGroup className="mb-3">
             <InputGroup.Prepend>
-              <InputGroup.Text id="basic-addon1">
-                Срок выполнения
-              </InputGroup.Text>
+              <InputGroup.Text id="basic-addon1">Срок выполнения</InputGroup.Text>
             </InputGroup.Prepend>
             <Form.Control
               type="date"
               value={finishWork?.slice(0, 10)}
-              min={new Date(
-                moment(new Date(), 'DD-MM-YYYY').businessAdd(
-                  property?.deadline - 1,
-                )._d,
-              )
+              min={new Date(moment(new Date(), 'DD-MM-YYYY').businessAdd(property?.deadline - 1)._d)
                 .toISOString()
                 .slice(0, 10)}
               onChange={(event) =>
-                setFinishWork(
-                  new Date(
-                    `${event.currentTarget.value}${finishWork?.slice(10)}`,
-                  ).toISOString(),
-                )
+                setFinishWork(new Date(`${event.currentTarget.value}${finishWork?.slice(10)}`).toISOString())
               }
             />
           </InputGroup>

@@ -6,16 +6,13 @@ import { incidentCreate } from '../../redux/actionCreators/incidentAction';
 import { Form } from 'react-bootstrap';
 import UploadFiles from '../UploadFiles/UploadFiles';
 import { fileUpload } from '../UploadFiles/fileUpload';
-import { AlertContext } from '../Alert/AlertContext';
 import { fileFetching } from '../../redux/actionCreators/fileAction';
+import { toast } from 'react-toastify';
 
 const IncidentHandleStatus = ({ show, onHide, inWork, isModify }) => {
   const dispatch = useDispatch();
   let status = useSelector((state) => state.status.list, shallowEqual);
-  const { incident } = useSelector(
-    (state) => state.incidents.current,
-    shallowEqual,
-  );
+  const { incident } = useSelector((state) => state.incidents.current, shallowEqual);
   const { user } = useSelector((state) => state.auth, shallowEqual);
   const [fullName] = useState(`${user.name1} ${user.name2} ${user.name3}`);
   const [validated, setValidated] = useState(false);
@@ -24,7 +21,6 @@ const IncidentHandleStatus = ({ show, onHide, inWork, isModify }) => {
   });
   const [newComment, setNewComment] = useState();
   const [file, setFile] = useState(null);
-  const setAlert = useContext(AlertContext);
 
   let selectStatus = status;
 
@@ -45,10 +41,7 @@ const IncidentHandleStatus = ({ show, onHide, inWork, isModify }) => {
     else return;
   });
 
-  const list = useMemo(
-    () => status.filter((item) => item.id !== 8388608 && item.id !== 8388606),
-    [status],
-  );
+  const list = useMemo(() => status.filter((item) => item.id !== 8388608 && item.id !== 8388606), [status]);
   //? Инициализируем состояние выбранного файла
   const handleStatus = (event) => {
     setNewStatus({
@@ -69,18 +62,9 @@ const IncidentHandleStatus = ({ show, onHide, inWork, isModify }) => {
       } else {
         text = `Вы не прикрепили файл`;
       }
-      setAlert({
-        autoClose: 3000,
-        type,
-        text,
-      });
+      toast.error(text, { autoClose: 5000 });
       dataFile = statusFileUpload.data;
     } else {
-      setAlert({
-        autoClose: 5000,
-        type: 'warn',
-        text: `Невозможно прикрепить файл: ${statusFileUpload}`,
-      });
     }
     dispatch(
       fileFetching({
@@ -114,11 +98,7 @@ const IncidentHandleStatus = ({ show, onHide, inWork, isModify }) => {
       uploadFile(file);
 
       if (newStatus.statusId !== incident.statusId) {
-        fnNewComment(
-          `${fullName} изменил статус на "${
-            list.find((item) => item.id === newStatus.statusId).name
-          }"`,
-        );
+        fnNewComment(`${fullName} изменил статус на "${list.find((item) => item.id === newStatus.statusId).name}"`);
       }
       fnNewComment(newComment);
 
@@ -150,11 +130,7 @@ const IncidentHandleStatus = ({ show, onHide, inWork, isModify }) => {
           <Form.Label>Изменить статус</Form.Label>
           <Form.Control
             as="select"
-            defaultValue={
-              inWork || isModify
-                ? 1
-                : list.find((item) => item.id === incident.statusId).id
-            }
+            defaultValue={inWork || isModify ? 1 : list.find((item) => item.id === incident.statusId).id}
             onChange={handleStatus}
             disabled={inWork || isModify}
           >
@@ -184,9 +160,7 @@ const IncidentHandleStatus = ({ show, onHide, inWork, isModify }) => {
               setNewComment(event.target.value);
             }}
           />
-          <Form.Control.Feedback type="invalid">
-            Обязательно нужно указать комментарий!
-          </Form.Control.Feedback>
+          <Form.Control.Feedback type="invalid">Обязательно нужно указать комментарий!</Form.Control.Feedback>
         </Form.Group>
 
         <Form.Group>

@@ -17,8 +17,8 @@ export interface IConstructorInput {
 
 const ConstructorInput: React.FC<IConstructorInput> = ({ input, id, onChange, parentValue, indexRow, indexCol }) => {
   let formControl;
-  const [state, setState] = useState<string | undefined>('');
-  const [isSwitchOn, setIsSwitchOn] = useState<boolean | undefined>(false);
+  const [state, setState] = useState<string | undefined>(input.value);
+  const [isSwitchOn, setIsSwitchOn] = useState<boolean | undefined>(!!input.value);
   const department: TDepartment[] = useSelector((state: IState) => state.catalog.department);
   const users: IUserInUsers[] = useSelector((state: IState) => state.users.list);
   const user: TUser = useSelector((state: IState) => state.auth.user);
@@ -111,7 +111,7 @@ const ConstructorInput: React.FC<IConstructorInput> = ({ input, id, onChange, pa
             required={!!input.required}
             disabled={!!parentValue}
             className={styles.input}
-            defaultValue={''}
+            defaultValue={input.value}
           >
             <option value="">
               {input.select === 'departments' && 'Выберите отдел'}

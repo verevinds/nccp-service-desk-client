@@ -1,141 +1,72 @@
-import React, { memo, useEffect, useContext, useState, useMemo, useCallback } from 'react';
-import { useSelector, shallowEqual, useDispatch } from 'react-redux';
-import { AlertContext } from '../Alert/AlertContext';
-// import SpeechOn from '../../sounds/SpeechOn.mp3';
-import { Button } from 'react-bootstrap';
+import React, { memo, useEffect, useState, useMemo, useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
-//? Font Awesome иконки
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye } from '@fortawesome/free-solid-svg-icons';
+import { toast, ToastOptions } from 'react-toastify';
 
 import openSocket from 'socket.io-client';
-import { incidentCreate, incidentChoose } from '../../redux/actionCreators/incidentAction';
-import ModalWindow from '../ModalWindow/ModalWindow';
-import IncidentWindow from '../IncidentWindow/IncidentWindow';
-import {
-  IUserInUsers,
-  IState,
-  TUser,
-  TIncidentCurrent,
-  TIncident,
-  TCategory,
-  TProperty,
-  TOption,
-  TIncidents,
-} from '../../interface';
+import { incidentCreate } from '../../redux/actionCreators/incidentAction';
+import { IState, TUser, TIncident } from '../../interface';
 
 const socket = openSocket(`${window.location.protocol}//srv-sdesk.c31.nccp.ru:8000`);
 
 const HandleSocket = () => {
-  const setAlert = useContext(AlertContext);
   const user: TUser = useSelector((state: IState) => state.auth.user);
-  const users: IUserInUsers[] = useSelector((state: IState) => state.users.list, shallowEqual);
-  const catalog: TCategory[] | never[] = useSelector((state: IState) => state.catalog.list, shallowEqual);
-  const { list, isUpdate }: TIncidents = useSelector((state: IState) => state.incidents);
   const dispatch = useDispatch();
-  const [show, setShow] = useState(false);
-  const [data, setData] = useState<TIncident | undefined>();
-  const { incident }: TIncidentCurrent = useSelector((state: IState) => state.incidents.current, shallowEqual);
+  const [message, setMessage] = useState<TIncident | undefined>();
 
-  useEffect(() => {
-    // console.log('ТЕКУЩИЙ', incident);
-  }, [incident]);
-  useEffect(() => {
-    if (show) {
-      let incident = list.find((item: TIncident) => item.id === data?.id);
-      dispatch(incidentChoose(incident));
-      // console.log('Incident isUpdate');
-    }
-  }, [isUpdate, list, data, dispatch, show]);
-  const newAlert = useCallback(
-    (data: TIncident) => {
-      setAlert({
-        type: 'info',
-        text: <>Поступила новая заявка №{data.id}</>,
-        button: (
-          <>
-            <Button
-              size="sm"
-              variant="outline-info"
-              onClick={() => {
-                setShow(!show);
-              }}
-            >
-              <span>Посмотреть </span>
-              <FontAwesomeIcon icon={faEye} size="lg" />
-            </Button>
-          </>
-        ),
-      });
-    },
-    [setAlert, show],
-  );
+  const body = useCallback((text: string, buttonText: string, type: string) => {
+    const icon = [
+      { emoji: '✅', type: 'success' },
+      { emoji: '️📰', type: 'info' },
+      { emoji: '⚠️', type: 'warn' },
+    ];
+    let iconSpan = icon.find((item) => item.type === type);
+    if (!iconSpan) iconSpan = { emoji: '✉️', type: 'default' };
 
-  useEffect(() => {
-    socket.on(String(user?.departmentId), (data: TIncident) => {
-      dispatch(incidentCreate());
-      setData(data);
-    });
-  }, [user, dispatch]);
-
-  useEffect(() => {
-    if (data) {
-      let user: IUserInUsers | undefined = users.find((item: IUserInUsers) => item.number === data.userNumber);
-      let category: TCategory | undefined = catalog.find((item: TCategory) => item.id === data.categoryId);
-      let property: TProperty | undefined =
-        category && category?.properties.find((item: TProperty) => item.id === data.propertyId);
-      let option: TOption | undefined =
-        category && category?.options.find((item: TOption) => item.id === data.optionId);
-      let body =
-        'Направил Вам новую заявку №' +
-        `${!!data ? data.id : ''}` +
-        '\n\n' +
-        `Тип: ${category?.name} ${property?.name} ${option?.name} `;
-      if (user) {
-        switch (Notification.permission.toLowerCase()) {
-          case 'granted':
-            let notify = new Notification(`${user.name1} ${user.name2} ${user.name3}`, {
-              tag: !!data ? String(data.id) : undefined,
-              body,
-              icon: user.photo,
-            });
-            notify.onclick = (event: any) => {
-              let incident = list.find((item: TIncident) => item.id === data?.id);
-              dispatch(incidentChoose(incident));
-              setShow(true);
-            };
-            break;
-
-          case 'default':
-          // спросить
-        }
-      }
-    }
-  }, [data, users, newAlert, catalog, list, show, dispatch, isUpdate]);
-  useEffect(() => {
-    if (data)
-      switch (Notification.permission.toLowerCase()) {
-        case 'denied':
-          newAlert(data);
-          break;
-
-        case 'default':
-        // спросить
-      }
-  }, [data, newAlert]);
-  const jsx = useMemo(() => {
     return (
-      <>
-        <ModalWindow show={!!show} onHide={() => setShow(false)} size="lg">
-          <IncidentWindow />
-        </ModalWindow>
-      </>
+      <div className={'alertCustom'}>
+        <div className={'alertCustom__title'}>
+          <span role="img" aria-label={iconSpan?.type}>
+            {iconSpan?.emoji}
+          </span>
+          <div className={'alertCustom__body'}>
+            <h6>{text}</h6>
+            <div className={'alertCustom__button'}>{buttonText}</div>
+          </div>
+        </div>
+      </div>
     );
-  }, [show]);
+  }, []);
 
-  if (!!show) {
-    return jsx;
-  } else return <></>;
+  useEffect(() => {
+    if (user) {
+      console.log('init alert');
+      socket.on(`updateResponsible${user?.number}`, (data: TIncident) => {
+        console.log(`updateResponsible${user?.number}`, data);
+        dispatch(incidentCreate());
+        setMessage(data);
+      });
+      socket.on(`updateIncidentOwner${user?.number}`, (data: TIncident) => {
+        console.log(`updateIncidentOwner${user?.number}`, data);
+        dispatch(incidentCreate());
+        setMessage(data);
+      });
+      socket.on(`updateResponsibleDepartment${user?.departmentId}`, (data: TIncident) => {
+        console.log(`updateResponsibleDepartment${user?.departmentId}`, data);
+        dispatch(incidentCreate());
+        setMessage(data);
+      });
+    }
+  }, [user, setMessage]);
+
+  useEffect(() => {
+    console.log('message', message);
+    if (message) {
+      toast.info(body(`Получено обновление по заявке №${message.id}`, '', 'info'));
+    }
+  }, [message]);
+
+  return <></>;
 };
 
 export default memo(HandleSocket);
