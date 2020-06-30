@@ -7,7 +7,6 @@ const SettingAccess = () => {
   const [id, setId] = useState<number | undefined>();
   return (
     <Fragment>
-      <h2>Доступ</h2>
       <Row>
         <Col xs={5}>
           <SettingAccessList setId={setId} />

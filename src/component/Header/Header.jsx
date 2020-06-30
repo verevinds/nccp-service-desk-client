@@ -12,7 +12,6 @@ import HeaderButton from '../HeaderButton/HeaderButton';
 
 const Header = (props) => {
   const user = useSelector((state) => state.auth.user, shallowEqual);
-  const isAccess = useSelector((state) => state.access.isAccess, shallowEqual);
   const version = useSelector((state) => state.app.version, shallowEqual);
   const listIncident = useSelector((state) => state.incidents.list, shallowEqual);
   const [showModal, setShowModal] = useState(false);
@@ -74,11 +73,10 @@ const Header = (props) => {
                 </div>
               </Nav.Link>
             </Nav.Item>
-            {isAccess >= 1 ? (
-              <Nav.Item className={styles.nav__item}>
-                <HeaderButton to={'/setting'} faIcon={faCog} page={page} setPage={setPage} />
-              </Nav.Item>
-            ) : null}
+
+            <Nav.Item className={styles.nav__item}>
+              <HeaderButton to={'/setting'} faIcon={faCog} page={page} setPage={setPage} />
+            </Nav.Item>
           </Nav>
           <div className={styles.info}>
             <HeaderButton to={'/info'} faIcon={faInfo} page={page} setPage={setPage} />

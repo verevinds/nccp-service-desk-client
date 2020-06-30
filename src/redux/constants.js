@@ -1,6 +1,9 @@
 /** VERSION */
 export const VERSION_SET = 'VERSION_SET';
 
+/** Subscription */
+export const SUBSCRIPTION_REQUEST_SUCCESSED = 'SUBSCRIPTION_REQUEST_SUCCESSED';
+
 /** Константы для авторизации */
 export const AUTH_FETCHING = 'AUTH_FETCHING';
 export const AUTH_REQUEST_SENDD = 'AUTH_REQUEST_SENDD';

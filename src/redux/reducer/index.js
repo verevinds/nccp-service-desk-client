@@ -10,6 +10,7 @@ import { fileReducer } from './fileReducer';
 import { progressReducer } from './progressReducer';
 import { errorReducer } from './errorReducer';
 import { applicationReducer } from './appReducer';
+import { subscriptionReducer } from './subscriptionReducer';
 
 export const CombineReducers = combineReducers({
   auth: authReducer,
@@ -23,4 +24,5 @@ export const CombineReducers = combineReducers({
   progress: progressReducer,
   error: errorReducer,
   app: applicationReducer,
+  subscription: subscriptionReducer,
 });

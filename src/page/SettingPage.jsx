@@ -1,4 +1,4 @@
-import React, { memo, useState, useEffect, Suspense } from 'react';
+import React, { memo, useState, useEffect, Suspense, useMemo } from 'react';
 import Sidebar from '../component/Sidebar/Sidebar';
 import SettingCatalog from '../component/SettingCatalog/SettingCatalog';
 import SettingStatus from '../component/SettingStatus/SettingStatus';
@@ -6,18 +6,26 @@ import SettingStatus from '../component/SettingStatus/SettingStatus';
 import { Row, Col } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import SettingAccess from '../component/SettingAccess/SettingAccess';
+import SettingSubscription from '../component/SettingSubscription/SettingSubscription';
 const SettingPositions = React.lazy(() => import('../component/SettingPositions/SettingPositions'));
 
 const SettingPage = (props) => {
   const [activeId, setActiveId] = useState(0);
   const user = useSelector((state) => state.auth.user);
-  const access = user && user?.accesses?.find((item) => item.access >= 1)?.access;
-  const list = [
-    { name: 'Каталог', id: 1 },
-    { name: 'Статус', id: 2 },
-    { name: 'Должности', id: 3 },
-    { name: 'Пользователи', id: 4 },
-  ];
+  const isAccess = useSelector((state) => state.access.isAccess);
+  const list = useMemo(() => {
+    let list = [];
+    if (isAccess) {
+      list.push({ name: 'Каталог', id: 1 });
+      list.push({ name: 'Статус', id: 2 });
+      list.push({ name: 'Должности', id: 3 });
+    }
+
+    list.push({ name: 'Пользователи', id: 4 });
+    list.push({ name: 'Подписки', id: 5 });
+
+    return list;
+  }, [isAccess]);
   const [jsxContent, setJsxContent] = useState();
   useEffect(() => {
     switch (activeId) {
@@ -25,17 +33,18 @@ const SettingPage = (props) => {
         setJsxContent('');
         break;
       case 1:
-        setJsxContent(<SettingCatalog />);
+        if (isAccess > 1) setJsxContent(<SettingCatalog />);
         break;
       case 2:
-        setJsxContent(<SettingStatus />);
+        if (isAccess > 1) setJsxContent(<SettingStatus />);
         break;
       case 3:
-        setJsxContent(
-          <Suspense fallback={<div>Loading...</div>}>
-            <SettingPositions />
-          </Suspense>,
-        );
+        if (isAccess > 1)
+          setJsxContent(
+            <Suspense fallback={<div>Loading...</div>}>
+              <SettingPositions />
+            </Suspense>,
+          );
         break;
       case 4:
         setJsxContent(
@@ -44,29 +53,24 @@ const SettingPage = (props) => {
           </Suspense>,
         );
         break;
+      case 5:
+        setJsxContent(<SettingSubscription />);
+        break;
       default:
         setJsxContent(<p className="align-content-center">Контент находиться в разработке</p>);
         break;
     }
   }, [activeId]);
-  if (access >= 1)
-    return (
-      <Row className={'m-1'}>
-        <Col xs={3}>
-          <h1>Настройки</h1>
-          <Sidebar list={list} activeId={activeId} onClick={setActiveId} />
-        </Col>
+  return (
+    <Row className={'m-1'}>
+      <Col xs={3}>
+        <h1>Настройки</h1>
+        <Sidebar list={list} activeId={activeId} onClick={setActiveId} />
+      </Col>
 
-        <Col xs={9}>{jsxContent}</Col>
-      </Row>
-    );
-  else {
-    return (
-      <div>
-        <h1>У Вас недостаточно прав</h1>
-      </div>
-    );
-  }
+      <Col xs={9}>{jsxContent}</Col>
+    </Row>
+  );
 };
 
 export default memo(SettingPage);

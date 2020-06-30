@@ -7,6 +7,7 @@ export interface IState {
   progress: TProgress;
   status: TStatusies;
   users: TUsers;
+  subscription: { list?: ISubscription[] };
 }
 
 /** Инциденты */
@@ -243,4 +244,18 @@ export interface IUserInUsers extends TUser {
   accesses: any[];
   department: { id: number; name: string; createdAt: string; updatedAt: string };
   position: { id: number; name: string; level: number; createdAt: string; updatedAt: string };
+}
+
+export interface ISubscription {
+  id: number;
+  userNumber: number;
+  code: number;
+  name: string;
+  params: null | any[];
+  departmentId: number | null;
+  categoryId: number | null;
+  positionId: number | null;
+  optionId: number | null;
+  updatedAt: string;
+  createdAt: string;
 }
