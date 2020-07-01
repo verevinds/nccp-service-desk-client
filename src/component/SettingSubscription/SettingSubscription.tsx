@@ -1,4 +1,4 @@
-import React, { memo, Fragment, useState, useEffect } from 'react';
+import React, { memo, Fragment, useState, useEffect, useCallback } from 'react';
 import { Row, Container, CardColumns, Spinner } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import SettingSubscriptionCard from '../SettingSubscriptionCard/SettingSubscriptionCard';
@@ -9,17 +9,31 @@ export interface ISettingSubscription {}
 
 const SettingSubscription: React.FC<ISettingSubscription> = (props) => {
   const [state, setState] = useState();
+  const user = useSelector((state: IState) => state.auth.user);
   const subscriptions = useSelector((state: IState) => state.subscription.list);
+  const isUpdate = useSelector((state: IState) => state.subscription.isUpdate);
   const dispatch = useDispatch();
 
   useEffect(() => {
+    console.log('subscriptions', subscriptions);
+  }, [subscriptions]);
+
+  const fetchSubscription = useCallback(() => {
     dispatch(
       queryApi({
         route: 'subscriptions',
         actionSuccessed: subscriptionRequestSuccessed,
+        params: { userNumber: user.number },
       }),
     );
+  }, [subscriptionRequestSuccessed, user]);
+
+  useEffect(() => {
+    fetchSubscription();
   }, []);
+  useEffect(() => {
+    if (isUpdate) fetchSubscription();
+  }, [isUpdate]);
 
   return (
     <Fragment>

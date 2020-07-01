@@ -1,13 +1,14 @@
 import { QUERY_API } from '../constants';
 
 interface IQueryApi {
-  route: string | undefined;
+  route?: string;
   actionSuccessed?: (type: string, data: any) => void;
   actionUpdate?: (type: string, data: any) => void;
-  method?: string | undefined;
+  method?: string;
   data?: any;
-  id?: number | undefined;
+  id?: number;
   params?: {};
+  userNumber?: number;
 }
 
 export const queryApi = ({
@@ -18,6 +19,7 @@ export const queryApi = ({
   data,
   id,
   params,
+  userNumber,
 }: IQueryApi) => ({
   type: QUERY_API,
   route,
@@ -27,4 +29,5 @@ export const queryApi = ({
   id,
   method,
   params,
+  userNumber,
 });

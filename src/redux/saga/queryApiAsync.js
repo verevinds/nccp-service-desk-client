@@ -3,10 +3,21 @@ import * as axios from 'axios';
 import { errorCreate } from '../actionCreators/errorAction';
 import openSocket from 'socket.io-client';
 
-export function* queryApiAsync({ route, actionSuccessed, actionUpdate, method, data = {}, id, params }) {
+export function* queryApiAsync({
+  route,
+  actionSuccessed,
+  actionUpdate,
+  method,
+  data = {},
+  id,
+  params,
+  userNumber,
+}) {
   try {
     let response;
-    const socket = openSocket(`${window.location.protocol}//srv-sdesk.c31.nccp.ru:8000`);
+    const socket = openSocket(
+      `${window.location.protocol}//srv-sdesk.c31.nccp.ru:8000`,
+    );
     let PORT = window.location.protocol === 'http:' ? '8080' : '8433';
     const URL = `${window.location.protocol}//srv-sdesk.c31.nccp.ru:${PORT}`;
     if (params) {
@@ -26,19 +37,25 @@ export function* queryApiAsync({ route, actionSuccessed, actionUpdate, method, d
         break;
 
       case 'delete':
-        response = yield call(() => axios.delete(`${URL}/api/${route}/${id || ''}`, data));
+        response = yield call(() =>
+          axios.delete(`${URL}/api/${route}/${id || ''}`, data),
+        );
         break;
 
       case 'put':
-        response = yield call(() => axios.put(`${URL}/api/${route}/${id}`, data));
+        response = yield call(() =>
+          axios.put(`${URL}/api/${route}/${id}`, data),
+        );
         console.log(response);
         if (response.status === 200 && 'incidents') {
-          socket.emit('incidentUpdate', { id, data });
+          socket.emit('incidentUpdate', { id, data, userNumber });
         }
         break;
 
       default:
-        response = yield call(() => axios.get(`${URL}/api/${route}/${id || ''}`, data));
+        response = yield call(() =>
+          axios.get(`${URL}/api/${route}/${id || ''}`, data),
+        );
         break;
     }
 
