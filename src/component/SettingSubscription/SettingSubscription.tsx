@@ -61,12 +61,6 @@ const SettingSubscription: React.FC<ISettingSubscription> = (props) => {
           </CardColumns>
         </Container>
       </Row>
-      <Row>
-        <Container className="mt-1">
-          <h3>Пользовательские</h3>
-          <i>В разработке...</i>
-        </Container>
-      </Row>
     </Fragment>
   );
 };

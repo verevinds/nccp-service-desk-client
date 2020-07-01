@@ -10,6 +10,7 @@ import List from '../List/List';
 import { usersRequestSeccessed } from '../../redux/actionCreators/usersAction';
 import { useSelector, shallowEqual, useDispatch } from 'react-redux';
 import { queryApi } from '../../redux/actionCreators/queryApiAction';
+import { TUser } from '../../interface';
 
 type TList = {
   id: number;
@@ -34,15 +35,17 @@ const SettingAccessList: React.FC<ISettingAccessList> = ({ setId }) => {
       );
   }, [users, dispatch]);
   const list = useMemo(() => {
-    return users.map((item: any) => {
-      return {
-        id: item.number,
-        name: `${item.name1} ${item.name2} ${item.name3}`,
-        createdAt: item.createdAt,
-        noChange: false,
-        level: item.level || 0,
-      };
-    });
+    return users
+      .filter((item: TUser) => item.fired !== 1)
+      .map((item: any) => {
+        return {
+          id: item.number,
+          name: `${item.name1} ${item.name2} ${item.name3}`,
+          createdAt: item.createdAt,
+          noChange: false,
+          level: item.level || 0,
+        };
+      });
   }, [users]);
 
   return (
