@@ -14,14 +14,13 @@ const SettingPage = (props) => {
   const isAccess = useSelector((state) => state.access.isAccess);
   const list = useMemo(() => {
     let list = [];
+    list.push({ name: 'Пользователи', id: 4 });
+    list.push({ name: 'Подписки', id: 5 });
     if (isAccess) {
       list.push({ name: 'Каталог', id: 1 });
       list.push({ name: 'Статус', id: 2 });
       list.push({ name: 'Должности', id: 3 });
     }
-
-    list.push({ name: 'Пользователи', id: 4 });
-    list.push({ name: 'Подписки', id: 5 });
 
     return list;
   }, [isAccess]);
