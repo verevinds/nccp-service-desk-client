@@ -93,6 +93,9 @@ const SidebarTitle: React.FC<ISidebarTitle> = ({ title }) => {
         />
         <ModalWindow
           show={show}
+          onHide={() => {
+            setShow(false);
+          }}
           onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
             event.preventDefault();
             localStorage.setItem('filter', JSON.stringify(filter));

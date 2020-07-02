@@ -14,7 +14,7 @@ const Header = (props) => {
   const user = useSelector((state) => state.auth.user, shallowEqual);
   const version = useSelector((state) => state.app.version, shallowEqual);
   const filterState = useSelector((state) => state.filter);
-  const listIncident = useSelector((state) => state.incidents.list, shallowEqual);
+  const listIncident = useSelector((state) => state.incidents.list);
   const [showModal, setShowModal] = useState(false);
   const handleClose = () => setShowModal(false);
   const handleOpen = () => setShowModal(true);
@@ -31,6 +31,7 @@ const Header = (props) => {
   const newIncidentCount = useMemo(() => {
     if (listIncident) {
       let newList = listIncident.filter((item) => item.numberResponsible !== user.number);
+      console.log('filterState', filterState);
       if (filterState.categories || filterState.options || filterState.properties)
         if (filterState.categories.length || filterState.options.length || filterState.properties.length) {
           let combineList = [];

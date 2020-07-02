@@ -1,13 +1,12 @@
 import React, { memo, useState, useEffect, useMemo, Fragment } from 'react';
 import { ISidebarWrapper } from '../Sidebar/interface';
-import { useSelector, shallowEqual, useDispatch } from 'react-redux';
+import { useSelector, shallowEqual } from 'react-redux';
 import { Container } from 'react-bootstrap';
 import SidebarHistory from '../Sidebar/SidebarHistory';
 import styles from './wrapperSidebar.module.css';
 import Sidebar from '../Sidebar/Sidebar';
 import SidebarFilter from '../SidebarFilter/SidebarFilter';
 import SidebarTitle from '../SidebarTitle/SidebarTitle';
-import { filterSet } from '../../redux/actionCreators/filterAction';
 
 const SidebarWrapper: React.FC<ISidebarWrapper> = ({ title, list, onClick, activeId, onClickHistory }) => {
   const user = useSelector((state: any) => state.auth.user, shallowEqual);
@@ -15,7 +14,6 @@ const SidebarWrapper: React.FC<ISidebarWrapper> = ({ title, list, onClick, activ
   const [blogTitle, setBlogTitle] = useState<JSX.Element | null>(null);
   const [anotherFilter, setAnotherFilter] = useState<any>(undefined);
   const [filter, setFilter] = useState<any>(undefined);
-  const dispatch = useDispatch();
   const responsibleList = useMemo(() => {
     if (title) {
       return list.filter((item: any) => item.numberResponsible === user.number);
@@ -24,11 +22,6 @@ const SidebarWrapper: React.FC<ISidebarWrapper> = ({ title, list, onClick, activ
     }
   }, [list, user, title]);
 
-  useEffect(() => {
-    let filterNoParse = localStorage.getItem('filter');
-    let filter = !!filterNoParse && JSON.parse(filterNoParse);
-    dispatch(filterSet(filter));
-  }, [dispatch]);
   const anotherList = useMemo(() => {
     let newList = list.filter((item: any) => item.numberResponsible !== user.number);
     if (filterState.categories || filterState.options || filterState.properties)

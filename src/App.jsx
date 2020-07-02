@@ -23,6 +23,7 @@ import { authRequestSuccessed, authInitialApp } from './redux/actionCreators/aut
 import { departmentRequestSuccessed } from './redux/actionCreators/departmentAction';
 import { statusRequestSeccessed } from './redux/actionCreators/statusAction';
 import { accessRequestSeccessed } from './redux/actionCreators/accessAction';
+import { filterSet } from './redux/actionCreators/filterAction';
 
 /**Bootstrap components */
 import { ProgressBar } from 'react-bootstrap';
@@ -161,6 +162,11 @@ const App = (props) => {
     user && dispatch(authInitialApp(user));
   }, [user, dispatch]);
 
+  useEffect(() => {
+    let filterNoParse = localStorage.getItem('filter');
+    let filter = !!filterNoParse && JSON.parse(filterNoParse);
+    dispatch(filterSet(filter));
+  }, [dispatch]);
   return (
     <BrowserRouter>
       {auth}
