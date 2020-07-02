@@ -1,5 +1,6 @@
 body {
   position: relative;
+  background-color: rgb(233, 235, 236);
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
     'Droid Sans', 'Helvetica Neue', sans-serif;
@@ -10,7 +11,11 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 .bg {
-  border-bottom: 1px solid var(--light);
+  background-color: rgb(233, 235, 236);
+  height: 100%;
+}
+.nowrap {
+  white-space: nowrap;
 }
 .pointer {
   cursor: pointer;
@@ -35,7 +40,9 @@ code {
 .flex_between {
   justify-content: space-between;
 }
-
+.flex_end {
+  justify-content: flex-end;
+}
 .flex_center {
   justify-content: center;
 }

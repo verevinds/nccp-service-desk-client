@@ -175,17 +175,18 @@ const App = (props) => {
         pauseOnFocusLoss
         draggable
       />
-      <div className={styles.progressBar}>
-        <ProgressBar animated now={progress.now} hidden={progress.isFinish} />
+      <div className="bg">
+        <div className={styles.progressBar}>
+          <ProgressBar animated now={progress.now} hidden={progress.isFinish} />
+        </div>
+        <Switch>
+          <Route exact path="/" component={MainPage} />
+          <Route path="/setting" component={SettingPage} />
+          <Route path="/myincidents" component={MyIncidentPage} />
+          <Route path="/test" component={TestPage} />
+          <Route path="/info" component={InfoPage} />
+        </Switch>
       </div>
-
-      <Switch>
-        <Route exact path="/" component={MainPage} />
-        <Route path="/setting" component={SettingPage} />
-        <Route path="/myincidents" component={MyIncidentPage} />
-        <Route path="/test" component={TestPage} />
-        <Route path="/info" component={InfoPage} />
-      </Switch>
     </BrowserRouter>
   );
 };

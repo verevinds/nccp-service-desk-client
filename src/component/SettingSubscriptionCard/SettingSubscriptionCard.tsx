@@ -90,9 +90,11 @@ const SettingSubscriptionCard: React.FC<ISettingSubscriptionCard> = ({ title, te
   return (
     <Fragment>
       <Card>
+        <Card.Header as="h5">{title}</Card.Header>
         <Card.Body>
-          <Card.Title>{title}</Card.Title>
           <Card.Text>{text}</Card.Text>
+        </Card.Body>
+        <div className="flex flex_row flex_end p-4">
           <Button
             variant={isLoading ? (isSubscription ? 'outline-danger' : 'primary') : 'info'}
             size="sm"
@@ -108,7 +110,7 @@ const SettingSubscriptionCard: React.FC<ISettingSubscriptionCard> = ({ title, te
             )}
             {isLoading ? (isSubscription ? 'Отписаться' : 'Подписаться') : 'Загрузка...'}
           </Button>
-        </Card.Body>
+        </div>
       </Card>
     </Fragment>
   );

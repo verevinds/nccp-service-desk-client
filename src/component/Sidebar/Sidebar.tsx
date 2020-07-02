@@ -98,7 +98,7 @@ const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId, filter }) => {
               key={item.id}
               //@ts-ignore
               onClick={onClick ? () => onClick(item.id) : null}
-              className={`${styles.item} ${activeId === item.id ? styles.active : null}`}
+              className={`${styles.item} ${activeId === item.id ? styles.active : null} bg`}
             >
               <div className={styles.bar}>
                 <div className={styles.bar__container_top}>

@@ -1,4 +1,4 @@
-import React, { memo, Fragment, useState, useEffect, useLayoutEffect } from 'react';
+import React, { memo, Fragment, useState, useLayoutEffect } from 'react';
 import styles from './styles.module.scss';
 import { useSelector, useDispatch } from 'react-redux';
 import ButtonFontAwesome from '../ButtonFontAwesome/ButtonFontAwesome';

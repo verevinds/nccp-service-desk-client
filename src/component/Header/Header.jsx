@@ -51,7 +51,12 @@ const Header = (props) => {
   }, [listIncident, filterState, user]);
   return (
     <nav>
-      <Navbar collapseOnSelect expand="lg" variant="light" className="bg">
+      <Navbar
+        collapseOnSelect
+        expand="lg"
+        variant="light"
+        style={{ backgroundColor: '#fff', boxShadow: '0px 0px 6px 1px rgba(0,0,0,0.2)' }}
+      >
         <Navbar.Brand>
           <a href="http://www.c31.nccp.ru/">
             <Image src={logo} className={styles.logo} />
@@ -85,7 +90,7 @@ const Header = (props) => {
             <Nav.Item>
               <Nav.Link href="">
                 <div className={styles.user}>
-                  <Navbar.Text className="pr-1">{`${fullName}`}</Navbar.Text>
+                  <Navbar.Text className="pr-1 nowrap">{`${fullName}`}</Navbar.Text>
                   <div className={styles.avatar}>
                     <Image src={user ? user.photo : ''} roundedCircle className={styles.avatar__img} />
                   </div>

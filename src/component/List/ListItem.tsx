@@ -191,7 +191,7 @@ const ListItem: React.FC<IListItem> = ({
         key={id}
         className={`${!!handleBind ? styles.focus : ''} ${active || ''} ${cursor || color} ${
           isArchive || noChange ? styles.isArchive : styles.borderLeft
-        }`}
+        } bg`}
         style={{
           borderLeftWidth: 3,
           borderBottomWidth: 0,
