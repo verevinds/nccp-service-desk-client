@@ -1,5 +1,5 @@
 import React, { memo, useState, useEffect } from 'react';
-import { ListGroup, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { ListGroup, OverlayTrigger, Tooltip, Button } from 'react-bootstrap';
 import styles from './siderbar.module.scss';
 //Interface TypeScript for function Sidebar
 import { ISidebar } from './interface';
@@ -10,6 +10,7 @@ import { faAngleRight, faTag, faUserClock, faUserCheck } from '@fortawesome/free
 import SidebarDown from './SidebarDown';
 
 const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId, filter }) => {
+  const [limit, setLimit] = useState(8);
   const tags = (item: any, color?: any, tooltip?: string) => {
     let tags = [];
     if (!!item.status || Number(item.status) === 0) {
@@ -51,87 +52,102 @@ const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId, filter }) => {
     return tags;
   };
 
-  const [jsxListItem, setJsxListItem] = useState<JSX.Element[] | JSX.Element | void[]>([
-    <p key={0}>Загрузка данных</p>,
-  ]);
+  const [jsxListItem, setJsxListItem] = useState<(JSX.Element | undefined)[]>([<p key={0}>Загрузка данных</p>]);
 
   useEffect(() => {
     if (Array.isArray(list) && list.length) {
       let sortList = list;
-      const jsxItem: JSX.Element[] | void[] = sortList
+      const jsxItem: (JSX.Element | undefined)[] = sortList
         .sort((a: any, b: any) => (a[filter?.name] > b[filter?.name] ? 1 * filter?.sing : -1 * filter?.sing))
-        .map((item: any) => {
-          let itemText: string = '';
+        .map((item: any, index: number) => {
+          if (index < limit) {
+            let itemText: string = '';
 
-          if (item.createdAt) {
-            itemText = ` №${item.id} `;
-          }
-          let color;
-          let tooltip;
-          if (item.status >= 0) {
-            switch (Number(item.status)) {
-              case 0:
-                color = '#007bff';
-                tooltip = `Новая заявка. Нет ответственного.`;
-                break;
-              case 8388607:
-                color = '#c3e6cb';
-                tooltip = `Готово. Ждёт закрытия.`;
-                break;
-              case 8388608:
-                color = '#c3e6cb';
-                tooltip = `Закрыт`;
-                break;
-              case 8388604:
-                color = '#dc3545';
-                tooltip = `Отказано. Причина в комментариях`;
-                break;
-              default:
-                color = '#bee5eb';
-                tooltip = `В работе`;
-                break;
+            if (item.createdAt) {
+              itemText = ` №${item.id} `;
             }
-          }
+            let color;
+            let tooltip;
+            if (item.status >= 0) {
+              switch (Number(item.status)) {
+                case 0:
+                  color = '#007bff';
+                  tooltip = `Новая заявка. Нет ответственного.`;
+                  break;
+                case 8388607:
+                  color = '#c3e6cb';
+                  tooltip = `Готово. Ждёт закрытия.`;
+                  break;
+                case 8388608:
+                  color = '#c3e6cb';
+                  tooltip = `Закрыт`;
+                  break;
+                case 8388604:
+                  color = '#dc3545';
+                  tooltip = `Отказано. Причина в комментариях`;
+                  break;
+                default:
+                  color = '#bee5eb';
+                  tooltip = `В работе`;
+                  break;
+              }
+            }
 
-          return (
-            <ListGroup.Item
-              key={item.id}
-              //@ts-ignore
-              onClick={onClick ? () => onClick(item.id) : null}
-              className={`${styles.item} ${activeId === item.id ? styles.active : null} bg`}
-            >
-              <div className={styles.bar}>
-                <div className={styles.bar__container_top}>
-                  <div className={`${styles.icon} ${styles.icon_left}`}>
-                    {tags(item, color, tooltip)?.map((item) => item)}
-                  </div>
-                  <div className={styles.item__body}>
-                    <div className={styles.item__id}>
-                      <span>{itemText}</span>
+            return (
+              <ListGroup.Item
+                key={item.id}
+                //@ts-ignore
+                onClick={onClick ? () => onClick(item.id) : null}
+                className={`${styles.item} ${activeId === item.id ? styles.active : null} bg`}
+              >
+                <div className={styles.bar}>
+                  <div className={styles.bar__container_top}>
+                    <div className={`${styles.icon} ${styles.icon_left}`}>
+                      {tags(item, color, tooltip)?.map((item) => item)}
                     </div>
-                    <div className={styles.item__text}>
-                      <span className={styles.item__text_span}>
-                        {!!item.name.trim() ? item.name : 'Без категории'} {item.responsible}
-                      </span>
+                    <div className={styles.item__body}>
+                      <div className={styles.item__id}>
+                        <span>{itemText}</span>
+                      </div>
+                      <div className={styles.item__text}>
+                        <span className={styles.item__text_span}>
+                          {!!item.name.trim() ? item.name : 'Без категории'} {item.responsible}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <SidebarDown item={item} />
+                  <div className={styles.bar__container_sideRight}>
+                    <div className={`${styles.icon} ${styles.icon_right}`}>
+                      <FontAwesomeIcon icon={faAngleRight} />
                     </div>
                   </div>
                 </div>
-                <SidebarDown item={item} />
-                <div className={styles.bar__container_sideRight}>
-                  <div className={`${styles.icon} ${styles.icon_right}`}>
-                    <FontAwesomeIcon icon={faAngleRight} />
-                  </div>
-                </div>
-              </div>
-            </ListGroup.Item>
-          );
+              </ListGroup.Item>
+            );
+          } else return undefined;
         });
 
-      setJsxListItem(jsxItem);
+      jsxItem && setJsxListItem(jsxItem);
     }
-  }, [list, activeId, onClick, filter]);
+  }, [list, activeId, onClick, filter, limit]);
 
-  return <ListGroup variant="flush">{jsxListItem}</ListGroup>;
+  return (
+    <ListGroup variant="flush">
+      {jsxListItem}
+      {list.length > 8 && list.length > limit ? (
+        <Button
+          variant={'light'}
+          onClick={() => {
+            setLimit(limit + 8);
+          }}
+          className={'mt-1'}
+        >
+          Показать ещё
+        </Button>
+      ) : undefined}
+    </ListGroup>
+  );
 };
 
 export default memo(Sidebar);
