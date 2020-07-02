@@ -11,7 +11,7 @@ import { filterSet } from '../../redux/actionCreators/filterAction';
 
 const SidebarWrapper: React.FC<ISidebarWrapper> = ({ title, list, onClick, activeId, onClickHistory }) => {
   const user = useSelector((state: any) => state.auth.user, shallowEqual);
-  const filterState = useSelector((state: any) => state.filter, shallowEqual);
+  const filterState = useSelector((state: any) => state.filter);
   const [blogTitle, setBlogTitle] = useState<JSX.Element | null>(null);
   const [anotherFilter, setAnotherFilter] = useState<any>(undefined);
   const [filter, setFilter] = useState<any>(undefined);

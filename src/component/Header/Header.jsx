@@ -13,6 +13,7 @@ import HeaderButton from '../HeaderButton/HeaderButton';
 const Header = (props) => {
   const user = useSelector((state) => state.auth.user, shallowEqual);
   const version = useSelector((state) => state.app.version, shallowEqual);
+  const filterState = useSelector((state) => state.filter);
   const listIncident = useSelector((state) => state.incidents.list, shallowEqual);
   const [showModal, setShowModal] = useState(false);
   const handleClose = () => setShowModal(false);
@@ -28,8 +29,26 @@ const Header = (props) => {
   }, [user]);
   const [page, setPage] = useState(window.location.pathname);
   const newIncidentCount = useMemo(() => {
-    if (listIncident) return listIncident.filter((item) => Number(item.statusId) === 0).length;
-  }, [listIncident]);
+    if (listIncident) {
+      let newList = listIncident.filter((item) => item.numberResponsible !== user.number);
+      if (filterState.categories || filterState.options || filterState.properties)
+        if (filterState.categories.length || filterState.options.length || filterState.properties.length) {
+          let combineList = [];
+          for (let key in filterState) {
+            if (filterState[key].length) {
+              filterState[key].forEach((element) => {
+                combineList.push(newList.filter((item) => item[key] === Number(element)));
+              });
+            }
+          }
+          let flatCombineList = combineList.flat();
+          let uniqueFlatCombineList = Array.from(new Set(flatCombineList));
+
+          return uniqueFlatCombineList.filter((item) => Number(item.statusId) === 0).length;
+        }
+      return newList.filter((item) => Number(item.statusId) === 0).length;
+    }
+  }, [listIncident, filterState, user]);
   return (
     <nav>
       <Navbar collapseOnSelect expand="lg" bg="light" variant="light">

@@ -71,9 +71,7 @@ const SidebarTitle: React.FC<ISidebarTitle> = ({ title }) => {
         return undefined;
     }
   }, [categories, properties, options, from]);
-  useEffect(() => {
-    console.log('filter', filter);
-  }, [filter]);
+
   useLayoutEffect(() => {
     let filterNoParse = localStorage.getItem('filter');
     let filter = !!filterNoParse && JSON.parse(filterNoParse);
@@ -213,8 +211,8 @@ const SidebarTitle: React.FC<ISidebarTitle> = ({ title }) => {
               {!!filter && filter.properties.length ? (
                 <>
                   <h6>Параметры</h6>
-                  {filter.properties.map((item: any) => (
-                    <ListGroup.Item>
+                  {filter.properties.map((item: any, index: number) => (
+                    <ListGroup.Item key={index}>
                       <div className="flex flex_row flex_between">
                         {!!properties.length
                           ? properties.find((element: { id: number; name: string }) => element.id === Number(item))
@@ -224,7 +222,6 @@ const SidebarTitle: React.FC<ISidebarTitle> = ({ title }) => {
                           faIcon={faTrash}
                           onClick={() => {
                             let newFilter = { ...filter };
-                            console.log('newFilter', newFilter);
 
                             newFilter.properties = newFilter.properties.filter(
                               (element: TProperty) => element !== item,
