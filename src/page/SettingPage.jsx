@@ -32,13 +32,13 @@ const SettingPage = (props) => {
         setJsxContent('');
         break;
       case 1:
-        if (isAccess > 1) setJsxContent(<SettingCatalog />);
+        if (isAccess >= 1) setJsxContent(<SettingCatalog />);
         break;
       case 2:
-        if (isAccess > 1) setJsxContent(<SettingStatus />);
+        if (isAccess >= 1) setJsxContent(<SettingStatus />);
         break;
       case 3:
-        if (isAccess > 1)
+        if (isAccess >= 1)
           setJsxContent(
             <Suspense fallback={<div>Loading...</div>}>
               <SettingPositions />
