@@ -1,7 +1,7 @@
-import React, { memo, useLayoutEffect, useState, useEffect } from 'react';
+import React, { memo, useLayoutEffect, useState, useEffect, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import { useSelector, shallowEqual } from 'react-redux';
+import { useSelector } from 'react-redux';
 import styles from './styles.module.css';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -39,26 +39,26 @@ import { versionSet } from './redux/actionCreators/versionAction';
 const App = (props) => {
   const cookies = new Cookies();
   const dispatch = useDispatch();
-  //** Get State from Store */
-  const isUpdateCatalog = useSelector((state) => state.catalog.isUpdate, shallowEqual);
-  const isUpdateStatus = useSelector((state) => state.status.isUpdate, shallowEqual);
-  const state = useSelector((state) => state, shallowEqual); // Получаем данные каталога при строгом изменение обекта state
-  const { isUpdate } = useSelector((state) => state.incidents); // Получаем данные каталога при строгом изменение обекта state
-  const { progress } = useSelector((state) => state);
-  const { error } = useSelector((state) => state);
-  const { user } = useSelector((state) => state.auth);
-
   /** Local State */
   const [auth, setAuth] = useState(undefined);
-  useEffect(() => {}, []);
-  useEffect(() => {
-    console.log(error);
-    // if (error) toast.success(`${error}`);
-  }, [error]);
+  //** Get State from Store */
+  const isUpdateCatalog = useSelector((state) => state.catalog.isUpdate);
+  const isUpdateStatus = useSelector((state) => state.status.isUpdate);
+  const isUpdateIncident = useSelector((state) => state.incidents.isUpdate); // Получаем данные каталога при строгом изменение обекта state
+  const { progress } = useSelector((state) => state);
+  const { user } = useSelector((state) => state.auth);
 
-  useLayoutEffect(() => {
-    // console.log(state);
-  }, [state]);
+  const initialApp = useCallback(() => {
+    dispatch(authRequestSuccessed(cookies.get('auth')));
+    dispatch(departmentRequestSuccessed(JSON.parse(localStorage.getItem('departments'))));
+    dispatch(categoryRequestSuccessed(JSON.parse(localStorage.getItem('categories'))));
+    dispatch(incidentRequestSuccessed(JSON.parse(localStorage.getItem('incidents'))));
+    dispatch(statusRequestSeccessed(JSON.parse(localStorage.getItem('status'))));
+    dispatch(accessRequestSeccessed(JSON.parse(localStorage.getItem('access'))));
+    dispatch(usersRequestSeccessed(JSON.parse(localStorage.getItem('users'))));
+    // eslint-disable-next-line
+  }, [dispatch]);
+
   useLayoutEffect(() => {
     if (!!cookies.get('auth')) {
       if (cookies.get('auth').ip) {
@@ -70,13 +70,7 @@ const App = (props) => {
           }),
         );
       } else {
-        dispatch(authRequestSuccessed(cookies.get('auth')));
-        dispatch(departmentRequestSuccessed(JSON.parse(localStorage.getItem('departments'))));
-        dispatch(categoryRequestSuccessed(JSON.parse(localStorage.getItem('categories'))));
-        dispatch(incidentRequestSuccessed(JSON.parse(localStorage.getItem('incidents'))));
-        dispatch(statusRequestSeccessed(JSON.parse(localStorage.getItem('status'))));
-        dispatch(accessRequestSeccessed(JSON.parse(localStorage.getItem('access'))));
-        dispatch(usersRequestSeccessed(JSON.parse(localStorage.getItem('users'))));
+        initialApp();
       }
     } else {
       Axios.get(`${window.location.protocol}//api.nccp-eng.ru/?method=auth.start`, {
@@ -90,7 +84,6 @@ const App = (props) => {
           return res;
         })
         .then((res) => {
-          // res.data = { ip: '3242342', number: 88 };
           if (!res.data) {
             setAuth(<AuthModal />);
           } else {
@@ -110,7 +103,6 @@ const App = (props) => {
           console.error(err);
           setAuth(<AuthModal />);
         });
-      // setAuth(<AuthModal />);
     }
     dispatch(versionSet(process.env.REACT_APP_VERSION));
     // eslint-disable-next-line
@@ -134,7 +126,7 @@ const App = (props) => {
   }, [isUpdateCatalog, dispatch]);
 
   useEffect(() => {
-    if (isUpdate) {
+    if (isUpdateIncident) {
       dispatch(
         queryApi({
           route: 'incidents',
@@ -151,7 +143,7 @@ const App = (props) => {
         }),
       );
     }
-  }, [isUpdate, dispatch, user]);
+  }, [isUpdateIncident, dispatch, user]);
 
   useEffect(() => {
     if (isUpdateStatus) {
@@ -167,6 +159,7 @@ const App = (props) => {
     let filter = !!filterNoParse && JSON.parse(filterNoParse);
     dispatch(filterSet(filter));
   }, [dispatch]);
+
   return (
     <BrowserRouter>
       {auth}
