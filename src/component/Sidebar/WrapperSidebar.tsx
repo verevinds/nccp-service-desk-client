@@ -31,19 +31,22 @@ const SidebarWrapper: React.FC<ISidebarWrapper> = ({ title, list, onClick, activ
   }, [dispatch]);
   const anotherList = useMemo(() => {
     let newList = list.filter((item: any) => item.numberResponsible !== user.number);
+    if (filterState.categories || filterState.options || filterState.properties)
+      if (filterState.categories.length || filterState.options.length || filterState.properties.length) {
+        let combineList: import('./interface').TList[][] = [];
+        for (let key in filterState) {
+          if (filterState[key].length) {
+            filterState[key].forEach((element: any) => {
+              combineList.push(newList.filter((item: any) => item[key] === Number(element)));
+            });
+          }
+        }
+        let flatCombineList = combineList.flat();
+        let uniqueFlatCombineList = Array.from(new Set(flatCombineList));
 
-    let combineList: import('./interface').TList[][] = [];
-    for (let key in filterState) {
-      if (filterState[key].length) {
-        filterState[key].forEach((element: any) => {
-          combineList.push(newList.filter((item: any) => item[key] === Number(element)));
-        });
+        return uniqueFlatCombineList;
       }
-    }
-    let flatCombineList = combineList.flat();
-    let uniqueFlatCombineList = Array.from(new Set(flatCombineList));
-
-    return uniqueFlatCombineList;
+    return newList;
   }, [list, user, filterState]);
 
   useEffect(() => {
