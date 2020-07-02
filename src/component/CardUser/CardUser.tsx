@@ -1,15 +1,11 @@
 import React, { memo, useCallback, useEffect, useLayoutEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Card, Image, Col, Row, Button, Container, Dropdown, DropdownButton } from 'react-bootstrap';
+import { Card, Image, Col, Row, Container } from 'react-bootstrap';
 import styles from './styles.module.css';
 import { queryApi } from '../../redux/actionCreators/queryApiAction';
-import { usersCurrentRequestSeccessed, usersCurrentUpdate } from '../../redux/actionCreators/usersAction';
+import { usersCurrentRequestSeccessed } from '../../redux/actionCreators/usersAction';
 import { TUsers, IState } from '../../interface';
 import CardUserButton from '../CardUserButton/CardUserButton';
-
-//? Font Awesome иконки
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck } from '@fortawesome/free-solid-svg-icons';
 
 interface ICardUser {
   id?: number;

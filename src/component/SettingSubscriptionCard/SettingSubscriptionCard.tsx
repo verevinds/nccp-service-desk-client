@@ -14,11 +14,7 @@ export interface ISettingSubscriptionCard {
   code: number;
 }
 
-const SettingSubscriptionCard: React.FC<ISettingSubscriptionCard> = ({
-  title,
-  text,
-  code,
-}) => {
+const SettingSubscriptionCard: React.FC<ISettingSubscriptionCard> = ({ title, text, code }) => {
   const [subscription, setSubscription] = useState<ISubscription | undefined>();
   const user: TUser = useSelector((state: IState) => state.auth.user);
   const subscriptions = useSelector((state: IState) => state.subscription.list);
@@ -77,17 +73,12 @@ const SettingSubscriptionCard: React.FC<ISettingSubscriptionCard> = ({
 
   const handleSubscription = useCallback(() => {
     dispatch(queryApi(queryParams));
-  }, [queryParams]);
+  }, [queryParams, dispatch]);
 
   useEffect(() => {
-    let subscription = subscriptions?.find(
-      (item: ISubscription) => item.code === Number(code),
-    );
+    let subscription = subscriptions?.find((item: ISubscription) => item.code === Number(code));
 
-    console.log('subscription', subscription);
     if (!!subscription) {
-      console.log('subscription', subscription);
-
       setSubscription(subscription);
       setIsSubscription(true);
     } else {
@@ -95,7 +86,6 @@ const SettingSubscriptionCard: React.FC<ISettingSubscriptionCard> = ({
       setSubscription(undefined);
     }
   }, [code, subscriptions]);
-  console.log('isSubscription', isSubscription);
 
   return (
     <Fragment>
@@ -104,13 +94,7 @@ const SettingSubscriptionCard: React.FC<ISettingSubscriptionCard> = ({
           <Card.Title>{title}</Card.Title>
           <Card.Text>{text}</Card.Text>
           <Button
-            variant={
-              isLoading
-                ? isSubscription
-                  ? 'outline-danger'
-                  : 'primary'
-                : 'info'
-            }
+            variant={isLoading ? (isSubscription ? 'outline-danger' : 'primary') : 'info'}
             size="sm"
             onClick={() => {
               handleSubscription();
@@ -118,24 +102,11 @@ const SettingSubscriptionCard: React.FC<ISettingSubscriptionCard> = ({
             disabled={!isLoading}
           >
             {isLoading ? (
-              <FontAwesomeIcon
-                icon={isSubscription ? faBellSlash : faBell}
-                className="mr-1"
-              />
+              <FontAwesomeIcon icon={isSubscription ? faBellSlash : faBell} className="mr-1" />
             ) : (
-              <Spinner
-                as="span"
-                animation="grow"
-                size="sm"
-                role="status"
-                aria-hidden="true"
-              />
+              <Spinner as="span" animation="grow" size="sm" role="status" aria-hidden="true" />
             )}
-            {isLoading
-              ? isSubscription
-                ? 'Отписаться'
-                : 'Подписаться'
-              : 'Загрузка...'}
+            {isLoading ? (isSubscription ? 'Отписаться' : 'Подписаться') : 'Загрузка...'}
           </Button>
         </Card.Body>
       </Card>

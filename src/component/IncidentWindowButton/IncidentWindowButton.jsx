@@ -8,9 +8,7 @@ import HandleDepartment from './HandleDepartment';
 import { IncidentWindowContext } from '../IncidentWindow/IncidentWindowContext';
 
 const IncidentWindowButton = ({ handleOpen, myIncident }) => {
-  const { onClick, handleVise, handleModify } = useContext(
-    IncidentWindowContext,
-  );
+  const { onClick, handleVise, handleModify } = useContext(IncidentWindowContext);
   const {
     name1,
     name2,
@@ -18,27 +16,15 @@ const IncidentWindowButton = ({ handleOpen, myIncident }) => {
     number,
     position: { level },
   } = useSelector((state) => state.auth.user, shallowEqual);
-  const incident = useSelector(
+  const incident = useSelector((state) => state.incidents.current.incident, shallowEqual);
+  const { category, property, option, currentResponsible, statusId, matches, userNumber } = useSelector(
     (state) => state.incidents.current.incident,
     shallowEqual,
   );
-  const {
-    category,
-    property,
-    option,
-    currentResponsible,
-    statusId,
-    matches,
-    userNumber,
-  } = useSelector((state) => state.incidents.current.incident, shallowEqual);
   const [fullName] = useState(`${name1} ${name2} ${name3}`);
 
   const handleInWork = useMemo(() => {
-    if (
-      (category && category.level) ||
-      (property && property.level) ||
-      (option && option.level)
-    ) {
+    if ((category && category.level) || (property && property.level) || (option && option.level)) {
       return onClick.bind({
         incidentData: { currentResponsible: number, statusId: 0 },
         comment: `${fullName} назначил себя ответственный. Ожидает согласования.`,
@@ -61,23 +47,14 @@ const IncidentWindowButton = ({ handleOpen, myIncident }) => {
 
   const mainButton = useMemo(() => {
     if (!!currentResponsible) {
-      if (
-        Number(statusId) > 0 &&
-        Number(statusId) < 8000000 &&
-        currentResponsible === number &&
-        !myIncident
-      ) {
+      if (Number(statusId) > 0 && Number(statusId) < 8000000 && currentResponsible === number && !myIncident) {
         return (
           <Button variant="outline-primary" onClick={handleOpen}>
             Изменить
           </Button>
         );
       }
-      if (
-        Number(statusId) === 8388607 &&
-        currentResponsible === number &&
-        !!myIncident
-      ) {
+      if (Number(statusId) === 8388607 && currentResponsible === number && !!myIncident) {
         return (
           <ButtonGroup aria-label="Basic example">
             <Button
@@ -92,22 +69,14 @@ const IncidentWindowButton = ({ handleOpen, myIncident }) => {
             >
               Закрыть
             </Button>
-            <Button onClick={handleOpen.bind({ inWork: true })}>
-              Вернуть в работу
-            </Button>
+            <Button onClick={handleOpen.bind({ inWork: true })}>Вернуть в работу</Button>
           </ButtonGroup>
         );
       }
-      if (
-        Number(statusId) === 8388605 &&
-        userNumber === number &&
-        !!myIncident
-      ) {
+      if (Number(statusId) === 8388605 && userNumber === number && !!myIncident) {
         return (
           <ButtonGroup aria-label="Basic example">
-            <Button onClick={() => handleModify.setIsModify(true)}>
-              Доработать
-            </Button>
+            <Button onClick={() => handleModify.setIsModify(true)}>Доработать</Button>
           </ButtonGroup>
         );
       }
@@ -119,7 +88,7 @@ const IncidentWindowButton = ({ handleOpen, myIncident }) => {
         </Button>
       );
     }
-  }, [statusId, currentResponsible, handleInWork, handleOpen]);
+  }, [statusId, currentResponsible, handleInWork, handleOpen, handleModify, myIncident, number, onClick, userNumber]);
 
   const buttonMatch = useMemo(() => {
     if (!!~matches.findIndex((item) => item.isMatch === false)) {
@@ -135,11 +104,7 @@ const IncidentWindowButton = ({ handleOpen, myIncident }) => {
           {!!buttonMatch && Number(statusId) < 8000000 && !myIncident ? (
             buttonMatch
           ) : Number(statusId) < 8000000 && !myIncident ? (
-            <DropdownButton
-              as={ButtonGroup}
-              title={'Дополнительные действия'}
-              variant={'outline-info'}
-            >
+            <DropdownButton as={ButtonGroup} title={'Дополнительные действия'} variant={'outline-info'}>
               {level ? (
                 <Dropdown.Item eventKey="1">
                   <HandleResponsible />
@@ -152,10 +117,7 @@ const IncidentWindowButton = ({ handleOpen, myIncident }) => {
                 <>
                   <Dropdown.Divider />
 
-                  <Dropdown.Item
-                    eventKey="2"
-                    onClick={() => handleVise.setVise(true)}
-                  >
+                  <Dropdown.Item eventKey="2" onClick={() => handleVise.setVise(true)}>
                     Отправить на согласование
                   </Dropdown.Item>
                 </>

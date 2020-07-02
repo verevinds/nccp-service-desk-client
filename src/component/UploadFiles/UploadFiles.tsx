@@ -1,4 +1,4 @@
-import React, { memo, useRef, useState, useEffect, useContext } from 'react';
+import React, { memo, useRef, useState, useEffect } from 'react';
 import './styles.css';
 
 //? Font Awesome иконки

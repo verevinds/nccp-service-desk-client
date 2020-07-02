@@ -8,7 +8,6 @@ import { IncidentWindowContext } from '../IncidentWindow/IncidentWindowContext';
 
 const IncidentHandleDepartment = ({ show, onHide }: IIncidentHandleDepartment) => {
   const catalog = useSelector((state: IState) => state.catalog, shallowEqual);
-  const incident = useSelector((state: IState) => state.incidents.current.incident);
   const user = useSelector((state: IState) => state.auth.user, shallowEqual);
   const { id } = useSelector((state: IState) => state.incidents.current.incident, shallowEqual);
   const { onClick } = useContext(IncidentWindowContext);

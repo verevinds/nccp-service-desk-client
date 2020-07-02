@@ -16,53 +16,55 @@ const HandleMatches: React.FC<IHandleMatches> = () => {
 
   let jsxButton = useMemo(() => {
     // eslint-disable-next-line
-    let button =
-      matches &&
-      matches.map((item: TMatch) => {
-        if (user.position.level)
-          switch (item.code) {
-            case 1:
-              return {
-                okVariant: 'success',
-                okOnClick: onClick.bind({
-                  matchHandle: { method: 'put', data: { isMatch: true }, id: item.id },
-                  incidentData: { startWork: new Date(), statusId: 1 },
-                  comment: `Ответственный согласован`,
-                }),
-                okText: 'Согласовать ответственного',
-                canselVariant: 'outline-danger',
-                canselOnClick: onClick.bind({
-                  matchHandle: { method: 'delete', id: item.id },
-                  incidentData: { startWork: null, statusId: 0, currentResponsible: null },
-                  comment: `Отказано в назначение ответственного`,
-                }),
-                canselText: 'Отказать',
-              };
-            case 2:
-              return {
-                okText: 'Согласовать перевод',
-                okVariant: 'success',
-                okOnClick: onClick.bind({
-                  matchHandle: { method: 'delete', params: { incidentId: item.incidentId } },
-                  incidentData: { startWork: null, statusId: 0, currentResponsible: null, ...item.params },
-                  comment: `Перевод согласован`,
-                }),
+    let button = matches
+      ? matches.map((item: TMatch) => {
+          if (user.position.level)
+            switch (item.code) {
+              case 1:
+                return {
+                  okVariant: 'success',
+                  okOnClick: onClick.bind({
+                    matchHandle: { method: 'put', data: { isMatch: true }, id: item.id },
+                    incidentData: { startWork: new Date(), statusId: 1 },
+                    comment: `Ответственный согласован`,
+                  }),
+                  okText: 'Согласовать ответственного',
+                  canselVariant: 'outline-danger',
+                  canselOnClick: onClick.bind({
+                    matchHandle: { method: 'delete', id: item.id },
+                    incidentData: { startWork: null, statusId: 0, currentResponsible: null },
+                    comment: `Отказано в назначение ответственного`,
+                  }),
+                  canselText: 'Отказать',
+                };
+              case 2:
+                return {
+                  okText: 'Согласовать перевод',
+                  okVariant: 'success',
+                  okOnClick: onClick.bind({
+                    matchHandle: { method: 'delete', params: { incidentId: item.incidentId } },
+                    incidentData: { startWork: null, statusId: 0, currentResponsible: null, ...item.params },
+                    comment: `Перевод согласован`,
+                  }),
 
-                canselText: 'Отказать',
-                canselVariant: 'outline-danger',
-                canselOnClick: onClick.bind({
-                  matchHandle: { method: 'delete', id: item.id },
-                  incidentData: {},
-                  comment: `Отказано в переводе`,
-                }),
-              };
+                  canselText: 'Отказать',
+                  canselVariant: 'outline-danger',
+                  canselOnClick: onClick.bind({
+                    matchHandle: { method: 'delete', id: item.id },
+                    incidentData: {},
+                    comment: `Отказано в переводе`,
+                  }),
+                };
 
-            default:
-              break;
-          }
-      });
-    if (!!button[0]) return button;
-  }, [matches, onClick]);
+              default:
+                break;
+            }
+
+          return undefined;
+        })
+      : undefined;
+    if (!!button && !!button[0]) return button;
+  }, [matches, onClick, user.position.level]);
 
   const jsxVise = useMemo(() => {
     // eslint-disable-next-line
@@ -89,9 +91,10 @@ const HandleMatches: React.FC<IHandleMatches> = () => {
               }),
             };
           }
+        return undefined;
       });
     if (!!button[0]) return button;
-  }, [matches, onClick]);
+  }, [matches, onClick, currentResponsible, user.number]);
 
   return (
     <>

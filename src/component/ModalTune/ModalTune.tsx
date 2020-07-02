@@ -1,10 +1,10 @@
-import React, { memo, useState, useMemo, Fragment, useEffect, useCallback, useLayoutEffect } from 'react';
+import React, { memo, useState, useMemo, Fragment, useEffect } from 'react';
 import { useSelector, shallowEqual } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import ModalWindow from '../ModalWindow/ModalWindow';
 import ModalTunePanel from './ModalTunePanel';
 import { queryApi } from '../../redux/actionCreators/queryApiAction';
-import { IState, TProperty, TCategory, TPropertyParam, TOption } from '../../interface';
+import { IState, TCategory, TPropertyParam, TOption } from '../../interface';
 import { categoryUpdate } from '../../redux/actionCreators/catalogAction';
 import styles from './styles.module.scss';
 import ConstructorInput from '../ConstructorInput/ConstructorInput';

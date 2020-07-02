@@ -1,15 +1,9 @@
-import React, {
-  memo,
-  useLayoutEffect,
-  useMemo,
-  useState,
-  useEffect,
-} from 'react';
+import React, { memo, useLayoutEffect, useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { useSelector, shallowEqual } from 'react-redux';
 import styles from './styles.module.css';
-import { ToastContainer, toast, ToastOptions } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './toastiry.scss';
 
@@ -25,20 +19,14 @@ import HandleSocket from './component/HandleSocket/HandleSocket';
 
 //** Action Creators */
 import { categoryRequestSuccessed } from './redux/actionCreators/catalogAction';
-import {
-  authRequestSuccessed,
-  authInitialApp,
-} from './redux/actionCreators/authAction';
+import { authRequestSuccessed, authInitialApp } from './redux/actionCreators/authAction';
 import { departmentRequestSuccessed } from './redux/actionCreators/departmentAction';
 import { statusRequestSeccessed } from './redux/actionCreators/statusAction';
 import { accessRequestSeccessed } from './redux/actionCreators/accessAction';
 
 /**Bootstrap components */
 import { ProgressBar } from 'react-bootstrap';
-import {
-  incidentRequestSuccessed,
-  myIncidentRequestSuccessed,
-} from './redux/actionCreators/incidentAction';
+import { incidentRequestSuccessed, myIncidentRequestSuccessed } from './redux/actionCreators/incidentAction';
 import Cookies from 'universal-cookie';
 import AuthModal from './component/AuthModal/AuthModal';
 import { queryApi } from './redux/actionCreators/queryApiAction';
@@ -51,14 +39,8 @@ const App = (props) => {
   const cookies = new Cookies();
   const dispatch = useDispatch();
   //** Get State from Store */
-  const isUpdateCatalog = useSelector(
-    (state) => state.catalog.isUpdate,
-    shallowEqual,
-  );
-  const isUpdateStatus = useSelector(
-    (state) => state.status.isUpdate,
-    shallowEqual,
-  );
+  const isUpdateCatalog = useSelector((state) => state.catalog.isUpdate, shallowEqual);
+  const isUpdateStatus = useSelector((state) => state.status.isUpdate, shallowEqual);
   const state = useSelector((state) => state, shallowEqual); // Получаем данные каталога при строгом изменение обекта state
   const { isUpdate } = useSelector((state) => state.incidents); // Получаем данные каталога при строгом изменение обекта state
   const { progress } = useSelector((state) => state);
@@ -88,42 +70,21 @@ const App = (props) => {
         );
       } else {
         dispatch(authRequestSuccessed(cookies.get('auth')));
-        dispatch(
-          departmentRequestSuccessed(
-            JSON.parse(localStorage.getItem('departments')),
-          ),
-        );
-        dispatch(
-          categoryRequestSuccessed(
-            JSON.parse(localStorage.getItem('categories')),
-          ),
-        );
-        dispatch(
-          incidentRequestSuccessed(
-            JSON.parse(localStorage.getItem('incidents')),
-          ),
-        );
-        dispatch(
-          statusRequestSeccessed(JSON.parse(localStorage.getItem('status'))),
-        );
-        dispatch(
-          accessRequestSeccessed(JSON.parse(localStorage.getItem('access'))),
-        );
-        dispatch(
-          usersRequestSeccessed(JSON.parse(localStorage.getItem('users'))),
-        );
+        dispatch(departmentRequestSuccessed(JSON.parse(localStorage.getItem('departments'))));
+        dispatch(categoryRequestSuccessed(JSON.parse(localStorage.getItem('categories'))));
+        dispatch(incidentRequestSuccessed(JSON.parse(localStorage.getItem('incidents'))));
+        dispatch(statusRequestSeccessed(JSON.parse(localStorage.getItem('status'))));
+        dispatch(accessRequestSeccessed(JSON.parse(localStorage.getItem('access'))));
+        dispatch(usersRequestSeccessed(JSON.parse(localStorage.getItem('users'))));
       }
     } else {
-      Axios.get(
-        `${window.location.protocol}//api.nccp-eng.ru/?method=auth.start`,
-        {
-          headers: {
-            accept: '*/*',
-            'accept-language': 'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7',
-            'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
-          },
+      Axios.get(`${window.location.protocol}//api.nccp-eng.ru/?method=auth.start`, {
+        headers: {
+          accept: '*/*',
+          'accept-language': 'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7',
+          'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
         },
-      )
+      })
         .then((res) => {
           return res;
         })
@@ -193,9 +154,7 @@ const App = (props) => {
 
   useEffect(() => {
     if (isUpdateStatus) {
-      dispatch(
-        queryApi({ route: 'status', actionSuccessed: statusRequestSeccessed }),
-      );
+      dispatch(queryApi({ route: 'status', actionSuccessed: statusRequestSeccessed }));
     }
   }, [isUpdateStatus, dispatch]);
   useEffect(() => {

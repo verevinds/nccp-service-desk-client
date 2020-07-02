@@ -1,5 +1,5 @@
-import React, { memo, Fragment } from 'react';
-import { useSelector, shallowEqual } from 'react-redux';
+import React, { memo } from 'react';
+import { useSelector } from 'react-redux';
 import { Card, Row, Col } from 'react-bootstrap';
 import { IState, TPropertyParam, TIncident } from '../../interface';
 export interface IIncidentWindowBodyCustom {}

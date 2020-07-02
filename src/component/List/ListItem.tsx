@@ -53,16 +53,13 @@ const ListItem: React.FC<IListItem> = ({
   const { activeId, setActiveId } = useContext(ListContext);
 
   const buttonDelete = useMemo(() => {
-    let access =
-      user &&
-      Boolean(~user.accesses.findIndex((item: any) => item.access === 999));
+    let access = user && Boolean(~user.accesses.findIndex((item: any) => item.access === 999));
     if (!!onDelete && !noChange)
       return (
         <ButtonFontAwesome
           faIcon={faTrash}
           onClick={() => {
-            if (window.confirm(`Все связаные заявки исчезнут! Удалить?`))
-              onDelete({ id });
+            if (window.confirm(`Все связаные заявки исчезнут! Удалить?`)) onDelete({ id });
           }}
           variant={'danger'}
           tooltip={`Удалить`}
@@ -84,9 +81,7 @@ const ListItem: React.FC<IListItem> = ({
   }, [onFavorites, level, id]);
 
   const buttonArchive = useMemo(() => {
-    let access =
-      user &&
-      Boolean(~user.accesses.findIndex((item: any) => item.access === 999));
+    let access = user && Boolean(~user.accesses.findIndex((item: any) => item.access === 999));
     if (!!onArchive && !noChange)
       return (
         <ButtonFontAwesome
@@ -99,7 +94,7 @@ const ListItem: React.FC<IListItem> = ({
           disabled={!access}
         />
       );
-  }, [onArchive, id, isArchive, user]);
+  }, [onArchive, id, isArchive, user, noChange]);
 
   const buttonDedline = useMemo(() => {
     if (!!handleDedline)
@@ -146,26 +141,12 @@ const ListItem: React.FC<IListItem> = ({
     }
 
     if (buttonArray.length) return buttonArray;
-  }, [
-    buttonArchive,
-    buttonDelete,
-    buttonFavorites,
-    isArchive,
-    buttonDedline,
-    buttonTune,
-  ]);
+  }, [buttonArchive, buttonDelete, buttonFavorites, isArchive, buttonDedline, buttonTune]);
 
   let jsxTags = useMemo(() => {
     if (!!bind)
       if (!!bind.length)
-        if (bind[0].item)
-          return (
-            <ListItemTag
-              list={bind}
-              cursor={Boolean(cursor)}
-              handleBind={handleBind}
-            />
-          );
+        if (bind[0].item) return <ListItemTag list={bind} cursor={Boolean(cursor)} handleBind={handleBind} />;
   }, [bind, cursor, handleBind]);
 
   let active = useMemo(() => {
@@ -208,9 +189,9 @@ const ListItem: React.FC<IListItem> = ({
       <div className={cursor ? styles.overlay : ''}></div>
       <ListGroup.Item
         key={id}
-        className={`${!!handleBind ? styles.focus : ''} ${active || ''} ${
-          cursor || color
-        } ${isArchive || noChange ? styles.isArchive : styles.borderLeft}`}
+        className={`${!!handleBind ? styles.focus : ''} ${active || ''} ${cursor || color} ${
+          isArchive || noChange ? styles.isArchive : styles.borderLeft
+        }`}
         style={{
           borderLeftWidth: 3,
           borderBottomWidth: 0,
@@ -250,9 +231,7 @@ const ListItem: React.FC<IListItem> = ({
             ) : undefined}
 
             <Col xs={1} className={`${styles.icon}`}>
-              {id === activeId ? (
-                <FontAwesomeIcon icon={faAngleRight} />
-              ) : undefined}
+              {id === activeId ? <FontAwesomeIcon icon={faAngleRight} /> : undefined}
             </Col>
           </Row>
         </Fade>

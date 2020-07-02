@@ -50,7 +50,7 @@ const SettingCatalogOption: React.FC<ISettingCatalogOption> = ({ categorySubList
     }
 
     setOptionJsx(newOptionJsx);
-  }, [categorySubList, handleEvent, handleBind]);
+  }, [categorySubList, handleEvent, handleBind, handleTune]);
 
   return (
     <>

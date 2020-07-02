@@ -11,7 +11,6 @@ const SettingPositions = React.lazy(() => import('../component/SettingPositions/
 
 const SettingPage = (props) => {
   const [activeId, setActiveId] = useState(0);
-  const user = useSelector((state) => state.auth.user);
   const isAccess = useSelector((state) => state.access.isAccess);
   const list = useMemo(() => {
     let list = [];
@@ -60,7 +59,7 @@ const SettingPage = (props) => {
         setJsxContent(<p className="align-content-center">Контент находиться в разработке</p>);
         break;
     }
-  }, [activeId]);
+  }, [activeId, isAccess]);
   return (
     <Row className={'m-1'}>
       <Col xs={3}>

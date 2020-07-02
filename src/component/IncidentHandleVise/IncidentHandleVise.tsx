@@ -1,9 +1,9 @@
-import React, { memo, useContext, useState, useMemo, useRef } from 'react';
+import React, { memo, useContext, useState, useMemo } from 'react';
 import ModalWindow from '../ModalWindow/ModalWindow';
 import { IncidentWindowContext } from '../IncidentWindow/IncidentWindowContext';
 import { useSelector } from 'react-redux';
-import { TPropertyParam, TDepartment, IState, IUserInUsers, TUser, TIncident } from '../../interface';
-import { Form, Modal, Button, Col, Row } from 'react-bootstrap';
+import { TDepartment, IState, IUserInUsers, TUser, TIncident } from '../../interface';
+import { Form } from 'react-bootstrap';
 interface IIncidentHandleVise {}
 const IncidentHandleVise: React.FC<IIncidentHandleVise> = () => {
   const { handleVise } = useContext(IncidentWindowContext);
@@ -18,18 +18,7 @@ const IncidentHandleVise: React.FC<IIncidentHandleVise> = () => {
 
   const visePerson = useMemo(() => {
     return users.find((item: TUser) => item.number === Number(chooseUser));
-  }, [chooseUser]);
-
-  let input: TPropertyParam = {
-    title: '',
-    description: '',
-    parent: '',
-    placeholder: '',
-    required: true,
-    select: 'users',
-    type: 'list',
-    value: '',
-  };
+  }, [chooseUser, users]);
 
   const matchHandle = useMemo(() => {
     return {

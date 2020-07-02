@@ -1,4 +1,4 @@
-import React, { memo, useState, useContext } from 'react';
+import React, { memo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { InputGroup, FormControl } from 'react-bootstrap';
 import ModalWindow from '../ModalWindow/ModalWindow';

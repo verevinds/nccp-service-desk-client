@@ -1,5 +1,5 @@
 import React, { memo, Fragment, useMemo, useCallback } from 'react';
-import { Card, Image, Col, Row, Button, Container, Dropdown, DropdownButton } from 'react-bootstrap';
+import { Button, Dropdown, DropdownButton } from 'react-bootstrap';
 
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -14,7 +14,7 @@ export interface ICardUserButton {}
 
 const CardUserButton: React.FC<ICardUserButton> = (props) => {
   const {
-    current: { user, isUpdate },
+    current: { user },
   }: TUsers = useSelector((state: IState) => state.users);
   const dispatch = useDispatch();
 

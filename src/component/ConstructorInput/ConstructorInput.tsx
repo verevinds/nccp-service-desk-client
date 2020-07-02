@@ -1,4 +1,4 @@
-import React, { memo, useState, useEffect, useMemo } from 'react';
+import React, { memo, useState, useMemo } from 'react';
 import { Form } from 'react-bootstrap';
 import { IState, TDepartment, TPropertyParam, IUserInUsers, TUser } from '../../interface';
 import { useSelector } from 'react-redux';
@@ -28,7 +28,7 @@ const ConstructorInput: React.FC<IConstructorInput> = ({ input, id, onChange, pa
       return users.filter((item: IUserInUsers) => item.departmentId === user.departmentId);
     }
     return users;
-  }, [users]);
+  }, [users, user.departmentId]);
 
   const onSwitchAction = () => {
     setIsSwitchOn(!Boolean(isSwitchOn));

@@ -1,5 +1,5 @@
-import React, { memo, Fragment, useState, useEffect, useCallback } from 'react';
-import { Row, Container, CardColumns, Spinner } from 'react-bootstrap';
+import React, { memo, Fragment, useEffect, useCallback } from 'react';
+import { Row, Container, CardColumns } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import SettingSubscriptionCard from '../SettingSubscriptionCard/SettingSubscriptionCard';
 import { queryApi } from '../../redux/actionCreators/queryApiAction';
@@ -8,15 +8,9 @@ import { IState } from '../../interface';
 export interface ISettingSubscription {}
 
 const SettingSubscription: React.FC<ISettingSubscription> = (props) => {
-  const [state, setState] = useState();
   const user = useSelector((state: IState) => state.auth.user);
-  const subscriptions = useSelector((state: IState) => state.subscription.list);
   const isUpdate = useSelector((state: IState) => state.subscription.isUpdate);
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    console.log('subscriptions', subscriptions);
-  }, [subscriptions]);
 
   const fetchSubscription = useCallback(() => {
     dispatch(
@@ -26,14 +20,14 @@ const SettingSubscription: React.FC<ISettingSubscription> = (props) => {
         params: { userNumber: user.number },
       }),
     );
-  }, [subscriptionRequestSuccessed, user]);
+  }, [user, dispatch]);
 
   useEffect(() => {
     fetchSubscription();
-  }, []);
+  }, [fetchSubscription]);
   useEffect(() => {
     if (isUpdate) fetchSubscription();
-  }, [isUpdate]);
+  }, [isUpdate, fetchSubscription]);
 
   return (
     <Fragment>

@@ -1,7 +1,7 @@
 import React, { memo, useContext, useState, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { Form } from 'react-bootstrap';
-import { TIncident, IState, TDepartment, IUserInUsers, TUser, TPropertyParam } from '../interface';
+import { TIncident, IState, TDepartment, IUserInUsers, TUser } from '../interface';
 import { IncidentWindowContext } from '../component/IncidentWindow/IncidentWindowContext';
 import ModalWindow from '../component/ModalWindow/ModalWindow';
 
@@ -14,16 +14,6 @@ const TestPage = () => {
   const users: IUserInUsers[] = useSelector((state: IState) => state.users.list);
   const user: TUser = useSelector((state: IState) => state.auth.user);
   const { onClick } = useContext(IncidentWindowContext);
-  let input: TPropertyParam = {
-    title: '',
-    description: '',
-    parent: '',
-    placeholder: '',
-    required: true,
-    select: 'users',
-    type: 'list',
-    value: '',
-  };
 
   const matchHandle = useMemo(() => {
     return {

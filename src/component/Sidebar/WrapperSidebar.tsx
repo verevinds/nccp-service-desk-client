@@ -25,13 +25,10 @@ const SidebarWrapper: React.FC<ISidebarWrapper> = ({ title, list, onClick, activ
   }, [list, user, title]);
 
   useEffect(() => {
-    console.log('filterState', filterState);
-  }, [filterState]);
-  useEffect(() => {
     let filterNoParse = localStorage.getItem('filter');
     let filter = !!filterNoParse && JSON.parse(filterNoParse);
     dispatch(filterSet(filter));
-  }, []);
+  }, [dispatch]);
   const anotherList = useMemo(() => {
     let newList = list.filter((item: any) => item.numberResponsible !== user.number);
 
@@ -44,10 +41,7 @@ const SidebarWrapper: React.FC<ISidebarWrapper> = ({ title, list, onClick, activ
       }
     }
     let flatCombineList = combineList.flat();
-    console.log('combineList', combineList);
-    console.log('flatCombineList', flatCombineList);
     let uniqueFlatCombineList = Array.from(new Set(flatCombineList));
-    console.log('uniqueFlatCombineList', uniqueFlatCombineList);
 
     return uniqueFlatCombineList;
   }, [list, user, filterState]);

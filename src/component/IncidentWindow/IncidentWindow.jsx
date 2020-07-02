@@ -19,11 +19,7 @@ import CreateIncident from '../CreateIncident/CreateIncident';
 const IncidentWindow = () => {
   const [inWork, setInWork] = useState(false);
   const [isModify, setIsModify] = useState(false);
-  const [modify, setModify] = useState(false);
-  const incident = useSelector(
-    (state) => state.incidents?.current.incident,
-    shallowEqual,
-  );
+  const incident = useSelector((state) => state.incidents?.current.incident, shallowEqual);
   const { user } = useSelector((state) => state.auth, shallowEqual);
   const dispatch = useDispatch();
 
@@ -94,20 +90,9 @@ const IncidentWindow = () => {
         }}
       >
         {isModify ? (
-          <CreateIncident
-            showModal={isModify}
-            handleClose={() => setIsModify(false)}
-            isModify={isModify}
-          />
+          <CreateIncident showModal={isModify} handleClose={() => setIsModify(false)} isModify={isModify} />
         ) : undefined}
-        {show ? (
-          <IncidentHandleStatus
-            show={show}
-            onHide={handleClose}
-            incident={incident}
-            inWork={inWork}
-          />
-        ) : null}
+        {show ? <IncidentHandleStatus show={show} onHide={handleClose} incident={incident} inWork={inWork} /> : null}
         {vise ? <IncidentHandleVise /> : undefined}
         <Container>
           <Card>

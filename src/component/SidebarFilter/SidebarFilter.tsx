@@ -3,15 +3,12 @@ import ButtonFontAwesome from '../ButtonFontAwesome/ButtonFontAwesome';
 import Popup from '../Popup/Popup';
 //? Font Awesome иконки
 import {
-  faFilter,
   faSortNumericDown,
   faSortAlphaDown,
   faSortAmountDown,
   faSortNumericUp,
   faSortAlphaUp,
   faSortAmountUp,
-  faCogs,
-  faGripVertical,
   faEllipsisV,
 } from '@fortawesome/free-solid-svg-icons';
 

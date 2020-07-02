@@ -5,7 +5,6 @@ import ButtonFontAwesome from '../ButtonFontAwesome/ButtonFontAwesome';
 import { faFilter, faTrash } from '@fortawesome/free-solid-svg-icons';
 import ModalWindow from '../ModalWindow/ModalWindow';
 import { Form, Button, ListGroup } from 'react-bootstrap';
-import ConstructorInput from '../ConstructorInput/ConstructorInput';
 import { IState, TCategory, TProperty, TOption, TUser } from '../../interface';
 import { useMemo } from 'react';
 import { filterSet } from '../../redux/actionCreators/filterAction';

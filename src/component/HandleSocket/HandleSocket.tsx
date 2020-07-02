@@ -1,7 +1,7 @@
-import React, { memo, useEffect, useState, useMemo, useCallback } from 'react';
+import React, { memo, useEffect, useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { toast, ToastOptions } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 import openSocket from 'socket.io-client';
 import { incidentCreate } from '../../redux/actionCreators/incidentAction';
@@ -13,7 +13,6 @@ const HandleSocket = () => {
   const user: TUser = useSelector((state: IState) => state.auth.user);
   const dispatch = useDispatch();
   const [message, setMessage] = useState<TIncident | undefined>();
-
   const body = useCallback((text: string, buttonText: string, type: string) => {
     const icon = [
       { emoji: '✅', type: 'success' },
@@ -40,31 +39,26 @@ const HandleSocket = () => {
 
   useEffect(() => {
     if (user) {
-      console.log('init alert');
       socket.on(`updateResponsible${user?.number}`, (data: TIncident) => {
-        console.log(`updateResponsible${user?.number}`, data);
         dispatch(incidentCreate());
         setMessage(data);
       });
       socket.on(`updateIncidentOwner${user?.number}`, (data: TIncident) => {
-        console.log(`updateIncidentOwner${user?.number}`, data);
         dispatch(incidentCreate());
         setMessage(data);
       });
       socket.on(`updateResponsibleDepartment${user?.departmentId}`, (data: TIncident) => {
-        console.log(`updateResponsibleDepartment${user?.departmentId}`, data);
         dispatch(incidentCreate());
         setMessage(data);
       });
     }
-  }, [user, setMessage]);
+  }, [user, setMessage, dispatch]);
 
   useEffect(() => {
-    console.log('message', message);
     if (message) {
       toast.info(body(`Получено обновление по заявке №${message.id}`, '', 'info'));
     }
-  }, [message]);
+  }, [message, body]);
 
   return <></>;
 };
