@@ -13,6 +13,9 @@ code {
 .bg {
   background-color: rgb(233, 235, 236);
 }
+.form-control {
+  background-color: var(--light);
+}
 .nowrap {
   white-space: nowrap;
 }
