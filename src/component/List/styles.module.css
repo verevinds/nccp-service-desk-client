@@ -3,7 +3,7 @@
   overflow: scroll;
 }
 .overlay {
-  background-color: rgba(100, 100, 100, 0.01);
+  background-color: rgba(100, 100, 100, 0.3);
   position: fixed;
   top: 0;
   left: 0;
@@ -36,10 +36,10 @@
 
 .tag {
   font-size: 0.6em;
+  background-color: crimson;
   text-transform: lowercase;
-  background: #eee;
   border-radius: 3px 0 0 3px;
-  color: #999;
+  color: #fff;
   display: inline-block;
   line-height: 15px;
   padding: 0 14px 0 12px;
@@ -50,9 +50,9 @@
 }
 
 .tag::before {
-  background: #fff;
+  background: #e9ebec;
   border-radius: 10px;
-  box-shadow: inset 0 1px rgba(0, 0, 0, 0.25);
+  box-shadow: inset 0 1px rgba(0, 0, 0, 0.5);
   content: '';
   height: 6px;
   left: 3px;
@@ -62,9 +62,9 @@
 }
 
 .tag::after {
-  background: #fff;
+  background: #e9ebec;
   border-bottom: 7px solid transparent;
-  border-left: 8px solid #eee;
+  border-left: 8px solid crimson;
   border-top: 8px solid transparent;
   content: '';
   position: absolute;
