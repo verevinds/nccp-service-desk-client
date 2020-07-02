@@ -51,7 +51,7 @@ const Header = (props) => {
   }, [listIncident, filterState, user]);
   return (
     <nav>
-      <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
+      <Navbar collapseOnSelect expand="lg" variant="light" className="bg">
         <Navbar.Brand>
           <a href="http://www.c31.nccp.ru/">
             <Image src={logo} className={styles.logo} />

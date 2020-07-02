@@ -9,6 +9,9 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
+.bg {
+  border-bottom: 1px solid var(--light);
+}
 .pointer {
   cursor: pointer;
 }
