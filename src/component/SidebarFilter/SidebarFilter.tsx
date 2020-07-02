@@ -10,6 +10,9 @@ import {
   faSortNumericUp,
   faSortAlphaUp,
   faSortAmountUp,
+  faCogs,
+  faGripVertical,
+  faEllipsisV,
 } from '@fortawesome/free-solid-svg-icons';
 
 export interface ISidebarFilter {
@@ -99,7 +102,7 @@ const SidebarFilter: React.FC<ISidebarFilter> = ({ setFilter, color }) => {
 
   return (
     <Fragment>
-      <Popup content={content} trigger={faFilter} size={'sm'} color={color} />
+      <Popup content={content} trigger={faEllipsisV} size={'sm'} color={color} />
     </Fragment>
   );
 };

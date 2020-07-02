@@ -83,6 +83,9 @@ const Incident = () => {
           finishWork: item.finishWork,
           startWork: item.startWork,
           doneWork: item.doneWork,
+          categories: item.categoryId,
+          options: item.optionId,
+          properties: item.propertyId,
         };
         return newItem;
       }),

@@ -8,8 +8,8 @@ export interface IInfo {}
 const Info: React.FC<IInfo> = () => {
   const info = [
     {
-      version: '1.6.0',
-      date: '30.06.2020',
+      version: '1.7.0',
+      date: '01.07.2020',
       body: [
         {
           title: 'НОВОЕ: Подписки',
@@ -151,8 +151,7 @@ const Info: React.FC<IInfo> = () => {
       body: [
         {
           title: `Заявки > Статус заявки`,
-          text:
-            '1. В настройках можно сделать приватные статусы для отдельных категорий.',
+          text: '1. В настройках можно сделать приватные статусы для отдельных категорий.',
         },
         {
           text:
@@ -202,8 +201,7 @@ const Info: React.FC<IInfo> = () => {
 
         {
           title: `Заявки > Перевод в другой отдел`,
-          text:
-            'Перевод в другой отдел, только после согласования руководителем.',
+          text: 'Перевод в другой отдел, только после согласования руководителем.',
         },
       ],
     },
@@ -218,8 +216,7 @@ const Info: React.FC<IInfo> = () => {
         },
         {
           title: `Настройки > Каталог`,
-          text:
-            'Категории, параметры, опции можно только отправлять в архив. Удалять может только Суперпользователь.',
+          text: 'Категории, параметры, опции можно только отправлять в архив. Удалять может только Суперпользователь.',
         },
       ],
     },
@@ -243,8 +240,7 @@ const Info: React.FC<IInfo> = () => {
   info.splice(0, 1);
 
   useLayoutEffect(() => {
-    process.env.REACT_APP_VERSION &&
-      localStorage.setItem('version', process.env.REACT_APP_VERSION);
+    process.env.REACT_APP_VERSION && localStorage.setItem('version', process.env.REACT_APP_VERSION);
   }, []);
   return (
     <Fragment>
@@ -266,11 +262,7 @@ const Info: React.FC<IInfo> = () => {
         {info.map((item, index) => (
           <Card>
             <Card.Header>
-              <Accordion.Toggle
-                as={Button}
-                variant="link"
-                eventKey={`${index}`}
-              >
+              <Accordion.Toggle as={Button} variant="link" eventKey={`${index}`}>
                 Версия {item.version}{' '}
                 <small>
                   (<i>{item.date}</i>)

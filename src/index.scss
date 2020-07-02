@@ -18,6 +18,24 @@ code {
   flex-direction: column;
   justify-content: center;
 }
+
+.flex {
+  width: 100%;
+  display: flex;
+}
+.flex_column {
+  flex-direction: column;
+}
+.flex_row {
+  flex-direction: row;
+}
+.flex_between {
+  justify-content: space-between;
+}
+
+.flex_center {
+  justify-content: center;
+}
 .btn-primary {
   background-color: #597ba5;
   border-color: #597ba5;
