@@ -50,7 +50,7 @@ const IncidentWindowComments = () => {
                       </td>
                       <td>{`${item.user.name1} ${item.user.name2.charAt(0)}. ${item.user.name3.charAt(0)}.`}</td>
                       <td>
-                        <Moment locale="ru" format="hh:mm D.MM.YYг" withTitle>
+                        <Moment locale="ru" format="HH:mm D.MM.YYг" withTitle>
                           {item.createdAt}
                         </Moment>
                       </td>
