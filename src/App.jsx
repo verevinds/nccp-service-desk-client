@@ -151,8 +151,12 @@ const App = () => {
           if (!res.data) {
             setAuth(<AuthModal />);
           } else {
-            if (Number(res.data.number) === 0) throw new Error();
+            let isNumber = Number(res.data.number) === 0;
+
+            if (isNumber) throw new Error();
+
             cookies.set('auth', res.data, { path: '/' });
+
             dispatch(
               queryApi({
                 route: 'users',
@@ -160,6 +164,7 @@ const App = () => {
                 id: res.data.number,
               }),
             );
+
             dispatch(authInitialApp(res.data));
           }
         })
@@ -218,7 +223,8 @@ const App = () => {
 
   useEffect(() => {
     let filterNoParse = localStorage.getItem('filter');
-    let filter = !!filterNoParse && JSON.parse(filterNoParse);
+    let filter = !!filterNoParse ? JSON.parse(filterNoParse) : undefined;
+
     dispatch(filterSet(filter));
   }, [dispatch]);
 

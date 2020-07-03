@@ -12,8 +12,11 @@ const MainPage = () => {
 
   useEffect(() => {
     if (user) {
+      let isDepartment = !!user.department;
+
       setParams({ departmentId: user.departmentId });
-      if (user.department) setTitle(`${user.department?.name}`);
+
+      if (isDepartment) setTitle(`${user.department?.name}`);
     }
   }, [user]);
 
