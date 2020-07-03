@@ -6,9 +6,10 @@ import HandleMatches from './HandleMatches';
 import HandleResponsible from './HandleResponsible';
 import HandleDepartment from './HandleDepartment';
 import { IncidentWindowContext } from '../IncidentWindow/IncidentWindowContext';
+import { AppContext } from '../../AppContext';
 
 const IncidentWindowButton = ({ handleOpen, myIncident }) => {
-  const { dispatchQueryApi, handleVise, handleModify } = useContext(IncidentWindowContext);
+  const { handleVise, handleModify } = useContext(IncidentWindowContext);
   const {
     name1,
     name2,
@@ -22,6 +23,7 @@ const IncidentWindowButton = ({ handleOpen, myIncident }) => {
     shallowEqual,
   );
   const [fullName] = useState(`${name1} ${name2} ${name3}`);
+  const { dispatchQueryApi } = useContext(AppContext);
 
   const onClick = useCallback(
     function () {
