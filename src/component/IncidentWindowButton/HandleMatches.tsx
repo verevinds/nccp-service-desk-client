@@ -1,128 +1,134 @@
-import React, { memo, useMemo, useContext } from 'react';
+import React, { memo, useMemo, useContext, useCallback } from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
 import { shallowEqual, useSelector } from 'react-redux';
 import { IState, TIncidentCurrent, TMatch, TUser } from '../../interface';
 
-import { IncidentWindowContext } from '../IncidentWindow/IncidentWindowContext';
+import { IncidentWindowContext, IDispatchQueryApi } from '../IncidentWindow/IncidentWindowContext';
 
-export interface IHandleMatches {}
-
-const HandleMatches: React.FC<IHandleMatches> = () => {
+const HandleMatches = () => {
   const {
     incident: { matches, currentResponsible },
   }: TIncidentCurrent = useSelector((state: IState) => state.incidents.current, shallowEqual);
   const user: TUser = useSelector((state: IState) => state.auth.user);
-  const { onClick } = useContext(IncidentWindowContext);
+  const { dispatchQueryApi } = useContext(IncidentWindowContext);
+
+  const onClick = useCallback(function (this: IDispatchQueryApi, item: TMatch) {
+    return {
+      ok: () => {
+        let match = () => this.match({ method: 'put', data: { isMatch: true }, id: item.id });
+
+        return {
+          responsible: () => {
+            this.comments(`Ответственный согласован`);
+            this.incidents({ data: { startWork: new Date(), statusId: 1 } });
+            match();
+          },
+          transfer: () => {
+            this.comments(`Перевод согласован`);
+            this.incidents({ data: { startWork: null, statusId: 0, currentResponsible: null, ...item.params } });
+            match();
+          },
+          vise: () => {
+            this.comments(`Заявка завизирована`);
+            this.incidents({ data: { statusId: 1, ...item.params } });
+            match();
+          },
+        };
+      },
+      cansel: () => {
+        let match = () => this.match({ method: 'delete', id: item.id });
+
+        return {
+          responsible: () => {
+            this.comments(`Отказано в назначение ответственного`);
+            this.incidents({ data: { startWork: null, statusId: 0, currentResponsible: null } });
+            match();
+          },
+          transfer: () => {
+            this.comments(`Отказано в переводе`);
+            match();
+          },
+          vise: () => {
+            this.comments(`Заявка не завизирована`);
+            match();
+          },
+        };
+      },
+    };
+  }, []);
+
+  function createButton(okText: string, okOnClick: () => void, cancelOnClick: () => void, isMatch: boolean) {
+    let okVariant = 'success';
+    let cancelVariant = 'outline-danger';
+    let cancelText = 'Отказать';
+
+    return {
+      isMatch,
+      okVariant,
+      okText,
+      okOnClick,
+      cancelVariant,
+      cancelText,
+      cancelOnClick,
+    };
+  }
 
   let jsxButton = useMemo(() => {
-    // eslint-disable-next-line
-    let button = matches
-      ? matches.map((item: TMatch) => {
-          if (user.position.level)
-            switch (item.code) {
-              case 1:
-                return {
-                  okVariant: 'success',
-                  okOnClick: onClick.bind({
-                    matchHandle: { method: 'put', data: { isMatch: true }, id: item.id },
-                    incidentData: { startWork: new Date(), statusId: 1 },
-                    comment: `Ответственный согласован`,
-                  }),
-                  okText: 'Согласовать ответственного',
-                  canselVariant: 'outline-danger',
-                  canselOnClick: onClick.bind({
-                    matchHandle: { method: 'delete', id: item.id },
-                    incidentData: { startWork: null, statusId: 0, currentResponsible: null },
-                    comment: `Отказано в назначение ответственного`,
-                  }),
-                  canselText: 'Отказать',
-                };
-              case 2:
-                return {
-                  okText: 'Согласовать перевод',
-                  okVariant: 'success',
-                  okOnClick: onClick.bind({
-                    matchHandle: { method: 'delete', params: { incidentId: item.incidentId } },
-                    incidentData: { startWork: null, statusId: 0, currentResponsible: null, ...item.params },
-                    comment: `Перевод согласован`,
-                  }),
+    if (dispatchQueryApi) {
+      let button = matches.map((item: TMatch) => {
+        let onClickBind = onClick.call(dispatchQueryApi, item);
 
-                  canselText: 'Отказать',
-                  canselVariant: 'outline-danger',
-                  canselOnClick: onClick.bind({
-                    matchHandle: { method: 'delete', id: item.id },
-                    incidentData: {},
-                    comment: `Отказано в переводе`,
-                  }),
-                };
+        if (user.position.level)
+          switch (item.code) {
+            case 1: {
+              let okText = 'Согласовать ответственного';
+              let okOnClick = onClickBind.ok().responsible;
+              let cancelOnClick = onClickBind.cansel().responsible;
 
-              default:
-                break;
+              return createButton(okText, okOnClick, cancelOnClick, item.isMatch);
             }
+            case 2: {
+              let okText = 'Согласовать перевод';
+              let okOnClick = onClickBind.ok().transfer;
+              let cancelOnClick = onClickBind.cansel().transfer;
 
-          return undefined;
-        })
-      : undefined;
-    if (!!button && !!button[0]) return button;
-  }, [matches, onClick, user.position.level]);
-
-  const jsxVise = useMemo(() => {
-    // eslint-disable-next-line
-    let button =
-      matches &&
-      matches.map((item: TMatch) => {
-        if (!item.isMatch)
-          if (item.code === 3 && currentResponsible === user.number) {
-            return {
-              okText: 'Завизировать заявку',
-              okVariant: 'success',
-              okOnClick: onClick.bind({
-                matchHandle: { method: 'delete', params: { incidentId: item.incidentId } },
-                incidentData: { statusId: 1, ...item.params },
-                comment: `Заявка завизирована`,
-              }),
-
-              canselText: 'Отказать',
-              canselVariant: 'outline-danger',
-              canselOnClick: onClick.bind({
-                matchHandle: { method: 'delete', id: item.id },
-                incidentData: {},
-                comment: `Отказано в переводе`,
-              }),
-            };
+              return createButton(okText, okOnClick, cancelOnClick, item.isMatch);
+            }
+            default:
+              break;
           }
+
+        if (item.code === 3 && currentResponsible === user.number) {
+          let okText = 'Завизировать заявку';
+          let okOnClick = onClickBind.ok().vise;
+          let cancelOnClick = onClickBind.cansel().vise;
+
+          return createButton(okText, okOnClick, cancelOnClick, item.isMatch);
+        }
+
         return undefined;
       });
-    if (!!button[0]) return button;
-  }, [matches, onClick, currentResponsible, user.number]);
+
+      return button;
+    }
+  }, [matches, user, dispatchQueryApi, onClick, currentResponsible]);
 
   return (
     <>
-      {!!jsxVise
-        ? jsxVise.map((item: any, index: number) => (
-            <ButtonGroup aria-label="Basic example" key={'vise-1'}>
-              <Button variant={item.okVariant} onClick={item.okOnClick}>
-                {item.okText}
-              </Button>
-              <Button variant={item.canselVariant} onClick={item.canselOnClick}>
-                {item.canselText}
-              </Button>
-            </ButtonGroup>
-          ))
-        : undefined}
-      {jsxButton?.length &&
-        jsxButton.map((item: any, index: number) => {
+      {jsxButton?.map((item: any, index: number) => {
+        if (!item.isMatch)
           return (
-            <ButtonGroup aria-label="Basic example" key={index}>
+            <ButtonGroup key={index}>
               <Button variant={item.okVariant} onClick={item.okOnClick}>
                 {item.okText}
               </Button>
-              <Button variant={item.canselVariant} onClick={item.canselOnClick}>
-                {item.canselText}
+              <Button variant={item.cancelVariant} onClick={item.cancelOnClick}>
+                {item.cancelText}
               </Button>
             </ButtonGroup>
           );
-        })}
+        else return undefined;
+      })}
     </>
   );
 };

@@ -1,9 +1,10 @@
 import React, { memo, useContext, useState, useMemo } from 'react';
 import ModalWindow from '../ModalWindow/ModalWindow';
-import { IncidentWindowContext } from '../IncidentWindow/IncidentWindowContext';
+import { IncidentWindowContext, IDispatchQueryApi } from '../IncidentWindow/IncidentWindowContext';
 import { useSelector } from 'react-redux';
 import { TDepartment, IState, IUserInUsers, TUser, TIncident } from '../../interface';
 import { Form } from 'react-bootstrap';
+import { useCallback } from 'react';
 interface IIncidentHandleVise {}
 const IncidentHandleVise: React.FC<IIncidentHandleVise> = () => {
   const { handleVise } = useContext(IncidentWindowContext);
@@ -14,7 +15,7 @@ const IncidentHandleVise: React.FC<IIncidentHandleVise> = () => {
   const department: TDepartment[] = useSelector((state: IState) => state.catalog.department);
   const users: IUserInUsers[] = useSelector((state: IState) => state.users.list);
   const user: TUser = useSelector((state: IState) => state.auth.user);
-  const { onClick } = useContext(IncidentWindowContext);
+  const { dispatchQueryApi } = useContext(IncidentWindowContext);
 
   const visePerson = useMemo(() => {
     return users.find((item: TUser) => item.number === Number(chooseUser));
@@ -34,6 +35,17 @@ const IncidentHandleVise: React.FC<IIncidentHandleVise> = () => {
     };
   }, [incident, user]);
 
+  const onClick = useCallback(
+    function (this: IDispatchQueryApi) {
+      this.comments(
+        `${user.name1} ${user.name2.charAt(0)} ${user.name3.charAt(0)} отправил(а) заявку на визирование` +
+          ` ${visePerson?.name1} ${user.name2.charAt(0)} ${user.name3.charAt(0)}`,
+      );
+      this.incidents({ data: { currentResponsible: chooseUser, statusId: 8388606, departmentId: chooseDepartment } });
+      this.match(matchHandle);
+    },
+    [matchHandle, chooseDepartment, chooseUser, user, visePerson],
+  );
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -41,13 +53,7 @@ const IncidentHandleVise: React.FC<IIncidentHandleVise> = () => {
       event.stopPropagation();
     } else {
       event.preventDefault();
-      onClick.call({
-        comment:
-          `${user.name1} ${user.name2.charAt(0)} ${user.name3.charAt(0)} отправил(а) заявку на визирование` +
-          ` ${visePerson?.name1} ${user.name2.charAt(0)} ${user.name3.charAt(0)}`,
-        incidentData: { currentResponsible: chooseUser, statusId: 8388606, departmentId: chooseDepartment },
-        matchHandle,
-      });
+      dispatchQueryApi && onClick.call(dispatchQueryApi);
     }
 
     setValidated(true);

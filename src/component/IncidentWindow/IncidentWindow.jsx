@@ -1,4 +1,4 @@
-import React, { memo, useState, useCallback } from 'react';
+import React, { memo, useState, useCallback, useMemo } from 'react';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import Moment from 'react-moment';
 import dateNow from '../../js/dateNow';
@@ -31,6 +31,50 @@ const IncidentWindow = () => {
     }
     setShow(true);
   };
+
+  const dispatchQueryApi = useMemo(() => {
+    return {
+      comments(props) {
+        dispatch(
+          queryApi({
+            ...props,
+            route: 'comments',
+            method: 'post',
+            actionUpdate: incidentCreate,
+            data: {
+              userNumber: user.number,
+              incidentId: incident.id,
+              text: props.text,
+            },
+          }),
+        );
+      },
+      incidents(props) {
+        dispatch(
+          queryApi({
+            ...props,
+            route: 'incidents',
+            method: 'put',
+            data: {
+              startWork: dateNow(),
+              statusId: Number(1),
+              ...props.data,
+            },
+            id: incident.id,
+          }),
+        );
+      },
+      match(props) {
+        dispatch(
+          queryApi({
+            ...props,
+            route: 'matches',
+          }),
+        );
+      },
+    };
+  }, [dispatch, incident, user]);
+
   const onClick = useCallback(
     function () {
       let incidentData = {
@@ -85,6 +129,7 @@ const IncidentWindow = () => {
       <IncidentWindowContext.Provider
         value={{
           onClick,
+          dispatchQueryApi,
           handleVise: { vise, setVise },
           handleModify: { setIsModify },
         }}

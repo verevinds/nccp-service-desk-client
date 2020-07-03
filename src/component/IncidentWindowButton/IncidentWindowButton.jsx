@@ -1,4 +1,4 @@
-import React, { memo, useState, useMemo, useContext } from 'react';
+import React, { memo, useState, useMemo, useContext, useCallback } from 'react';
 import { Button, Dropdown, ButtonGroup, DropdownButton } from 'react-bootstrap';
 import styles from './styles.module.css';
 import { shallowEqual, useSelector } from 'react-redux';
@@ -8,7 +8,7 @@ import HandleDepartment from './HandleDepartment';
 import { IncidentWindowContext } from '../IncidentWindow/IncidentWindowContext';
 
 const IncidentWindowButton = ({ handleOpen, myIncident }) => {
-  const { onClick, handleVise, handleModify } = useContext(IncidentWindowContext);
+  const { dispatchQueryApi, handleVise, handleModify } = useContext(IncidentWindowContext);
   const {
     name1,
     name2,
@@ -23,27 +23,42 @@ const IncidentWindowButton = ({ handleOpen, myIncident }) => {
   );
   const [fullName] = useState(`${name1} ${name2} ${name3}`);
 
-  const handleInWork = useMemo(() => {
-    if ((category && category.level) || (property && property.level) || (option && option.level)) {
-      return onClick.bind({
-        incidentData: { currentResponsible: number, statusId: 0 },
-        comment: `${fullName} назначил себя ответственный. Ожидает согласования.`,
-        matchHandle: {
-          method: 'post',
-          data: { code: 1, incidentId: incident.id },
+  const onClick = useCallback(
+    function () {
+      return {
+        inWork: () => {
+          let incidentData, commentData, match;
+          if (category?.level || property?.level || option?.level) {
+            incidentData = { currentResponsible: number, statusId: 0 };
+            commentData = { text: `${fullName} назначил себя ответственный. Ожидает согласования.` };
+            match = {
+              method: 'post',
+              data: { code: 1, incidentId: incident.id },
+            };
+          } else {
+            incidentData = {
+              currentResponsible: number,
+              statusId: 1,
+              startWork: new Date().toISOString(),
+            };
+            commentData = { text: `Статус заявки изменен на "В работе". Ответственным назначен: ${fullName}` };
+          }
+
+          this.comments({
+            data: { ...commentData },
+          });
+          this.incidents({ data: { ...incidentData } });
+          this.match({ ...match });
         },
-      });
-    } else {
-      return onClick.bind({
-        incidentData: {
-          currentResponsible: number,
-          statusId: 1,
-          startWork: new Date().toISOString(),
+
+        closeWork: () => {
+          this.comments({ data: { text: `Заявка закрыта.` } });
+          this.incidents({ data: { statusId: 8388608, closeWork: new Date().toISOString() } });
         },
-        comment: `Статус заявки изменен на "В работе". Ответственным назначен: ${fullName}`,
-      });
-    }
-  }, [category, option, property, fullName, onClick, number, incident.id]);
+      };
+    },
+    [category, fullName, incident, number, option, property],
+  );
 
   const mainButton = useMemo(() => {
     if (!!currentResponsible) {
@@ -57,16 +72,7 @@ const IncidentWindowButton = ({ handleOpen, myIncident }) => {
       if (Number(statusId) === 8388607 && currentResponsible === number && !!myIncident) {
         return (
           <ButtonGroup aria-label="Basic example">
-            <Button
-              variant="outline-primary"
-              onClick={onClick.bind({
-                incidentData: {
-                  statusId: 8388608,
-                  closeWork: new Date().toISOString(),
-                },
-                comment: `Заявка закрыта.`,
-              })}
-            >
+            <Button variant="outline-primary" onClick={onClick.call(dispatchQueryApi).closeWork}>
               Закрыть
             </Button>
             <Button onClick={handleOpen.bind({ inWork: true })}>Вернуть в работу</Button>
@@ -83,18 +89,29 @@ const IncidentWindowButton = ({ handleOpen, myIncident }) => {
     }
     if (!Number(statusId) && !currentResponsible && !myIncident) {
       return (
-        <Button variant="outline-success" onClick={handleInWork}>
+        <Button variant="outline-success" onClick={onClick.call(dispatchQueryApi).inWork}>
           Взять в работу
         </Button>
       );
     }
-  }, [statusId, currentResponsible, handleInWork, handleOpen, handleModify, myIncident, number, onClick, userNumber]);
+  }, [
+    statusId,
+    currentResponsible,
+    handleOpen,
+    handleModify,
+    myIncident,
+    number,
+    onClick,
+    dispatchQueryApi,
+    userNumber,
+  ]);
 
   const buttonMatch = useMemo(() => {
-    if (!!~matches.findIndex((item) => item.isMatch === false)) {
-      return <HandleMatches onClick={onClick} />;
+    let isMatches = !!~matches.findIndex((item) => item.isMatch === false);
+    if (isMatches) {
+      return <HandleMatches />;
     }
-  }, [matches, onClick]);
+  }, [matches]);
 
   return (
     <>

@@ -1,4 +1,4 @@
-import React, { memo, useLayoutEffect, useState, useEffect, useContext } from 'react';
+import React, { memo, useLayoutEffect, useState, useEffect, useContext, useCallback } from 'react';
 import ModalWindow from '../ModalWindow/ModalWindow';
 import { IIncidentHandleResponsible, IUser } from './interface';
 import { Form } from 'react-bootstrap';
@@ -6,11 +6,15 @@ import { queryApi } from '../../redux/actionCreators/queryApiAction';
 import { usersRequestSeccessed } from '../../redux/actionCreators/usersAction';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import styles from './styles.module.css';
-import { IncidentWindowContext } from '../IncidentWindow/IncidentWindowContext';
+import {
+  IncidentWindowContext,
+  IIncidentWindowContext,
+  IDispatchQueryApi,
+} from '../IncidentWindow/IncidentWindowContext';
 
 const IncidentHandleResponsible: React.FC<IIncidentHandleResponsible> = ({ show, onHide }) => {
   const dispatch = useDispatch();
-  const { onClick } = useContext(IncidentWindowContext);
+  const { dispatchQueryApi }: IIncidentWindowContext = useContext(IncidentWindowContext);
   const list = useSelector((state: any) => state.users.list, shallowEqual);
   const user = useSelector((state: any) => state.auth.user, shallowEqual);
   const { incident } = useSelector((state: any) => state.incidents.current, shallowEqual);
@@ -54,6 +58,15 @@ const IncidentHandleResponsible: React.FC<IIncidentHandleResponsible> = ({ show,
       }),
     );
   }, [dispatch, user.departmentId]);
+
+  const onClick = useCallback(
+    function (this: IDispatchQueryApi) {
+      this.comments(`Статус заявки изменен на "В работе". Ответственным назначен: ${currentResponsibleFullname}`);
+      this.incidents({ data: { currentResponsible, startWork: new Date().toISOString(), statusId: 1 } });
+    },
+    [currentResponsible, currentResponsibleFullname],
+  );
+
   if (list.length > 1) {
     return (
       <ModalWindow
@@ -63,10 +76,7 @@ const IncidentHandleResponsible: React.FC<IIncidentHandleResponsible> = ({ show,
         textOk={'Сохранить'}
         onOk={() => {
           onHide();
-          onClick.call({
-            incidentData: { currentResponsible, startWork: new Date().toISOString(), statusId: 1 },
-            comment: `Статус заявки изменен на "В работе". Ответственным назначен: ${currentResponsibleFullname}`,
-          });
+          !!dispatchQueryApi && onClick.call(dispatchQueryApi);
         }}
       >
         <>

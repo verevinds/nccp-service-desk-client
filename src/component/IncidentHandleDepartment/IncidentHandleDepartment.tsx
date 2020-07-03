@@ -4,14 +4,14 @@ import { IIncidentHandleDepartment, ICategory, IOption, IDepartment, IProperty }
 import { Form } from 'react-bootstrap';
 import { useSelector, shallowEqual } from 'react-redux';
 import { IState } from '../../interface';
-import { IncidentWindowContext } from '../IncidentWindow/IncidentWindowContext';
+import { IncidentWindowContext, IDispatchQueryApi } from '../IncidentWindow/IncidentWindowContext';
+import { useCallback } from 'react';
 
 const IncidentHandleDepartment = ({ show, onHide }: IIncidentHandleDepartment) => {
   const catalog = useSelector((state: IState) => state.catalog, shallowEqual);
   const user = useSelector((state: IState) => state.auth.user, shallowEqual);
   const { id } = useSelector((state: IState) => state.incidents.current.incident, shallowEqual);
-  const { onClick } = useContext(IncidentWindowContext);
-  useLayoutEffect(() => {}, [catalog]);
+  const { dispatchQueryApi } = useContext(IncidentWindowContext);
 
   //**Получение листа отделов */
   const [currentDepartmentId, setCurrentDepartmentId] = useState(null);
@@ -126,17 +126,24 @@ const IncidentHandleDepartment = ({ show, onHide }: IIncidentHandleDepartment) =
     },
   };
 
+  const onClick = useCallback(
+    function (this: IDispatchQueryApi) {
+      this.comments(
+        `${user.name1} ${user.name2.charAt(0)} ${user.name3.charAt(0)} передал заявку в "${
+          departmentList.find((item: any) => Number(item.id) === Number(currentDepartmentId))?.name
+        }"`,
+      );
+      this.match(matchHandle);
+    },
+    [matchHandle, user, currentDepartmentId, departmentList],
+  );
+
   return (
     <ModalWindow
       title={'Передать заявку'}
       show={show}
       onHide={onHide}
-      onOk={onClick.bind({
-        comment: `${user.name1} ${user.name2.charAt(0)} ${user.name3.charAt(0)} передал заявку в "${
-          departmentList.find((item: any) => Number(item.id) === Number(currentDepartmentId))?.name
-        }"`,
-        matchHandle,
-      })}
+      onOk={dispatchQueryApi && onClick.bind(dispatchQueryApi)}
       textOk={'Передать'}
     >
       <>
