@@ -1,4 +1,4 @@
-import React, { memo, useLayoutEffect, useState, useEffect, useCallback } from 'react';
+import React, { memo, useLayoutEffect, useState, useEffect, useCallback, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -6,6 +6,7 @@ import styles from './styles.module.css';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './toastiry.scss';
+import dateNow from './js/dateNow';
 
 //** Pages */
 import TestPage from './page/TestPage';
@@ -24,6 +25,7 @@ import { departmentRequestSuccessed } from './redux/actionCreators/departmentAct
 import { statusRequestSeccessed } from './redux/actionCreators/statusAction';
 import { accessRequestSeccessed } from './redux/actionCreators/accessAction';
 import { filterSet } from './redux/actionCreators/filterAction';
+import { incidentCreate } from './redux/actionCreators/incidentAction';
 
 /**Bootstrap components */
 import { ProgressBar } from 'react-bootstrap';
@@ -35,6 +37,7 @@ import { usersRequestSeccessed } from './redux/actionCreators/usersAction';
 import Axios from 'axios';
 import InfoPage from './page/InfoPage';
 import { versionSet } from './redux/actionCreators/versionAction';
+import { AppContext } from './AppContext';
 
 const App = (props) => {
   const cookies = new Cookies();
@@ -47,6 +50,7 @@ const App = (props) => {
   const isUpdateIncident = useSelector((state) => state.incidents.isUpdate); // Получаем данные каталога при строгом изменение обекта state
   const { progress } = useSelector((state) => state);
   const { user } = useSelector((state) => state.auth);
+  const incident = useSelector((state) => state.incidents?.current.incident);
 
   const initialApp = useCallback(() => {
     dispatch(authRequestSuccessed(cookies.get('auth')));
@@ -160,33 +164,77 @@ const App = (props) => {
     dispatch(filterSet(filter));
   }, [dispatch]);
 
+  const dispatchQueryApi = useMemo(() => {
+    return {
+      comments(text) {
+        dispatch(
+          queryApi({
+            route: 'comments',
+            method: 'post',
+            actionUpdate: incidentCreate,
+            data: {
+              userNumber: user.number,
+              incidentId: incident.id,
+              text,
+            },
+          }),
+        );
+      },
+      incidents(props) {
+        dispatch(
+          queryApi({
+            method: 'put',
+            route: 'incidents',
+            id: incident.id,
+            ...props,
+            data: {
+              startWork: dateNow(),
+              statusId: Number(1),
+              ...props.data,
+            },
+          }),
+        );
+      },
+      match(props) {
+        dispatch(
+          queryApi({
+            ...props,
+            route: 'matches',
+          }),
+        );
+      },
+    };
+  }, [dispatch, incident, user]);
+
   return (
-    <BrowserRouter>
-      {auth}
-      <Header />
-      <HandleSocket />
-      <ToastContainer
-        position="top-right"
-        autoClose={false}
-        newestOnTop={false}
-        closeOnClick={false}
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-      />
-      <div className="bg">
-        <div className={styles.progressBar}>
-          <ProgressBar animated now={progress.now} hidden={progress.isFinish} />
+    <AppContext.Provider value={{ dispatchQueryApi }}>
+      <BrowserRouter>
+        {auth}
+        <Header />
+        <HandleSocket />
+        <ToastContainer
+          position="top-right"
+          autoClose={false}
+          newestOnTop={false}
+          closeOnClick={false}
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+        />
+        <div className="bg">
+          <div className={styles.progressBar}>
+            <ProgressBar animated now={progress.now} hidden={progress.isFinish} />
+          </div>
+          <Switch>
+            <Route exact path="/" component={MainPage} />
+            <Route path="/setting" component={SettingPage} />
+            <Route path="/myincidents" component={MyIncidentPage} />
+            <Route path="/test" component={TestPage} />
+            <Route path="/info" component={InfoPage} />
+          </Switch>
         </div>
-        <Switch>
-          <Route exact path="/" component={MainPage} />
-          <Route path="/setting" component={SettingPage} />
-          <Route path="/myincidents" component={MyIncidentPage} />
-          <Route path="/test" component={TestPage} />
-          <Route path="/info" component={InfoPage} />
-        </Switch>
-      </div>
-    </BrowserRouter>
+      </BrowserRouter>
+    </AppContext.Provider>
   );
 };
 

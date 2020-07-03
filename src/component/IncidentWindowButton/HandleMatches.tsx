@@ -2,15 +2,14 @@ import React, { memo, useMemo, useContext, useCallback } from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
 import { shallowEqual, useSelector } from 'react-redux';
 import { IState, TIncidentCurrent, TMatch, TUser } from '../../interface';
-
-import { IncidentWindowContext, IDispatchQueryApi } from '../IncidentWindow/IncidentWindowContext';
+import { AppContext, IDispatchQueryApi } from '../../AppContext';
 
 const HandleMatches = () => {
   const {
     incident: { matches, currentResponsible },
   }: TIncidentCurrent = useSelector((state: IState) => state.incidents.current, shallowEqual);
   const user: TUser = useSelector((state: IState) => state.auth.user);
-  const { dispatchQueryApi } = useContext(IncidentWindowContext);
+  const { dispatchQueryApi } = useContext(AppContext);
 
   const onClick = useCallback(function (this: IDispatchQueryApi, item: TMatch) {
     return {

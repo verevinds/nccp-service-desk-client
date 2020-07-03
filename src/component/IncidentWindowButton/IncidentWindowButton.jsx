@@ -27,10 +27,10 @@ const IncidentWindowButton = ({ handleOpen, myIncident }) => {
     function () {
       return {
         inWork: () => {
-          let incidentData, commentData, match;
+          let incidentData, commentText, match;
           if (category?.level || property?.level || option?.level) {
             incidentData = { currentResponsible: number, statusId: 0 };
-            commentData = { text: `${fullName} назначил себя ответственный. Ожидает согласования.` };
+            commentText = `${fullName} назначил себя ответственный. Ожидает согласования.`;
             match = {
               method: 'post',
               data: { code: 1, incidentId: incident.id },
@@ -41,12 +41,10 @@ const IncidentWindowButton = ({ handleOpen, myIncident }) => {
               statusId: 1,
               startWork: new Date().toISOString(),
             };
-            commentData = { text: `Статус заявки изменен на "В работе". Ответственным назначен: ${fullName}` };
+            commentText = `Статус заявки изменен на "В работе". Ответственным назначен: ${fullName}`;
           }
 
-          this.comments({
-            data: { ...commentData },
-          });
+          this.comments(commentText);
           this.incidents({ data: { ...incidentData } });
           this.match({ ...match });
         },
@@ -75,7 +73,7 @@ const IncidentWindowButton = ({ handleOpen, myIncident }) => {
             <Button variant="outline-primary" onClick={onClick.call(dispatchQueryApi).closeWork}>
               Закрыть
             </Button>
-            <Button onClick={handleOpen.bind({ inWork: true })}>Вернуть в работу</Button>
+            <Button onClick={handleOpen().inWork()}>Вернуть в работу</Button>
           </ButtonGroup>
         );
       }

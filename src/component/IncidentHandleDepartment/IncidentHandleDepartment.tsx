@@ -4,14 +4,14 @@ import { IIncidentHandleDepartment, ICategory, IOption, IDepartment, IProperty }
 import { Form } from 'react-bootstrap';
 import { useSelector, shallowEqual } from 'react-redux';
 import { IState } from '../../interface';
-import { IncidentWindowContext, IDispatchQueryApi } from '../IncidentWindow/IncidentWindowContext';
 import { useCallback } from 'react';
+import { IDispatchQueryApi, AppContext } from '../../AppContext';
 
 const IncidentHandleDepartment = ({ show, onHide }: IIncidentHandleDepartment) => {
   const catalog = useSelector((state: IState) => state.catalog, shallowEqual);
   const user = useSelector((state: IState) => state.auth.user, shallowEqual);
   const { id } = useSelector((state: IState) => state.incidents.current.incident, shallowEqual);
-  const { dispatchQueryApi } = useContext(IncidentWindowContext);
+  const { dispatchQueryApi } = useContext(AppContext);
 
   //**Получение листа отделов */
   const [currentDepartmentId, setCurrentDepartmentId] = useState(null);

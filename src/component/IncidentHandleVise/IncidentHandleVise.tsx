@@ -1,12 +1,13 @@
 import React, { memo, useContext, useState, useMemo } from 'react';
 import ModalWindow from '../ModalWindow/ModalWindow';
-import { IncidentWindowContext, IDispatchQueryApi } from '../IncidentWindow/IncidentWindowContext';
+import { IncidentWindowContext } from '../IncidentWindow/IncidentWindowContext';
 import { useSelector } from 'react-redux';
 import { TDepartment, IState, IUserInUsers, TUser, TIncident } from '../../interface';
 import { Form } from 'react-bootstrap';
 import { useCallback } from 'react';
-interface IIncidentHandleVise {}
-const IncidentHandleVise: React.FC<IIncidentHandleVise> = () => {
+import { AppContext, IDispatchQueryApi } from '../../AppContext';
+
+const IncidentHandleVise = () => {
   const { handleVise } = useContext(IncidentWindowContext);
   const [validated, setValidated] = useState(false);
   const [chooseDepartment, setChooseDepartment] = useState('');
@@ -15,7 +16,7 @@ const IncidentHandleVise: React.FC<IIncidentHandleVise> = () => {
   const department: TDepartment[] = useSelector((state: IState) => state.catalog.department);
   const users: IUserInUsers[] = useSelector((state: IState) => state.users.list);
   const user: TUser = useSelector((state: IState) => state.auth.user);
-  const { dispatchQueryApi } = useContext(IncidentWindowContext);
+  const { dispatchQueryApi } = useContext(AppContext);
 
   const visePerson = useMemo(() => {
     return users.find((item: TUser) => item.number === Number(chooseUser));

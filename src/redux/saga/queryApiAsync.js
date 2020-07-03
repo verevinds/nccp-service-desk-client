@@ -1,12 +1,12 @@
 import { put, call } from 'redux-saga/effects';
 import * as axios from 'axios';
 import { errorCreate } from '../actionCreators/errorAction';
-import openSocket from 'socket.io-client';
+import { socket } from '../../index';
 
 export function* queryApiAsync({ route, actionSuccessed, actionUpdate, method, data = {}, id, params, userNumber }) {
   try {
     let response;
-    const socket = openSocket(`${window.location.protocol}//srv-sdesk.c31.nccp.ru:8000`);
+
     let PORT = window.location.protocol === 'http:' ? '8080' : '8433';
     const URL = `${window.location.protocol}//srv-sdesk.c31.nccp.ru:${PORT}`;
     if (params) {

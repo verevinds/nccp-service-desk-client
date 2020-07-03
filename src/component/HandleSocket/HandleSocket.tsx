@@ -3,11 +3,10 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { toast } from 'react-toastify';
 
-import openSocket from 'socket.io-client';
 import { incidentCreate } from '../../redux/actionCreators/incidentAction';
 import { IState, TUser, TIncident } from '../../interface';
 
-const socket = openSocket(`${window.location.protocol}//srv-sdesk.c31.nccp.ru:8000`);
+import { socket } from '../../index';
 
 const HandleSocket = () => {
   const user: TUser = useSelector((state: IState) => state.auth.user);

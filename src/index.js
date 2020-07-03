@@ -2,11 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import openSocket from 'socket.io-client';
 
 import './index.scss';
 import * as serviceWorker from './serviceWorker';
 import store from './redux/store';
 import App from './App';
+
+export const socket = openSocket(`${window.location.protocol}//srv-sdesk.c31.nccp.ru:8000`);
 
 ReactDOM.render(
   <Provider store={store}>
