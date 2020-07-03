@@ -23,7 +23,7 @@ const IncidentWindowButton = ({ handleOpen, myIncident }) => {
     shallowEqual,
   );
   const [fullName] = useState(`${name1} ${name2} ${name3}`);
-  const { dispatchQueryApi } = useContext(AppContext);
+  const { Api } = useContext(AppContext);
 
   const onClick = useCallback(
     function () {
@@ -72,7 +72,7 @@ const IncidentWindowButton = ({ handleOpen, myIncident }) => {
       if (Number(statusId) === 8388607 && currentResponsible === number && !!myIncident) {
         return (
           <ButtonGroup aria-label="Basic example">
-            <Button variant="outline-primary" onClick={onClick.call(dispatchQueryApi).closeWork}>
+            <Button variant="outline-primary" onClick={onClick.call(Api).closeWork}>
               Закрыть
             </Button>
             <Button onClick={handleOpen().inWork()}>Вернуть в работу</Button>
@@ -89,22 +89,12 @@ const IncidentWindowButton = ({ handleOpen, myIncident }) => {
     }
     if (!Number(statusId) && !currentResponsible && !myIncident) {
       return (
-        <Button variant="outline-success" onClick={onClick.call(dispatchQueryApi).inWork}>
+        <Button variant="outline-success" onClick={onClick.call(Api).inWork}>
           Взять в работу
         </Button>
       );
     }
-  }, [
-    statusId,
-    currentResponsible,
-    handleOpen,
-    handleModify,
-    myIncident,
-    number,
-    onClick,
-    dispatchQueryApi,
-    userNumber,
-  ]);
+  }, [statusId, currentResponsible, handleOpen, handleModify, myIncident, number, onClick, Api, userNumber]);
 
   const buttonMatch = useMemo(() => {
     let isMatches = !!~matches.findIndex((item) => item.isMatch === false);

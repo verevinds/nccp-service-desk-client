@@ -2,16 +2,16 @@ import React, { memo, useMemo, useContext, useCallback } from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
 import { shallowEqual, useSelector } from 'react-redux';
 import { IState, TIncidentCurrent, TMatch, TUser } from '../../interface';
-import { AppContext, IDispatchQueryApi } from '../../AppContext';
+import { AppContext, IApi } from '../../AppContext';
 
 const HandleMatches = () => {
   const {
     incident: { matches, currentResponsible },
   }: TIncidentCurrent = useSelector((state: IState) => state.incidents.current, shallowEqual);
   const user: TUser = useSelector((state: IState) => state.auth.user);
-  const { dispatchQueryApi } = useContext(AppContext);
+  const { Api } = useContext(AppContext);
 
-  const onClick = useCallback(function (this: IDispatchQueryApi, item: TMatch) {
+  const onClick = useCallback(function (this: IApi, item: TMatch) {
     return {
       ok: () => {
         let match = () => this.match({ method: 'put', data: { isMatch: true }, id: item.id });
@@ -73,9 +73,9 @@ const HandleMatches = () => {
   }
 
   let jsxButton = useMemo(() => {
-    if (dispatchQueryApi) {
+    if (Api) {
       let button = matches.map((item: TMatch) => {
-        let onClickBind = onClick.call(dispatchQueryApi, item);
+        let onClickBind = onClick.call(Api, item);
 
         if (user.position.level)
           switch (item.code) {
@@ -110,7 +110,7 @@ const HandleMatches = () => {
 
       return button;
     }
-  }, [matches, user, dispatchQueryApi, onClick, currentResponsible]);
+  }, [matches, user, Api, onClick, currentResponsible]);
 
   return (
     <>

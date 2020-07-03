@@ -5,7 +5,7 @@ import { queryApi } from '../../redux/actionCreators/queryApiAction';
 import { usersRequestSeccessed } from '../../redux/actionCreators/usersAction';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import styles from './styles.module.css';
-import { IDispatchQueryApi, AppContext } from '../../AppContext';
+import { IApi, AppContext } from '../../AppContext';
 
 export interface IIncidentHandleResponsible {
   show?: boolean;
@@ -19,7 +19,7 @@ export type IUser = {
 
 const IncidentHandleResponsible: React.FC<IIncidentHandleResponsible> = ({ show, onHide }) => {
   const dispatch = useDispatch();
-  const { dispatchQueryApi } = useContext(AppContext);
+  const { Api } = useContext(AppContext);
 
   const list = useSelector((state: any) => state.users.list, shallowEqual);
   const user = useSelector((state: any) => state.auth.user, shallowEqual);
@@ -66,7 +66,7 @@ const IncidentHandleResponsible: React.FC<IIncidentHandleResponsible> = ({ show,
   }, [dispatch, user.departmentId]);
 
   const onClick = useCallback(
-    function (this: IDispatchQueryApi) {
+    function (this: IApi) {
       this.comments(`Статус заявки изменен на "В работе". Ответственным назначен: ${currentResponsibleFullname}`);
       this.incidents({ data: { currentResponsible, startWork: new Date().toISOString(), statusId: 1 } });
     },
@@ -82,7 +82,7 @@ const IncidentHandleResponsible: React.FC<IIncidentHandleResponsible> = ({ show,
         textOk={'Сохранить'}
         onOk={() => {
           onHide();
-          !!dispatchQueryApi && onClick.call(dispatchQueryApi);
+          !!Api && onClick.call(Api);
         }}
       >
         <>

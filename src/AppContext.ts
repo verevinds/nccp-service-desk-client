@@ -1,9 +1,9 @@
 import React from 'react';
 
 export interface IAppContext {
-  dispatchQueryApi?: IDispatchQueryApi;
+  Api?: IApi;
 }
-export interface IDispatchQueryApi {
+export interface IApi {
   comments: (arg: string) => void;
   incidents: (arg: TProps) => void;
   match: (arg: TProps) => void;

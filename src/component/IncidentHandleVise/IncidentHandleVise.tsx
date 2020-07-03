@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { TDepartment, IState, IUserInUsers, TUser, TIncident } from '../../interface';
 import { Form } from 'react-bootstrap';
 import { useCallback } from 'react';
-import { AppContext, IDispatchQueryApi } from '../../AppContext';
+import { AppContext, IApi } from '../../AppContext';
 
 const IncidentHandleVise = () => {
   const { handleVise } = useContext(IncidentWindowContext);
@@ -16,7 +16,7 @@ const IncidentHandleVise = () => {
   const department: TDepartment[] = useSelector((state: IState) => state.catalog.department);
   const users: IUserInUsers[] = useSelector((state: IState) => state.users.list);
   const user: TUser = useSelector((state: IState) => state.auth.user);
-  const { dispatchQueryApi } = useContext(AppContext);
+  const { Api } = useContext(AppContext);
 
   const visePerson = useMemo(() => {
     return users.find((item: TUser) => item.number === Number(chooseUser));
@@ -37,7 +37,7 @@ const IncidentHandleVise = () => {
   }, [incident, user]);
 
   const onClick = useCallback(
-    function (this: IDispatchQueryApi) {
+    function (this: IApi) {
       this.comments(
         `${user.name1} ${user.name2.charAt(0)} ${user.name3.charAt(0)} отправил(а) заявку на визирование` +
           ` ${visePerson?.name1} ${user.name2.charAt(0)} ${user.name3.charAt(0)}`,
@@ -54,7 +54,7 @@ const IncidentHandleVise = () => {
       event.stopPropagation();
     } else {
       event.preventDefault();
-      dispatchQueryApi && onClick.call(dispatchQueryApi);
+      Api && onClick.call(Api);
     }
 
     setValidated(true);

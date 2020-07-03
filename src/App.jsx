@@ -39,7 +39,7 @@ import InfoPage from './page/InfoPage';
 import { versionSet } from './redux/actionCreators/versionAction';
 import { AppContext } from './AppContext';
 
-const App = (props) => {
+const App = () => {
   const cookies = new Cookies();
   const dispatch = useDispatch();
   /** Local State */
@@ -51,6 +51,66 @@ const App = (props) => {
   const { progress } = useSelector((state) => state);
   const { user } = useSelector((state) => state.auth);
   const incident = useSelector((state) => state.incidents?.current.incident);
+  const Api = useMemo(() => {
+    return {
+      catalogs(props) {
+        dispatch(
+          queryApi({
+            route: 'catalogs',
+            actionSuccessed: departmentRequestSuccessed,
+            ...props,
+            data: {
+              ...props.data,
+            },
+          }),
+        );
+
+        dispatch(
+          queryApi({
+            route: 'categories',
+            actionSuccessed: categoryRequestSuccessed,
+          }),
+        );
+      },
+      comments(text) {
+        dispatch(
+          queryApi({
+            route: 'comments',
+            method: 'post',
+            actionUpdate: incidentCreate,
+            data: {
+              userNumber: user.number,
+              incidentId: incident.id,
+              text,
+            },
+          }),
+        );
+      },
+      incidents(props) {
+        dispatch(
+          queryApi({
+            method: 'put',
+            route: 'incidents',
+            id: incident?.id,
+            ...props,
+            data: {
+              startWork: dateNow(),
+              statusId: Number(1),
+              ...props.data,
+            },
+          }),
+        );
+      },
+      match(props) {
+        dispatch(
+          queryApi({
+            route: 'matches',
+            ...props,
+          }),
+        );
+      },
+    };
+  }, [dispatch, incident, user]);
 
   const initialApp = useCallback(() => {
     dispatch(authRequestSuccessed(cookies.get('auth')));
@@ -131,23 +191,21 @@ const App = (props) => {
 
   useEffect(() => {
     if (isUpdateIncident) {
-      dispatch(
-        queryApi({
-          route: 'incidents',
-          actionSuccessed: incidentRequestSuccessed,
-          params: { departmentId: user.departmentId },
-        }),
-      );
+      Api.incidents({
+        method: 'get',
+        actionSuccessed: incidentRequestSuccessed,
+        params: { departmentId: user.departmentId },
+        id: undefined,
+      });
 
-      dispatch(
-        queryApi({
-          route: 'incidents',
-          actionSuccessed: myIncidentRequestSuccessed,
-          params: { userNumber: user.number },
-        }),
-      );
+      Api.incidents({
+        method: 'get',
+        actionSuccessed: myIncidentRequestSuccessed,
+        params: { userNumber: user.number },
+        id: undefined,
+      });
     }
-  }, [isUpdateIncident, dispatch, user]);
+  }, [isUpdateIncident, dispatch, user, Api]);
 
   useEffect(() => {
     if (isUpdateStatus) {
@@ -164,50 +222,8 @@ const App = (props) => {
     dispatch(filterSet(filter));
   }, [dispatch]);
 
-  const dispatchQueryApi = useMemo(() => {
-    return {
-      comments(text) {
-        dispatch(
-          queryApi({
-            route: 'comments',
-            method: 'post',
-            actionUpdate: incidentCreate,
-            data: {
-              userNumber: user.number,
-              incidentId: incident.id,
-              text,
-            },
-          }),
-        );
-      },
-      incidents(props) {
-        dispatch(
-          queryApi({
-            method: 'put',
-            route: 'incidents',
-            id: incident.id,
-            ...props,
-            data: {
-              startWork: dateNow(),
-              statusId: Number(1),
-              ...props.data,
-            },
-          }),
-        );
-      },
-      match(props) {
-        dispatch(
-          queryApi({
-            ...props,
-            route: 'matches',
-          }),
-        );
-      },
-    };
-  }, [dispatch, incident, user]);
-
   return (
-    <AppContext.Provider value={{ dispatchQueryApi }}>
+    <AppContext.Provider value={{ Api }}>
       <BrowserRouter>
         {auth}
         <Header />

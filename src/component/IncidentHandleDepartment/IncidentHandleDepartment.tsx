@@ -5,13 +5,13 @@ import { Form } from 'react-bootstrap';
 import { useSelector, shallowEqual } from 'react-redux';
 import { IState } from '../../interface';
 import { useCallback } from 'react';
-import { IDispatchQueryApi, AppContext } from '../../AppContext';
+import { IApi, AppContext } from '../../AppContext';
 
 const IncidentHandleDepartment = ({ show, onHide }: IIncidentHandleDepartment) => {
   const catalog = useSelector((state: IState) => state.catalog, shallowEqual);
   const user = useSelector((state: IState) => state.auth.user, shallowEqual);
   const { id } = useSelector((state: IState) => state.incidents.current.incident, shallowEqual);
-  const { dispatchQueryApi } = useContext(AppContext);
+  const { Api } = useContext(AppContext);
 
   //**Получение листа отделов */
   const [currentDepartmentId, setCurrentDepartmentId] = useState(null);
@@ -127,7 +127,7 @@ const IncidentHandleDepartment = ({ show, onHide }: IIncidentHandleDepartment) =
   };
 
   const onClick = useCallback(
-    function (this: IDispatchQueryApi) {
+    function (this: IApi) {
       this.comments(
         `${user.name1} ${user.name2.charAt(0)} ${user.name3.charAt(0)} передал заявку в "${
           departmentList.find((item: any) => Number(item.id) === Number(currentDepartmentId))?.name
@@ -143,7 +143,7 @@ const IncidentHandleDepartment = ({ show, onHide }: IIncidentHandleDepartment) =
       title={'Передать заявку'}
       show={show}
       onHide={onHide}
-      onOk={dispatchQueryApi && onClick.bind(dispatchQueryApi)}
+      onOk={Api && onClick.bind(Api)}
       textOk={'Передать'}
     >
       <>
