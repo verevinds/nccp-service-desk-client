@@ -52,7 +52,7 @@ const IncidentWindowButton = ({ handleOpen, myIncident }) => {
         },
 
         closeWork: () => {
-          this.comments({ data: { text: `Заявка закрыта.` } });
+          this.comments(`Заявка закрыта.`);
           this.incidents({ data: { statusId: 8388608, closeWork: new Date().toISOString() } });
         },
       };
@@ -69,13 +69,13 @@ const IncidentWindowButton = ({ handleOpen, myIncident }) => {
           </Button>
         );
       }
-      if (Number(statusId) === 8388607 && currentResponsible === number && !!myIncident) {
+      if (Number(statusId) === 8388607 && userNumber === number && !!myIncident) {
         return (
           <ButtonGroup aria-label="Basic example">
-            <Button variant="outline-primary" onClick={onClick.call(Api).closeWork}>
+            <Button variant="outline-primary" onClick={() => onClick.call(Api).closeWork()}>
               Закрыть
             </Button>
-            <Button onClick={handleOpen().inWork()}>Вернуть в работу</Button>
+            <Button onClick={() => handleOpen().inWork()}>Вернуть в работу</Button>
           </ButtonGroup>
         );
       }
