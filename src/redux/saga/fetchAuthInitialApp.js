@@ -1,6 +1,5 @@
 import { put, call } from 'redux-saga/effects';
 import * as axios from 'axios';
-import { incidentRequestSuccessed, myIncidentRequestSuccessed } from '../actionCreators/incidentAction';
 import { progressStart, progressFinish, progressStep } from '../actionCreators/progressAction';
 import { departmentRequestSuccessed } from '../actionCreators/departmentAction';
 import { accessRequestSeccessed } from '../actionCreators/accessAction';
@@ -56,25 +55,25 @@ export function* fetchAuthInitialApp({ response }) {
     yield put(statusRequestSeccessed(status));
     yield put(progressStep(16));
 
-    // Incidents
-    const incidents = yield call(() =>
-      axios.get(`${URL}/api/incidents/`, { params: { departmentId: response.departmentId } }).then((res) => {
-        return res.data;
-      }),
-    );
-    yield localStorage.setItem('incidents', JSON.stringify(incidents));
-    yield put(incidentRequestSuccessed(incidents));
-    yield put(progressStep(15));
-    // MY Incidents
-    const myIncidents = yield call(() =>
-      axios.get(`${URL}/api/incidents/`, { params: { userNumber: response.number } }).then((res) => {
-        return res.data;
-      }),
-    );
+    // // Incidents
+    // const incidents = yield call(() =>
+    //   axios.get(`${URL}/api/incidents/`, { params: { departmentId: response.departmentId } }).then((res) => {
+    //     return res.data;
+    //   }),
+    // );
+    // yield localStorage.setItem('incidents', JSON.stringify(incidents));
+    // yield put(incidentRequestSuccessed(incidents));
+    // yield put(progressStep(15));
+    // // MY Incidents
+    // const myIncidents = yield call(() =>
+    //   axios.get(`${URL}/api/incidents/`, { params: { userNumber: response.number } }).then((res) => {
+    //     return res.data;
+    //   }),
+    // );
 
-    yield localStorage.setItem('myIncidents', JSON.stringify(myIncidents));
-    yield put(myIncidentRequestSuccessed(myIncidents));
-    yield put(progressStep(15));
+    // yield localStorage.setItem('myIncidents', JSON.stringify(myIncidents));
+    // yield put(myIncidentRequestSuccessed(myIncidents));
+    // yield put(progressStep(15));
 
     // Users
     const users = yield call(() =>

@@ -1,21 +1,16 @@
 import React, { memo, useLayoutEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import { queryApi } from '../../redux/actionCreators/queryApiAction';
-import {
-  positionsRequestSeccessed,
-  positionsUpdate,
-} from '../../redux/actionCreators/positionAction';
+import { positionsRequestSeccessed, positionsUpdate } from '../../redux/actionCreators/positionAction';
 import List from '../List/List';
+import SettingPositionsResponsibleModal from '../SettingPositionsResponsibleModal/SettingPositionsResponsibleModal';
 
 const SettingPositions = (props) => {
   const dispatch = useDispatch();
-  const isUpdate = useSelector(
-    (state) => state.positions.isUpdate,
-    shallowEqual,
-  );
+  const isUpdate = useSelector((state) => state.positions.isUpdate, shallowEqual);
   const list = useSelector((state) => state.positions.list, shallowEqual);
   const [route] = useState('positions');
-
+  const [id, setId] = useState(null);
   useLayoutEffect(() => {
     if (!list.length || isUpdate)
       dispatch(
@@ -42,10 +37,18 @@ const SettingPositions = (props) => {
     },
     [dispatch, route],
   );
+
+  const [show, setShow] = useState(false);
+  const handleResponsible = useCallback(({ id }) => {
+    setShow(true);
+    setId(id);
+  }, []);
+
   return (
     <>
       <h2>Должности</h2>
-      <List list={list} onFavorites={onFavorites({ list })} xs={12} />
+      <SettingPositionsResponsibleModal show={show} setShow={setShow} id={id} />
+      <List list={list} onFavorites={onFavorites({ list })} handleResponsible={handleResponsible} xs={12} />
     </>
   );
 };

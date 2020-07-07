@@ -12,6 +12,7 @@ export interface IState {
     isLoading: boolean;
     isUpdate: boolean;
   };
+  responsible: IResponsible;
 }
 
 /** Инциденты */
@@ -273,4 +274,18 @@ export interface ISubscription {
   optionId: number | null;
   updatedAt: string;
   createdAt: string;
+}
+export type TResponsible = {
+  id?: number;
+  departmentId: number;
+  positionId: null | number;
+  userNumber: null | string;
+  categoryId: null | string;
+  propertyId: null | string;
+  optionId: null | string;
+};
+export interface IResponsible {
+  list?: TResponsible[];
+  isLoading: boolean;
+  isUpdate: boolean;
 }

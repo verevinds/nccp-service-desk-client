@@ -19,6 +19,7 @@ export interface IHandle {
   onArchive?: THandle;
   handleDedline?: THandle;
   handleTune?: ({ id }: { id: number }) => void;
+  handleResponsible?: (agr0: { id: number }) => void;
 }
 export type TList = {
   id: number;
@@ -48,6 +49,7 @@ const List: React.FC<IList> = ({
   handleBind,
   handleDedline,
   handleTune,
+  handleResponsible,
   xs,
 }) => {
   const [activeId, setActiveId] = useState<number | undefined>(undefined);
@@ -75,27 +77,17 @@ const List: React.FC<IList> = ({
                       handleBind={handleBind}
                       handleDedline={handleDedline}
                       handleTune={handleTune}
+                      handleResponsible={handleResponsible}
                       key={item.id}
                     />
                   );
                 } else return undefined;
               })}
               <hr />
-              {~localList.findIndex(
-                (item: TList, index: number) => item.isArchive,
-              ) ? (
-                <h6>В архиве</h6>
-              ) : undefined}
+              {~localList.findIndex((item: TList, index: number) => item.isArchive) ? <h6>В архиве</h6> : undefined}
               {localList.map((item: TList, index: number) => {
                 if (index < limit && item.isArchive) {
-                  return (
-                    <ListItem
-                      item={item}
-                      onDelete={onDelete}
-                      onArchive={onArchive}
-                      key={item.id}
-                    />
-                  );
+                  return <ListItem item={item} onDelete={onDelete} onArchive={onArchive} key={item.id} />;
                 } else return undefined;
               })}
               {localList.length > 50 && localList.length > limit ? (

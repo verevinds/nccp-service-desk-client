@@ -12,6 +12,7 @@ import { errorReducer } from './errorReducer';
 import { applicationReducer } from './appReducer';
 import { subscriptionReducer } from './subscriptionReducer';
 import { filterReducer } from './filterReducer';
+import { responsibleReducer } from './responsibleReducer';
 
 export const CombineReducers = combineReducers({
   auth: authReducer,
@@ -27,4 +28,5 @@ export const CombineReducers = combineReducers({
   app: applicationReducer,
   subscription: subscriptionReducer,
   filter: filterReducer,
+  responsible: responsibleReducer,
 });

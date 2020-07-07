@@ -16,6 +16,7 @@ import {
   faBoxOpen,
   faClock,
   faPencilRuler,
+  faAddressCard,
 } from '@fortawesome/free-solid-svg-icons';
 import { ListContext } from './context';
 import Fade from 'react-reveal/Fade';
@@ -47,6 +48,7 @@ const ListItem: React.FC<IListItem> = ({
   handleDedline,
   handleBind,
   handleTune,
+  handleResponsible,
 }) => {
   const [cursor, setCursor] = useState<string | undefined>(undefined);
   const { user } = useSelector((state: IState) => state.auth, shallowEqual);
@@ -124,12 +126,26 @@ const ListItem: React.FC<IListItem> = ({
       );
   }, [id, handleTune]);
 
+  const buttonResponsible = useMemo(() => {
+    if (!!handleResponsible)
+      return (
+        <ButtonFontAwesome
+          faIcon={faAddressCard}
+          onClick={() => {
+            handleResponsible({ id });
+          }}
+          variant={'primary'}
+          tooltip={'Выбор ответственности'}
+        />
+      );
+  }, [id, handleResponsible]);
+
   const content = useMemo(() => {
     let buttonArray = [];
 
     buttonTune && buttonArray.push(buttonTune);
     buttonDedline && buttonArray.push(buttonDedline);
-
+    buttonResponsible && buttonArray.push(buttonResponsible);
     if (!!buttonArchive || !!buttonDelete || !!buttonFavorites) {
       if (!!isArchive) {
         buttonArray.push(buttonArchive, buttonDelete);
@@ -141,7 +157,7 @@ const ListItem: React.FC<IListItem> = ({
     }
 
     if (buttonArray.length) return buttonArray;
-  }, [buttonArchive, buttonDelete, buttonFavorites, isArchive, buttonDedline, buttonTune]);
+  }, [buttonArchive, buttonDelete, buttonFavorites, isArchive, buttonDedline, buttonTune, buttonResponsible]);
 
   let jsxTags = useMemo(() => {
     if (!!bind)
