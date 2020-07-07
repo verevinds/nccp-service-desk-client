@@ -27,9 +27,6 @@ const Incident = () => {
     else return incidents?.myList;
   }, [incidents, myIncident]);
 
-  useEffect(() => {
-    console.log('list', list);
-  }, [list]);
   const fetchIncident = useCallback(
     (params, actionSuccessed) => {
       dispatch(
@@ -91,7 +88,8 @@ const Incident = () => {
       dispatch(incidentChoose(newCurrentIncident));
     }
     // eslint-disable-next-line
-  }, [chooseIncidentId, list, history]); // Использовать эффект если изменились параметры chooseIncidentId, list поменяли свое состояние
+  }, [chooseIncidentId, history]); // Использовать эффект если изменились параметры chooseIncidentId, list поменяли свое состояние
+
   const [sidebarList, setSidebarList] = useState([]);
 
   useEffect(() => {
