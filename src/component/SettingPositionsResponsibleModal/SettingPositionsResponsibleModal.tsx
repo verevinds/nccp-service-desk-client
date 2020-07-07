@@ -8,6 +8,7 @@ import { queryApi } from '../../redux/actionCreators/queryApiAction';
 import { responsibleRequestSuccessed, responsibleUpdate } from '../../redux/actionCreators/responsibleAction';
 import ButtonFontAwesome from '../ButtonFontAwesome/ButtonFontAwesome';
 import { faTrash, faPlus } from '@fortawesome/free-solid-svg-icons';
+import Axios from 'axios';
 export interface ISettingPositionsResponsibleModal {
   show: boolean;
   setShow: (agr0: boolean) => void;
@@ -19,6 +20,9 @@ const SettingPositionsResponsibleModal: React.FC<ISettingPositionsResponsibleMod
   const responsibles: IResponsible = useSelector((state: IState) => state.responsible);
   const departments: TDepartment[] = useSelector((state: IState) => state.catalog.department);
   const dispatch = useDispatch();
+
+  const [arrayProperty, setArrayProperty] = useState<any[]>([]);
+  const [arrayOption, setArrayOption] = useState<any[]>([]);
 
   const [categoryId, setCategoryId] = useState<string | null>(null);
   const [propertyId, setPropertyId] = useState<string | null>(null);
@@ -35,6 +39,15 @@ const SettingPositionsResponsibleModal: React.FC<ISettingPositionsResponsibleMod
     setResponsible({ ...responsible, positionId: id });
     // eslint-disable-next-line
   }, [id]);
+
+  useEffect(() => {
+    Axios.get('http://srv-sdesk.c31.nccp.ru:8080/api/options').then((res: any) => {
+      setArrayOption(res.data);
+    });
+    Axios.get('http://srv-sdesk.c31.nccp.ru:8080/api/properties').then((res: any) => {
+      setArrayProperty(res.data);
+    });
+  }, []);
 
   const categories: TCategory[] | undefined = useMemo(() => {
     return departments.find((item: TDepartment) => item.id === responsible.departmentId)?.categories;
@@ -154,7 +167,9 @@ const SettingPositionsResponsibleModal: React.FC<ISettingPositionsResponsibleMod
         <ListGroup>
           {responsibles.list?.map((item: TResponsible, index: number) => (
             <ListGroup.Item className="flex flex_row flex_between" key={index}>
-              {item.categoryId} {item.propertyId} {item.optionId}
+              {categories?.find((elem: TCategory) => elem.id === Number(item.categoryId))}{' '}
+              {arrayProperty?.find((elem: TProperty) => elem.id === Number(item.propertyId))?.name}{' '}
+              {arrayOption?.find((elem: TOption) => elem.id === Number(item.optionId))?.name}
               <ButtonFontAwesome
                 variant={'danger'}
                 faIcon={faTrash}
