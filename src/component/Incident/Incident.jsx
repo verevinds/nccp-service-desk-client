@@ -21,7 +21,9 @@ const Incident = () => {
   const { history } = useSelector((state) => state.incidents, shallowEqual);
 
   const dispatch = useDispatch();
-
+  useEffect(() => {
+    console.log(incidents.current.incident);
+  }, [incidents]);
   const list = useMemo(() => {
     if (!myIncident) return incidents?.list;
     else return incidents?.myList;
@@ -94,34 +96,36 @@ const Incident = () => {
 
   useEffect(() => {
     setSidebarList(
-      list.map((item) => {
-        let responsible;
-        if (item.responsibleUser) {
-          responsible = `(${item.responsibleUser.name1} ${item.responsibleUser.name2.charAt(
-            0,
-          )}. ${item.responsibleUser.name3.charAt(0)}.)`;
-        } else {
-          responsible = '';
-        }
-        const newItem = {
-          id: item.id,
-          name: `${item.category ? item.category.name : ''} ${item.property ? item.property.name : ''} ${
-            item.option ? item.option.name : ''
-          }`,
-          createdAt: item.createdAt,
-          responsible,
-          numberResponsible: item.currentResponsible,
-          consent: item.consent,
-          status: item.statusId,
-          finishWork: item.finishWork,
-          startWork: item.startWork,
-          doneWork: item.doneWork,
-          categories: item.categoryId,
-          options: item.optionId,
-          properties: item.propertyId,
-        };
-        return newItem;
-      }),
+      list
+        .filter((item) => item.allowToCreate)
+        .map((item) => {
+          let responsible;
+          if (item.responsibleUser) {
+            responsible = `(${item.responsibleUser.name1} ${item.responsibleUser.name2.charAt(
+              0,
+            )}. ${item.responsibleUser.name3.charAt(0)}.)`;
+          } else {
+            responsible = '';
+          }
+          const newItem = {
+            id: item.id,
+            name: `${item.category ? item.category.name : ''} ${item.property ? item.property.name : ''} ${
+              item.option ? item.option.name : ''
+            }`,
+            createdAt: item.createdAt,
+            responsible,
+            numberResponsible: item.currentResponsible,
+            consent: item.consent,
+            status: item.statusId,
+            finishWork: item.finishWork,
+            startWork: item.startWork,
+            doneWork: item.doneWork,
+            categories: item.categoryId,
+            options: item.optionId,
+            properties: item.propertyId,
+          };
+          return newItem;
+        }),
     );
     // eslint-disable-next-line
   }, [list]);

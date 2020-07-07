@@ -7,6 +7,7 @@ import { Row, Col } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import SettingAccess from '../component/SettingAccess/SettingAccess';
 import SettingSubscription from '../component/SettingSubscription/SettingSubscription';
+import SettingRules from '../component/SettingRules/SettingRules';
 const SettingPositions = React.lazy(() => import('../component/SettingPositions/SettingPositions'));
 
 const SettingPage = (props) => {
@@ -55,6 +56,7 @@ const SettingPage = (props) => {
       case 5:
         setJsxContent(<SettingSubscription />);
         break;
+
       default:
         setJsxContent(<p className="align-content-center">Контент находиться в разработке</p>);
         break;

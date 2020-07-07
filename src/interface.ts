@@ -5,6 +5,7 @@ export interface IState {
   error: string | null;
   incidents: TIncidents;
   progress: TProgress;
+  positions: IPositions;
   status: TStatusies;
   users: TUsers;
   subscription: {
@@ -14,7 +15,10 @@ export interface IState {
   };
   responsible: IResponsible;
 }
-
+export interface IPositions {
+  isUpdate: boolean;
+  list: any[];
+}
 /** Инциденты */
 export type TIncidents = {
   current: TIncidentCurrent;
