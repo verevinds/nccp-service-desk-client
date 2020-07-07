@@ -138,6 +138,9 @@ const SettingCatalog = () => {
       setChildrenId(0);
     }
   }, [parentId, childrenId, catalog, categorySubList, dispatch]);
+
+  const handleRules = useCallback(() => {}, []);
+
   return (
     <Fragment>
       <h2>Каталог</h2>

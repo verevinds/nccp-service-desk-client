@@ -20,6 +20,7 @@ export interface IHandle {
   handleDedline?: THandle;
   handleTune?: ({ id }: { id: number }) => void;
   handleResponsible?: (agr0: { id: number }) => void;
+  handleRules?: (agr0: { id: number }) => void;
 }
 export type TList = {
   id: number;

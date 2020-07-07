@@ -7,7 +7,7 @@ import { Navbar, Nav, Image, Button, Badge } from 'react-bootstrap';
 import { useSelector, shallowEqual } from 'react-redux';
 //? Font Awesome иконки
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCog, faClipboardList, faEdit, faHome, faInfo } from '@fortawesome/free-solid-svg-icons';
+import { faCog, faClipboardList, faEdit, faHome, faInfo, faBusinessTime } from '@fortawesome/free-solid-svg-icons';
 import HeaderButton from '../HeaderButton/HeaderButton';
 
 const Header = (props) => {
@@ -75,6 +75,7 @@ const Header = (props) => {
                 setPage={setPage}
                 text={'Рабочая панель'}
               />
+              <HeaderButton to={'/vise'} faIcon={faBusinessTime} page={page} setPage={setPage} text={'Согласование'} />
             </Nav.Item>{' '}
           </Nav>
           <Nav>

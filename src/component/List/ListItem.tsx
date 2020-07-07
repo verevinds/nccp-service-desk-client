@@ -17,6 +17,7 @@ import {
   faClock,
   faPencilRuler,
   faAddressCard,
+  faAtlas,
 } from '@fortawesome/free-solid-svg-icons';
 import { ListContext } from './context';
 import Fade from 'react-reveal/Fade';
@@ -49,6 +50,7 @@ const ListItem: React.FC<IListItem> = ({
   handleBind,
   handleTune,
   handleResponsible,
+  handleRules,
 }) => {
   const [cursor, setCursor] = useState<string | undefined>(undefined);
   const { user } = useSelector((state: IState) => state.auth, shallowEqual);
@@ -140,11 +142,26 @@ const ListItem: React.FC<IListItem> = ({
       );
   }, [id, handleResponsible]);
 
+  const buttonRules = useMemo(() => {
+    if (!!handleRules)
+      return (
+        <ButtonFontAwesome
+          faIcon={faAtlas}
+          onClick={() => {
+            handleRules({ id });
+          }}
+          variant={'primary'}
+          tooltip={'Создать правило'}
+        />
+      );
+  }, [id, handleRules]);
+
   const content = useMemo(() => {
     let buttonArray = [];
 
     buttonTune && buttonArray.push(buttonTune);
     buttonDedline && buttonArray.push(buttonDedline);
+    buttonRules && buttonArray.push(buttonRules);
     buttonResponsible && buttonArray.push(buttonResponsible);
     if (!!buttonArchive || !!buttonDelete || !!buttonFavorites) {
       if (!!isArchive) {

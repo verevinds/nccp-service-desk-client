@@ -38,6 +38,7 @@ import Axios from 'axios';
 import InfoPage from './page/InfoPage';
 import { versionSet } from './redux/actionCreators/versionAction';
 import { AppContext } from './AppContext';
+import VisePage from './page/VisePage';
 
 const App = () => {
   const cookies = new Cookies();
@@ -270,6 +271,7 @@ const App = () => {
             <Route path="/myincidents" component={MyIncidentPage} />
             <Route path="/test" component={TestPage} />
             <Route path="/info" component={InfoPage} />
+            <Route path="/vise" component={VisePage} />
           </Switch>
         </div>
       </BrowserRouter>
