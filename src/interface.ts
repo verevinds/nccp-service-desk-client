@@ -17,8 +17,15 @@ export interface IState {
 }
 export interface IPositions {
   isUpdate: boolean;
-  list: any[];
+  list: (TPosition | never)[];
 }
+export type TPosition = {
+  createdAt: string;
+  id: number;
+  level: number;
+  name: string;
+  updatedAt: string;
+};
 /** Инциденты */
 export type TIncidents = {
   current: TIncidentCurrent;
@@ -26,7 +33,8 @@ export type TIncidents = {
   isLoading: boolean;
   isRequest: boolean;
   isUpdate: boolean;
-  list: TIncident[] | never[];
+  list: (TIncident | never)[];
+  allowToCreate: (TIncident | never)[];
   myList: TIncident[] | never[];
 };
 export type TIncidentCurrent = {
@@ -55,11 +63,17 @@ export type TIncident = {
   propertyId: number | null;
   responsibleUser: TUser | null;
   startWork: string | null;
+  finishWork: string | null;
+  doneWork: string | null;
   statusId: number;
   text: string;
   updatedAt: string;
   userNumber: number;
   matches: (TMatch | never)[];
+  initiatorDepartmentParent: number;
+  initiatorDepartment: number;
+  hasVisa: boolean;
+  rulesId: number | null;
 };
 export type TMatch = {
   isMatch: false;

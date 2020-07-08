@@ -11,6 +11,8 @@ export interface IApi {
 
 type TProps = {
   method?: string;
+  route?: string;
+  actionSuccessed?: any;
   data?: any;
   params?: any;
   id?: number;

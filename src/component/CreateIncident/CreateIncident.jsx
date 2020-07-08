@@ -68,6 +68,8 @@ const CreateIncidentModel = ({ handleClose, showModal, isModify }) => {
       categoryId: currentIdCategory,
       propertyId: currentIdProperty,
       optionId: currentIdOption,
+      initiatorDepartmentParent: user.department.parent,
+      initiatorDepartment: user.department.id,
       params,
     };
   }, [

@@ -7,14 +7,24 @@ import { Navbar, Nav, Image, Button, Badge } from 'react-bootstrap';
 import { useSelector, shallowEqual } from 'react-redux';
 //? Font Awesome иконки
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCog, faClipboardList, faEdit, faHome, faInfo, faBusinessTime } from '@fortawesome/free-solid-svg-icons';
+import {
+  faCog,
+  faClipboardList,
+  faEdit,
+  faHome,
+  faInfo,
+  faBusinessTime,
+  faUserTie,
+} from '@fortawesome/free-solid-svg-icons';
 import HeaderButton from '../HeaderButton/HeaderButton';
 
 const Header = (props) => {
   const user = useSelector((state) => state.auth.user, shallowEqual);
+
   const version = useSelector((state) => state.app.version, shallowEqual);
   const filterState = useSelector((state) => state.filter);
   const listIncident = useSelector((state) => state.incidents.list);
+  const allowToCreate = useSelector((state) => state.incidents.allowToCreate);
   const [showModal, setShowModal] = useState(false);
   const handleClose = () => setShowModal(false);
   const handleOpen = () => setShowModal(true);
@@ -49,6 +59,10 @@ const Header = (props) => {
       return newList.filter((item) => Number(item.statusId) === 0).length;
     }
   }, [listIncident, filterState, user]);
+
+  const newMyDepartmentIncidentCount = useMemo(() => {
+    return allowToCreate.length;
+  }, [allowToCreate]);
   return (
     <nav>
       <Navbar
@@ -75,7 +89,16 @@ const Header = (props) => {
                 setPage={setPage}
                 text={'Рабочая панель'}
               />
-              <HeaderButton to={'/vise'} faIcon={faBusinessTime} page={page} setPage={setPage} text={'Согласование'} />
+              {user?.position?.level < 1 ? undefined : (
+                <HeaderButton
+                  to={'/MyDepartmentPage'}
+                  faIcon={faUserTie}
+                  page={page}
+                  setPage={setPage}
+                  text={'Мой отдел'}
+                  newIncidentCount={newMyDepartmentIncidentCount}
+                />
+              )}
             </Nav.Item>{' '}
           </Nav>
           <Nav>

@@ -26,6 +26,7 @@ import { statusRequestSeccessed } from './redux/actionCreators/statusAction';
 import { accessRequestSeccessed } from './redux/actionCreators/accessAction';
 import { filterSet } from './redux/actionCreators/filterAction';
 import { incidentCreate } from './redux/actionCreators/incidentAction';
+import { incidentAllowToCreateRequestSuccessed, incidentChoose } from './redux/actionCreators/incidentAction';
 
 /**Bootstrap components */
 import { ProgressBar } from 'react-bootstrap';
@@ -38,7 +39,8 @@ import Axios from 'axios';
 import InfoPage from './page/InfoPage';
 import { versionSet } from './redux/actionCreators/versionAction';
 import { AppContext } from './AppContext';
-import VisePage from './page/VisePage';
+import MyDepartmentPage from './page/MyDepartmentPage';
+import { paramsIncident } from './js/paramsIncident';
 
 const App = () => {
   const cookies = new Cookies();
@@ -197,24 +199,7 @@ const App = () => {
 
   useEffect(() => {
     if (user) {
-      let responsibles = user?.position?.responsibles;
-      let arrayCategoryId = [];
-      let arrayPropertyId = [];
-      let arrayOptionId = [];
-      if (Array.isArray(responsibles))
-        responsibles.forEach((item) => {
-          if (item.categoryId) arrayCategoryId.push(item.categoryId);
-          if (item.propertyId) arrayPropertyId.push(item.propertyId);
-          if (item.optionId) arrayOptionId.push(item.optionId);
-        });
-      arrayCategoryId = Array.from(new Set(arrayCategoryId));
-      arrayPropertyId = Array.from(new Set(arrayPropertyId));
-      arrayOptionId = Array.from(new Set(arrayOptionId));
-      let params = { departmentId: user?.departmentId };
-
-      if (arrayCategoryId.length > 0) Object.assign(params, { arrayCategoryId: JSON.stringify(arrayCategoryId) });
-      if (arrayPropertyId.length > 0) Object.assign(params, { arrayPropertyId: JSON.stringify(arrayPropertyId) });
-      if (arrayOptionId.length > 0) Object.assign(params, { arrayOptionId: JSON.stringify(arrayOptionId) });
+      let params = paramsIncident(user);
 
       Api.incidents({
         method: 'get',
@@ -225,13 +210,21 @@ const App = () => {
       });
       Api.incidents({
         method: 'get',
+        route: 'incidents/work',
+        actionSuccessed: incidentAllowToCreateRequestSuccessed,
+        params: { departmentId: user?.departmentId, allowToCreate: false },
+        id: undefined,
+      });
+      Api.incidents({
+        method: 'get',
         route: 'incidents/my',
         actionSuccessed: myIncidentRequestSuccessed,
         params: { userNumber: user?.number },
         id: undefined,
       });
     }
-  }, [isUpdateIncident, dispatch, user, Api]);
+    // eslint-disable-next-line
+  }, [isUpdateIncident, dispatch, user]);
 
   useEffect(() => {
     if (isUpdateStatus) {
@@ -274,7 +267,7 @@ const App = () => {
             <Route path="/myincidents" component={MyIncidentPage} />
             <Route path="/test" component={TestPage} />
             <Route path="/info" component={InfoPage} />
-            <Route path="/vise" component={VisePage} />
+            <Route path="/MyDepartmentPage" component={MyDepartmentPage} />
           </Switch>
         </div>
       </BrowserRouter>

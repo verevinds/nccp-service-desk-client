@@ -7,6 +7,7 @@ import HandleResponsible from './HandleResponsible';
 import HandleDepartment from './HandleDepartment';
 import { IncidentWindowContext } from '../IncidentWindow/IncidentWindowContext';
 import { AppContext } from '../../AppContext';
+import HandleAllowToCreate from '../IncidentWindowButtonHandle/HandleAllowToCreate';
 
 const IncidentWindowButton = ({ handleOpen, myIncident }) => {
   const { handleVise, handleModify } = useContext(IncidentWindowContext);
@@ -103,39 +104,43 @@ const IncidentWindowButton = ({ handleOpen, myIncident }) => {
     }
   }, [matches]);
 
-  return (
-    <>
-      <hr />
-      <div className={styles.bar}>
-        <div>
-          {!!buttonMatch && Number(statusId) < 8000000 && !myIncident ? (
-            buttonMatch
-          ) : Number(statusId) < 8000000 && !myIncident ? (
-            <DropdownButton as={ButtonGroup} title={'Дополнительные действия'} variant={'outline-info'}>
-              {level ? (
-                <Dropdown.Item eventKey="1">
-                  <HandleResponsible />
-                </Dropdown.Item>
-              ) : undefined}
-              <Dropdown.Item eventKey="2">
-                <HandleDepartment />
-              </Dropdown.Item>
-              {Number(statusId) > 0 ? (
-                <>
-                  <Dropdown.Divider />
-
-                  <Dropdown.Item eventKey="2" onClick={() => handleVise.setVise(true)}>
-                    Отправить на согласование
+  if (incident.allowToCreate)
+    return (
+      <>
+        <hr />
+        <div className={styles.bar}>
+          <div>
+            {!!buttonMatch && Number(statusId) < 8000000 && !myIncident ? (
+              buttonMatch
+            ) : Number(statusId) < 8000000 && !myIncident ? (
+              <DropdownButton as={ButtonGroup} title={'Дополнительные действия'} variant={'outline-info'}>
+                {level ? (
+                  <Dropdown.Item eventKey="1">
+                    <HandleResponsible />
                   </Dropdown.Item>
-                </>
-              ) : undefined}
-            </DropdownButton>
-          ) : undefined}
+                ) : undefined}
+                <Dropdown.Item eventKey="2">
+                  <HandleDepartment />
+                </Dropdown.Item>
+                {Number(statusId) > 0 ? (
+                  <>
+                    <Dropdown.Divider />
+
+                    <Dropdown.Item eventKey="2" onClick={() => handleVise.setVise(true)}>
+                      Отправить на согласование
+                    </Dropdown.Item>
+                  </>
+                ) : undefined}
+              </DropdownButton>
+            ) : undefined}
+          </div>
+          {mainButton}
         </div>
-        {mainButton}
-      </div>
-    </>
-  );
+      </>
+    );
+  else {
+    return <HandleAllowToCreate />;
+  }
 };
 
 export default memo(IncidentWindowButton);

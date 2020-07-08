@@ -14,7 +14,7 @@ interface IBoardDropDrag {
 }
 
 const BoardDropDrag: React.FC<IBoardDropDrag> = ({ item, index }) => {
-  const { state, setState } = useContext(BoardContext);
+  const { state, setState, noDelete } = useContext(BoardContext);
   const { ind } = useContext(BoardDropContext);
 
   return (
@@ -24,10 +24,7 @@ const BoardDropDrag: React.FC<IBoardDropDrag> = ({ item, index }) => {
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          style={getItemStyle(
-            snapshot.isDragging,
-            provided.draggableProps.style,
-          )}
+          style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}
         >
           <div
             style={{
@@ -40,16 +37,18 @@ const BoardDropDrag: React.FC<IBoardDropDrag> = ({ item, index }) => {
               <FontAwesomeIcon icon={faGripVertical} />
             </div>
 
-            <div
-              className={`${styles.icon} ${styles.icon_red} pointer`}
-              onClick={() => {
-                const newState = [...state];
-                newState[ind].splice(index, 1);
-                setState(newState.filter((group) => group.length));
-              }}
-            >
-              <FontAwesomeIcon icon={faTrash} />
-            </div>
+            {noDelete ? undefined : (
+              <div
+                className={`${styles.icon} ${styles.icon_red} pointer`}
+                onClick={() => {
+                  const newState = [...state];
+                  newState[ind].splice(index, 1);
+                  setState(newState.filter((group) => group.length));
+                }}
+              >
+                <FontAwesomeIcon icon={faTrash} />
+              </div>
+            )}
           </div>
         </div>
       )}

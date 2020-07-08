@@ -9,12 +9,7 @@ export const reorder = (list, startIndex, endIndex) => {
 /**
  * Moves an item from one list to another list.
  */
-export const move = (
-  source,
-  destination,
-  droppableSource,
-  droppableDestination,
-) => {
+export const move = (source, destination, droppableSource, droppableDestination) => {
   const sourceClone = Array.from(source);
   const destClone = Array.from(destination);
   const [removed] = sourceClone.splice(droppableSource.index, 1);
@@ -33,7 +28,7 @@ const grid = 8;
 export const getItemStyle = (isDragging, draggableStyle) => ({
   // some basic styles to make the items look a bit nicer
   userSelect: 'none',
-  padding: grid * 2,
+  padding: grid * 0.5,
   margin: `0 0 ${grid}px 0`,
 
   // change background colour if dragging

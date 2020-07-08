@@ -95,6 +95,7 @@ const Incident = () => {
   const [sidebarList, setSidebarList] = useState([]);
 
   useEffect(() => {
+    console.log('list', list);
     setSidebarList(
       list.map((item) => {
         let responsible;
@@ -134,7 +135,9 @@ const Incident = () => {
         <SidebarWrapper
           title={title}
           list={sidebarList}
-          onClick={setChooseIncidentId}
+          onClick={(id) => {
+            setChooseIncidentId(id);
+          }}
           activeId={chooseIncidentId}
           onClickHistory={onClickHistory}
         />

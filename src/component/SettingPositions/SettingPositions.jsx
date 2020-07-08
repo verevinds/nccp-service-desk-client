@@ -7,8 +7,8 @@ import SettingPositionsResponsibleModal from '../SettingPositionsResponsibleModa
 
 const SettingPositions = (props) => {
   const dispatch = useDispatch();
-  const isUpdate = useSelector((state) => state.positions.isUpdate, shallowEqual);
-  const list = useSelector((state) => state.positions.list, shallowEqual);
+  const isUpdate = useSelector((state) => state.positions.isUpdate);
+  const list = useSelector((state) => state.positions.list);
   const [route] = useState('positions');
   const [id, setId] = useState(null);
   useLayoutEffect(() => {

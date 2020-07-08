@@ -1,27 +1,35 @@
 export interface TList {
-  id: number | undefined;
-  name: string | undefined;
-  createdAt: string | undefined;
-  status: string | undefined;
-  responsible: string | undefined;
+  id: number;
+  name: string;
+  createdAt: string;
+  responsible: any;
+  numberResponsible: number | null;
+  consent: number | null;
+  status: number;
+  finishWork: string | null;
+  startWork: string | null;
+  doneWork: string | null;
+  categories: number;
+  options: number | null;
+  properties: number | null;
 }
 export interface ISidebar {
   list: TList[];
   filter?: any;
-  onClick: () => undefined;
-  activeId: number;
+  onClick: (id: any) => void;
+  activeId?: number;
 }
 export interface ISidebarHistory {
-  onClick: () => undefined;
+  onClick: (id: any) => void;
   onClickHistory: () => void;
-  activeId: number;
+  activeId?: number;
 }
 export interface ISidebarWrapper {
   title: string;
-  badge: boolean;
+  badge?: boolean;
   onClickHistory: () => void;
-  list: TList[] | never[];
-  onClick: () => undefined;
-  isLoading: boolean;
-  activeId: number;
+  list: (TList | never)[];
+  onClick: (id: any) => void;
+  isLoading?: boolean;
+  activeId?: number;
 }
