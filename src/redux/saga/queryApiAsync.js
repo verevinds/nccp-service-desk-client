@@ -32,7 +32,8 @@ export function* queryApiAsync({ route, actionSuccessed, actionUpdate, method, d
 
       case 'put':
         response = yield call(() => axios.put(`${URL}/api/${route}/${id}`, data));
-        if (response.status === 200 && 'incidents') {
+        if (response.status === 200 && route === 'incidents') {
+          console.log('incidentUpdate');
           socket.emit('incidentUpdate', { id, data, userNumber });
         }
         break;

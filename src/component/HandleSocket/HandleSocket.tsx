@@ -37,20 +37,21 @@ const HandleSocket = () => {
   }, []);
 
   useEffect(() => {
-    if (user) {
-      socket.on(`updateResponsible${user?.number}`, (data: TIncident) => {
-        dispatch(incidentCreate());
-        setMessage(data);
-      });
-      socket.on(`updateIncidentOwner${user?.number}`, (data: TIncident) => {
-        dispatch(incidentCreate());
-        setMessage(data);
-      });
-      socket.on(`updateResponsibleDepartment${user?.departmentId}`, (data: TIncident) => {
-        dispatch(incidentCreate());
-        setMessage(data);
-      });
-    }
+    socket.on(`updateResponsible${user?.number}`, (data: TIncident) => {
+      console.log(`updateResponsible${user?.number}`);
+      dispatch(incidentCreate());
+      setMessage(data);
+    });
+    socket.on(`updateIncidentOwner${user?.number}`, (data: TIncident) => {
+      console.log(`updateIncidentOwner${user?.number}`);
+      dispatch(incidentCreate());
+      setMessage(data);
+    });
+    socket.on(`updateResponsibleDepartment${user?.departmentId}`, (data: TIncident) => {
+      console.log(`updateResponsibleDepartment${user?.departmentId}`);
+      dispatch(incidentCreate());
+      setMessage(data);
+    });
   }, [user, setMessage, dispatch]);
 
   useEffect(() => {

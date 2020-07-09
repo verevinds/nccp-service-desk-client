@@ -7,6 +7,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './toastiry.scss';
 import dateNow from './js/dateNow';
+import { socket } from './index';
 
 //** Pages */
 import TestPage from './page/TestPage';

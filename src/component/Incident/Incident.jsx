@@ -23,7 +23,7 @@ const Incident = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     console.log(incidents.current.incident);
-  }, [incidents]);
+  }, [incidents.current.incident]);
   const list = useMemo(() => {
     if (!myIncident) return incidents?.list;
     else return incidents?.myList;
@@ -95,7 +95,6 @@ const Incident = () => {
   const [sidebarList, setSidebarList] = useState([]);
 
   useEffect(() => {
-    console.log('list', list);
     setSidebarList(
       list.map((item) => {
         let responsible;

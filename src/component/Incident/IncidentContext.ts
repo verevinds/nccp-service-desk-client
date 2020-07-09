@@ -6,5 +6,6 @@ export interface IIncidentContext {
   title?: string;
   actionSuccessed?: () => void;
   requestSuccessed?: () => void;
+  Buttons?: React.NamedExoticComponent<any>;
 }
 export const IncidentContext = React.createContext<IIncidentContext>({});

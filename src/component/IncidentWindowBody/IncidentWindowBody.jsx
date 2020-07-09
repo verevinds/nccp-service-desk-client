@@ -3,7 +3,6 @@ import { useSelector, shallowEqual } from 'react-redux';
 import styles from './styles.module.css';
 import IncidentWindowComments from '../IncidentWindowComments/IncidentWindowComments';
 import IncidentWindowFiles from '../IncidentWindowFiles/IncidentWindowFiles';
-import IncidentWorkButton from '../IncidentWindowButton/IncidentWindowButton';
 import { IncidentContext } from '../Incident/IncidentContext';
 
 // Bootstrap
@@ -19,12 +18,10 @@ import IncidentWindowVisa from '../IncidentWindowVisa/IncidentWindowVisa';
 import { IncidentWindowContext } from '../IncidentWindow/IncidentWindowContext';
 
 const IncidentWindowBody = ({ handleOpen }) => {
-  const { myIncident } = useContext(IncidentContext);
-  const { buttons } = useContext(IncidentWindowContext);
+  const { myIncident, Buttons } = useContext(IncidentContext);
   //State изменений в заявкае
   const { user } = useSelector((state) => state.auth, shallowEqual);
   const incident = useSelector((state) => state.incidents?.current.incident, shallowEqual);
-  console.log('buttons', buttons);
   return (
     <Card.Body className={styles.window}>
       <Card.Title>
@@ -110,8 +107,7 @@ const IncidentWindowBody = ({ handleOpen }) => {
         </>
       ) : null}
       <IncidentWindowBodyCustom />
-      <IncidentWorkButton incident={incident} handleOpen={handleOpen} user={user} myIncident={myIncident} />
-      {buttons}
+      <Buttons incident={incident} handleOpen={handleOpen} user={user} myIncident={myIncident} />
       <br />
       <IncidentWindowVisa />
       <br />

@@ -8,7 +8,7 @@ import { Row, Col, Container } from 'react-bootstrap';
 import WrapperSidebar from '../component/Sidebar/WrapperSidebar';
 import IncidentWindow from '../component/IncidentWindow/IncidentWindow';
 import { IncidentContext } from '../component/Incident/IncidentContext';
-import VisaIncidentButton from '../component/VisaIncidentButton/VisaIncidentButton';
+import IncidentWindowVisaButton from '../component/IncidentWindowVisaButton/IncidentWindowVisaButton';
 import { IncidentWindowContext } from '../component/IncidentWindow/IncidentWindowContext';
 export interface IVisaPage {}
 
@@ -29,9 +29,6 @@ const VisaPage: React.FC<IVisaPage> = (props) => {
     });
   }, [user]);
 
-  useEffect(() => {
-    console.log('incidents', incidents);
-  }, [incidents]);
   useEffect(() => {
     if (incidents && Array.isArray(incidents)) {
       let sidebarList = incidents?.map((item: TIncident) => {
@@ -95,9 +92,9 @@ const VisaPage: React.FC<IVisaPage> = (props) => {
         </Col>
         <Col>
           <Container>
-            <IncidentWindowContext.Provider value={{ buttons: 'OK' }}>
+            <IncidentContext.Provider value={{ Buttons: IncidentWindowVisaButton }}>
               <IncidentWindow />
-            </IncidentWindowContext.Provider>
+            </IncidentContext.Provider>
           </Container>
         </Col>
       </Row>

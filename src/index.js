@@ -9,6 +9,7 @@ import * as serviceWorker from './serviceWorker';
 import store from './redux/store';
 import App from './App';
 const PATH = process.env.REACT_APP_URL || 'srv-sdesk.c31.nccp.ru';
+console.log(`${window.location.protocol}//${PATH}:8000`);
 export const socket = openSocket(`${window.location.protocol}//${PATH}:8000`);
 
 ReactDOM.render(

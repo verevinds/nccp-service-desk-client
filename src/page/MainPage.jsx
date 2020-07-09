@@ -1,5 +1,8 @@
-import React, { memo, useState, useEffect, useMemo } from 'react';
-import { useSelector, shallowEqual } from 'react-redux';
+import React, { memo, useState, useEffect, useMemo, useLayoutEffect } from 'react';
+import { useSelector, shallowEqual, useDispatch } from 'react-redux';
+import IncidentWindowButton from '../component/IncidentWindowButton/IncidentWindowButton';
+import { incidentChoose } from '../redux/actionCreators/incidentAction';
+
 import { incidentRequestSuccessed } from '../redux/actionCreators/incidentAction';
 /**My components */
 import Incident from '../component/Incident/Incident';
@@ -9,7 +12,11 @@ const MainPage = () => {
   const user = useSelector((state) => state.auth.user, shallowEqual);
   const [params, setParams] = useState();
   const [title, setTitle] = useState(`Инциденты`);
+  const dispatch = useDispatch();
 
+  useLayoutEffect(() => {
+    dispatch(incidentChoose(undefined));
+  }, []);
   useEffect(() => {
     if (user) {
       let isDepartment = !!user.department;
@@ -26,6 +33,7 @@ const MainPage = () => {
       params,
       title,
       requestSuccessed: incidentRequestSuccessed,
+      Buttons: IncidentWindowButton,
     };
   }, [params, title]);
 

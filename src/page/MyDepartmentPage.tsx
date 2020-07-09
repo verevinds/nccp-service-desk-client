@@ -9,6 +9,9 @@ import { paramsIncident } from '../js/paramsIncident';
 import WrapperSidebar from '../component/Sidebar/WrapperSidebar';
 import { TList } from '../component/Sidebar/interface';
 import IncidentWindow from '../component/IncidentWindow/IncidentWindow';
+import IncidentWindowButton from '../component/IncidentWindowButton/IncidentWindowButton';
+import { IncidentContext } from '../component/Incident/IncidentContext';
+import IncidentWindowDepartmentButton from '../component/IncidentWindowDepartmentButton/IncidentWindowDepartmentButton';
 export interface IMyDepartmentPage {}
 
 const MyDepartmentPage: React.FC<IMyDepartmentPage> = (props) => {
@@ -20,9 +23,10 @@ const MyDepartmentPage: React.FC<IMyDepartmentPage> = (props) => {
 
   const { Api } = useContext(AppContext);
   const dispatch = useDispatch();
-  useEffect(() => {
-    console.log('isUpdate', isUpdate);
-  }, [isUpdate]);
+
+  useLayoutEffect(() => {
+    dispatch(incidentChoose(undefined));
+  }, []);
 
   useEffect(() => {
     if (incidents && Array.isArray(incidents)) {
@@ -86,7 +90,9 @@ const MyDepartmentPage: React.FC<IMyDepartmentPage> = (props) => {
         </Col>
         <Col>
           <Container>
-            <IncidentWindow />
+            <IncidentContext.Provider value={{ Buttons: IncidentWindowDepartmentButton }}>
+              <IncidentWindow />
+            </IncidentContext.Provider>
           </Container>
         </Col>
       </Row>

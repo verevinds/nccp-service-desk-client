@@ -7,11 +7,11 @@ const IncidentWindowVisa: React.FC<IIncidentWindowVisa> = (props) => {
   const incident: TIncident = useSelector((state: IState) => state.incidents.current.incident);
   return (
     <Fragment>
-      {incident.rulesLists.map((item: TRulesList) => (
-        <div className="flex flex_between">
+      {incident.rulesLists.map((item: TRulesList, index: number) => (
+        <div className="flex flex_between" key={index}>
           <div>
-            {item.position.users.map((item: any) => (
-              <p>
+            {item.position.users.map((item: any, index: number) => (
+              <p key={index}>
                 {item.name1} {item.name2} {item.name3}
               </p>
             ))}

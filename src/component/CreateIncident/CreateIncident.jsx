@@ -71,6 +71,8 @@ const CreateIncidentModel = ({ handleClose, showModal, isModify }) => {
       initiatorDepartmentParent: user.department.parent,
       initiatorDepartment: user.department.id,
       allowToCreate: user.position.level > 0 ? true : false,
+      allowToCreateWork: user.position.level > 0 ? new Date() : null,
+      receiveAt: user.position.level > 0 ? new Date() : null,
       params,
     };
   }, [
