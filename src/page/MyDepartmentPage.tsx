@@ -76,6 +76,7 @@ const MyDepartmentPage: React.FC<IMyDepartmentPage> = (props) => {
   }, [chooseIncidentId]);
   return (
     <Fragment>
+      <h1>Мой отдел</h1>
       <Row className="mt-1">
         <Col xs={5}>
           <WrapperSidebar

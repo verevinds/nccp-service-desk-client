@@ -37,6 +37,7 @@ const MyIncidentPage = (props) => {
           Buttons: IncidentWindowMyButton,
         }}
       >
+        <h1>Мои заявки</h1>
         <Incident />
       </IncidentContext.Provider>
     );

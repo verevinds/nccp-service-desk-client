@@ -39,6 +39,7 @@ const MainPage = () => {
 
   return (
     <IncidentContext.Provider value={incident}>
+      <h1>Рабочая панель</h1>
       <Incident />
     </IncidentContext.Provider>
   );

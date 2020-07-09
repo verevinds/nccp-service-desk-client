@@ -39,7 +39,10 @@ const SettingPositionsResponsibleModal: React.FC<ISettingPositionsResponsibleMod
     setResponsible({ ...responsible, positionId: id });
     // eslint-disable-next-line
   }, [id]);
-
+  useEffect(() => {
+    console.log('responsibles', responsibles);
+    // eslint-disable-next-line
+  }, [responsibles]);
   useEffect(() => {
     const PORT = window.location.protocol === 'http:' ? '8080' : '8433';
     const PATH = process.env.REACT_APP_URL || 'srv-sdesk.c31.nccp.ru';
@@ -63,8 +66,11 @@ const SettingPositionsResponsibleModal: React.FC<ISettingPositionsResponsibleMod
   }, [categories, categoryId]);
 
   useEffect(() => {
-    dispatch(queryApi({ route: 'responsibles', actionSuccessed: responsibleRequestSuccessed }));
-  }, [dispatch, responsibles.isUpdate]);
+    if (id)
+      dispatch(
+        queryApi({ route: 'responsibles', actionSuccessed: responsibleRequestSuccessed, params: { positionId: id } }),
+      );
+  }, [dispatch, responsibles.isUpdate, id]);
 
   const sendResponsible = useCallback(
     (data) => {
@@ -168,22 +174,29 @@ const SettingPositionsResponsibleModal: React.FC<ISettingPositionsResponsibleMod
         </Form.Group>
         <hr />
         <ListGroup>
-          {responsibles.list?.map((item: TResponsible, index: number) => (
-            <ListGroup.Item className="flex flex_row flex_between" key={index}>
-              {categories?.find((elem: TCategory) => elem.id === Number(item.categoryId))}{' '}
-              {arrayProperty?.find((elem: TProperty) => elem.id === Number(item.propertyId))?.name}{' '}
-              {arrayOption?.find((elem: TOption) => elem.id === Number(item.optionId))?.name}
-              <ButtonFontAwesome
-                variant={'danger'}
-                faIcon={faTrash}
-                onClick={() =>
-                  dispatch(
-                    queryApi({ route: 'responsibles', method: 'delete', actionUpdate: responsibleUpdate, id: item.id }),
-                  )
-                }
-              />
-            </ListGroup.Item>
-          ))}
+          {!Array.isArray(responsibles?.list)
+            ? undefined
+            : responsibles?.list?.map((item: TResponsible, index: number) => (
+                <ListGroup.Item className="flex flex_row flex_between" key={index}>
+                  {categories?.find((elem: TCategory) => elem.id === Number(item.categoryId))}{' '}
+                  {arrayProperty?.find((elem: TProperty) => elem.id === Number(item.propertyId))?.name}{' '}
+                  {arrayOption?.find((elem: TOption) => elem.id === Number(item.optionId))?.name}
+                  <ButtonFontAwesome
+                    variant={'danger'}
+                    faIcon={faTrash}
+                    onClick={() =>
+                      dispatch(
+                        queryApi({
+                          route: 'responsibles',
+                          method: 'delete',
+                          actionUpdate: responsibleUpdate,
+                          id: item.id,
+                        }),
+                      )
+                    }
+                  />
+                </ListGroup.Item>
+              ))}
         </ListGroup>
       </Fragment>
     </ModalWindow>

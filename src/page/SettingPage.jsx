@@ -22,7 +22,6 @@ const SettingPage = (props) => {
       list.push({ name: 'Каталог', id: 1 });
       list.push({ name: 'Статус', id: 2 });
       list.push({ name: 'Должности', id: 3 });
-      list.push({ name: 'Плавила согласования', id: 6 });
     }
 
     return list;
@@ -57,9 +56,7 @@ const SettingPage = (props) => {
       case 5:
         setJsxContent(<SettingSubscription />);
         break;
-      case 6:
-        setJsxContent(<SettingRules />);
-        break;
+
       default:
         setJsxContent(<p className="align-content-center">Контент находиться в разработке</p>);
         break;

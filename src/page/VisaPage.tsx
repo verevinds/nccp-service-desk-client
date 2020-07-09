@@ -83,7 +83,7 @@ const VisaPage: React.FC<IVisaPage> = (props) => {
   }, [chooseIncidentId]);
   return (
     <Fragment>
-      <h1>Визирование</h1>
+      <h1>Согласование</h1>
       <Row className="mt-1">
         <Col xs={5}>
           <WrapperSidebar
