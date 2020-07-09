@@ -14,13 +14,17 @@ import PopoverCardUser from '../PopoverCardUser/PopoverCardUser';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAddressCard, faAt, faPhone, faDesktop } from '@fortawesome/free-solid-svg-icons';
 import IncidentWindowBodyCustom from '../IncidentWindowBodyCustom/IncidentWindowBodyCustom';
+import IncidentHandleVise from '../IncidentHandleVise/IncidentHandleVise';
+import IncidentWindowVisa from '../IncidentWindowVisa/IncidentWindowVisa';
+import { IncidentWindowContext } from '../IncidentWindow/IncidentWindowContext';
 
 const IncidentWindowBody = ({ handleOpen }) => {
   const { myIncident } = useContext(IncidentContext);
+  const { buttons } = useContext(IncidentWindowContext);
   //State изменений в заявкае
   const { user } = useSelector((state) => state.auth, shallowEqual);
   const incident = useSelector((state) => state.incidents?.current.incident, shallowEqual);
-
+  console.log('buttons', buttons);
   return (
     <Card.Body className={styles.window}>
       <Card.Title>
@@ -107,6 +111,9 @@ const IncidentWindowBody = ({ handleOpen }) => {
       ) : null}
       <IncidentWindowBodyCustom />
       <IncidentWorkButton incident={incident} handleOpen={handleOpen} user={user} myIncident={myIncident} />
+      {buttons}
+      <br />
+      <IncidentWindowVisa />
       <br />
       <IncidentWindowComments />
       <br />

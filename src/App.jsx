@@ -41,6 +41,7 @@ import { versionSet } from './redux/actionCreators/versionAction';
 import { AppContext } from './AppContext';
 import MyDepartmentPage from './page/MyDepartmentPage';
 import { paramsIncident } from './js/paramsIncident';
+import VisaPage from './page/VisaPage';
 
 const App = () => {
   const cookies = new Cookies();
@@ -205,7 +206,7 @@ const App = () => {
         method: 'get',
         route: 'incidents/work',
         actionSuccessed: incidentRequestSuccessed,
-        params,
+        params: { ...params, hasVisa: true },
         id: undefined,
       });
       Api.incidents({
@@ -268,6 +269,7 @@ const App = () => {
             <Route path="/test" component={TestPage} />
             <Route path="/info" component={InfoPage} />
             <Route path="/MyDepartmentPage" component={MyDepartmentPage} />
+            <Route path="/visa" component={VisaPage} />
           </Switch>
         </div>
       </BrowserRouter>

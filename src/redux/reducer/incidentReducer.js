@@ -6,6 +6,7 @@ import {
   INCIDENT_CHOOSE,
   INCIDENT_HISTORY_REQUEST_SUCCESSED,
   INCIDENT_ALLOW_TO_CREATE_REQUEST_SUCCESSED,
+  INCIDENT_VISA_REQUEST_SUCCESSED,
 } from '../constants';
 
 const initialState = {
@@ -13,6 +14,7 @@ const initialState = {
   myList: [],
   history: [],
   allowToCreate: [],
+  visa: [],
   current: {
     incident: undefined,
     isChange: false,
@@ -51,10 +53,18 @@ export const incidentReducer = (state = initialState, action) => {
       };
     case INCIDENT_ALLOW_TO_CREATE_REQUEST_SUCCESSED:
       console.log(INCIDENT_ALLOW_TO_CREATE_REQUEST_SUCCESSED);
-      console.log(action.data);
       return {
         ...state,
         allowToCreate: action.data,
+        isLoading: true,
+        isRequest: false,
+        isUpdate: false,
+      };
+    case INCIDENT_VISA_REQUEST_SUCCESSED:
+      console.log(INCIDENT_VISA_REQUEST_SUCCESSED);
+      return {
+        ...state,
+        visa: action.data,
         isLoading: true,
         isRequest: false,
         isUpdate: false,

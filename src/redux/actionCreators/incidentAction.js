@@ -7,6 +7,7 @@ import {
   INCIDENT_CREATE,
   INCIDENT_HISTORY_REQUEST_SUCCESSED,
   INCIDENT_ALLOW_TO_CREATE_REQUEST_SUCCESSED,
+  INCIDENT_VISA_REQUEST_SUCCESSED,
 } from '../constants';
 
 export const incidentFetching = (data, dataFile) => ({
@@ -27,6 +28,10 @@ export const myIncidentRequestSuccessed = (data) => ({
 });
 export const incidentAllowToCreateRequestSuccessed = (data) => ({
   type: INCIDENT_ALLOW_TO_CREATE_REQUEST_SUCCESSED,
+  data,
+});
+export const incidentVisaRequestSuccessed = (data) => ({
+  type: INCIDENT_VISA_REQUEST_SUCCESSED,
   data,
 });
 export const incidentHistoryRequestSuccessed = (data) => ({

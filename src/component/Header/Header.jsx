@@ -90,14 +90,23 @@ const Header = (props) => {
                 text={'Рабочая панель'}
               />
               {user?.position?.level < 1 ? undefined : (
-                <HeaderButton
-                  to={'/MyDepartmentPage'}
-                  faIcon={faUserTie}
-                  page={page}
-                  setPage={setPage}
-                  text={'Мой отдел'}
-                  newIncidentCount={newMyDepartmentIncidentCount}
-                />
+                <>
+                  <HeaderButton
+                    to={'/MyDepartmentPage'}
+                    faIcon={faUserTie}
+                    page={page}
+                    setPage={setPage}
+                    text={'Мой отдел'}
+                    newIncidentCount={newMyDepartmentIncidentCount}
+                  />
+                  <HeaderButton
+                    to={'/visa'}
+                    faIcon={faBusinessTime}
+                    page={page}
+                    setPage={setPage}
+                    text={'Согласование'}
+                  />
+                </>
               )}
             </Nav.Item>{' '}
           </Nav>

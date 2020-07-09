@@ -70,6 +70,7 @@ const CreateIncidentModel = ({ handleClose, showModal, isModify }) => {
       optionId: currentIdOption,
       initiatorDepartmentParent: user.department.parent,
       initiatorDepartment: user.department.id,
+      allowToCreate: user.position.level > 0 ? true : false,
       params,
     };
   }, [

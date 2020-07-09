@@ -36,6 +36,7 @@ export type TIncidents = {
   list: (TIncident | never)[];
   allowToCreate: (TIncident | never)[];
   myList: TIncident[] | never[];
+  visa: (TIncident | never)[];
 };
 export type TIncidentCurrent = {
   incident: TIncident;
@@ -74,6 +75,20 @@ export type TIncident = {
   initiatorDepartment: number;
   hasVisa: boolean;
   rulesId: number | null;
+  rulesLists: TRulesList[];
+};
+export type TRulesList = {
+  hasVisa: boolean;
+  position: {
+    id: number;
+    users: {
+      number: number;
+      name1: string;
+      name2: string;
+      name3: string;
+      fired: number;
+    }[];
+  };
 };
 export type TMatch = {
   isMatch: false;

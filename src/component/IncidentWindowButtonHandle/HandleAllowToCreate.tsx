@@ -16,6 +16,7 @@ const HandleAllowToCreate: React.FC<IHandleAllowToCreate> = (props) => {
       ok: () => {
         this.comments(`Создание заявки согласовано`);
         this.incidents({ data: { allowToCreate: true, allowToCreateWork: new Date() } });
+        dispatch(incidentChoose(undefined));
       },
       no: () => {
         this.comments(`Отказано`);
