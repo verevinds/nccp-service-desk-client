@@ -8,6 +8,7 @@ import { ISidebar } from './interface';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleRight, faTag, faUserClock, faUserCheck } from '@fortawesome/free-solid-svg-icons';
 import SidebarDown from './SidebarDown';
+import { IState } from '../../interface';
 
 const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId, filter }) => {
   const [limit, setLimit] = useState(8);
@@ -117,6 +118,7 @@ const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId, filter }) => {
                     </div>
                   </div>
                   <SidebarDown item={item} />
+
                   <div className={styles.bar__container_sideRight}>
                     <div className={`${styles.icon} ${styles.icon_right}`}>
                       <FontAwesomeIcon icon={faAngleRight} />

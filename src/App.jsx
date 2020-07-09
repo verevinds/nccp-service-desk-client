@@ -27,6 +27,7 @@ import { filterSet } from './redux/actionCreators/filterAction';
 import { incidentCreate } from './redux/actionCreators/incidentAction';
 import { incidentAllowToCreateRequestSuccessed, incidentChoose } from './redux/actionCreators/incidentAction';
 import { positionsRequestSeccessed } from './redux/actionCreators/positionAction';
+import { settingRequestSuccessed } from './redux/actionCreators/settingAction';
 
 /**Bootstrap components */
 import { ProgressBar } from 'react-bootstrap';
@@ -57,7 +58,11 @@ const App = () => {
   const { user } = useSelector((state) => state.auth);
   const incident = useSelector((state) => state.incidents?.current.incident);
   const incidents = useSelector((state) => state.incidents);
+  const setting = useSelector((state) => state.setting);
 
+  useEffect(() => {
+    console.log('setting', setting);
+  }, [setting]);
   useLayoutEffect(() => {
     dispatch(
       queryApi({
@@ -148,6 +153,8 @@ const App = () => {
   }, [dispatch]);
 
   useLayoutEffect(() => {
+    dispatch(queryApi({ route: 'settings', actionSuccessed: settingRequestSuccessed }));
+
     if (!!cookies.get('auth')) {
       if (cookies.get('auth').ip) {
         dispatch(

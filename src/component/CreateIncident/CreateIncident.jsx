@@ -20,6 +20,7 @@ import CreateIncidentCustom from '../CreateIncidentCustom/CreateIncidentCustom';
 import { queryApi } from '../../redux/actionCreators/queryApiAction';
 
 const CreateIncidentModel = ({ handleClose, showModal, isModify }) => {
+  const { isFinishTime } = useSelector((state) => state.setting);
   const user = useSelector((state) => state.auth.user);
   const { list } = useSelector((state) => state.catalog);
   const chooseIncident = useSelector((state) => state.incidents.current.incident);
@@ -273,21 +274,23 @@ const CreateIncidentModel = ({ handleClose, showModal, isModify }) => {
           <Form.Group>
             <UploadFiles setFile={setFile} />
           </Form.Group>
-          <InputGroup className="mb-3">
-            <InputGroup.Prepend>
-              <InputGroup.Text id="basic-addon1">Срок выполнения</InputGroup.Text>
-            </InputGroup.Prepend>
-            <Form.Control
-              type="date"
-              value={finishWork?.slice(0, 10)}
-              min={new Date(moment(new Date(), 'DD-MM-YYYY').businessAdd(property?.deadline - 1)._d)
-                .toISOString()
-                .slice(0, 10)}
-              onChange={(event) =>
-                setFinishWork(new Date(`${event.currentTarget.value}${finishWork?.slice(10)}`).toISOString())
-              }
-            />
-          </InputGroup>
+          {!isFinishTime ? undefined : (
+            <InputGroup className="mb-3">
+              <InputGroup.Prepend>
+                <InputGroup.Text id="basic-addon1">Срок выполнения</InputGroup.Text>
+              </InputGroup.Prepend>
+              <Form.Control
+                type="date"
+                value={finishWork?.slice(0, 10)}
+                min={new Date(moment(new Date(), 'DD-MM-YYYY').businessAdd(property?.deadline - 1)._d)
+                  .toISOString()
+                  .slice(0, 10)}
+                onChange={(event) =>
+                  setFinishWork(new Date(`${event.currentTarget.value}${finishWork?.slice(10)}`).toISOString())
+                }
+              />
+            </InputGroup>
+          )}
         </>
       ) : undefined}
     </ModalWindow>

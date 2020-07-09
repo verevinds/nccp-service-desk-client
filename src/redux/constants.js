@@ -29,7 +29,8 @@ export const PROPERTY_POST = 'PROPERTY_POST';
 
 /** Константы для опций*/
 export const OPTION_POST = 'OPTION_POST';
-
+/** Константы для настроек*/
+export const SETTINS_REQUEST_SENDD = 'SETTINS_REQUEST_SENDD';
 /** Константы для заявкаов */
 export const INCIDENT_FETCHING = 'INCIDENT_FETCHING';
 export const INCIDENT_REQUEST_SENDD = 'INCIDENT_REQUEST_SENDD';

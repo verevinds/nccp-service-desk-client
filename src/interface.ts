@@ -14,6 +14,7 @@ export interface IState {
     isUpdate: boolean;
   };
   responsible: IResponsible;
+  setting: any;
 }
 export interface IPositions {
   isUpdate: boolean;

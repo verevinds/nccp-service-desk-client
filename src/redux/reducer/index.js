@@ -13,6 +13,7 @@ import { applicationReducer } from './appReducer';
 import { subscriptionReducer } from './subscriptionReducer';
 import { filterReducer } from './filterReducer';
 import { responsibleReducer } from './responsibleReducer';
+import { settingReducer } from './settingReducer';
 
 export const CombineReducers = combineReducers({
   auth: authReducer,
@@ -29,4 +30,5 @@ export const CombineReducers = combineReducers({
   subscription: subscriptionReducer,
   filter: filterReducer,
   responsible: responsibleReducer,
+  setting: settingReducer,
 });

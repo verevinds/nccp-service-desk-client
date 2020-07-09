@@ -1,13 +1,17 @@
 import React, { memo, useMemo } from 'react';
 import { ProgressBar } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
 import Moment from 'react-moment';
 import styles from './siderbar.module.scss';
+import { IState, TUser } from '../../interface';
 
 export interface ISidebarDown {
   item: any;
 }
 
 const SidebarDown: React.FC<ISidebarDown> = ({ item }) => {
+  const { isFinishTime } = useSelector((state: IState) => state.setting);
+  const users = useSelector((state: IState) => state.users.list);
   const createData = new Date(item.createdAt);
   const finishData = new Date(item.finishWork);
   const startWork = !!item.startWork ? new Date(item.startWork) : undefined;
@@ -46,17 +50,33 @@ const SidebarDown: React.FC<ISidebarDown> = ({ item }) => {
       } else return 'success';
     }
   }, [start, doneWork, now]);
+  console.log(item);
+
+  const initiatorUserName = useMemo(() => {
+    let user = users.find((elem: TUser) => elem.number === item.userNumber);
+
+    if (user) return `${user.name1} ${user.name2.charAt(0)}. ${user.name2.charAt(0)}.`;
+    return undefined;
+  }, [users]);
 
   if (!doneWork)
     return (
       <div className={styles.bar__container_down}>
-        <div className={`${styles.bar__date} ${styles.bar__date_left}`}>
-          {item.finishWork ? (
-            <Moment locale="ru" format="DD.MM.YY">
-              {item.finishWork}
-            </Moment>
-          ) : null}
-        </div>
+        {!isFinishTime ? undefined : (
+          <div className={`${styles.bar__date} ${styles.bar__date_left}`}>
+            {item.finishWork ? (
+              <Moment locale="ru" format="DD.MM.YY">
+                {item.finishWork}
+              </Moment>
+            ) : null}
+          </div>
+        )}
+        {isFinishTime ? undefined : (
+          <div className={`${styles.bar__date} ${styles.bar__date_left}`}>
+            {' '}
+            {!!initiatorUserName ? `инициатор: ${initiatorUserName}` : undefined}
+          </div>
+        )}
         <div className={`${styles.bar__date} ${styles.bar__date_right}`}>
           {item.createdAt ? (
             <Moment locale="ru" format="DD.MM.YY">
@@ -64,12 +84,15 @@ const SidebarDown: React.FC<ISidebarDown> = ({ item }) => {
             </Moment>
           ) : null}
         </div>
-        <ProgressBar className={styles.bar__progress}>
-          <ProgressBar striped animated variant={colorStart} now={!!start ? start : now} key={1} />
-          {!!start ? (
-            <ProgressBar striped animated variant={colorEnd} now={!!done ? done - start : now - start} key={2} />
-          ) : undefined}
-        </ProgressBar>
+
+        {!isFinishTime ? undefined : (
+          <ProgressBar className={styles.bar__progress}>
+            <ProgressBar striped animated variant={colorStart} now={!!start ? start : now} key={1} />
+            {!!start ? (
+              <ProgressBar striped animated variant={colorEnd} now={!!done ? done - start : now - start} key={2} />
+            ) : undefined}
+          </ProgressBar>
+        )}
       </div>
     );
   else return <></>;
