@@ -26,6 +26,7 @@ import { accessRequestSeccessed } from './redux/actionCreators/accessAction';
 import { filterSet } from './redux/actionCreators/filterAction';
 import { incidentCreate } from './redux/actionCreators/incidentAction';
 import { incidentAllowToCreateRequestSuccessed, incidentChoose } from './redux/actionCreators/incidentAction';
+import { positionsRequestSeccessed } from './redux/actionCreators/positionAction';
 
 /**Bootstrap components */
 import { ProgressBar } from 'react-bootstrap';
@@ -51,10 +52,20 @@ const App = () => {
   const isUpdateCatalog = useSelector((state) => state.catalog.isUpdate);
   const isUpdateStatus = useSelector((state) => state.status.isUpdate);
   const isUpdateIncident = useSelector((state) => state.incidents.isUpdate); // Получаем данные каталога при строгом изменение обекта state
+  const isUpdatePositions = useSelector((state) => state.positions.isUpdate);
   const { progress } = useSelector((state) => state);
   const { user } = useSelector((state) => state.auth);
   const incident = useSelector((state) => state.incidents?.current.incident);
   const incidents = useSelector((state) => state.incidents);
+
+  useLayoutEffect(() => {
+    dispatch(
+      queryApi({
+        actionSuccessed: positionsRequestSeccessed,
+        route: 'positions',
+      }),
+    );
+  }, [isUpdatePositions, dispatch]);
   useEffect(() => {
     if (incident) {
       let allowToCreate = incidents.allowToCreate.find((item) => item.id === incident.id);

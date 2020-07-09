@@ -51,6 +51,7 @@ const List: React.FC<IList> = ({
   handleDedline,
   handleTune,
   handleResponsible,
+  handleRules,
   xs,
 }) => {
   const [activeId, setActiveId] = useState<number | undefined>(undefined);
@@ -79,6 +80,7 @@ const List: React.FC<IList> = ({
                       handleDedline={handleDedline}
                       handleTune={handleTune}
                       handleResponsible={handleResponsible}
+                      handleRules={handleRules}
                       key={item.id}
                     />
                   );

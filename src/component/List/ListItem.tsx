@@ -141,7 +141,6 @@ const ListItem: React.FC<IListItem> = ({
         />
       );
   }, [id, handleResponsible]);
-
   const buttonRules = useMemo(() => {
     if (!!handleRules)
       return (
@@ -162,6 +161,7 @@ const ListItem: React.FC<IListItem> = ({
     buttonTune && buttonArray.push(buttonTune);
     buttonDedline && buttonArray.push(buttonDedline);
     buttonRules && buttonArray.push(buttonRules);
+
     buttonResponsible && buttonArray.push(buttonResponsible);
     if (!!buttonArchive || !!buttonDelete || !!buttonFavorites) {
       if (!!isArchive) {

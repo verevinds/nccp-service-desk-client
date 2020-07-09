@@ -11,7 +11,12 @@ export interface ISettingCatalogProperty extends THandleEvent {
   handleBind: THandleBind;
 }
 
-const SettingCatalogProperty: React.FC<ISettingCatalogProperty> = ({ categorySubList, handleEvent, handleBind }) => {
+const SettingCatalogProperty: React.FC<ISettingCatalogProperty> = ({
+  categorySubList,
+  handleEvent,
+  handleBind,
+  handleRules,
+}) => {
   const route = 'properties';
   const [modalDeadline, setModalDeadline] = useState(false);
   const [property, setProperty] = useState<TProperty | null>(null);
@@ -47,6 +52,7 @@ const SettingCatalogProperty: React.FC<ISettingCatalogProperty> = ({ categorySub
         })}
         handleBind={handleBind}
         handleDedline={handleDedline}
+        handleRules={handleRules}
         xs={3}
       />
     </>

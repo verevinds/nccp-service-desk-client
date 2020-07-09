@@ -10,7 +10,12 @@ export interface ISettingCatalogOption extends THandleEvent {
   handleBind: THandleBind;
 }
 
-const SettingCatalogOption: React.FC<ISettingCatalogOption> = ({ categorySubList, handleEvent, handleBind }) => {
+const SettingCatalogOption: React.FC<ISettingCatalogOption> = ({
+  categorySubList,
+  handleEvent,
+  handleBind,
+  handleRules,
+}) => {
   const [modalTune, setModalTune] = useState(false);
   const [id, setId] = useState(undefined);
   const [optionJsx, setOptionJsx] = useState<JSX.Element | undefined>();
@@ -44,6 +49,7 @@ const SettingCatalogOption: React.FC<ISettingCatalogOption> = ({ categorySubList
           })}
           handleBind={handleBind}
           handleTune={handleTune}
+          handleRules={handleRules}
           xs={3}
         />
       );

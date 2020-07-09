@@ -19,6 +19,7 @@ const SettingCatalogCategory: React.FC<ISettingCatalogCategory> = ({
   categoryIdCurrent,
   categoryList,
   setCategoryList,
+  handleRules,
 }) => {
   const departments = useSelector((state: IState) => state.catalog.department, shallowEqual);
   const [categoryJsx, setCategoryJsx] = useState<JSX.Element | undefined>();
@@ -55,6 +56,7 @@ const SettingCatalogCategory: React.FC<ISettingCatalogCategory> = ({
             fact: 'archive',
             setCurrent: setCategoryIdCurrent,
           })}
+          handleRules={handleRules}
           xs={3}
         />
       );

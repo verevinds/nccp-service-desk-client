@@ -16,7 +16,7 @@ const SettingPositions = (props) => {
       dispatch(
         queryApi({
           actionSuccessed: positionsRequestSeccessed,
-          route,
+          route: 'positions',
         }),
       );
   }, [isUpdate, dispatch, route, list]);
