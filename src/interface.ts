@@ -75,7 +75,7 @@ export type TIncident = {
   initiatorDepartment: number;
   hasVisa: boolean;
   rulesId: number | null;
-  rulesLists: TRulesList[];
+  rules_lists: TRulesList[];
   receiveAt: string | null;
   allowToCreateWork: string | null;
   allowToCreate: boolean;

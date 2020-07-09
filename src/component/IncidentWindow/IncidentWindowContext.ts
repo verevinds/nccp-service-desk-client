@@ -2,6 +2,7 @@ import React from 'react';
 
 export interface IIncidentWindowContext {
   handleVise?: { vise: boolean; setVise: any };
+  handleModify?: any;
   buttons?: any;
 }
 

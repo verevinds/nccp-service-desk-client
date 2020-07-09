@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { IState, TPosition } from '../../interface';
 import { queryApi } from '../../redux/actionCreators/queryApiAction';
 import { positionsRequestSeccessed } from '../../redux/actionCreators/positionAction';
-import { Form, Row, Col, Button } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import styles from './styles.module.scss';
 import { BoardContext } from '../Board/BoardContext';
 import Board from '../Board/Board';

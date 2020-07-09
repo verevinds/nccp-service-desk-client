@@ -223,9 +223,16 @@ const CreateIncidentModel = ({ handleClose, showModal, isModify }) => {
           queryApi({
             route: 'incidents',
             method: 'put',
-            actionUpdate: incidentCreate,
             data: { ...incident, statusId: 1 },
             id: chooseIncident.id,
+          }),
+        );
+        dispatch(
+          queryApi({
+            route: 'comments',
+            method: 'post',
+            actionUpdate: incidentCreate,
+            data: { text: 'Доработан', incidentId: chooseIncident.id, userNumber: user.number },
           }),
         );
       } else await dispatch(incidentFetching(data, dataFile));

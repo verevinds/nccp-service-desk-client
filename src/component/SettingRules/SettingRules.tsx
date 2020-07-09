@@ -11,6 +11,7 @@ const SettingRules: React.FC<ISettingRules> = (props) => {
   return (
     <Fragment>
       <h2>Редактирования правил согласования</h2>
+      
     </Fragment>
   );
 };

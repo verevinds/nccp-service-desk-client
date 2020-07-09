@@ -7,6 +7,7 @@ import { incidentChoose } from '../redux/actionCreators/incidentAction';
 /**My components */
 import Incident from '../component/Incident/Incident';
 import { IncidentContext } from '../component/Incident/IncidentContext';
+import IncidentWindowMyButton from '../component/IncidentWindowMyButton/IncidentWindowMyButton';
 
 const MyIncidentPage = (props) => {
   const [params, setParams] = useState();
@@ -29,7 +30,12 @@ const MyIncidentPage = (props) => {
   if (incidents) {
     return (
       <IncidentContext.Provider
-        value={{ params, actionSuccessed: myIncidentRequestSuccessed, myIncident: true, Buttons: IncidentWindowButton }}
+        value={{
+          params,
+          actionSuccessed: myIncidentRequestSuccessed,
+          myIncident: true,
+          Buttons: IncidentWindowMyButton,
+        }}
       >
         <Incident />
       </IncidentContext.Provider>

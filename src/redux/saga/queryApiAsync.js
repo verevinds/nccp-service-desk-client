@@ -2,6 +2,7 @@ import { put, call } from 'redux-saga/effects';
 import * as axios from 'axios';
 import { errorCreate } from '../actionCreators/errorAction';
 import { socket } from '../../index';
+import { incidentChoose } from '../actionCreators/incidentAction';
 
 export function* queryApiAsync({ route, actionSuccessed, actionUpdate, method, data = {}, id, params, userNumber }) {
   try {
@@ -31,7 +32,7 @@ export function* queryApiAsync({ route, actionSuccessed, actionUpdate, method, d
         break;
 
       case 'put':
-        response = yield call(() => axios.put(`${URL}/api/${route}/${id}`, data));
+        response = yield call(() => axios.put(`${URL}/api/${route}${id ? `/${id}` : ''}`, data));
         if (response.status === 200 && route === 'incidents') {
           console.log('incidentUpdate');
           socket.emit('incidentUpdate', { id, data, userNumber });

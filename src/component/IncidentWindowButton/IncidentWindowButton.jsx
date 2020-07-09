@@ -80,13 +80,6 @@ const IncidentWindowButton = ({ handleOpen, myIncident }) => {
           </ButtonGroup>
         );
       }
-      if (Number(statusId) === 8388605 && userNumber === number && !!myIncident) {
-        return (
-          <ButtonGroup aria-label="Basic example">
-            <Button onClick={() => handleModify.setIsModify(true)}>Доработать</Button>
-          </ButtonGroup>
-        );
-      }
     }
     if (!Number(statusId) && !currentResponsible && !myIncident) {
       return (

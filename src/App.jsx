@@ -6,8 +6,6 @@ import styles from './styles.module.css';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './toastiry.scss';
-import dateNow from './js/dateNow';
-import { socket } from './index';
 
 //** Pages */
 import TestPage from './page/TestPage';
@@ -56,6 +54,18 @@ const App = () => {
   const { progress } = useSelector((state) => state);
   const { user } = useSelector((state) => state.auth);
   const incident = useSelector((state) => state.incidents?.current.incident);
+  const incidents = useSelector((state) => state.incidents);
+  useEffect(() => {
+    if (incident) {
+      let allowToCreate = incidents.allowToCreate.find((item) => item.id === incident.id);
+      let history = incidents.history.find((item) => item.id === incident.id);
+      let list = incidents.list.find((item) => item.id === incident.id);
+      let myList = incidents.myList.find((item) => item.id === incident.id);
+      let visa = incidents.visa.find((item) => item.id === incident.id);
+
+      dispatch(incidentChoose(allowToCreate || history || list || myList || visa));
+    }
+  }, [incidents.allowToCreate, incidents.history, incidents.list, incidents.myList, incidents.visa]);
   const Api = useMemo(() => {
     return {
       catalogs(props) {
@@ -99,8 +109,6 @@ const App = () => {
             id: incident?.id,
             ...props,
             data: {
-              startWork: dateNow(),
-              statusId: Number(1),
               ...props.data,
             },
           }),

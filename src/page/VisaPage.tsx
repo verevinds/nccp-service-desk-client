@@ -18,7 +18,13 @@ const VisaPage: React.FC<IVisaPage> = (props) => {
   const dispatch = useDispatch();
   const { Api } = useContext(AppContext);
   const incidents: TIncident[] = useSelector((state: IState) => state.incidents.visa);
+  const isUpdate: TIncident[] = useSelector((state: IState) => state.incidents.isUpdate);
   const user: TUser = useSelector((state: IState) => state.auth.user);
+
+  useLayoutEffect(() => {
+    dispatch(incidentChoose(undefined));
+  }, []);
+
   useLayoutEffect(() => {
     Api?.incidents({
       method: 'get',
@@ -27,7 +33,7 @@ const VisaPage: React.FC<IVisaPage> = (props) => {
       params: { hasVisa: false, positionId: user?.positionId },
       id: undefined,
     });
-  }, [user]);
+  }, [user, isUpdate]);
 
   useEffect(() => {
     if (incidents && Array.isArray(incidents)) {
