@@ -41,10 +41,13 @@ const SettingPositionsResponsibleModal: React.FC<ISettingPositionsResponsibleMod
   }, [id]);
 
   useEffect(() => {
-    Axios.get('http://srv-sdesk.c31.nccp.ru:8080/api/options').then((res: any) => {
+    const PORT = window.location.protocol === 'http:' ? '8080' : '8433';
+    const PATH = process.env.REACT_APP_URL || 'srv-sdesk.c31.nccp.ru';
+
+    Axios.get(`http://${PATH}:${PORT}/api/options`).then((res: any) => {
       setArrayOption(res.data);
     });
-    Axios.get('http://srv-sdesk.c31.nccp.ru:8080/api/properties').then((res: any) => {
+    Axios.get(`http://${PATH}:${PORT}/api/properties`).then((res: any) => {
       setArrayProperty(res.data);
     });
   }, []);

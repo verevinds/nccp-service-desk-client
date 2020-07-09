@@ -27,10 +27,11 @@ const fileUpload = async (
 ) => {
   let statusUpload;
   const data = new FormData();
+  const PATH = process.env.REACT_APP_URL || 'srv-sdesk.c31.nccp.ru';
   let PORT = window.location.protocol === 'http:' ? '8080' : '8433';
   data.append('file', file);
   statusUpload = await axios
-    .post(`${window.location.protocol}//srv-sdesk.c31.nccp.ru:${PORT}/api/upload`, data)
+    .post(`${window.location.protocol}//${PATH}:${PORT}/api/upload`, data)
     .then((response: AxiosResponse<IResponse>) => {
       !!onSuccess ? onSuccess(response) : console.log(response);
       if (response.statusText === 'OK') {

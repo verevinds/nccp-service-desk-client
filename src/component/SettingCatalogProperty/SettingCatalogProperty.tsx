@@ -18,7 +18,9 @@ const SettingCatalogProperty: React.FC<ISettingCatalogProperty> = ({ categorySub
   const handleDedline = useCallback(({ id }) => {
     setModalDeadline(true);
     let PORT = window.location.protocol === 'http:' ? '8080' : '8433';
-    Axios.get(`${window.location.protocol}//srv-sdesk.c31.nccp.ru:${PORT}/api/properties/${id}`).then((res) => {
+    const PATH = process.env.REACT_APP_URL || 'srv-sdesk.c31.nccp.ru';
+
+    Axios.get(`${window.location.protocol}//${PATH}:${PORT}/api/properties/${id}`).then((res) => {
       setProperty(res.data);
     });
   }, []);

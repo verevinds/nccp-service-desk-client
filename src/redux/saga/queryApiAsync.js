@@ -7,8 +7,9 @@ export function* queryApiAsync({ route, actionSuccessed, actionUpdate, method, d
   try {
     let response;
 
+    const PATH = process.env.REACT_APP_URL || 'srv-sdesk.c31.nccp.ru';
     let PORT = window.location.protocol === 'http:' ? '8080' : '8433';
-    const URL = `${window.location.protocol}//srv-sdesk.c31.nccp.ru:${PORT}`;
+    const URL = `${window.location.protocol}//${PATH}:${PORT}`;
     if (params) {
       Object.assign(data, { params });
     }

@@ -8,8 +8,8 @@ import './index.scss';
 import * as serviceWorker from './serviceWorker';
 import store from './redux/store';
 import App from './App';
-
-export const socket = openSocket(`${window.location.protocol}//srv-sdesk.c31.nccp.ru:8000`);
+const PATH = process.env.REACT_APP_URL || 'srv-sdesk.c31.nccp.ru';
+export const socket = openSocket(`${window.location.protocol}//${PATH}:8000`);
 
 ReactDOM.render(
   <Provider store={store}>
