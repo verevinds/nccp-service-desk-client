@@ -1,12 +1,41 @@
+@font-face {
+  font-family: 'Rosatom light';
+  src: url('./font/RST45.ttf') format('woff2'), url('./font/RST45.ttf') format('truetype'),
+    /* Только если нужна поддержка старых Android, иначе закомментировать */ url('./font/RST45.ttf') format('woff');
+}
+@font-face {
+  font-family: 'Rosatom bold';
+  src: url('./font/RST75.otf') format('woff2'), url('./font/RST75.otf') format('truetype'),
+    /* Только если нужна поддержка старых Android, иначе закомментировать */ url('./font/RST75.otf') format('woff');
+}
+@font-face {
+  font-family: 'Rosatom';
+  src: url('./font/RST55.ttf') format('woff2'), url('./font/RST55.ttf') format('truetype'),
+    /* Только если нужна поддержка старых Android, иначе закомментировать */ url('./font/RST55.ttf') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+i {
+  font-family: 'Rosatom light';
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Rosatom bold';
+}
 body {
   position: relative;
   background-color: rgb(233, 235, 236);
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
-    'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-family: 'Rosatom', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell',
+    'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
@@ -21,6 +50,9 @@ code {
 }
 .pointer {
   cursor: pointer;
+}
+.font-light {
+  font-family: 'Rosatom light';
 }
 .fcc {
   width: 100%;
@@ -49,8 +81,8 @@ code {
   justify-content: center;
 }
 .align_items-center {
-  height: 100vh;
-  align-items: center;
+  position: fixed;
+  top: 50%;
 }
 .btn-primary {
   background-color: #597ba5;

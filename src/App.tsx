@@ -1,4 +1,4 @@
-import React, { memo, useLayoutEffect, useState, useEffect, useCallback, useMemo } from 'react';
+import React, { memo, useLayoutEffect, useState, useEffect, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -43,8 +43,8 @@ import { AppContext } from './AppContext';
 import MyDepartmentPage from './page/MyDepartmentPage';
 import { paramsIncident } from './js/paramsIncident';
 import VisaPage from './page/VisaPage';
-import { IState, TIncident, TAuth } from './interface';
-import { progressStart, progressFinish } from './redux/actionCreators/progressAction';
+import { IState, TIncident } from './interface';
+import SpinnerGrow from './component/SpinnerGrow/SpinnerGrow';
 
 const App = () => {
   const cookies = new Cookies();
@@ -68,9 +68,7 @@ const App = () => {
     },
     users: { isUpdate: isUpdateUsers },
     auth: { user },
-    setting,
   }: IState = useSelector((state: IState) => state);
-  const state = useSelector((state: IState) => state);
 
   const Api = useMemo(() => {
     return {
@@ -144,7 +142,13 @@ const App = () => {
     };
 
     let auth = cookies.get('auth');
-    if (auth) dispatch(authRequestSuccessed(auth));
+    const isAuth = !!auth?.number;
+
+    if (isAuth) {
+      dispatch(authRequestSuccessed(auth));
+      dispatchLocalStorage(`access/${auth.number}`, accessRequestSeccessed);
+      dispatchLocalStorage(`users/${auth.number}`, authRequestSuccessed);
+    }
 
     dispatchLocalStorage('catalogs', departmentRequestSuccessed);
     dispatchLocalStorage('categories', categoryRequestSuccessed);
@@ -154,8 +158,6 @@ const App = () => {
     dispatchLocalStorage('incidents/visa', incidentVisaRequestSuccessed);
     dispatchLocalStorage('positions', positionsRequestSeccessed);
     dispatchLocalStorage('status', statusRequestSeccessed);
-    dispatchLocalStorage(`access/${auth.number}`, accessRequestSeccessed);
-    dispatchLocalStorage(`users/${auth.number}`, authRequestSuccessed);
     dispatchLocalStorage('users', usersRequestSeccessed);
     dispatchLocalStorage('filter', filterSet);
   }, [dispatch]);
@@ -296,48 +298,57 @@ const App = () => {
   //** Если обновляется заявка, то обновляем выбранную заявку */
   useEffect(() => {
     if (incident) {
-      let itemAllowToCreate = allowToCreate.find((item: TIncident) => item.id === incident.id);
-      let itemHistory = history.find((item: TIncident) => item.id === incident.id);
-      let itemList = list.find((item: TIncident) => item.id === incident.id);
-      let itemMyList = myList.find((item: TIncident) => item.id === incident.id);
-      let itemVisa = visa.find((item: TIncident) => item.id === incident.id);
+      let incidentById = (item: TIncident) => item.id === incident.id;
 
-      dispatch(incidentChoose(itemAllowToCreate || itemHistory || itemList || itemMyList || itemVisa));
+      let foundAllowToCreate = allowToCreate.find(incidentById);
+      let foundHistory = history.find(incidentById);
+      let foundList = list.find(incidentById);
+      let foundMyList = myList.find(incidentById);
+      let foundVisa = visa.find(incidentById);
+
+      dispatch(incidentChoose(foundAllowToCreate || foundHistory || foundList || foundMyList || foundVisa));
     }
   }, [allowToCreate, history, list, myList, visa]);
+  if (hasUser)
+    return (
+      <AppContext.Provider value={{ Api }}>
+        <BrowserRouter>
+          <Header />
+          <HandleSocket />
+          <ToastContainer
+            position="top-right"
+            autoClose={false}
+            newestOnTop={false}
+            closeOnClick={false}
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+          />
+          <div className="bg">
+            <div className={styles.progressBar}>
+              <ProgressBar animated now={progress.now} hidden={progress.isFinish} />
+            </div>
 
-  return (
-    <AppContext.Provider value={{ Api }}>
-      <BrowserRouter>
-        {auth}
-        <Header />
-        <HandleSocket />
-        <ToastContainer
-          position="top-right"
-          autoClose={false}
-          newestOnTop={false}
-          closeOnClick={false}
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-        />
-        <div className="bg">
-          <div className={styles.progressBar}>
-            <ProgressBar animated now={progress.now} hidden={progress.isFinish} />
+            <Switch>
+              <Route exact path="/" component={MainPage} />
+              <Route path="/setting" component={SettingPage} />
+              <Route path="/myincidents" component={MyIncidentPage} />
+              <Route path="/test" component={TestPage} />
+              <Route path="/info" component={InfoPage} />
+              <Route path="/MyDepartmentPage" component={MyDepartmentPage} />
+              <Route path="/visa" component={VisaPage} />
+            </Switch>
           </div>
-          <Switch>
-            <Route exact path="/" component={MainPage} />
-            <Route path="/setting" component={SettingPage} />
-            <Route path="/myincidents" component={MyIncidentPage} />
-            <Route path="/test" component={TestPage} />
-            <Route path="/info" component={InfoPage} />
-            <Route path="/MyDepartmentPage" component={MyDepartmentPage} />
-            <Route path="/visa" component={VisaPage} />
-          </Switch>
-        </div>
-      </BrowserRouter>
-    </AppContext.Provider>
-  );
+        </BrowserRouter>
+      </AppContext.Provider>
+    );
+  else
+    return (
+      <>
+        <SpinnerGrow />
+        {auth}
+      </>
+    );
 };
 
 export default memo(App);
