@@ -1,4 +1,4 @@
-import React, { memo, Fragment, useState, useMemo, useCallback, useEffect } from 'react';
+import React, { memo, Fragment, useState, useMemo, useCallback, useEffect, useContext } from 'react';
 import ButtonFontAwesome from '../ButtonFontAwesome/ButtonFontAwesome';
 import Popup from '../Popup/Popup';
 //? Font Awesome иконки
@@ -11,12 +11,14 @@ import {
   faSortAmountUp,
   faEllipsisV,
 } from '@fortawesome/free-solid-svg-icons';
+import { IncidentContext } from '../Incident/IncidentContext';
 
 export interface ISidebarFilter {
   setFilter: any;
   color?: string;
 }
 const SidebarFilter: React.FC<ISidebarFilter> = ({ setFilter, color }) => {
+  let { myIncident } = useContext(IncidentContext);
   const [sort, setSort] = useState({
     name: 'numeric',
     vectorUp: false,
@@ -47,7 +49,7 @@ const SidebarFilter: React.FC<ISidebarFilter> = ({ setFilter, color }) => {
           filter.name = 'name';
           break;
         default:
-          filter.name = 'finishWork';
+          filter.name = 'userNumber';
           break;
       }
       filter.sing = sing;
@@ -67,7 +69,7 @@ const SidebarFilter: React.FC<ISidebarFilter> = ({ setFilter, color }) => {
         faIcon={sort.name === numeric && !sort.vectorUp ? faSortNumericDown : faSortNumericUp}
         onClick={onClick.bind({ name: numeric })}
         sizeIcon="lg"
-        variant={sort.name === numeric ? 'outline-primary' : 'primary'}
+        variant={sort.name === 'numeric' ? 'outline-primary' : 'primary'}
         tooltip={'По номеру'}
       />,
     );
@@ -78,7 +80,7 @@ const SidebarFilter: React.FC<ISidebarFilter> = ({ setFilter, color }) => {
         faIcon={sort.name === alpha && !sort.vectorUp ? faSortAlphaDown : faSortAlphaUp}
         onClick={onClick.bind({ name: alpha })}
         sizeIcon="lg"
-        variant={sort.name === alpha ? 'outline-primary' : 'primary'}
+        variant={sort.name === 'alpha' ? 'outline-primary' : 'primary'}
         tooltip={'По алфавиту'}
       />,
     );
@@ -90,18 +92,55 @@ const SidebarFilter: React.FC<ISidebarFilter> = ({ setFilter, color }) => {
         onClick={onClick.bind({ name: finish })}
         sizeIcon="lg"
         size={'sm'}
-        variant={sort.name === finish ? 'outline-primary' : 'primary'}
+        variant={sort.name === 'finish' ? 'outline-primary' : 'primary'}
         tooltip={'Срочность'}
       />,
     );
     return buttons;
   }, [sort, onClick]);
 
+  let numeric = 'numeric';
+  let alpha = 'alpha';
+  let finish = 'finish';
+
   return (
-    <Fragment>
-      <Popup content={content} trigger={faEllipsisV} size={'sm'} color={color} />
-    </Fragment>
+    <div>
+      <div className="flex">
+        <div className="mr-1">
+          <ButtonFontAwesome
+            faIcon={sort.name === numeric && !sort.vectorUp ? faSortNumericDown : faSortNumericUp}
+            onClick={onClick.bind({ name: numeric })}
+            sizeIcon="lg"
+            variant={sort.name === 'numeric' ? 'outline-primary' : 'primary'}
+            tooltip={'По номеру'}
+          />
+        </div>
+        <div className="mr-1">
+          <ButtonFontAwesome
+            faIcon={sort.name === alpha && !sort.vectorUp ? faSortAlphaDown : faSortAlphaUp}
+            onClick={onClick.bind({ name: alpha })}
+            sizeIcon="lg"
+            variant={sort.name === alpha ? 'outline-primary' : 'primary'}
+            tooltip={'По алфавиту'}
+          />
+        </div>
+        {myIncident ? undefined : (
+          <div>
+            <ButtonFontAwesome
+              faIcon={sort.name === finish && !sort.vectorUp ? faSortAmountDown : faSortAmountUp}
+              onClick={onClick.bind({ name: finish })}
+              sizeIcon="lg"
+              size={'sm'}
+              variant={sort.name === finish ? 'outline-primary' : 'primary'}
+              tooltip={'Инициатор заявки'}
+            />
+          </div>
+        )}
+      </div>
+    </div>
   );
 };
 
 export default memo(SidebarFilter);
+
+// <Popup content={content} trigger={faEllipsisV} size={'sm'} color={color} />
