@@ -8,20 +8,58 @@ import { IState, TStatusies } from '../../interface';
 
 const IncidentStatus: React.FC<IIncidentStatus> = () => {
   const status = useSelector((state: IState) => state.incidents?.current.incident.statusId, shallowEqual);
-  const [variant, setVariant] = useState<'info' | 'success'>('info');
+  const [variant, setVariant] = useState<
+    'info' | 'success' | 'primary' | 'secondary' | 'warning' | 'danger' | 'light' | 'link'
+  >('info');
+  const [color, setColor] = useState('#28a745');
   const { list }: TStatusies = useSelector((state: IState) => state.status);
 
   useEffect(() => {
-    if (status === 8388608 || status === 8388607) {
-      setVariant('success');
-    } else {
-      setVariant('info');
+    let color;
+    let tooltip;
+    switch (status) {
+      case 0:
+        //Новая
+        color = '#007bff';
+        setVariant('primary');
+        break;
+      case 8388607:
+        //Готово
+        // color = '#c3e6cb';
+        color = '#8cce9b';
+        setVariant('success');
+        break;
+      case 8388608:
+        color = '#9ca2a7';
+        setVariant('secondary');
+        break;
+      case 8388604:
+        //Отказано
+        color = '#e57983';
+        setVariant('danger');
+        break;
+      case 8388606:
+        //Согласование
+        color = '#ffe083';
+        setVariant('warning');
+        break;
+      case 8388605:
+        //На доработке
+        color = '#007bff';
+        setVariant('primary');
+        break;
+      default:
+        color = '#bee5eb';
+        setVariant('light');
+        break;
     }
+
+    setColor(color);
   }, [status]);
   if (status && list.length)
     return (
       <>
-        <Button variant={variant} disabled size="sm" className={styles.item}>
+        <Button variant={variant} style={{ backgroundColor: color }} disabled size="sm" className={styles.item}>
           {list.find((item: any) => item.id === status)?.name}
         </Button>
       </>

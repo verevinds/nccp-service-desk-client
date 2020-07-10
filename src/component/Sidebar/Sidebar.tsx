@@ -76,16 +76,25 @@ const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId, filter }) => {
                   tooltip = `Новая заявка. Нет ответственного.`;
                   break;
                 case 8388607:
-                  color = '#c3e6cb';
+                  // color = '#c3e6cb';
+                  color = '#8cce9b';
                   tooltip = `Готово. Ждёт закрытия.`;
                   break;
                 case 8388608:
-                  color = '#c3e6cb';
+                  color = '#9ca2a7';
                   tooltip = `Закрыт`;
                   break;
                 case 8388604:
-                  color = '#dc3545';
+                  color = '#e57983';
                   tooltip = `Отказано. Причина в комментариях`;
+                  break;
+                case 8388606:
+                  color = '#ffe083';
+                  tooltip = `На согласовании`;
+                  break;
+                case 8388605:
+                  color = '#007bff';
+                  tooltip = `Отправлено на доработку. Нужно исправить и вернуть в работу.`;
                   break;
                 default:
                   color = '#bee5eb';

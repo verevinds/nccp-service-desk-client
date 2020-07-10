@@ -49,15 +49,23 @@ const CreateIncidentModel = ({ handleClose, showModal, isModify }) => {
   const [validated, setValidated] = useState(false);
 
   const incident = useMemo(() => {
+    let allowToCreate = isModify
+      ? undefined
+      : {
+          startWork: isModify ? chooseIncident.startWork : null,
+
+          statusId: 0,
+          allowToCreate: user.position.level > 0 ? true : false,
+          allowToCreateWork: user.position.level > 0 ? new Date() : null,
+          receiveAt: user.position.level > 0 ? new Date() : null,
+        };
     return {
-      startWork: isModify ? chooseIncident.startWork : null,
       dateCreate: isModify
         ? chooseIncident.dateCreate
         : `${dateNow.getFullYear()}-${dateNow.getMonth()}-${dateNow.getDate()} ${dateNow.getHours()}:${dateNow.getMinutes()}:${dateNow.getSeconds()}`,
       currentResponsible: isModify ? chooseIncident.currentResponsible : null,
       text,
       level: 0,
-      statusId: 0,
       departmentId: currentIdDepartment,
       positionId: null,
       name: `${user.name1} ${user.name2} ${user.name3}`,
@@ -71,9 +79,7 @@ const CreateIncidentModel = ({ handleClose, showModal, isModify }) => {
       optionId: currentIdOption,
       initiatorDepartmentParent: user.department.parent,
       initiatorDepartment: user.department.id,
-      allowToCreate: user.position.level > 0 ? true : false,
-      allowToCreateWork: user.position.level > 0 ? new Date() : null,
-      receiveAt: user.position.level > 0 ? new Date() : null,
+      ...allowToCreate,
       params,
     };
   }, [
@@ -220,11 +226,12 @@ const CreateIncidentModel = ({ handleClose, showModal, isModify }) => {
       } else {
       }
       if (isModify) {
+        let statusId = chooseIncident.hasVisa ? 1 : 8388606;
         dispatch(
           queryApi({
             route: 'incidents',
             method: 'put',
-            data: { ...incident, statusId: 1 },
+            data: { ...incident, statusId },
             id: chooseIncident.id,
           }),
         );
