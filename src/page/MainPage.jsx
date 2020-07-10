@@ -1,12 +1,13 @@
-import React, { memo, useState, useEffect, useMemo, useLayoutEffect } from 'react';
+import React, { memo, useState, useEffect, useMemo, useLayoutEffect, Suspense } from 'react';
 import { useSelector, shallowEqual, useDispatch } from 'react-redux';
 import IncidentWindowButton from '../component/IncidentWindowButton/IncidentWindowButton';
 import { incidentChoose } from '../redux/actionCreators/incidentAction';
 
 import { incidentRequestSuccessed } from '../redux/actionCreators/incidentAction';
 /**My components */
-import Incident from '../component/Incident/Incident';
 import { IncidentContext } from '../component/Incident/IncidentContext';
+import SpinnerGrow from '../component/SpinnerGrow/SpinnerGrow';
+const Incident = React.lazy(() => import('../component/Incident/Incident'));
 
 const MainPage = () => {
   const user = useSelector((state) => state.auth.user, shallowEqual);
@@ -40,7 +41,9 @@ const MainPage = () => {
   return (
     <IncidentContext.Provider value={incident}>
       <h1>Рабочая панель</h1>
-      <Incident />
+      <Suspense fallback={<SpinnerGrow />}>
+        <Incident />
+      </Suspense>
     </IncidentContext.Provider>
   );
 };

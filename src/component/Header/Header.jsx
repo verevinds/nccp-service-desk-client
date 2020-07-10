@@ -1,7 +1,7 @@
 import React, { memo, useEffect, useState, useMemo } from 'react';
 import CreateIncident from '../CreateIncident/CreateIncident';
 import styles from './styles.module.css';
-import logo from '../../images/logoZip.webp';
+import logo from '../../images/logo.webp';
 /**Bootstrap component */
 import { Navbar, Nav, Image, Button, Badge } from 'react-bootstrap';
 import { useSelector, shallowEqual } from 'react-redux';

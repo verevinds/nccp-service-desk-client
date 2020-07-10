@@ -8,14 +8,7 @@ import { Button, Badge } from 'react-bootstrap';
 //? Font Awesome иконки
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const HeaderButton = ({
-  page,
-  setPage,
-  faIcon,
-  newIncidentCount,
-  text,
-  to,
-}) => {
+const HeaderButton = ({ page, setPage, faIcon, newIncidentCount, text, to }) => {
   return (
     <Button
       as={NavLink}
@@ -27,14 +20,10 @@ const HeaderButton = ({
       }}
       active={false}
     >
-      <FontAwesomeIcon
-        icon={faIcon}
-        size="lg"
-        className={text ? 'mr-1' : undefined}
-      />
+      <FontAwesomeIcon icon={faIcon} size="lg" className={text ? 'mr-1' : undefined} />
       {text ? <span>{text}</span> : undefined}
       {!!newIncidentCount ? (
-        <Badge variant="primary" className={'ml-1'}>
+        <Badge variant="primary" className={'ml-1 font-light'}>
           {newIncidentCount}
         </Badge>
       ) : undefined}

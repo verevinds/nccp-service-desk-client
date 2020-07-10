@@ -1,4 +1,4 @@
-import './images/logoZip.webp';
+import './images/logo.webp';
 import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';

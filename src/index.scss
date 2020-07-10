@@ -16,7 +16,8 @@
   font-style: normal;
 }
 i {
-  font-family: 'Rosatom light';
+  font-family: 'Rosatom light', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell',
+    'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
 }
 h1,
 h2,
@@ -24,7 +25,8 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: 'Rosatom bold';
+  font-family: 'Rosatom bold', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell',
+    'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
 }
 body {
   position: relative;
@@ -52,7 +54,9 @@ code {
   cursor: pointer;
 }
 .font-light {
-  font-family: 'Rosatom light';
+  font-family: 'Rosatom light', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell',
+    'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-weight: 100;
 }
 .fcc {
   width: 100%;
