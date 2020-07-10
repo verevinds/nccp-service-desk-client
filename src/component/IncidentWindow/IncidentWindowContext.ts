@@ -3,6 +3,7 @@ import React from 'react';
 export interface IIncidentWindowContext {
   handleVise?: { vise: boolean; setVise: any };
   handleModify?: any;
+  handleOpen?: any;
   buttons?: any;
 }
 
