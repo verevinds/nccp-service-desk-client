@@ -25,6 +25,7 @@ const Header = (props) => {
   const filterState = useSelector((state) => state.filter);
   const listIncident = useSelector((state) => state.incidents.list);
   const allowToCreate = useSelector((state) => state.incidents.allowToCreate);
+  const visa = useSelector((state) => state.incidents.visa);
   const [showModal, setShowModal] = useState(false);
   const handleClose = () => setShowModal(false);
   const handleOpen = () => setShowModal(true);
@@ -63,6 +64,9 @@ const Header = (props) => {
   const newMyDepartmentIncidentCount = useMemo(() => {
     return allowToCreate.length;
   }, [allowToCreate]);
+  const newVisaIncidentCount = useMemo(() => {
+    return visa.length;
+  }, [visa]);
   return (
     <nav>
       <Navbar
@@ -105,6 +109,7 @@ const Header = (props) => {
                     page={page}
                     setPage={setPage}
                     text={'Согласование'}
+                    newIncidentCount={newVisaIncidentCount}
                   />
                 </>
               )}
