@@ -1,6 +1,6 @@
 import { QUERY_API } from '../constants';
 
-interface IQueryApi {
+export interface IQueryApi {
   route?: string;
   actionSuccessed?: (type: string, data: any) => void;
   actionUpdate?: (type: string, data: any) => void;

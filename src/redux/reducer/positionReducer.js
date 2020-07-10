@@ -2,7 +2,8 @@ import { POSITIONS_REQUEST_SUCCESSED, POSITIONS_UPDATE } from '../constants';
 
 const initialState = {
   list: [],
-  isUpdate: true,
+  isUpdate: false,
+  isLoading: false,
 };
 
 export const positionReducer = (state = initialState, action) => {
@@ -12,11 +13,13 @@ export const positionReducer = (state = initialState, action) => {
         ...state,
         list: action.data,
         isUpdate: false,
+        isLoading: true,
       };
     case POSITIONS_UPDATE:
       return {
         ...state,
         isUpdate: true,
+        isLoading: false,
       };
     default:
       return state;

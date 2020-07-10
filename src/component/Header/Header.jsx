@@ -1,7 +1,7 @@
 import React, { memo, useEffect, useState, useMemo } from 'react';
 import CreateIncident from '../CreateIncident/CreateIncident';
 import styles from './styles.module.css';
-import logo from '../../images/logo.png';
+import logo from '../../images/logoZip.webp';
 /**Bootstrap component */
 import { Navbar, Nav, Image, Button, Badge } from 'react-bootstrap';
 import { useSelector, shallowEqual } from 'react-redux';
@@ -71,7 +71,7 @@ const Header = (props) => {
         variant="light"
         style={{ backgroundColor: '#fff', boxShadow: '0px 0px 6px 1px rgba(0,0,0,0.2)' }}
       >
-        <Navbar.Brand>
+        <Navbar.Brand className={styles.brand}>
           <a href="http://www.c31.nccp.ru/">
             <Image src={logo} className={styles.logo} />
           </a>

@@ -3,6 +3,7 @@ import * as axios from 'axios';
 import { errorCreate } from '../actionCreators/errorAction';
 import { socket } from '../../index';
 import { incidentChoose } from '../actionCreators/incidentAction';
+import { progressStep } from '../actionCreators/progressAction';
 
 export function* queryApiAsync({ route, actionSuccessed, actionUpdate, method, data = {}, id, params, userNumber }) {
   try {
@@ -34,7 +35,6 @@ export function* queryApiAsync({ route, actionSuccessed, actionUpdate, method, d
       case 'put':
         response = yield call(() => axios.put(`${URL}/api/${route}${id ? `/${id}` : ''}`, data));
         if (response.status === 200 && route === 'incidents') {
-          console.log('incidentUpdate');
           socket.emit('incidentUpdate', { id, data, userNumber });
         }
         break;
@@ -50,7 +50,8 @@ export function* queryApiAsync({ route, actionSuccessed, actionUpdate, method, d
 
     if (!!actionSuccessed) {
       yield put(actionSuccessed(response.data));
-      localStorage.setItem(route, JSON.stringify(response.data));
+      localStorage.setItem(`${route}${!!id ? `/${id}` : ''}`, JSON.stringify(response.data));
+      yield put(progressStep(16));
     }
 
     return response;

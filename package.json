@@ -13,6 +13,7 @@
     "@types/eslint-visitor-keys": "^1.0.0",
     "@types/react-beautiful-dnd": "^13.0.0",
     "@types/react-bootstrap": "^1.0.1",
+    "@types/react-router-dom": "^5.1.5",
     "@types/socket.io-client": "^1.4.33",
     "axios": "^0.19.2",
     "bootstrap": "^4.4.1",

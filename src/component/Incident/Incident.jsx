@@ -105,7 +105,6 @@ const Incident = () => {
         } else {
           responsible = '';
         }
-        console.log('item', item);
         const newItem = {
           id: item.id,
           name: `${item.category ? item.category.name : ''} ${item.property ? item.property.name : ''} ${

@@ -1,8 +1,10 @@
 import { AUTH_REQUEST_SENDD, AUTH_REQUEST_SUCCESSED } from '../constants';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 const initialState = {
   isRequest: false,
   isLoading: false,
+  isUpdate: false,
   user: null,
 };
 
@@ -13,6 +15,7 @@ export const authReducer = (state = initialState, action) => {
         ...state,
         isLoading: false,
         isRequest: true,
+        isUpdate: false,
       };
     case AUTH_REQUEST_SUCCESSED:
       if (action.data[0] !== 'Error') {
@@ -21,6 +24,7 @@ export const authReducer = (state = initialState, action) => {
           user: action.data,
           isLoading: true,
           isRequest: false,
+          isUpdate: false,
         };
       } else {
         return state;

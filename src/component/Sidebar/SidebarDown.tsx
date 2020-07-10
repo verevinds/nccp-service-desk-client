@@ -50,7 +50,6 @@ const SidebarDown: React.FC<ISidebarDown> = ({ item }) => {
       } else return 'success';
     }
   }, [start, doneWork, now]);
-  console.log(item);
 
   const initiatorUserName = useMemo(() => {
     let user = users.find((elem: TUser) => elem.number === item.userNumber);

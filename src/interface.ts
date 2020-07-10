@@ -18,6 +18,7 @@ export interface IState {
 }
 export interface IPositions {
   isUpdate: boolean;
+  isLoading: boolean;
   list: (TPosition | never)[];
 }
 export type TPosition = {
@@ -125,6 +126,8 @@ export type TAccess = {
 export type TAuth = {
   isLoading: boolean;
   isRequest: boolean;
+  isUpdate: boolean;
+
   user: TUser;
 };
 export type TUser = {
@@ -265,6 +268,7 @@ export type TProgress = {
 /** Статус */
 export type TStatusies = {
   isUpdate: boolean;
+  isLoading: boolean;
   list: TStatus[] | never[];
 };
 export type TStatus = {

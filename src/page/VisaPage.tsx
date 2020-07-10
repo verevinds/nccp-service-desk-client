@@ -25,16 +25,6 @@ const VisaPage: React.FC<IVisaPage> = (props) => {
     dispatch(incidentChoose(undefined));
   }, []);
 
-  useLayoutEffect(() => {
-    Api?.incidents({
-      method: 'get',
-      route: 'incidents/visa',
-      actionSuccessed: incidentVisaRequestSuccessed,
-      params: { hasVisa: false, positionId: user?.positionId },
-      id: undefined,
-    });
-  }, [user, isUpdate]);
-
   useEffect(() => {
     if (incidents && Array.isArray(incidents)) {
       let sidebarList = incidents?.map((item: TIncident) => {

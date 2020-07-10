@@ -3,6 +3,9 @@
   max-height: 50px;
   cursor: pointer;
 }
+.brand {
+  min-width: 176px;
+}
 .nav {
   display: flex;
   flex-direction: row;
