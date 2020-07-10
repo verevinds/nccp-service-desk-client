@@ -33,6 +33,7 @@ const VisaIncidentButton: React.FC<IVisaIncidentButton> = (props) => {
               data: { positionId: user.positionId, incidentId: incident.id, hasVisa: true, hasVisaAt: new Date() },
             }),
           );
+          dispatch(incidentChoose(undefined));
         },
         modify: (event: React.FormEvent<HTMLFormElement>) => {
           const form = event.currentTarget;
@@ -51,6 +52,7 @@ const VisaIncidentButton: React.FC<IVisaIncidentButton> = (props) => {
         no: () => {
           this.comments(`Отказано`);
           this.incidents({ data: { statusId: 8388604 } });
+          dispatch(incidentChoose(undefined));
         },
       };
     },
