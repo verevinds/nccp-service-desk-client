@@ -25,6 +25,7 @@ const Header = (props) => {
   const filterState = useSelector((state) => state.filter);
   const listIncident = useSelector((state) => state.incidents.list);
   const allowToCreate = useSelector((state) => state.incidents.allowToCreate);
+  const myList = useSelector((state) => state.incidents.myList);
   const visa = useSelector((state) => state.incidents.visa);
   const [showModal, setShowModal] = useState(false);
   const handleClose = () => setShowModal(false);
@@ -67,6 +68,9 @@ const Header = (props) => {
   const newVisaIncidentCount = useMemo(() => {
     return visa.length;
   }, [visa]);
+  const newMyIncidentCount = useMemo(() => {
+    return myList.filter((item) => item.statusId === 8388605 || item.statusId === 8388607).length;
+  }, [myList]);
   return (
     <nav>
       <Navbar
@@ -84,7 +88,14 @@ const Header = (props) => {
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className={`${styles.nav} mr-auto`}>
             <Nav.Item>
-              <HeaderButton to={'/myincidents'} faIcon={faHome} page={page} setPage={setPage} text={'Мои заявки'} />
+              <HeaderButton
+                to={'/myincidents'}
+                faIcon={faHome}
+                page={page}
+                setPage={setPage}
+                text={'Мои заявки'}
+                newIncidentCount={newMyIncidentCount}
+              />
               <HeaderButton
                 to={'/'}
                 faIcon={faClipboardList}
