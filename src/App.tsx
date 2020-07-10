@@ -332,6 +332,7 @@ const App = () => {
             <Switch>
               <Route exact path="/" component={MainPage} />
               <Route path="/setting" component={SettingPage} />
+              <Route path="/myincidents/:id" component={MyIncidentPage} />
               <Route path="/myincidents" component={MyIncidentPage} />
               <Route path="/test" component={TestPage} />
               <Route path="/info" component={InfoPage} />

@@ -1,15 +1,17 @@
-import React, { memo, useMemo } from 'react';
+import React, { memo, useMemo, useContext } from 'react';
 import { ProgressBar } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import Moment from 'react-moment';
 import styles from './siderbar.module.scss';
 import { IState, TUser } from '../../interface';
+import { IncidentContext } from '../Incident/IncidentContext';
 
 export interface ISidebarDown {
   item: any;
 }
 
 const SidebarDown: React.FC<ISidebarDown> = ({ item }) => {
+  let { myIncident } = useContext(IncidentContext);
   const { isFinishTime } = useSelector((state: IState) => state.setting);
   const users = useSelector((state: IState) => state.users.list);
   const createData = new Date(item.createdAt);
@@ -58,7 +60,7 @@ const SidebarDown: React.FC<ISidebarDown> = ({ item }) => {
     return undefined;
   }, [users]);
 
-  if (!doneWork)
+  if (!doneWork || !isFinishTime)
     return (
       <div className={styles.bar__container_down}>
         {!isFinishTime ? undefined : (
@@ -70,7 +72,7 @@ const SidebarDown: React.FC<ISidebarDown> = ({ item }) => {
             ) : null}
           </div>
         )}
-        {isFinishTime ? undefined : (
+        {!!isFinishTime || myIncident ? undefined : (
           <div className={`${styles.bar__date} ${styles.bar__date_left}`}>
             {' '}
             {!!initiatorUserName ? `инициатор: ${initiatorUserName}` : undefined}

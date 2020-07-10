@@ -11,14 +11,21 @@ import IncidentWindowMyButton from '../component/IncidentWindowMyButton/Incident
 
 const MyIncidentPage = (props) => {
   const [params, setParams] = useState();
-  const user = useSelector((state) => state.auth.user, shallowEqual);
-  const { incidents } = useSelector((state) => state, shallowEqual);
+  const user = useSelector((state) => state.auth.user);
+  const { incidents } = useSelector((state) => state);
+  const myList = useSelector((state) => state.incidents.myList);
   const dispatch = useDispatch();
 
   useLayoutEffect(() => {
     dispatch(incidentChoose(undefined));
   }, []);
 
+  useLayoutEffect(() => {
+    let id = props.match.params.id;
+    let incident = myList.find((item) => item.id === Number(id));
+    console.log(incident);
+    dispatch(incidentChoose(incident));
+  }, [myList]);
   useEffect(() => {
     if (user) {
       setParams({

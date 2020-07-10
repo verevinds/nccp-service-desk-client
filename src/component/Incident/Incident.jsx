@@ -21,9 +21,7 @@ const Incident = () => {
   const { history } = useSelector((state) => state.incidents, shallowEqual);
 
   const dispatch = useDispatch();
-  useEffect(() => {
-    console.log(incidents.current.incident);
-  }, [incidents.current.incident]);
+
   const list = useMemo(() => {
     if (!myIncident) return incidents?.list.filter((item) => item.statusId !== 8388607 && item.statusId !== 8388605);
     else return incidents?.myList;
