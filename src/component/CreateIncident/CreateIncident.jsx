@@ -240,7 +240,7 @@ const CreateIncidentModel = ({ handleClose, showModal, isModify }) => {
             route: 'comments',
             method: 'post',
             actionUpdate: incidentCreate,
-            data: { text: 'Доработан', incidentId: chooseIncident.id, userNumber: user.number },
+            data: { text: 'Заявка доработана', incidentId: chooseIncident.id, userNumber: user.number },
           }),
         );
       } else await dispatch(incidentFetching(data, dataFile));

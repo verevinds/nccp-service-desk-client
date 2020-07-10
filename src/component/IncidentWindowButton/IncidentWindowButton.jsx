@@ -9,8 +9,8 @@ import { IncidentWindowContext } from '../IncidentWindow/IncidentWindowContext';
 import { AppContext } from '../../AppContext';
 import HandleAllowToCreate from '../IncidentWindowDepartmentButton/IncidentWindowDepartmentButton';
 
-const IncidentWindowButton = ({ handleOpen, myIncident }) => {
-  const { handleVise, handleModify } = useContext(IncidentWindowContext);
+const IncidentWindowButton = ({ myIncident }) => {
+  const { handleVise, handleModify, handleOpen } = useContext(IncidentWindowContext);
   const {
     name1,
     name2,
@@ -44,7 +44,7 @@ const IncidentWindowButton = ({ handleOpen, myIncident }) => {
               statusId: 1,
               startWork: new Date().toISOString(),
             };
-            commentText = `Статус заявки изменен на "В работе". Ответственным назначен: ${fullName}`;
+            commentText = `Заявка переведена в статус "В работе". Ответственным назначен: ${fullName}`;
           }
 
           this.comments(commentText);
@@ -65,7 +65,7 @@ const IncidentWindowButton = ({ handleOpen, myIncident }) => {
     if (!!currentResponsible) {
       if (Number(statusId) > 0 && Number(statusId) < 8000000 && currentResponsible === number && !myIncident) {
         return (
-          <Button variant="outline-primary" onClick={handleOpen}>
+          <Button variant="outline-primary" size="sm" onClick={handleOpen}>
             Изменить
           </Button>
         );
@@ -73,17 +73,19 @@ const IncidentWindowButton = ({ handleOpen, myIncident }) => {
       if (Number(statusId) === 8388607 && userNumber === number && !!myIncident) {
         return (
           <ButtonGroup aria-label="Basic example">
-            <Button variant="outline-primary" onClick={() => onClick.call(Api).closeWork()}>
+            <Button variant="outline-primary" size="sm" onClick={() => onClick.call(Api).closeWork()}>
               Закрыть
             </Button>
-            <Button onClick={() => handleOpen().inWork()}>Вернуть в работу</Button>
+            <Button onClick={() => handleOpen().inWork()} size="sm">
+              Вернуть в работу
+            </Button>
           </ButtonGroup>
         );
       }
     }
     if (!Number(statusId) && !currentResponsible && !myIncident) {
       return (
-        <Button variant="outline-success" onClick={onClick.call(Api).inWork}>
+        <Button variant="outline-success" onClick={onClick.call(Api).inWork} size="sm">
           Взять в работу
         </Button>
       );
@@ -105,7 +107,7 @@ const IncidentWindowButton = ({ handleOpen, myIncident }) => {
           {!!buttonMatch && Number(statusId) < 8000000 && !myIncident ? (
             buttonMatch
           ) : Number(statusId) < 8000000 && !myIncident ? (
-            <DropdownButton as={ButtonGroup} title={'Дополнительные действия'} variant={'outline-info'}>
+            <DropdownButton as={ButtonGroup} title={'Дополнительные действия'} variant={'outline-info'} size="sm">
               {level ? (
                 <Dropdown.Item eventKey="1">
                   <HandleResponsible />

@@ -118,10 +118,10 @@ const HandleMatches = () => {
         if (!item.isMatch)
           return (
             <ButtonGroup key={index}>
-              <Button variant={item.okVariant} onClick={item.okOnClick}>
+              <Button variant={item.okVariant} onClick={item.okOnClick} size="sm">
                 {item.okText}
               </Button>
-              <Button variant={item.cancelVariant} onClick={item.cancelOnClick}>
+              <Button variant={item.cancelVariant} onClick={item.cancelOnClick} size="sm">
                 {item.cancelText}
               </Button>
             </ButtonGroup>

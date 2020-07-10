@@ -96,9 +96,17 @@ const IncidentHandleStatus = ({ show, onHide, inWork, isModify }) => {
       uploadFile(file);
 
       if (newStatus.statusId !== incident.statusId) {
-        fnNewComment(`${fullName} изменил статус на "${list.find((item) => item.id === newStatus.statusId).name}"`);
-      }
-      fnNewComment(newComment);
+        if (inWork)
+          fnNewComment(
+            `Возвращена в статус "${list.find((item) => item.id === newStatus.statusId).name}". Причина: ${newComment}`,
+          );
+        else
+          fnNewComment(
+            `Заявка переведена в статус "${
+              list.find((item) => item.id === newStatus.statusId).name
+            }". Сообщение: ${newComment}`,
+          );
+      } else fnNewComment(newComment);
 
       dispatch(
         queryApi({

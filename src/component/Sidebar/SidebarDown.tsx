@@ -59,7 +59,7 @@ const SidebarDown: React.FC<ISidebarDown> = ({ item }) => {
     if (user) return `${user.name1} ${user.name2.charAt(0)}. ${user.name2.charAt(0)}.`;
     return undefined;
   }, [users]);
-
+  console.log(initiatorUserName);
   if (!doneWork || !isFinishTime)
     return (
       <div className={styles.bar__container_down}>

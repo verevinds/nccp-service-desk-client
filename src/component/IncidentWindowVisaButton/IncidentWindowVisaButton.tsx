@@ -42,7 +42,7 @@ const VisaIncidentButton: React.FC<IVisaIncidentButton> = (props) => {
             event.stopPropagation();
           } else {
             event.preventDefault();
-            this.comments(comment);
+            this.comments(`Заявка переведена в статус "На доработке". Указания: ${comment}`);
             this.incidents({ data: { statusId: 8388605 } });
             setShow(false);
             dispatch(incidentChoose(undefined));
@@ -82,13 +82,13 @@ const VisaIncidentButton: React.FC<IVisaIncidentButton> = (props) => {
       <hr />
       <div className="flex flex_end">
         <ButtonGroup>
-          <Button variant={'outline-success'} onClick={() => Api && onClick.call(Api).ok()}>
+          <Button variant={'outline-success'} onClick={() => Api && onClick.call(Api).ok()} size="sm">
             Согласовать
           </Button>
-          <Button variant={'outline-secondary'} onClick={() => setShow(true)}>
+          <Button variant={'outline-secondary'} onClick={() => setShow(true)} size="sm">
             На доработку
           </Button>
-          <Button variant={'outline-danger'} onClick={() => Api && onClick.call(Api).no()}>
+          <Button variant={'outline-danger'} onClick={() => Api && onClick.call(Api).no()} size="sm">
             Отказать
           </Button>
         </ButtonGroup>

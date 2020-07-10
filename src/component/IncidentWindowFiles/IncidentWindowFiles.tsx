@@ -31,7 +31,7 @@ const IncidentWindowFiles = () => {
       >
         <Image src={urlImg} fluid />
       </ModalWindow>
-      <Accordion defaultActiveKey="1">
+      <Accordion defaultActiveKey="1" className={styles.accordion}>
         <Card>
           <Accordion.Toggle
             as={Card.Header}

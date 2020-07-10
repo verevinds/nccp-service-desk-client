@@ -8,16 +8,19 @@ const IncidentWindowVisa: React.FC<IIncidentWindowVisa> = (props) => {
   console.log(incident);
   return (
     <Fragment>
+      <h6>
+        <small>Список согласующих:</small>
+      </h6>
       {incident.rules_lists.map((item: TRulesList, index: number) => (
-        <div className="flex flex_between" key={index}>
+        <div className="flex  blockquote-footer" key={index}>
           <div>
             {item.position.users.map((item: any, index: number) => (
-              <p key={index}>
-                {item.name1} {item.name2} {item.name3}
-              </p>
+              <p key={index}>{`${item.name1} ${item.name2} ${item.name3}:  `}</p>
             ))}
           </div>
-          <div style={{ color: item.hasVisa ? 'green' : 'red' }}>{item.hasVisa ? 'Согласовано' : 'Не согласовано'}</div>
+          <div style={{ color: item.hasVisa ? 'green' : 'red' }} className="ml-2">
+            {item.hasVisa ? 'Согласовано' : 'Не согласовано'}
+          </div>
         </div>
       ))}
     </Fragment>

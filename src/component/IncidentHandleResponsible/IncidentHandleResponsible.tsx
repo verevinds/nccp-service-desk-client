@@ -67,7 +67,7 @@ const IncidentHandleResponsible: React.FC<IIncidentHandleResponsible> = ({ show,
 
   const onClick = useCallback(
     function (this: IApi) {
-      this.comments(`Статус заявки изменен на "В работе". Ответственным назначен: ${currentResponsibleFullname}`);
+      this.comments(`Заявка переведена в статус "В работе". Ответственным назначен: ${currentResponsibleFullname}`);
       this.incidents({ data: { currentResponsible, startWork: new Date().toISOString(), statusId: 1 } });
     },
     [currentResponsible, currentResponsibleFullname],

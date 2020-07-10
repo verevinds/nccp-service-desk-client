@@ -38,10 +38,10 @@ const HandleAllowToCreate: React.FC<IHandleAllowToCreate> = (props) => {
       <hr />
       <div className={styles.bar}>
         <ButtonGroup>
-          <Button variant={'outline-success'} onClick={() => Api && onClick.call(Api).ok()}>
+          <Button variant={'outline-success'} onClick={() => Api && onClick.call(Api).ok()} size="sm">
             Согласовать создание
           </Button>
-          <Button variant={'outline-danger'} onClick={() => Api && onClick.call(Api).no()}>
+          <Button variant={'outline-danger'} onClick={() => Api && onClick.call(Api).no()} size="sm">
             Отказать
           </Button>
         </ButtonGroup>

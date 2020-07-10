@@ -7,13 +7,9 @@ import { OverlayTrigger } from 'react-bootstrap';
 
 import { IIncidentInWork } from './interface';
 
-const IncidentInWork: React.FC<IIncidentInWork> = ({
-  startWork,
-  nameResponsible,
-  number,
-}) => {
+const IncidentInWork: React.FC<IIncidentInWork> = ({ startWork, nameResponsible, number }) => {
   return (
-    <>
+    <div>
       <small>
         <OverlayTrigger
           placement="right"
@@ -33,7 +29,7 @@ const IncidentInWork: React.FC<IIncidentInWork> = ({
           </Moment>
         ) : undefined}
       </small>
-    </>
+    </div>
   );
 };
 

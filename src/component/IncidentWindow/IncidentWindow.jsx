@@ -37,6 +37,7 @@ const IncidentWindow = () => {
         value={{
           handleVise: { vise, setVise },
           handleModify: { setIsModify },
+          handleOpen,
         }}
       >
         {isModify ? (
@@ -48,7 +49,7 @@ const IncidentWindow = () => {
           <Card>
             <IncidentWindowHeader />
 
-            <IncidentWindowBody handleOpen={handleOpen} />
+            <IncidentWindowBody />
             <Card.Footer className="text-right">
               <small>
                 <i>

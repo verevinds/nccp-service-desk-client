@@ -33,14 +33,14 @@ pre {
 }
 @media screen and (min-height: 720px) {
   .window {
-    max-height: 700px;
+    max-height: 650px;
     overflow-y: auto;
   }
 }
 
 @media screen and (min-height: 500px) and (max-height: 720px) {
   .window {
-    max-height: 500px;
+    max-height: 450px;
     overflow-y: auto;
   }
 }

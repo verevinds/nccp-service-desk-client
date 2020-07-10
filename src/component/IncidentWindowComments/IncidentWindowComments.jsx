@@ -16,7 +16,7 @@ const IncidentWindowComments = () => {
   const comments = useSelector((state) => state.incidents?.current.incident.comments, shallowEqual);
   return (
     <>
-      <Accordion defaultActiveKey={'1'}>
+      <Accordion defaultActiveKey={'1'} className={styles.accordion}>
         <Card>
           <Accordion.Toggle
             as={Card.Header}
