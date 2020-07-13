@@ -59,42 +59,33 @@ const SidebarTop: React.FC<ISidebarTop> = ({ item }) => {
     if (user) return `${user.name1} ${user.name2.charAt(0)}. ${user.name2.charAt(0)}.`;
     return undefined;
   }, [users]);
+
+  const initiatorUserName = useMemo(() => {
+    let user = users.find((elem: TUser) => elem.number === item.userNumber);
+
+    if (user) return `${user.name1} ${user.name2.charAt(0)}. ${user.name2.charAt(0)}.`;
+    return undefined;
+  }, [users]);
   if (!doneWork || !isFinishTime)
     return (
       <Fragment>
-        {!isFinishTime ? undefined : (
+        {!!isFinishTime || myIncident ? (
+          <div></div>
+        ) : (
           <div className={`${styles.bar__date} ${styles.bar__date_left}`}>
-            {item.finishWork ? (
-              <Moment locale="ru" format="DD.MM.YY">
-                {item.finishWork}
-              </Moment>
-            ) : null}
+            {' '}
+            {!!initiatorUserName ? `инициатор: ${initiatorUserName}` : <div></div>}
           </div>
         )}
-
-        <div className={`${styles.bar__date} ${styles.bar__date_right}`}>
-          {item.createdAt ? (
-            <Moment locale="ru" format="DD.MM.YY">
-              {item.createdAt}
-            </Moment>
-          ) : null}
-        </div>
-
-        {!!isFinishTime || myIncident ? undefined : (
+        {!!isFinishTime || myIncident ? (
+          <div></div>
+        ) : (
           <div className={`${styles.bar__date} ${styles.bar__date_left}`}>
             {' '}
             <span className={styles.sidebar__date_green}>
-              {!!responsibleUserName ? `ответственный: ${responsibleUserName}` : undefined}
+              {!!responsibleUserName ? `ответственный: ${responsibleUserName}` : <div></div>}
             </span>
           </div>
-        )}
-        {!isFinishTime ? undefined : (
-          <ProgressBar className={styles.bar__progress}>
-            <ProgressBar striped animated variant={colorStart} now={!!start ? start : now} key={1} />
-            {!!start ? (
-              <ProgressBar striped animated variant={colorEnd} now={!!done ? done - start : now - start} key={2} />
-            ) : undefined}
-          </ProgressBar>
         )}
       </Fragment>
     );

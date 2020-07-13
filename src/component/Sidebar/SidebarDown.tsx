@@ -72,13 +72,15 @@ const SidebarDown: React.FC<ISidebarDown> = ({ item }) => {
             ) : null}
           </div>
         )}
-        <div></div>
-        {!!isFinishTime || myIncident ? undefined : (
-          <div className={`${styles.bar__date} ${styles.bar__date_left}`}>
-            {' '}
-            {!!initiatorUserName ? `инициатор: ${initiatorUserName}` : undefined}
-          </div>
-        )}
+
+        <div className={`${styles.bar__date} ${styles.bar__date_right}`}>
+          {item.createdAt ? (
+            <Moment locale="ru" format="DD.MM.YY">
+              {item.createdAt}
+            </Moment>
+          ) : null}
+        </div>
+
         {!isFinishTime ? undefined : (
           <ProgressBar className={styles.bar__progress}>
             <ProgressBar striped animated variant={colorStart} now={!!start ? start : now} key={1} />

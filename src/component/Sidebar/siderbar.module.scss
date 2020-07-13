@@ -18,7 +18,7 @@
 .sidebar {
   display: grid;
   grid-template-columns: 7% 87% 5%;
-  grid-template-rows: 20% 59% 20%;
+  grid-template-rows: 20% 53% 25%;
   gap: 1px 1px;
   grid-template-areas: 'sidebar__container_top sidebar__container_top sidebar__container_top' 'sidebar__container_centerLeft sidebar__container_center sidebar__container_centerRight' 'sidebar__container_down sidebar__container_down sidebar__container_down';
 }
@@ -85,6 +85,7 @@
   // color: #17a2b8;
   text-decoration: none;
 }
+
 .item__body {
   font-size: 0.8em;
   width: 100%;
