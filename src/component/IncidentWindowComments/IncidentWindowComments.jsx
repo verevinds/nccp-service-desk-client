@@ -28,7 +28,6 @@ const IncidentWindowComments = () => {
             className={styles.comment__header}
           >
             <FontAwesomeIcon icon={accordion ? faAngleDown : faAngleRight} /> Комментарии
-            <FontAwesomeIcon icon={faEdit} />
           </Accordion.Toggle>
           <Accordion.Collapse eventKey="0">
             <Table striped bordered size="sm" className={styles.table}>
