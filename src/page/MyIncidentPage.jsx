@@ -1,4 +1,4 @@
-import React, { memo, useState, useEffect, useLayoutEffect } from 'react';
+import React, { memo, useState, useEffect, useLayoutEffect, useCallback } from 'react';
 import { useSelector, shallowEqual, useDispatch } from 'react-redux';
 import { myIncidentRequestSuccessed } from '../redux/actionCreators/incidentAction';
 import IncidentWindowButton from '../component/IncidentWindowButton/IncidentWindowButton';
@@ -23,7 +23,7 @@ const MyIncidentPage = (props) => {
   useLayoutEffect(() => {
     let id = props.match.params.id;
     let incident = myList.find((item) => item.id === Number(id));
-    console.log(incident);
+    console.log(props.match);
     dispatch(incidentChoose(incident));
   }, [myList]);
   useEffect(() => {
@@ -34,6 +34,7 @@ const MyIncidentPage = (props) => {
       });
     }
   }, [user]);
+
   if (incidents) {
     return (
       <IncidentContext.Provider
@@ -42,6 +43,7 @@ const MyIncidentPage = (props) => {
           actionSuccessed: myIncidentRequestSuccessed,
           myIncident: true,
           Buttons: IncidentWindowMyButton,
+          match: { path: '/myincidents' },
         }}
       >
         <h1>Мои заявки</h1>

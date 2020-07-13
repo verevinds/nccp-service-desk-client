@@ -185,6 +185,10 @@ const App = () => {
           return res;
         })
         .then((res) => {
+          // //@ts-ignore
+          // res.data.number = 81104;
+          // //@ts-ignore
+          // res.data.ip = '192.168.214.106';
           if (!res.data) {
             setAuth(<AuthModal />);
           } else {
@@ -331,6 +335,8 @@ const App = () => {
 
             <Switch>
               <Route exact path="/" component={MainPage} />
+              <Route path="/incident/:id" component={MainPage} />
+              <Route path="/incident" component={MainPage} />
               <Route path="/setting" component={SettingPage} />
               <Route path="/myincidents/:id" component={MyIncidentPage} />
               <Route path="/myincidents" component={MyIncidentPage} />

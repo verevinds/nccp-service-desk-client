@@ -73,27 +73,27 @@ const VisaPage: React.FC<IVisaPage> = (props) => {
   }, [chooseIncidentId]);
   return (
     <Fragment>
-      <h1>Согласование</h1>
-      <Row className="mt-1">
-        <Col xs={5}>
-          <WrapperSidebar
-            list={sidebarList}
-            activeId={chooseIncidentId}
-            onClick={(id) => {
-              setChooseIncidentId(id);
-            }}
-            title={'Требует согласования'}
-            onClickHistory={() => {}}
-          />
-        </Col>
-        <Col>
-          <Container>
-            <IncidentContext.Provider value={{ Buttons: IncidentWindowVisaButton }}>
+      <IncidentContext.Provider value={{ Buttons: IncidentWindowVisaButton, match: { path: '/visa' } }}>
+        <h1>Согласование</h1>
+        <Row className="mt-1">
+          <Col xs={5}>
+            <WrapperSidebar
+              list={sidebarList}
+              activeId={chooseIncidentId}
+              onClick={(id) => {
+                setChooseIncidentId(id);
+              }}
+              title={'Требует согласования'}
+              onClickHistory={() => {}}
+            />
+          </Col>
+          <Col>
+            <Container>
               <IncidentWindow />
-            </IncidentContext.Provider>
-          </Container>
-        </Col>
-      </Row>
+            </Container>
+          </Col>
+        </Row>
+      </IncidentContext.Provider>
     </Fragment>
   );
 };

@@ -65,7 +65,14 @@
   left: 0;
 }
 .item {
+  color: var(--info);
   padding: 0;
+}
+
+.item:hover {
+  // background-color: rgba(0, 0, 0, 0.02);
+  // color: #17a2b8;
+  text-decoration: none;
 }
 .item__body {
   font-size: 0.8em;
@@ -88,10 +95,6 @@
 }
 .item__text_span {
   text-align: left;
-}
-.item:hover {
-  background-color: rgba(0, 0, 0, 0.02);
-  color: #17a2b8;
 }
 .active {
   color: #17a2b8;

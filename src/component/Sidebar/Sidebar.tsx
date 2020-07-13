@@ -1,5 +1,6 @@
-import React, { memo, useState, useEffect } from 'react';
+import React, { memo, useState, useEffect, useContext, useMemo } from 'react';
 import { ListGroup, OverlayTrigger, Tooltip, Button } from 'react-bootstrap';
+import { NavLink } from 'react-router-dom';
 import styles from './siderbar.module.scss';
 //Interface TypeScript for function Sidebar
 import { ISidebar } from './interface';
@@ -9,8 +10,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleRight, faTag, faUserClock, faUserCheck } from '@fortawesome/free-solid-svg-icons';
 import SidebarDown from './SidebarDown';
 import { IState } from '../../interface';
+import { IncidentContext } from '../Incident/IncidentContext';
 
 const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId, filter }) => {
+  const { match } = useContext(IncidentContext);
   const [limit, setLimit] = useState(8);
   const tags = (item: any, color?: any, tooltip?: string) => {
     let tags = [];
@@ -102,10 +105,14 @@ const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId, filter }) => {
                   break;
               }
             }
+            // {match ? {to:{`${match.path}/${item.id}` }}: undefined}
+            const to = !!match ? { to: `${match.path}/${item.id}` } : undefined;
 
             return (
               <ListGroup.Item
                 key={item.id}
+                as={match ? NavLink : undefined}
+                {...to}
                 //@ts-ignore
                 onClick={onClick ? () => onClick(item.id) : null}
                 className={`${styles.item} ${activeId === item.id ? styles.active : null} bg font-light`}

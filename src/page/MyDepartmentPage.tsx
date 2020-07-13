@@ -14,7 +14,7 @@ import { IncidentContext } from '../component/Incident/IncidentContext';
 import IncidentWindowDepartmentButton from '../component/IncidentWindowDepartmentButton/IncidentWindowDepartmentButton';
 export interface IMyDepartmentPage {}
 
-const MyDepartmentPage: React.FC<IMyDepartmentPage> = (props) => {
+const MyDepartmentPage: React.FC<any> = (props) => {
   const [chooseIncidentId, setChooseIncidentId] = useState<number | undefined>();
   const [sidebarList, setSidebarList] = useState<(TList | never)[]>([]);
   const user: TUser = useSelector((state: IState) => state.auth.user);
@@ -27,6 +27,13 @@ const MyDepartmentPage: React.FC<IMyDepartmentPage> = (props) => {
   useLayoutEffect(() => {
     dispatch(incidentChoose(undefined));
   }, []);
+
+  useLayoutEffect(() => {
+    let id = props.match.params.id;
+    let incident = incidents.find((item) => item.id === Number(id));
+    console.log(props.match);
+    dispatch(incidentChoose(incident));
+  }, [incidents]);
 
   useEffect(() => {
     if (incidents && Array.isArray(incidents)) {
@@ -76,27 +83,29 @@ const MyDepartmentPage: React.FC<IMyDepartmentPage> = (props) => {
   }, [chooseIncidentId]);
   return (
     <Fragment>
-      <h1>Мой отдел</h1>
-      <Row className="mt-1">
-        <Col xs={5}>
-          <WrapperSidebar
-            list={sidebarList}
-            activeId={chooseIncidentId}
-            onClick={(id) => {
-              setChooseIncidentId(id);
-            }}
-            title={'Требует согласования'}
-            onClickHistory={() => {}}
-          />
-        </Col>
-        <Col>
-          <Container>
-            <IncidentContext.Provider value={{ Buttons: IncidentWindowDepartmentButton }}>
+      <IncidentContext.Provider
+        value={{ Buttons: IncidentWindowDepartmentButton, match: { path: '/MyDepartmentPage' } }}
+      >
+        <h1>Мой отдел</h1>
+        <Row className="mt-1">
+          <Col xs={5}>
+            <WrapperSidebar
+              list={sidebarList}
+              activeId={chooseIncidentId}
+              onClick={(id) => {
+                setChooseIncidentId(id);
+              }}
+              title={'Требует согласования'}
+              onClickHistory={() => {}}
+            />
+          </Col>
+          <Col>
+            <Container>
               <IncidentWindow />
-            </IncidentContext.Provider>
-          </Container>
-        </Col>
-      </Row>
+            </Container>
+          </Col>
+        </Row>
+      </IncidentContext.Provider>
     </Fragment>
   );
 };

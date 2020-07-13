@@ -15,7 +15,7 @@ import { Row, Col, Container } from 'react-bootstrap';
 import { IncidentContext } from './IncidentContext';
 
 const Incident = () => {
-  let { params, title, myIncident } = useContext(IncidentContext);
+  let { params, title, myIncident, changeLocationMatchId } = useContext(IncidentContext);
   const { user } = useSelector((state) => state.auth);
   let incidents = useSelector((state) => state.incidents, shallowEqual);
   const { history } = useSelector((state) => state.incidents, shallowEqual);

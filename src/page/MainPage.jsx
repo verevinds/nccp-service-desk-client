@@ -9,15 +9,19 @@ import { IncidentContext } from '../component/Incident/IncidentContext';
 import SpinnerGrow from '../component/SpinnerGrow/SpinnerGrow';
 const Incident = React.lazy(() => import('../component/Incident/Incident'));
 
-const MainPage = () => {
-  const user = useSelector((state) => state.auth.user, shallowEqual);
+const MainPage = (props) => {
+  const user = useSelector((state) => state.auth.user);
+  const list = useSelector((state) => state.incidents.list);
   const [params, setParams] = useState();
   const [title, setTitle] = useState(`Инциденты`);
   const dispatch = useDispatch();
 
   useLayoutEffect(() => {
-    dispatch(incidentChoose(undefined));
-  }, []);
+    let id = props.match.params.id;
+    let incident = list.find((item) => item.id === Number(id));
+    console.log(props.match);
+    dispatch(incidentChoose(incident));
+  }, [list]);
   useEffect(() => {
     if (user) {
       let isDepartment = !!user.department;
@@ -35,6 +39,7 @@ const MainPage = () => {
       title,
       requestSuccessed: incidentRequestSuccessed,
       Buttons: IncidentWindowButton,
+      match: { path: '/incident' },
     };
   }, [params, title]);
 
