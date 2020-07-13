@@ -37,7 +37,7 @@ const SettingSubscription: React.FC<ISettingSubscription> = (props) => {
           <h3>Шаблоны</h3>
           <CardColumns>
             {
-              //   <SettingSubscriptionCard
+              // <SettingSubscriptionCard
               //   title={'Мой отдел'}
               //   text={`Уведомление на почту о каждой новой заявке, поступившей в Ваш отдел.`}
               //   code={100}

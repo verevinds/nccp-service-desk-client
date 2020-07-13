@@ -39,6 +39,7 @@ const SidebarHistory: React.FC<ISidebarHistory> = ({ onClick, activeId, onClickH
           status: item.statusId,
           finishWork: item.finishWork,
           doneWork: item.doneWork,
+          userNumber: item.userNumber,
         };
         return newItem;
       }),

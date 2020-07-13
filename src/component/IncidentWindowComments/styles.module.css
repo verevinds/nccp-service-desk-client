@@ -5,6 +5,7 @@
 .table pre {
   font-size: 0.9em;
   margin: 0;
+  white-space: pre-line;
 }
 .accordion {
   font-size: 0.8em;

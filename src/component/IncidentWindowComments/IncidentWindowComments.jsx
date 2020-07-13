@@ -34,7 +34,7 @@ const IncidentWindowComments = () => {
               <thead>
                 <tr>
                   <th>№</th>
-                  <th>Текст</th>
+                  <th className={styles.textColumn}>Текст</th>
                   <th>Автор комментария</th>
                   <th>Дата</th>
                 </tr>

@@ -11,6 +11,7 @@ import { faAngleRight, faTag, faUserClock, faUserCheck } from '@fortawesome/free
 import SidebarDown from './SidebarDown';
 import { IState } from '../../interface';
 import { IncidentContext } from '../Incident/IncidentContext';
+import SidebarTop from './SidebarTop';
 
 const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId, filter }) => {
   const { match } = useContext(IncidentContext);
@@ -117,28 +118,32 @@ const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId, filter }) => {
                 onClick={onClick ? () => onClick(item.id) : null}
                 className={`${styles.item} ${activeId === item.id ? styles.active : null} bg font-light`}
               >
-                <div className={styles.bar}>
-                  <div className={styles.bar__container_top}>
-                    <div className={`${styles.icon} ${styles.icon_left}`}>
-                      {tags(item, color, tooltip)?.map((item) => item)}
+                <div className={styles.sidebar}>
+                  <div className={styles.sidebar__container_top}>
+                    <SidebarTop item={item} />
+                  </div>
+
+                  <div className={`${styles.sidebar__container_centerLeft} ${styles.icon} ${styles.icon_left}`}>
+                    {tags(item, color, tooltip)?.map((item) => item)}
+                  </div>
+
+                  <div className={styles.sidebar__container_center}>
+                    <div className={styles.item__id}>
+                      <span>{itemText}</span>
                     </div>
-                    <div className={styles.item__body}>
-                      <div className={styles.item__id}>
-                        <span>{itemText}</span>
-                      </div>
-                      <div className={styles.item__text}>
-                        <span className={styles.item__text_span}>
-                          {!!item.name.trim() ? item.name : 'Без категории'} {item.responsible}
-                        </span>
-                      </div>
+                    <div className={styles.item__text}>
+                      <span className={styles.item__text_span}>{!!item.name.trim() ? item.name : 'Без категории'}</span>
                     </div>
                   </div>
-                  <SidebarDown item={item} />
 
-                  <div className={styles.bar__container_sideRight}>
+                  <div className={styles.sidebar__container_centerRight}>
                     <div className={`${styles.icon} ${styles.icon_right}`}>
                       <FontAwesomeIcon icon={faAngleRight} />
                     </div>
+                  </div>
+
+                  <div className={styles.sidebar__container_down}>
+                    <SidebarDown item={item} />
                   </div>
                 </div>
               </ListGroup.Item>

@@ -3,6 +3,7 @@
   flex-direction: column;
   justify-content: space-evenly;
   width: 25px;
+  margin: auto;
   text-align: center;
 }
 .icon_right {
@@ -10,38 +11,48 @@
   justify-content: center;
 }
 .icon_left {
-  margin-right: 1em;
-  margin-left: 0.5em;
+  // margin-right: 1em;
+  // margin-left: 0.5em;
+  margin: 10px auto;
 }
-.bar {
-  cursor: pointer;
+.sidebar {
   display: grid;
-  grid-template-columns: 95% 5%;
-  grid-template-rows: 70% 30%;
+  grid-template-columns: 7% 87% 5%;
+  grid-template-rows: 20% 59% 20%;
   gap: 1px 1px;
-  grid-template-areas: 'bar__container_top bar__container_sideRight' 'bar__container_down bar__container_down';
+  grid-template-areas: 'sidebar__container_top sidebar__container_top sidebar__container_top' 'sidebar__container_centerLeft sidebar__container_center sidebar__container_centerRight' 'sidebar__container_down sidebar__container_down sidebar__container_down';
 }
 
-.bar__container_top {
-  grid-area: bar__container_top;
+.sidebar__container_top {
+  grid-area: sidebar__container_top;
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
-  min-height: 60px;
 }
-
-.bar__container_down {
-  grid-area: bar__container_down;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  margin-top: 1px;
+.sidebar__container_centerLeft {
+  grid-area: sidebar__container_centerLeft;
 }
-
-.bar__container_sideRight {
-  grid-area: bar__container_sideRight;
+.sidebar__container_center {
+  grid-area: sidebar__container_center;
+  font-size: 0.8em;
+  width: 100%;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.sidebar__container_centerRight {
+  grid-area: sidebar__container_centerRight;
+  flex-direction: row;
   justify-content: center;
+}
+.sidebar__container_down {
+  grid-area: sidebar__container_down;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.sidebar__date_green {
+  color: var(--success);
 }
 .bar__progress {
   width: 100%;
@@ -51,7 +62,7 @@
 }
 .bar__date {
   display: flex;
-  position: absolute;
+  // position: absolute;
   color: var(--info);
   flex-direction: row;
   justify-content: space-between;
@@ -59,10 +70,10 @@
   bottom: 1px;
 }
 .bar__date_left {
-  right: 0;
+  // right: 0;
 }
 .bar__date_right {
-  left: 0;
+  // left: 0;
 }
 .item {
   color: var(--info);

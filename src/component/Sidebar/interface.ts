@@ -18,7 +18,6 @@ export interface ISidebar {
   filter?: any;
   onClick: (id: any) => void;
   activeId?: number;
-  match: any;
 }
 export interface ISidebarHistory {
   onClick: (id: any) => void;

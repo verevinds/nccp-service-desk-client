@@ -6,11 +6,11 @@ import styles from './siderbar.module.scss';
 import { IState, TUser } from '../../interface';
 import { IncidentContext } from '../Incident/IncidentContext';
 
-export interface ISidebarDown {
+export interface ISidebarTop {
   item: any;
 }
 
-const SidebarDown: React.FC<ISidebarDown> = ({ item }) => {
+const SidebarTop: React.FC<ISidebarTop> = ({ item }) => {
   let { myIncident } = useContext(IncidentContext);
   const { isFinishTime } = useSelector((state: IState) => state.setting);
   const users = useSelector((state: IState) => state.users.list);
@@ -53,13 +53,12 @@ const SidebarDown: React.FC<ISidebarDown> = ({ item }) => {
     }
   }, [start, doneWork, now]);
 
-  const initiatorUserName = useMemo(() => {
-    let user = users.find((elem: TUser) => elem.number === item.userNumber);
+  const responsibleUserName = useMemo(() => {
+    let user = users.find((elem: TUser) => elem.number === item.numberResponsible);
 
     if (user) return `${user.name1} ${user.name2.charAt(0)}. ${user.name2.charAt(0)}.`;
     return undefined;
   }, [users]);
-
   if (!doneWork || !isFinishTime)
     return (
       <Fragment>
@@ -72,11 +71,21 @@ const SidebarDown: React.FC<ISidebarDown> = ({ item }) => {
             ) : null}
           </div>
         )}
-        <div></div>
+
+        <div className={`${styles.bar__date} ${styles.bar__date_right}`}>
+          {item.createdAt ? (
+            <Moment locale="ru" format="DD.MM.YY">
+              {item.createdAt}
+            </Moment>
+          ) : null}
+        </div>
+
         {!!isFinishTime || myIncident ? undefined : (
           <div className={`${styles.bar__date} ${styles.bar__date_left}`}>
             {' '}
-            {!!initiatorUserName ? `инициатор: ${initiatorUserName}` : undefined}
+            <span className={styles.sidebar__date_green}>
+              {!!responsibleUserName ? `ответственный: ${responsibleUserName}` : undefined}
+            </span>
           </div>
         )}
         {!isFinishTime ? undefined : (
@@ -92,4 +101,4 @@ const SidebarDown: React.FC<ISidebarDown> = ({ item }) => {
   else return <></>;
 };
 
-export default memo(SidebarDown);
+export default memo(SidebarTop);
