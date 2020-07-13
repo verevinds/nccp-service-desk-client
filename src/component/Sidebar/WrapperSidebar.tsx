@@ -75,6 +75,14 @@ const SidebarWrapper: React.FC<ISidebarWrapper> = ({ title, list, onClick, activ
             </Fragment>
           ) : undefined}
 
+          {!anotherList.length && !responsibleList.length ? (
+            <p className="text-muted text-center">
+              <h6>
+                <samp>cписок пустой</samp>
+              </h6>
+            </p>
+          ) : undefined}
+
           <SidebarHistory onClick={onClick} activeId={activeId} onClickHistory={onClickHistory} />
         </div>
       </Container>

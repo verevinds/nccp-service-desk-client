@@ -4,6 +4,8 @@ import { ButtonGroup, Button } from 'react-bootstrap';
 import { IncidentWindowContext } from '../IncidentWindow/IncidentWindowContext';
 import { IState } from '../../interface';
 import { AppContext, IApi } from '../../AppContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit, faUndo } from '@fortawesome/free-solid-svg-icons';
 export interface IIncidentWindowMyButton {}
 
 const IncidentWindowMyButton: React.FC<IIncidentWindowMyButton> = (props) => {
@@ -62,6 +64,7 @@ const IncidentWindowMyButton: React.FC<IIncidentWindowMyButton> = (props) => {
       {statusId !== 8388605 ? undefined : (
         <ButtonGroup aria-label="Basic example">
           <Button onClick={() => handleModify.setIsModify(true)} size="sm">
+            <FontAwesomeIcon icon={faEdit} />
             Доработать
           </Button>
         </ButtonGroup>
@@ -73,6 +76,7 @@ const IncidentWindowMyButton: React.FC<IIncidentWindowMyButton> = (props) => {
             Закрыть
           </Button>
           <Button onClick={() => handleOpen().inWork()} size="sm">
+            <FontAwesomeIcon icon={faUndo} className="mr-1" />
             Вернуть в работу
           </Button>
         </ButtonGroup>

@@ -8,6 +8,8 @@ import HandleDepartment from './HandleDepartment';
 import { IncidentWindowContext } from '../IncidentWindow/IncidentWindowContext';
 import { AppContext } from '../../AppContext';
 import HandleAllowToCreate from '../IncidentWindowDepartmentButton/IncidentWindowDepartmentButton';
+import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const IncidentWindowButton = ({ myIncident }) => {
   const { handleVise, handleModify, handleOpen } = useContext(IncidentWindowContext);
@@ -66,6 +68,7 @@ const IncidentWindowButton = ({ myIncident }) => {
       if (Number(statusId) > 0 && Number(statusId) < 8000000 && currentResponsible === number && !myIncident) {
         return (
           <Button variant="outline-primary" size="sm" onClick={handleOpen}>
+            <FontAwesomeIcon icon={faPencilAlt} className="mr-1" />
             Изменить
           </Button>
         );

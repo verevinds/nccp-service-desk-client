@@ -3,6 +3,8 @@ import { Button, ButtonGroup } from 'react-bootstrap';
 import { shallowEqual, useSelector } from 'react-redux';
 import { IState, TIncidentCurrent, TMatch, TUser } from '../../interface';
 import { AppContext, IApi } from '../../AppContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHandshake, faHandshakeSlash } from '@fortawesome/free-solid-svg-icons';
 
 const HandleMatches = () => {
   const {
@@ -119,9 +121,11 @@ const HandleMatches = () => {
           return (
             <ButtonGroup key={index}>
               <Button variant={item.okVariant} onClick={item.okOnClick} size="sm">
+                <FontAwesomeIcon icon={faHandshake} className="mr-1" />
                 {item.okText}
               </Button>
               <Button variant={item.cancelVariant} onClick={item.cancelOnClick} size="sm">
+                <FontAwesomeIcon icon={faHandshakeSlash} className="mr-1" />
                 {item.cancelText}
               </Button>
             </ButtonGroup>

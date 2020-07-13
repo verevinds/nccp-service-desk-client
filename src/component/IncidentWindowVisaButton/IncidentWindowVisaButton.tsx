@@ -11,6 +11,8 @@ import ModalWindow from '../ModalWindow/ModalWindow';
 import { queries } from '@testing-library/react';
 import { queryApi } from '../../redux/actionCreators/queryApiAction';
 import { IState, TUser, TIncident } from '../../interface';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHandshake, faHandshakeSlash, faHighlighter } from '@fortawesome/free-solid-svg-icons';
 export interface IVisaIncidentButton {}
 
 const VisaIncidentButton: React.FC<IVisaIncidentButton> = (props) => {
@@ -83,12 +85,15 @@ const VisaIncidentButton: React.FC<IVisaIncidentButton> = (props) => {
       <div className="flex flex_end">
         <ButtonGroup>
           <Button variant={'outline-success'} onClick={() => Api && onClick.call(Api).ok()} size="sm">
+            <FontAwesomeIcon icon={faHandshake} className="mr-1" />
             Согласовать
           </Button>
           <Button variant={'outline-secondary'} onClick={() => setShow(true)} size="sm">
+            <FontAwesomeIcon icon={faHighlighter} className="mr-1" />
             На доработку
           </Button>
           <Button variant={'outline-danger'} onClick={() => Api && onClick.call(Api).no()} size="sm">
+            <FontAwesomeIcon icon={faHandshakeSlash} className="mr-1" />
             Отказать
           </Button>
         </ButtonGroup>
