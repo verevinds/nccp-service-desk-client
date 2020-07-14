@@ -37,11 +37,11 @@ const SettingSubscription: React.FC<ISettingSubscription> = (props) => {
           <h3>Шаблоны</h3>
           <CardColumns>
             {
-              // <SettingSubscriptionCard
-              //   title={'Мой отдел'}
-              //   text={`Уведомление на почту о каждой новой заявке, поступившей в Ваш отдел.`}
-              //   code={100}
-              // />
+              <SettingSubscriptionCard
+                title={'Мой отдел'}
+                text={`Уведомление на почту о каждой новой заявке, поступившей в Ваш отдел, после всех согласований.`}
+                code={100}
+              />
               // <SettingSubscriptionCard
               //   title={'Моя ответственность'}
               //   text={`Уведомление на почту о каждом изменении по заявкам, в которых Вы назначены ответственным.`}
