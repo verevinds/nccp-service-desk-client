@@ -8,13 +8,15 @@ import { useCallback } from 'react';
 import { queryApi } from '../../redux/actionCreators/queryApiAction';
 import { useMemo } from 'react';
 import { subscriptionUpdate } from '../../redux/actionCreators/subscriptionAction';
+import styles from './styles.module.scss';
 export interface ISettingSubscriptionCard {
   title: string;
   text: string;
   code: number;
+  warning?: string;
 }
 
-const SettingSubscriptionCard: React.FC<ISettingSubscriptionCard> = ({ title, text, code }) => {
+const SettingSubscriptionCard: React.FC<ISettingSubscriptionCard> = ({ title, text, code, warning }) => {
   const [subscription, setSubscription] = useState<ISubscription | undefined>();
   const user: TUser = useSelector((state: IState) => state.auth.user);
   const subscriptions = useSelector((state: IState) => state.subscription.list);
@@ -93,24 +95,34 @@ const SettingSubscriptionCard: React.FC<ISettingSubscriptionCard> = ({ title, te
         <Card.Header as="h5">{title}</Card.Header>
         <Card.Body>
           <Card.Text>{text}</Card.Text>
+          <div className="flex flex_row flex_end">
+            <Button
+              variant={isLoading ? (isSubscription ? 'outline-danger' : 'primary') : 'info'}
+              size="sm"
+              onClick={() => {
+                handleSubscription();
+              }}
+              disabled={!isLoading}
+            >
+              {isLoading ? (
+                <FontAwesomeIcon icon={isSubscription ? faBellSlash : faBell} className="mr-1" />
+              ) : (
+                <Spinner as="span" animation="grow" size="sm" role="status" aria-hidden="true" />
+              )}
+              {isLoading ? (isSubscription ? 'Отписаться' : 'Подписаться') : 'Загрузка...'}
+            </Button>
+          </div>
         </Card.Body>
-        <div className="flex flex_row flex_end p-4">
-          <Button
-            variant={isLoading ? (isSubscription ? 'outline-danger' : 'primary') : 'info'}
-            size="sm"
-            onClick={() => {
-              handleSubscription();
-            }}
-            disabled={!isLoading}
-          >
-            {isLoading ? (
-              <FontAwesomeIcon icon={isSubscription ? faBellSlash : faBell} className="mr-1" />
-            ) : (
-              <Spinner as="span" animation="grow" size="sm" role="status" aria-hidden="true" />
-            )}
-            {isLoading ? (isSubscription ? 'Отписаться' : 'Подписаться') : 'Загрузка...'}
-          </Button>
-        </div>
+
+        <Card.Footer>
+          {!warning ? undefined : (
+            <Card.Text>
+              <pre className={styles.description}>
+                <small>{warning}</small>
+              </pre>
+            </Card.Text>
+          )}
+        </Card.Footer>
       </Card>
     </Fragment>
   );

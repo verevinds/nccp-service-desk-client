@@ -40,6 +40,9 @@ const SettingSubscription: React.FC<ISettingSubscription> = (props) => {
               <SettingSubscriptionCard
                 title={'Мой отдел'}
                 text={`Уведомление на почту о каждой новой заявке, поступившей в Ваш отдел, после всех согласований.`}
+                warning={
+                  'Если Вы не являетесь ответственным по этим заявкам, но они присутствуют в Вашем отделе, то Вы также будете получать уведомления.'
+                }
                 code={100}
               />
               // <SettingSubscriptionCard
@@ -51,7 +54,7 @@ const SettingSubscription: React.FC<ISettingSubscription> = (props) => {
 
             <SettingSubscriptionCard
               title={'Мои заявки'}
-              text={`Уведомление на почту о каждом изменении по Вашим заявкам.`}
+              text={`Уведомление на почту о каждом изменении по созданным Вами заявкам.`}
               code={300}
             />
           </CardColumns>
