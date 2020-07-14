@@ -109,6 +109,8 @@ const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId, filter }) => {
             // {match ? {to:{`${match.path}/${item.id}` }}: undefined}
             const to = !!match ? { to: `${match.path}/${item.id}` } : undefined;
 
+            const isActive = activeId === item.id ? true : false;
+
             return (
               <ListGroup.Item
                 key={item.id}
@@ -116,7 +118,7 @@ const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId, filter }) => {
                 {...to}
                 //@ts-ignore
                 onClick={onClick ? () => onClick(item.id) : null}
-                className={`${styles.item} ${activeId === item.id ? styles.active : null} bg font-light`}
+                className={`${styles.item} ${isActive ? styles.active : null} bg font-light`}
               >
                 <div className={styles.sidebar}>
                   <div className={styles.sidebar__container_top}>
@@ -135,12 +137,13 @@ const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId, filter }) => {
                       <span className={styles.item__text_span}>{!!item.name.trim() ? item.name : 'Без категории'}</span>
                     </div>
                   </div>
-
-                  <div className={styles.sidebar__container_centerRight}>
-                    <div className={`${styles.icon} ${styles.icon_right}`}>
-                      <FontAwesomeIcon icon={faAngleRight} />
+                  {!isActive ? undefined : (
+                    <div className={styles.sidebar__container_centerRight}>
+                      <div className={`${styles.icon} ${styles.icon_right}`}>
+                        <FontAwesomeIcon icon={faAngleRight} />
+                      </div>
                     </div>
-                  </div>
+                  )}
 
                   <div className={styles.sidebar__container_down}>
                     <SidebarDown item={item} />
