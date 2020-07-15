@@ -21,7 +21,7 @@ const HandleMatches = () => {
         return {
           responsible: () => {
             this.comments(`Ответственный согласован`);
-            this.incidents({ data: { startWork: new Date(), statusId: 1 } });
+            this.incidents({ data: { startWork: new Date(), statusId: 1, consent: true } });
             match();
           },
           transfer: () => {
@@ -42,7 +42,7 @@ const HandleMatches = () => {
         return {
           responsible: () => {
             this.comments(`Отказано в назначение ответственного`);
-            this.incidents({ data: { startWork: null, statusId: 0, currentResponsible: null } });
+            this.incidents({ data: { startWork: null, statusId: 0, currentResponsible: null, consent: false } });
             match();
           },
           transfer: () => {

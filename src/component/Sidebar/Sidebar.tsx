@@ -39,18 +39,19 @@ const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId, filter }) => {
             delay={{ show: 250, hide: 400 }}
             overlay={<Tooltip id="button-tooltip">Ответсвенный назначен. Ожидание согласования.</Tooltip>}
           >
-            <FontAwesomeIcon icon={faUserClock} color={'#007bff'} />
+            <FontAwesomeIcon icon={faUserClock} color={'#597ba5'} />
           </OverlayTrigger>,
         );
-      } else if (item.consent) {
+      }
+      if (item.consent) {
         tags.push(
           <OverlayTrigger
             key={item.id + 'd'}
             placement="bottom"
             delay={{ show: 250, hide: 400 }}
-            overlay={<Tooltip id="button-tooltip">Ответсвенный назначен. Согласован.</Tooltip>}
+            overlay={<Tooltip id="button-tooltip">Ответственный согласован</Tooltip>}
           >
-            <FontAwesomeIcon icon={faUserCheck} color={'#c3e6cb'} />
+            <FontAwesomeIcon icon={faUserCheck} color={'#8cce9b'} />
           </OverlayTrigger>,
         );
       }
@@ -79,7 +80,7 @@ const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId, filter }) => {
             if (item.statusId >= 0) {
               switch (Number(item.statusId)) {
                 case 0:
-                  color = '#007bff';
+                  color = '#597ba5';
                   tooltip = `Новая заявка. Нет ответственного.`;
                   break;
                 case 8388607:
