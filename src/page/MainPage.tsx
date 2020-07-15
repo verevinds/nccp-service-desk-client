@@ -1,27 +1,40 @@
 import React, { memo, useState, useEffect, useMemo, useLayoutEffect, Suspense } from 'react';
-import { useSelector, shallowEqual, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import IncidentWindowButton from '../component/IncidentWindowButton/IncidentWindowButton';
 import { incidentChoose } from '../redux/actionCreators/incidentAction';
-
 import { incidentRequestSuccessed } from '../redux/actionCreators/incidentAction';
-/**My components */
 import { IncidentContext } from '../component/Incident/IncidentContext';
 import SpinnerGrow from '../component/SpinnerGrow/SpinnerGrow';
+import { IState, TIncident } from '../interface';
 const Incident = React.lazy(() => import('../component/Incident/Incident'));
 
-const MainPage = (props) => {
-  const user = useSelector((state) => state.auth.user);
-  const list = useSelector((state) => state.incidents.list);
-  const [params, setParams] = useState();
+export interface IMainPage {
+  match: {
+    params: { id: number };
+    isExact: boolean;
+    path: string;
+    url: string;
+  };
+}
+
+const MainPage = (props: IMainPage) => {
+  // Получаем авторизированного сотрудника из хранилища
+  const user = useSelector((state: IState) => state.auth.user);
+  // Получаем инциденты для работы из хранилища
+  const list = useSelector((state: IState) => state.incidents.list);
+  // Локальная обработка состояния параметров для запроса
+  const [params, setParams] = useState<{ departmentId: number } | undefined>();
+  // Локальное обработка состояния заголовка для страницы
   const [title, setTitle] = useState(`Инциденты`);
+  // Подключаем хук для обработки экшенов
   const dispatch = useDispatch();
 
   useLayoutEffect(() => {
     let id = props.match.params.id;
-    let incident = list.find((item) => item.id === Number(id));
-    console.log(props.match);
+    let incident = list.find((item: TIncident) => item.id === Number(id));
     dispatch(incidentChoose(incident));
-  }, [list]);
+  }, [list, dispatch, props.match.params.id]);
+
   useEffect(() => {
     if (user) {
       let isDepartment = !!user.department;

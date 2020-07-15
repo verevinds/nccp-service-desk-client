@@ -7,12 +7,11 @@ import HandleResponsible from './HandleResponsible';
 import HandleDepartment from './HandleDepartment';
 import { IncidentWindowContext } from '../IncidentWindow/IncidentWindowContext';
 import { AppContext } from '../../AppContext';
-import HandleAllowToCreate from '../IncidentWindowDepartmentButton/IncidentWindowDepartmentButton';
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const IncidentWindowButton = ({ myIncident }) => {
-  const { handleVise, handleModify, handleOpen } = useContext(IncidentWindowContext);
+  const { handleVise, handleOpen } = useContext(IncidentWindowContext);
   const {
     name1,
     name2,
@@ -93,7 +92,7 @@ const IncidentWindowButton = ({ myIncident }) => {
         </Button>
       );
     }
-  }, [statusId, currentResponsible, handleOpen, handleModify, myIncident, number, onClick, Api, userNumber]);
+  }, [statusId, currentResponsible, handleOpen, myIncident, number, onClick, Api, userNumber]);
 
   const buttonMatch = useMemo(() => {
     let isMatches = !!~matches.findIndex((item) => item.isMatch === false);

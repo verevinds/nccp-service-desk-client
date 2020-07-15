@@ -16,7 +16,6 @@ const IncidentStatus: React.FC<IIncidentStatus> = () => {
 
   useEffect(() => {
     let color;
-    let tooltip;
     switch (status) {
       case 0:
         //Новая

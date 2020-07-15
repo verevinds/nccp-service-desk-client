@@ -19,7 +19,7 @@ import HandleSocket from './component/HandleSocket/HandleSocket';
 
 //** Action Creators */
 import { categoryRequestSuccessed } from './redux/actionCreators/catalogAction';
-import { authRequestSuccessed, authInitialApp } from './redux/actionCreators/authAction';
+import { authRequestSuccessed } from './redux/actionCreators/authAction';
 import { departmentRequestSuccessed } from './redux/actionCreators/departmentAction';
 import { statusRequestSeccessed } from './redux/actionCreators/statusAction';
 import { accessRequestSeccessed } from './redux/actionCreators/accessAction';
@@ -54,9 +54,9 @@ const App = () => {
   //** Get State from Store */
   const {
     progress,
-    catalog: { isUpdate: isUpdateCatalog, isLoading: isLoadingCatalog },
-    status: { isUpdate: isUpdateStatus, isLoading: isLoadingStatus },
-    positions: { isUpdate: isUpdatePositions, isLoading: isLoadingPositions },
+    catalog: { isUpdate: isUpdateCatalog },
+    status: { isUpdate: isUpdateStatus },
+    positions: { isUpdate: isUpdatePositions },
     incidents: {
       isUpdate: isUpdateIncident,
       current: { incident },
@@ -160,6 +160,7 @@ const App = () => {
     dispatchLocalStorage('status', statusRequestSeccessed);
     dispatchLocalStorage('users', usersRequestSeccessed);
     dispatchLocalStorage('filter', filterSet);
+    // eslint-disable-next-line
   }, [dispatch]);
   /** Авторизация пользователя */
   useLayoutEffect(() => {
@@ -292,12 +293,12 @@ const App = () => {
   }, [isUpdateStatus, dispatch]);
   /** Загрузка и обновление информации по доступу */
   useLayoutEffect(() => {
-    if (hasUser) dispatch(queryApi({ route: 'access', actionSuccessed: accessRequestSeccessed, id: user.number }));
-  }, [isUpdateStatus, dispatch, hasUser]);
+    if (hasUser) dispatch(queryApi({ route: 'access', actionSuccessed: accessRequestSeccessed, id: user?.number }));
+  }, [isUpdateStatus, dispatch, hasUser, user]);
   /** Загрузка и обновление информации по сотрудникам */
   useLayoutEffect(() => {
     dispatch(queryApi({ route: 'users', actionSuccessed: usersRequestSeccessed }));
-  }, [isUpdateUsers]);
+  }, [isUpdateUsers, dispatch]);
 
   //** Если обновляется заявка, то обновляем выбранную заявку */
   useEffect(() => {
@@ -312,7 +313,8 @@ const App = () => {
 
       dispatch(incidentChoose(foundAllowToCreate || foundHistory || foundList || foundMyList || foundVisa));
     }
-  }, [allowToCreate, history, list, myList, visa]);
+  }, [allowToCreate, history, list, myList, visa, dispatch, incident]);
+
   if (hasUser)
     return (
       <AppContext.Provider value={{ Api }}>

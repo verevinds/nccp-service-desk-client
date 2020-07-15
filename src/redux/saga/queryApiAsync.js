@@ -2,7 +2,6 @@ import { put, call } from 'redux-saga/effects';
 import * as axios from 'axios';
 import { errorCreate } from '../actionCreators/errorAction';
 import { socket } from '../../index';
-import { incidentChoose } from '../actionCreators/incidentAction';
 import { progressStep } from '../actionCreators/progressAction';
 
 export function* queryApiAsync({ route, actionSuccessed, actionUpdate, method, data = {}, id, params, userNumber }) {

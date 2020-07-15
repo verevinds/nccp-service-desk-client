@@ -7,8 +7,6 @@ import { Row, Col } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import SettingAccess from '../component/SettingAccess/SettingAccess';
 import SettingSubscription from '../component/SettingSubscription/SettingSubscription';
-import SettingRules from '../component/SettingRules/SettingRules';
-import SettingHierarchy from '../component/SettingHierarchy/SettingHierarchy';
 const SettingPositions = React.lazy(() => import('../component/SettingPositions/SettingPositions'));
 
 const SettingPage = (props) => {

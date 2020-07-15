@@ -63,7 +63,7 @@ const SettingCatalogCategory: React.FC<ISettingCatalogCategory> = ({
     }
 
     setCategoryJsx(newCategoryJsx);
-  }, [departmentIdCurrent, categoryList, categoryIdCurrent, handleEvent, setCategoryIdCurrent]);
+  }, [departmentIdCurrent, categoryList, categoryIdCurrent, handleEvent, setCategoryIdCurrent, handleRules]);
   return <> {categoryJsx}</>;
 };
 

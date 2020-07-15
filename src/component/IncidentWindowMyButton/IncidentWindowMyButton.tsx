@@ -1,4 +1,4 @@
-import React, { memo, Fragment, useContext, useCallback, useMemo } from 'react';
+import React, { memo, useContext, useCallback, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { ButtonGroup, Button } from 'react-bootstrap';
 import { IncidentWindowContext } from '../IncidentWindow/IncidentWindowContext';
@@ -11,19 +11,13 @@ export interface IIncidentWindowMyButton {}
 const IncidentWindowMyButton: React.FC<IIncidentWindowMyButton> = (props) => {
   const { handleModify, handleOpen } = useContext(IncidentWindowContext);
   const { Api } = useContext(AppContext);
-  const {
-    name1,
-    name2,
-    name3,
-    number,
-    position: { level },
-  } = useSelector((state: IState) => state.auth.user);
+  const { name1, name2, name3, number } = useSelector((state: IState) => state.auth.user);
   const incident = useSelector((state: IState) => state.incidents.current.incident);
-  const { category, property, option, currentResponsible, statusId, matches, userNumber } = useSelector(
+  const { category, property, option, statusId, userNumber } = useSelector(
     (state: IState) => state.incidents.current.incident,
   );
 
-  const fullName = useMemo(() => `${name1} ${name2} ${name3}`, []);
+  const fullName = useMemo(() => `${name1} ${name2} ${name3}`, [name1, name2, name3]);
 
   const onClick = useCallback(
     function (this: IApi) {

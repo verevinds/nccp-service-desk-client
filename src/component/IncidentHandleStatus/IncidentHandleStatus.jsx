@@ -14,7 +14,6 @@ const IncidentHandleStatus = ({ show, onHide, inWork, isModify }) => {
   let status = useSelector((state) => state.status.list, shallowEqual);
   const { incident } = useSelector((state) => state.incidents.current, shallowEqual);
   const { user } = useSelector((state) => state.auth, shallowEqual);
-  const [fullName] = useState(`${user.name1} ${user.name2} ${user.name3}`);
   const [validated, setValidated] = useState(false);
   const [newStatus, setNewStatus] = useState({
     statusId: inWork || isModify ? 1 : incident.statusId,

@@ -1,14 +1,11 @@
 import React, { memo, Fragment, useContext, useCallback } from 'react';
-import { Button, Dropdown, ButtonGroup, DropdownButton, Form } from 'react-bootstrap';
-import styles from './styles.module.css';
+import { Button, ButtonGroup, Form } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { IncidentWindowContext } from '../IncidentWindow/IncidentWindowContext';
 import { AppContext, IApi } from '../../AppContext';
-import { incidentChoose, incidentCreate } from '../../redux/actionCreators/incidentAction';
+import { incidentChoose } from '../../redux/actionCreators/incidentAction';
 import { useState } from 'react';
 import ModalWindow from '../ModalWindow/ModalWindow';
-import { queries } from '@testing-library/react';
 import { queryApi } from '../../redux/actionCreators/queryApiAction';
 import { IState, TUser, TIncident } from '../../interface';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -58,7 +55,7 @@ const VisaIncidentButton: React.FC<IVisaIncidentButton> = (props) => {
         },
       };
     },
-    [comment],
+    [comment, dispatch, incident.id, user.positionId],
   );
 
   return (

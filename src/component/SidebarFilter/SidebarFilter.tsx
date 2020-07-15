@@ -1,6 +1,5 @@
-import React, { memo, Fragment, useState, useMemo, useCallback, useEffect, useContext } from 'react';
+import React, { memo, useState, useCallback, useEffect, useContext } from 'react';
 import ButtonFontAwesome from '../ButtonFontAwesome/ButtonFontAwesome';
-import Popup from '../Popup/Popup';
 //? Font Awesome иконки
 import {
   faSortNumericDown,
@@ -9,7 +8,6 @@ import {
   faSortNumericUp,
   faSortAlphaUp,
   faSortAmountUp,
-  faEllipsisV,
 } from '@fortawesome/free-solid-svg-icons';
 import { IncidentContext } from '../Incident/IncidentContext';
 
@@ -60,44 +58,6 @@ const SidebarFilter: React.FC<ISidebarFilter> = ({ setFilter, color }) => {
   );
 
   useEffect(() => {}, [setFilter, sort]);
-
-  const content = useMemo(() => {
-    const buttons: any[] = [];
-    let numeric = 'numeric';
-    buttons.push(
-      <ButtonFontAwesome
-        faIcon={sort.name === numeric && !sort.vectorUp ? faSortNumericDown : faSortNumericUp}
-        onClick={onClick.bind({ name: numeric })}
-        sizeIcon="lg"
-        variant={sort.name === 'numeric' ? 'outline-primary' : 'primary'}
-        tooltip={'По номеру'}
-      />,
-    );
-
-    let alpha = 'alpha';
-    buttons.push(
-      <ButtonFontAwesome
-        faIcon={sort.name === alpha && !sort.vectorUp ? faSortAlphaDown : faSortAlphaUp}
-        onClick={onClick.bind({ name: alpha })}
-        sizeIcon="lg"
-        variant={sort.name === 'alpha' ? 'outline-primary' : 'primary'}
-        tooltip={'По алфавиту'}
-      />,
-    );
-
-    let finish = 'finish';
-    buttons.push(
-      <ButtonFontAwesome
-        faIcon={sort.name === finish && !sort.vectorUp ? faSortAmountDown : faSortAmountUp}
-        onClick={onClick.bind({ name: finish })}
-        sizeIcon="lg"
-        size={'sm'}
-        variant={sort.name === 'finish' ? 'outline-primary' : 'primary'}
-        tooltip={'Срочность'}
-      />,
-    );
-    return buttons;
-  }, [sort, onClick]);
 
   let numeric = 'numeric';
   let alpha = 'alpha';

@@ -200,6 +200,7 @@ const SettingCatalog = () => {
     Axios.get(`${window.location.protocol}//${PATH}:${PORT}/api/rules/params`, { data: paramsRules }).then((res) => {
       setRules(res.data);
     });
+    // eslint-disable-next-line
   }, [isUpdateRules]);
 
   return (

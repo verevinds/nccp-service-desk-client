@@ -1,7 +1,5 @@
 import React, { memo, useMemo, useContext, Fragment } from 'react';
-import { ProgressBar } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
-import Moment from 'react-moment';
 import styles from './siderbar.module.scss';
 import { IState, TUser } from '../../interface';
 import { IncidentContext } from '../Incident/IncidentContext';
@@ -19,14 +17,14 @@ const SidebarTop: React.FC<ISidebarTop> = ({ item }) => {
 
     if (user) return `${user.name1} ${user.name2.charAt(0)}. ${user.name2.charAt(0)}.`;
     return undefined;
-  }, [users]);
+  }, [users, item.numberResponsible]);
 
   const initiatorUserName = useMemo(() => {
     let user = users.find((elem: TUser) => elem.number === item.userNumber);
 
     if (user) return `${user.name1} ${user.name2.charAt(0)}. ${user.name2.charAt(0)}.`;
     return undefined;
-  }, [users]);
+  }, [users, item.userNumber]);
 
   return (
     <Fragment>

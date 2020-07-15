@@ -1,15 +1,12 @@
-import React, { memo, Fragment, useEffect, useContext, useLayoutEffect, useState } from 'react';
+import React, { memo, Fragment, useEffect, useLayoutEffect, useState } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
-import { useDispatch, useSelector, shallowEqual } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { IState, TUser, TIncident } from '../interface';
-import { AppContext } from '../AppContext';
-import { incidentAllowToCreateRequestSuccessed, incidentChoose } from '../redux/actionCreators/incidentAction';
-import { paramsIncident } from '../js/paramsIncident';
+import { IState, TIncident } from '../interface';
+import { incidentChoose } from '../redux/actionCreators/incidentAction';
 import WrapperSidebar from '../component/Sidebar/WrapperSidebar';
 import { TList } from '../component/Sidebar/interface';
 import IncidentWindow from '../component/IncidentWindow/IncidentWindow';
-import IncidentWindowButton from '../component/IncidentWindowButton/IncidentWindowButton';
 import { IncidentContext } from '../component/Incident/IncidentContext';
 import IncidentWindowDepartmentButton from '../component/IncidentWindowDepartmentButton/IncidentWindowDepartmentButton';
 export interface IMyDepartmentPage {}
@@ -17,23 +14,19 @@ export interface IMyDepartmentPage {}
 const MyDepartmentPage: React.FC<any> = (props) => {
   const [chooseIncidentId, setChooseIncidentId] = useState<number | undefined>();
   const [sidebarList, setSidebarList] = useState<(TList | never)[]>([]);
-  const user: TUser = useSelector((state: IState) => state.auth.user);
   const incidents: TIncident[] = useSelector((state: IState) => state.incidents.allowToCreate);
-  const isUpdate = useSelector((state: IState) => state.incidents.isUpdate);
 
-  const { Api } = useContext(AppContext);
   const dispatch = useDispatch();
 
   useLayoutEffect(() => {
     dispatch(incidentChoose(undefined));
-  }, []);
+  }, [dispatch]);
 
   useLayoutEffect(() => {
     let id = props.match.params.id;
     let incident = incidents.find((item) => item.id === Number(id));
-    console.log(props.match);
     dispatch(incidentChoose(incident));
-  }, [incidents]);
+  }, [incidents, dispatch, props.match]);
 
   useEffect(() => {
     if (incidents && Array.isArray(incidents)) {

@@ -1,9 +1,8 @@
 import React, { memo, Fragment, useContext, useCallback } from 'react';
-import { Button, Dropdown, ButtonGroup, DropdownButton } from 'react-bootstrap';
+import { Button, ButtonGroup } from 'react-bootstrap';
 import styles from './styles.module.css';
-import { shallowEqual, useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
-import { IncidentWindowContext } from '../IncidentWindow/IncidentWindowContext';
 import { AppContext, IApi } from '../../AppContext';
 import { incidentChoose } from '../../redux/actionCreators/incidentAction';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -13,28 +12,32 @@ export interface IHandleAllowToCreate {}
 const HandleAllowToCreate: React.FC<IHandleAllowToCreate> = (props) => {
   const { Api } = useContext(AppContext);
   const dispatch = useDispatch();
-  const onClick = useCallback(function (this: IApi) {
-    return {
-      ok: () => {
-        this.comments(`Создание заявки согласовано`);
-        this.incidents({
-          data: {
-            allowToCreate: true,
-            allowToCreateWork: new Date(),
-            receiveAt: new Date(),
-            startWork: null,
-            statusId: 0,
-          },
-        });
-        dispatch(incidentChoose(undefined));
-      },
-      no: () => {
-        this.comments(`Отказано`);
-        this.incidents({ data: { statusId: 8388604 } });
-        dispatch(incidentChoose(undefined));
-      },
-    };
-  }, []);
+  const onClick = useCallback(
+    function (this: IApi) {
+      return {
+        ok: () => {
+          this.comments(`Создание заявки согласовано`);
+          this.incidents({
+            data: {
+              allowToCreate: true,
+              allowToCreateWork: new Date(),
+              receiveAt: new Date(),
+              startWork: null,
+              statusId: 0,
+            },
+          });
+          dispatch(incidentChoose(undefined));
+        },
+        no: () => {
+          this.comments(`Отказано`);
+          this.incidents({ data: { statusId: 8388604 } });
+          dispatch(incidentChoose(undefined));
+        },
+      };
+    },
+    [dispatch],
+  );
+
   return (
     <Fragment>
       <hr />

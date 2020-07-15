@@ -1,5 +1,4 @@
 import { AUTH_REQUEST_SENDD, AUTH_REQUEST_SUCCESSED } from '../constants';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 const initialState = {
   isRequest: false,

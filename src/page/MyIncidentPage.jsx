@@ -1,7 +1,6 @@
-import React, { memo, useState, useEffect, useLayoutEffect, useCallback } from 'react';
-import { useSelector, shallowEqual, useDispatch } from 'react-redux';
+import React, { memo, useState, useEffect, useLayoutEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { myIncidentRequestSuccessed } from '../redux/actionCreators/incidentAction';
-import IncidentWindowButton from '../component/IncidentWindowButton/IncidentWindowButton';
 import { incidentChoose } from '../redux/actionCreators/incidentAction';
 
 /**My components */
@@ -18,14 +17,15 @@ const MyIncidentPage = (props) => {
 
   useLayoutEffect(() => {
     dispatch(incidentChoose(undefined));
-  }, []);
+  }, [dispatch]);
 
   useLayoutEffect(() => {
     let id = props.match.params.id;
     let incident = myList.find((item) => item.id === Number(id));
     console.log(props.match);
     dispatch(incidentChoose(incident));
-  }, [myList]);
+  }, [myList, dispatch, props.match]);
+
   useEffect(() => {
     if (user) {
       setParams({

@@ -1,4 +1,4 @@
-import React, { memo, useState, useEffect, useContext, useMemo } from 'react';
+import React, { memo, useState, useEffect, useContext } from 'react';
 import { ListGroup, OverlayTrigger, Tooltip, Button } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import styles from './siderbar.module.scss';
@@ -9,7 +9,6 @@ import { ISidebar } from './interface';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleRight, faTag, faUserClock, faUserCheck } from '@fortawesome/free-solid-svg-icons';
 import SidebarDown from './SidebarDown';
-import { IState } from '../../interface';
 import { IncidentContext } from '../Incident/IncidentContext';
 import SidebarTop from './SidebarTop';
 
@@ -156,7 +155,7 @@ const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId, filter }) => {
 
       jsxItem && setJsxListItem(jsxItem);
     }
-  }, [list, activeId, onClick, filter, limit]);
+  }, [list, activeId, onClick, filter, limit, match]);
 
   return (
     <ListGroup variant="flush">

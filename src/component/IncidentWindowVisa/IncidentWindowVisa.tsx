@@ -1,5 +1,5 @@
 import React, { memo, Fragment } from 'react';
-import { shallowEqual, useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { IState, TIncident, TRulesList } from '../../interface';
 export interface IIncidentWindowVisa {}
 

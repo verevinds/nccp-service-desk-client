@@ -13,9 +13,7 @@ import PopoverCardUser from '../PopoverCardUser/PopoverCardUser';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAddressCard, faAt, faPhone, faDesktop } from '@fortawesome/free-solid-svg-icons';
 import IncidentWindowBodyCustom from '../IncidentWindowBodyCustom/IncidentWindowBodyCustom';
-import IncidentHandleVise from '../IncidentHandleVise/IncidentHandleVise';
 import IncidentWindowVisa from '../IncidentWindowVisa/IncidentWindowVisa';
-import { IncidentWindowContext } from '../IncidentWindow/IncidentWindowContext';
 
 const IncidentWindowBody = ({ handleOpen }) => {
   const { myIncident, Buttons } = useContext(IncidentContext);

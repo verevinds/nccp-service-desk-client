@@ -1,5 +1,5 @@
 import './images/logo.webp';
-import React, { Suspense } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -9,7 +9,6 @@ import './index.scss';
 import * as serviceWorker from './serviceWorker';
 import store from './redux/store';
 import App from './App.tsx';
-import SpinnerGrow from './component/SpinnerGrow/SpinnerGrow';
 const PATH = process.env.REACT_APP_URL || 'srv-sdesk.c31.nccp.ru';
 export const socket = openSocket(`${window.location.protocol}//${PATH}:8000`);
 

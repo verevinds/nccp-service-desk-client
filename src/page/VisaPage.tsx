@@ -1,29 +1,23 @@
-import React, { memo, Fragment, useContext, useLayoutEffect, useEffect, useState } from 'react';
-import { AppContext } from '../AppContext';
-import { incidentVisaRequestSuccessed, incidentChoose } from '../redux/actionCreators/incidentAction';
-import { useDispatch, useSelector, shallowEqual } from 'react-redux';
-import { TIncident, IState, TUser } from '../interface';
+import React, { memo, Fragment, useLayoutEffect, useEffect, useState } from 'react';
+import { incidentChoose } from '../redux/actionCreators/incidentAction';
+import { useDispatch, useSelector } from 'react-redux';
+import { TIncident, IState } from '../interface';
 import { TList } from '../component/Sidebar/interface';
 import { Row, Col, Container } from 'react-bootstrap';
 import WrapperSidebar from '../component/Sidebar/WrapperSidebar';
 import IncidentWindow from '../component/IncidentWindow/IncidentWindow';
 import { IncidentContext } from '../component/Incident/IncidentContext';
 import IncidentWindowVisaButton from '../component/IncidentWindowVisaButton/IncidentWindowVisaButton';
-import { IncidentWindowContext } from '../component/IncidentWindow/IncidentWindowContext';
-export interface IVisaPage {}
 
-const VisaPage: React.FC<IVisaPage> = (props) => {
+const VisaPage = () => {
   const [chooseIncidentId, setChooseIncidentId] = useState<number | undefined>();
   const [sidebarList, setSidebarList] = useState<(TList | never)[]>([]);
   const dispatch = useDispatch();
-  const { Api } = useContext(AppContext);
   const incidents: TIncident[] = useSelector((state: IState) => state.incidents.visa);
-  const isUpdate: TIncident[] = useSelector((state: IState) => state.incidents.isUpdate);
-  const user: TUser = useSelector((state: IState) => state.auth.user);
 
   useLayoutEffect(() => {
     dispatch(incidentChoose(undefined));
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (incidents && Array.isArray(incidents)) {

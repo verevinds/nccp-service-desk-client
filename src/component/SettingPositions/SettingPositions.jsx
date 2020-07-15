@@ -1,5 +1,5 @@
 import React, { memo, useLayoutEffect, useState, useCallback } from 'react';
-import { useDispatch, useSelector, shallowEqual } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { queryApi } from '../../redux/actionCreators/queryApiAction';
 import { positionsRequestSeccessed, positionsUpdate } from '../../redux/actionCreators/positionAction';
 import List from '../List/List';
