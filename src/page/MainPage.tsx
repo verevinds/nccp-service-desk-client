@@ -1,60 +1,48 @@
-import React, { memo, useState, useEffect, useMemo, useLayoutEffect, Suspense } from 'react';
+import React, { memo, useMemo, useLayoutEffect, Suspense } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import IncidentWindowButton from '../component/IncidentWindowButton/IncidentWindowButton';
+/** Typescript interface & type */
+import { IState, TIncident, TPropsParams, TUser, TIncidents } from '../interface';
+/** Action creators */
 import { incidentChoose } from '../redux/actionCreators/incidentAction';
 import { incidentRequestSuccessed } from '../redux/actionCreators/incidentAction';
-import { IncidentContext } from '../component/Incident/IncidentContext';
+/** Components */
 import SpinnerGrow from '../component/SpinnerGrow/SpinnerGrow';
-import { IState, TIncident } from '../interface';
+import { IncidentContext } from '../component/Incident/IncidentContext';
+import IncidentWindowButton from '../component/IncidentWindowButton/IncidentWindowButton';
 const Incident = React.lazy(() => import('../component/Incident/Incident'));
 
-export interface IMainPage {
-  match: {
-    params: { id: number };
-    isExact: boolean;
-    path: string;
-    url: string;
-  };
-}
-
-const MainPage = (props: IMainPage) => {
+const MainPage = (props: TPropsParams) => {
   // Получаем авторизированного сотрудника из хранилища
-  const user = useSelector((state: IState) => state.auth.user);
+  const user: TUser = useSelector((state: IState) => state.auth.user);
   // Получаем инциденты для работы из хранилища
-  const list = useSelector((state: IState) => state.incidents.list);
-  // Локальная обработка состояния параметров для запроса
-  const [params, setParams] = useState<{ departmentId: number } | undefined>();
-  // Локальное обработка состояния заголовка для страницы
-  const [title, setTitle] = useState(`Инциденты`);
-  // Подключаем хук для обработки экшенов
+  const { list: incidents }: TIncidents = useSelector((state: IState) => state.incidents);
+  // Подключаем хук для обработки action
   const dispatch = useDispatch();
 
+  const params = useMemo(() => ({ departmentId: user?.departmentId }), [user]);
+  const title = useMemo(() => `${user?.department?.name ? user?.department?.name : 'Заявки'}`, [user]);
+  /** Создать объект для проброса в компоненты, на каждое изменение параметров запроса и заголовка */
+  const incident = useMemo(
+    () => ({
+      params, //параметры запроса
+      title, // заголовок страницы
+      requestSuccessed: incidentRequestSuccessed, // action: запрос выполнен, сохранить заявку
+      Buttons: IncidentWindowButton, // Кнопка для окна заявки
+      match: { path: '/incident' }, // имитация пути адресной строки
+      numberResponsible: user?.number,
+      incidents,
+    }),
+    [params, title, user, incidents],
+  );
+
+  /** Если передается id  в адресной строке, выбрать заявку, иначе обнулить выбранное */
   useLayoutEffect(() => {
-    let id = props.match.params.id;
-    let incident = list.find((item: TIncident) => item.id === Number(id));
+    const id = props.match.params.id;
+    const incidentById = (item: TIncident) => item.id === Number(id);
+    const incident = incidents.find(incidentById);
+
     dispatch(incidentChoose(incident));
-  }, [list, dispatch, props.match.params.id]);
-
-  useEffect(() => {
-    if (user) {
-      let isDepartment = !!user.department;
-
-      setParams({ departmentId: user.departmentId });
-
-      if (isDepartment) setTitle(`${user.department?.name}`);
-    }
-  }, [user]);
-
-  // list.sort((a, b) => (Number(a.updatedAt) > Number(b.updatedAt) ? 1 : -1))
-  const incident = useMemo(() => {
-    return {
-      params,
-      title,
-      requestSuccessed: incidentRequestSuccessed,
-      Buttons: IncidentWindowButton,
-      match: { path: '/incident' },
-    };
-  }, [params, title]);
+  }, [incidents, dispatch, props.match.params.id]);
 
   return (
     <IncidentContext.Provider value={incident}>

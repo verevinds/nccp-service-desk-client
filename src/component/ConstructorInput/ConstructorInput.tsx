@@ -1,6 +1,6 @@
 import React, { memo, useState, useMemo } from 'react';
 import { Form } from 'react-bootstrap';
-import { IState, TDepartment, TPropertyParam, IUserInUsers, TUser } from '../../interface';
+import { IState, TDepartment, TPropertyParam, TUser } from '../../interface';
 import { useSelector } from 'react-redux';
 import styles from './styles.module.scss';
 
@@ -20,12 +20,12 @@ const ConstructorInput: React.FC<IConstructorInput> = ({ input, id, onChange, pa
   const [state, setState] = useState<string | undefined>(input.value);
   const [isSwitchOn, setIsSwitchOn] = useState<boolean | undefined>(!!input.value);
   const department: TDepartment[] = useSelector((state: IState) => state.catalog.department);
-  const users: IUserInUsers[] = useSelector((state: IState) => state.users.list);
+  const users: TUser[] = useSelector((state: IState) => state.users.list);
   const user: TUser = useSelector((state: IState) => state.auth.user);
 
   const usersHandled = useMemo(() => {
     if (users) {
-      return users.filter((item: IUserInUsers) => item.departmentId === user.departmentId);
+      return users.filter((item: TUser) => item.departmentId === user.departmentId);
     }
     return users;
   }, [users, user.departmentId]);
@@ -126,7 +126,7 @@ const ConstructorInput: React.FC<IConstructorInput> = ({ input, id, onChange, pa
                   </option>
                 ))}
             {usersHandled &&
-              usersHandled.map((item: IUserInUsers, index: number) => (
+              usersHandled.map((item: TUser, index: number) => (
                 <option value={`${item.name1} ${item.name2} ${item.name3}`} key={index}>
                   {`${item.name1} ${item.name2} ${item.name3}`}
                 </option>

@@ -1,5 +1,4 @@
 import React, { memo, useState, useEffect, Suspense, useMemo } from 'react';
-import Sidebar from '../component/Sidebar/Sidebar';
 import SettingCatalog from '../component/SettingCatalog/SettingCatalog';
 import SettingStatus from '../component/SettingStatus/SettingStatus';
 /**Bootstrap components */
@@ -7,6 +6,7 @@ import { Row, Col } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import SettingAccess from '../component/SettingAccess/SettingAccess';
 import SettingSubscription from '../component/SettingSubscription/SettingSubscription';
+import List from '../component/List/List';
 const SettingPositions = React.lazy(() => import('../component/SettingPositions/SettingPositions'));
 
 const SettingPage = (props) => {
@@ -64,7 +64,7 @@ const SettingPage = (props) => {
     <Row className={'m-1'}>
       <Col xs={3}>
         <h1>Настройки</h1>
-        <Sidebar list={list} activeId={activeId} onClick={setActiveId} />
+        <List list={list} xs={12} onClick={setActiveId} />
       </Col>
 
       <Col xs={9}>{jsxContent}</Col>

@@ -2,7 +2,7 @@ import React, { memo, useContext, useState, useMemo } from 'react';
 import ModalWindow from '../ModalWindow/ModalWindow';
 import { IncidentWindowContext } from '../IncidentWindow/IncidentWindowContext';
 import { useSelector } from 'react-redux';
-import { TDepartment, IState, IUserInUsers, TUser, TIncident } from '../../interface';
+import { TDepartment, IState, TUser, TIncident } from '../../interface';
 import { Form } from 'react-bootstrap';
 import { useCallback } from 'react';
 import { AppContext, IApi } from '../../AppContext';
@@ -14,7 +14,7 @@ const IncidentHandleVise = () => {
   const [chooseUser, setChooseUser] = useState('');
   const incident: TIncident = useSelector((state: IState) => state.incidents.current.incident);
   const department: TDepartment[] = useSelector((state: IState) => state.catalog.department);
-  const users: IUserInUsers[] = useSelector((state: IState) => state.users.list);
+  const users: TUser[] = useSelector((state: IState) => state.users.list);
   const user: TUser = useSelector((state: IState) => state.auth.user);
   const { Api } = useContext(AppContext);
 

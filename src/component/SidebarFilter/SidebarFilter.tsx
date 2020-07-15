@@ -16,7 +16,7 @@ export interface ISidebarFilter {
   color?: string;
 }
 const SidebarFilter: React.FC<ISidebarFilter> = ({ setFilter, color }) => {
-  let { myIncident } = useContext(IncidentContext);
+  let { isMyIncidentsPage } = useContext(IncidentContext);
   const [sort, setSort] = useState({
     name: 'numeric',
     vectorUp: false,
@@ -37,7 +37,7 @@ const SidebarFilter: React.FC<ISidebarFilter> = ({ setFilter, color }) => {
       }
 
       let sing = vectorUp ? 1 : -1;
-      let filter: { name?: any; sing?: any } = {};
+      let filter: { name?: string; sing?: any } = {};
 
       switch (name) {
         case 'numeric':
@@ -71,7 +71,7 @@ const SidebarFilter: React.FC<ISidebarFilter> = ({ setFilter, color }) => {
             faIcon={sort.name === numeric && !sort.vectorUp ? faSortNumericDown : faSortNumericUp}
             onClick={onClick.bind({ name: numeric })}
             sizeIcon="lg"
-            variant={sort.name === 'numeric' ? 'outline-primary' : 'primary'}
+            variant={sort.name === 'numeric' ? 'secondary' : 'outline-secondary'}
             tooltip={'По номеру'}
           />
         </div>
@@ -80,18 +80,18 @@ const SidebarFilter: React.FC<ISidebarFilter> = ({ setFilter, color }) => {
             faIcon={sort.name === alpha && !sort.vectorUp ? faSortAlphaDown : faSortAlphaUp}
             onClick={onClick.bind({ name: alpha })}
             sizeIcon="lg"
-            variant={sort.name === alpha ? 'outline-primary' : 'primary'}
+            variant={sort.name === alpha ? 'secondary' : 'outline-secondary'}
             tooltip={'По алфавиту'}
           />
         </div>
-        {myIncident ? undefined : (
+        {isMyIncidentsPage ? undefined : (
           <div>
             <ButtonFontAwesome
               faIcon={sort.name === finish && !sort.vectorUp ? faSortAmountDown : faSortAmountUp}
               onClick={onClick.bind({ name: finish })}
               sizeIcon="lg"
               size={'sm'}
-              variant={sort.name === finish ? 'outline-primary' : 'primary'}
+              variant={sort.name === finish ? 'secondary' : 'outline-secondary'}
               tooltip={'Инициатор заявки'}
             />
           </div>

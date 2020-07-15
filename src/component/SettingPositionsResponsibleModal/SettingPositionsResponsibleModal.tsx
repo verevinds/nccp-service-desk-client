@@ -31,6 +31,7 @@ const SettingPositionsResponsibleModal: React.FC<ISettingPositionsResponsibleMod
     departmentId: user.departmentId,
     positionId: null,
     userNumber: null,
+    isArchive: null,
     categoryId: null,
     propertyId: null,
     optionId: null,

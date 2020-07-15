@@ -1,3 +1,4 @@
+import { TIncident } from './../../interface';
 export interface TList {
   id: number;
   name: string;
@@ -14,7 +15,7 @@ export interface TList {
   properties: number | null;
 }
 export interface ISidebar {
-  list: TList[];
+  list: TIncident[];
   filter?: any;
   onClick: (id: any) => void;
   activeId?: number;
@@ -25,10 +26,10 @@ export interface ISidebarHistory {
   activeId?: number;
 }
 export interface ISidebarWrapper {
-  title: string;
+  title?: string;
   badge?: boolean;
-  onClickHistory: () => void;
-  list: (TList | never)[];
+  onClickHistory?: () => void;
+  list: (TIncident | never)[];
   onClick: (id: any) => void;
   isLoading?: boolean;
   activeId?: number;

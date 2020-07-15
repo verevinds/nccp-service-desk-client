@@ -3,11 +3,12 @@ import { ISidebarHistory } from './interface';
 import { Accordion, Card, Button } from 'react-bootstrap';
 import styles from './sidebarHistory.module.css';
 import Sidebar from './Sidebar';
-import { useSelector, shallowEqual } from 'react-redux';
+import { useSelector } from 'react-redux';
 import SidebarFilter from '../SidebarFilter/SidebarFilter';
+import { IState } from '../../interface';
 
 const SidebarHistory: React.FC<ISidebarHistory> = ({ onClick, activeId, onClickHistory }) => {
-  const history = useSelector((state: any) => state.incidents.history, shallowEqual);
+  const history = useSelector((state: IState) => state.incidents.history);
   const [isLoadHistory, setIsLoadHistory] = useState(false);
   const [filter, setFilter] = useState<any>(undefined);
   useEffect(() => {
@@ -16,36 +17,6 @@ const SidebarHistory: React.FC<ISidebarHistory> = ({ onClick, activeId, onClickH
     }
   }, [isLoadHistory, onClickHistory]);
 
-  const [sidebarList, setSidebarList] = useState([]);
-  useEffect(() => {
-    // eslint-disable-next-line
-    setSidebarList(
-      history.map((item: any) => {
-        let responsible;
-        if (item.responsibleUser) {
-          responsible = `(${item.responsibleUser.name1} ${item.responsibleUser.name2.charAt(
-            0,
-          )}. ${item.responsibleUser.name3.charAt(0)}.)`;
-        } else {
-          responsible = '';
-        }
-        const newItem = {
-          id: item.id,
-          name: `${item.category ? item.category.name : ''} ${item.property ? item.property.name : ''} ${
-            item.option ? item.option.name : ''
-          }`,
-          createdAt: item.createdAt,
-          responsible,
-          status: item.statusId,
-          finishWork: item.finishWork,
-          doneWork: item.doneWork,
-          userNumber: item.userNumber,
-        };
-        return newItem;
-      }),
-    );
-    // eslint-disable-next-line
-  }, [history]);
   return (
     <>
       <Accordion defaultActiveKey="1" className={styles.accordion}>
@@ -62,13 +33,13 @@ const SidebarHistory: React.FC<ISidebarHistory> = ({ onClick, activeId, onClickH
           </Accordion.Toggle>
           <Accordion.Collapse eventKey="0">
             <Card.Body className={styles.body}>
-              {Array.isArray(sidebarList) && sidebarList.length ? (
+              {history ? (
                 <Fragment>
                   <div className={styles.title}>
                     <h6>Отработанные заявки</h6>
                     <SidebarFilter setFilter={setFilter} color={'#c3c3c3'} />
                   </div>
-                  <Sidebar list={sidebarList} filter={filter} onClick={onClick} activeId={activeId} />
+                  <Sidebar list={history} filter={filter} onClick={onClick} activeId={activeId} />
                 </Fragment>
               ) : null}
             </Card.Body>

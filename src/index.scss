@@ -88,17 +88,17 @@ code {
   top: 50%;
 }
 .btn-primary {
-  background-color: #597ba5;
-  border-color: #597ba5;
+  background-color: var(--blue);
+  border-color: var(--blue);
 }
 .btn-link {
   font-weight: 400;
-  color: #597ba5;
+  color: var(--blue);
   text-decoration: none;
 }
 .btn-outline-primary {
-  color: #597ba5;
-  border-color: #597ba5;
+  color: var(--blue);
+  border-color: var(--blue);
 }
 .btn:hover {
 }

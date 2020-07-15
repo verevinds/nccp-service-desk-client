@@ -11,13 +11,15 @@ import { faAngleRight, faTag, faUserClock, faUserCheck } from '@fortawesome/free
 import SidebarDown from './SidebarDown';
 import { IncidentContext } from '../Incident/IncidentContext';
 import SidebarTop from './SidebarTop';
+import { TIncident } from '../../interface';
 
 const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId, filter }) => {
   const { match } = useContext(IncidentContext);
   const [limit, setLimit] = useState(8);
-  const tags = (item: any, color?: any, tooltip?: string) => {
+
+  const tags = (item: TIncident, color?: string, tooltip?: string) => {
     let tags = [];
-    if (!!item.status || Number(item.status) === 0) {
+    if (item.statusId >= 0) {
       tags.push(
         <OverlayTrigger
           key={item.id + 't'}
@@ -28,7 +30,8 @@ const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId, filter }) => {
           <FontAwesomeIcon icon={faTag} color={color} className={'mb-1'} />
         </OverlayTrigger>,
       );
-      if (!!item.responsible && Number(item.status) === 0) {
+
+      if (!!item.currentResponsible && Number(item.statusId) === 0) {
         tags.push(
           <OverlayTrigger
             key={item.id + 'c'}
@@ -52,7 +55,6 @@ const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId, filter }) => {
         );
       }
     }
-
     return tags;
   };
 
@@ -62,8 +64,10 @@ const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId, filter }) => {
     if (Array.isArray(list) && list.length) {
       let sortList = list;
       const jsxItem: (JSX.Element | undefined)[] = sortList
-        .sort((a: any, b: any) => (a[filter?.name] > b[filter?.name] ? 1 * filter?.sing : -1 * filter?.sing))
-        .map((item: any, index: number) => {
+        .sort((a: TIncident, b: TIncident) =>
+          a[filter?.name] > b[filter?.name] ? 1 * filter?.sing : -1 * filter?.sing,
+        )
+        .map((item: TIncident, index: number) => {
           if (index < limit) {
             let itemText: string = '';
 
@@ -72,8 +76,8 @@ const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId, filter }) => {
             }
             let color;
             let tooltip;
-            if (item.status >= 0) {
-              switch (Number(item.status)) {
+            if (item.statusId >= 0) {
+              switch (Number(item.statusId)) {
                 case 0:
                   color = '#007bff';
                   tooltip = `Новая заявка. Нет ответственного.`;
@@ -110,6 +114,10 @@ const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId, filter }) => {
 
             const isActive = activeId === item.id ? true : false;
 
+            const itemName = `${item.category ? item.category.name : ''} ${item.property ? item.property.name : ''} ${
+              item.option ? item.option.name : ''
+            }`;
+
             return (
               <ListGroup.Item
                 key={item.id}
@@ -133,7 +141,7 @@ const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId, filter }) => {
                       <span>{itemText}</span>
                     </div>
                     <div className={styles.item__text}>
-                      <span className={styles.item__text_span}>{!!item.name.trim() ? item.name : 'Без категории'}</span>
+                      <span className={styles.item__text_span}>{itemName ? itemName : 'Без категории'}</span>
                     </div>
                   </div>
                   {!isActive ? undefined : (

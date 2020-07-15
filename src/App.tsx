@@ -330,24 +330,22 @@ const App = () => {
             pauseOnFocusLoss
             draggable
           />
-          <div className="bg">
-            <div className={styles.progressBar}>
-              <ProgressBar animated now={progress.now} hidden={progress.isFinish} />
-            </div>
-
-            <Switch>
-              <Route exact path="/" component={MainPage} />
-              <Route path="/incident/:id" component={MainPage} />
-              <Route path="/incident" component={MainPage} />
-              <Route path="/setting" component={SettingPage} />
-              <Route path="/myincidents/:id" component={MyIncidentPage} />
-              <Route path="/myincidents" component={MyIncidentPage} />
-              <Route path="/test" component={TestPage} />
-              <Route path="/info" component={InfoPage} />
-              <Route path="/MyDepartmentPage" component={MyDepartmentPage} />
-              <Route path="/visa" component={VisaPage} />
-            </Switch>
+          <div className={styles.progressBar}>
+            <ProgressBar animated now={progress.now} hidden={progress.isFinish} />
           </div>
+
+          <Switch>
+            <Route exact path="/" component={MainPage} />
+            <Route path="/incident/:id" component={MainPage} />
+            <Route path="/incident" component={MainPage} />
+            <Route path="/setting" component={SettingPage} />
+            <Route path="/myincidents/:id" component={MyIncidentPage} />
+            <Route path="/myincidents" component={MyIncidentPage} />
+            <Route path="/test" component={TestPage} />
+            <Route path="/info" component={InfoPage} />
+            <Route path="/MyDepartmentPage" component={MyDepartmentPage} />
+            <Route path="/visa" component={VisaPage} />
+          </Switch>
         </BrowserRouter>
       </AppContext.Provider>
     );

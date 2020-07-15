@@ -20,7 +20,6 @@ import HeaderButton from '../HeaderButton/HeaderButton';
 
 const Header = (props) => {
   const user = useSelector((state) => state.auth.user, shallowEqual);
-
   const version = useSelector((state) => state.app.version, shallowEqual);
   const filterState = useSelector((state) => state.filter);
   const listIncident = useSelector((state) => state.incidents.list);
@@ -94,15 +93,25 @@ const Header = (props) => {
                 page={page}
                 setPage={setPage}
                 text={'Мои заявки'}
+                tooltip={{
+                  list: myList || [],
+                  isListTooltips: 'Заявки созданные Вами',
+                  isNoListTooltips: 'Все Ваши заявки были выполнены, и находятся в статусе "Закрыт"',
+                }}
                 newIncidentCount={newMyIncidentCount}
               />
               <HeaderButton
                 to={'/'}
                 faIcon={faClipboardList}
-                newIncidentCount={newIncidentCount}
                 page={page}
                 setPage={setPage}
                 text={'Рабочая панель'}
+                tooltip={{
+                  list: listIncident || [],
+                  isListTooltips: 'Заявки по Вашей зоне ответственности',
+                  isNoListTooltips: 'Заявок по Вашей зоне ответственности нет',
+                }}
+                newIncidentCount={newIncidentCount}
               />
               {user?.position?.level < 1 ? undefined : (
                 <>
@@ -111,7 +120,13 @@ const Header = (props) => {
                     faIcon={faUserTie}
                     page={page}
                     setPage={setPage}
-                    text={'Мой отдел'}
+                    text={'Руководитель'}
+                    tooltip={{
+                      list: allowToCreate || [],
+                      isListTooltips:
+                        'Заявки из Вашего отдела, требующие Вашего согласования для проявления согласия в надобности создания заявки.',
+                      isNoListTooltips: 'Заявок по Вашему отделу, требующих Вашего внимания, нет',
+                    }}
                     newIncidentCount={newMyDepartmentIncidentCount}
                   />
                   <HeaderButton
@@ -120,6 +135,11 @@ const Header = (props) => {
                     page={page}
                     setPage={setPage}
                     text={'Согласование'}
+                    tooltip={{
+                      list: visa || [],
+                      isListTooltips: 'Заявки, которые требуют Вашего согласования для принятия их на исполнение.',
+                      isNoListTooltips: 'Заявок по Вашему отделу, требующих Вашего внимания, нет',
+                    }}
                     newIncidentCount={newVisaIncidentCount}
                   />
                 </>
@@ -148,11 +168,27 @@ const Header = (props) => {
             </Nav.Item>
 
             <Nav.Item className={styles.nav__item}>
-              <HeaderButton to={'/setting'} faIcon={faCog} page={page} setPage={setPage} />
+              <HeaderButton
+                to={'/setting'}
+                faIcon={faCog}
+                page={page}
+                setPage={setPage}
+                tooltip={{
+                  isNoListTooltips: 'Настройка приложения',
+                }}
+              />
             </Nav.Item>
           </Nav>
           <div className={styles.info}>
-            <HeaderButton to={'/info'} faIcon={faInfo} page={page} setPage={setPage} />
+            <HeaderButton
+              to={'/info'}
+              faIcon={faInfo}
+              page={page}
+              setPage={setPage}
+              tooltip={{
+                isNoListTooltips: 'Информация о приложении',
+              }}
+            />
             {String(version) !== localStorage.getItem('version') ? (
               <Badge variant="primary" pill className={styles.info__badge}>
                 !

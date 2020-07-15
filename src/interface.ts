@@ -22,12 +22,15 @@ export interface IPositions {
   list: (TPosition | never)[];
 }
 export type TPosition = {
-  createdAt: string;
   id: number;
   level: number;
+  parent: number | null;
   name: string;
   updatedAt: string;
+  createdAt: string;
+  responsibles: TResponsible[];
 };
+
 /** Инциденты */
 export type TIncidents = {
   current: TIncidentCurrent;
@@ -45,6 +48,7 @@ export type TIncidentCurrent = {
   isChange: boolean;
 };
 export type TIncident = {
+  [key: string]: any;
   category: { departmentId: number; name: string; level: number | null };
   categoryId: number;
   comments: IComment[] | never[];
@@ -130,39 +134,7 @@ export type TAuth = {
 
   user: TUser;
 };
-export type TUser = {
-  computer: string;
-  createdAt: string;
-  departmentId: number;
-  dob: string;
-  email: string;
-  exmail: string;
-  fired: number;
-  login: string | null;
-  name1: string;
-  name2: string;
-  name3: string;
-  number: number;
-  phone1: string;
-  phone2: string;
-  photo: string;
-  positionId: number;
-  sex: number;
-  updatedAt: string;
-  department: {
-    id: number;
-    name: string;
-    createdAt: string;
-    updatedAt: string;
-  };
-  position: {
-    id: number;
-    name: string;
-    level: number;
-    createdAt: string;
-    updatedAt: string;
-  };
-};
+
 /** Каталог */
 export type TCatalog = {
   department: TDepartment[] | never[];
@@ -282,27 +254,39 @@ export type TStatus = {
 };
 /** Пользователи */
 export type TUsers = {
-  current: { user?: IUserInUsers; isUpdate: boolean };
+  current: { user?: TUser; isUpdate: boolean };
   isUpdate: boolean;
-  list: IUserInUsers[] | never[];
+  list: TUser[] | never[];
 };
-export interface IUserInUsers extends TUser {
+
+export type TUser = {
   accesses: any[];
+  computer: string;
+  createdAt: string;
+  departmentId: number;
+  dob: string;
+  email: string;
+  exmail: string;
+  fired: number;
+  login: string | null;
+  name1: string;
+  name2: string;
+  name3: string;
+  number: number;
+  phone1: string;
+  phone2: string;
+  photo: string;
+  positionId: number;
+  sex: number;
+  updatedAt: string;
   department: {
     id: number;
     name: string;
     createdAt: string;
     updatedAt: string;
   };
-  position: {
-    id: number;
-    name: string;
-    level: number;
-    createdAt: string;
-    updatedAt: string;
-  };
-}
-
+  position: TPosition;
+};
 export interface ISubscription {
   id: number;
   userNumber: number;
@@ -319,14 +303,23 @@ export interface ISubscription {
 export type TResponsible = {
   id?: number;
   departmentId: number;
+  isArchive: null | boolean;
   positionId: null | number;
-  userNumber: null | string;
-  categoryId: null | string;
-  propertyId: null | string;
-  optionId: null | string;
+  userNumber: null | number;
+  categoryId: null | number;
+  propertyId: null | number;
+  optionId: null | number;
 };
 export interface IResponsible {
   list?: TResponsible[];
   isLoading: boolean;
   isUpdate: boolean;
 }
+export type TPropsParams = {
+  match: {
+    params: { id: number };
+    isExact: boolean;
+    path: string;
+    url: string;
+  };
+};

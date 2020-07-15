@@ -1,70 +1,76 @@
-import React, { memo, useState, useEffect, useMemo, Fragment } from 'react';
+import React, { memo, useState, useEffect, useMemo, Fragment, useContext } from 'react';
 import { ISidebarWrapper } from '../Sidebar/interface';
-import { useSelector, shallowEqual } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Container } from 'react-bootstrap';
 import SidebarHistory from '../Sidebar/SidebarHistory';
 import styles from './wrapperSidebar.module.css';
 import Sidebar from '../Sidebar/Sidebar';
 import SidebarFilter from '../SidebarFilter/SidebarFilter';
 import SidebarTitle from '../SidebarTitle/SidebarTitle';
+import { TIncident } from '../../interface';
+import { IncidentContext } from '../Incident/IncidentContext';
 
-const SidebarWrapper: React.FC<ISidebarWrapper> = ({ title, list, onClick, activeId, onClickHistory }) => {
-  const user = useSelector((state: any) => state.auth.user, shallowEqual);
+const SidebarWrapper: React.FC<ISidebarWrapper> = ({ title, onClick, activeId, onClickHistory }) => {
+  const { numberResponsible, incidents } = useContext(IncidentContext);
   const filterState = useSelector((state: any) => state.filter);
   const [blogTitle, setBlogTitle] = useState<JSX.Element | null>(null);
   const [anotherFilter, setAnotherFilter] = useState<any>(undefined);
   const [filter, setFilter] = useState<any>(undefined);
+
   const responsibleList = useMemo(() => {
-    if (title) {
-      return list.filter((item: any) => item.numberResponsible === user.number);
+    if (numberResponsible) {
+      return incidents?.filter((item: TIncident) => item.currentResponsible === numberResponsible);
     } else {
-      return list;
+      return incidents;
     }
-  }, [list, user, title]);
+  }, [incidents, numberResponsible]);
 
   const anotherList = useMemo(() => {
-    let newList = list.filter((item: any) => item.numberResponsible !== user.number);
-    if (filterState.categories || filterState.options || filterState.properties)
-      if (filterState.categories.length || filterState.options.length || filterState.properties.length) {
-        let combineList: import('./interface').TList[][] = [];
-        for (let key in filterState) {
-          if (filterState[key].length) {
-            filterState[key].forEach((element: any) => {
-              combineList.push(newList.filter((item: any) => item[key] === Number(element)));
-            });
+    if (Array.isArray(incidents)) {
+      let newList = incidents.filter((item: TIncident) => item.currentResponsible !== numberResponsible);
+      if (filterState.categories || filterState.options || filterState.properties)
+        if (filterState.categories.length || filterState.options.length || filterState.properties.length) {
+          let combineList: (TIncident | never)[][] = [];
+          for (let key in filterState) {
+            if (filterState[key].length) {
+              filterState[key].forEach((element: any) => {
+                const filterList = newList?.filter((item: TIncident) => item[key] === Number(element));
+                if (filterList) combineList.push(filterList);
+              });
+            }
           }
-        }
-        let flatCombineList = combineList.flat();
-        let uniqueFlatCombineList = Array.from(new Set(flatCombineList));
+          let flatCombineList = combineList.flat();
+          let uniqueFlatCombineList = Array.from(new Set(flatCombineList));
 
-        return uniqueFlatCombineList;
-      }
-    return newList;
-  }, [list, user, filterState]);
+          return uniqueFlatCombineList;
+        }
+      return newList;
+    }
+  }, [incidents, numberResponsible, filterState]);
 
   useEffect(() => {
     if (title) {
       const newBlogTitle = <SidebarTitle title={title} />;
       setBlogTitle(newBlogTitle);
     }
-  }, [title, list]);
+  }, [title, incidents]);
   return (
     <Fragment>
       <Container>
         {blogTitle}
         <div className={styles.block}>
-          {responsibleList.length ? (
+          {responsibleList?.length ? (
             <Fragment>
               <br />
               <div className={styles.title}>
-                {title ? <h6>Моя ответственность</h6> : <h6>Мои заявки</h6>}
+                {!numberResponsible ? <div></div> : <h6>Моя ответственность</h6>}
                 <SidebarFilter setFilter={setFilter} />
               </div>
               <Sidebar list={responsibleList} onClick={onClick} activeId={activeId} filter={filter} />
             </Fragment>
           ) : undefined}
 
-          {anotherList?.length && title ? (
+          {anotherList && anotherList?.length && title ? (
             <Fragment>
               <br />
               <div className={styles.title}>
@@ -75,7 +81,7 @@ const SidebarWrapper: React.FC<ISidebarWrapper> = ({ title, list, onClick, activ
             </Fragment>
           ) : undefined}
 
-          {!anotherList.length && !responsibleList.length ? (
+          {!anotherList?.length && !responsibleList?.length ? (
             <p className="text-muted text-center">
               <h6>
                 <samp>cписок пустой</samp>
@@ -83,7 +89,9 @@ const SidebarWrapper: React.FC<ISidebarWrapper> = ({ title, list, onClick, activ
             </p>
           ) : undefined}
 
-          <SidebarHistory onClick={onClick} activeId={activeId} onClickHistory={onClickHistory} />
+          {!onClickHistory ? undefined : (
+            <SidebarHistory onClick={onClick} activeId={activeId} onClickHistory={onClickHistory} />
+          )}
         </div>
       </Container>
     </Fragment>

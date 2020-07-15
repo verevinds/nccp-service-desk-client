@@ -76,7 +76,7 @@
   // left: 0;
 }
 .item {
-  color: var(--info);
+  color: var(--blue);
   padding: 0;
   min-height: 30px;
   transition: all 0.4s ease-in-out;
@@ -112,9 +112,6 @@
 }
 .item__text_span {
   text-align: left;
-}
-.active {
-  color: #17a2b8;
 }
 ::-webkit-scrollbar {
   width: 5px;
