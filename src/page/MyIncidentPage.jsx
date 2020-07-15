@@ -24,7 +24,8 @@ const MyIncidentPage = (props) => {
     let incident = myList.find((item) => item.id === Number(id));
     console.log(props.match);
     dispatch(incidentChoose(incident));
-  }, [myList, dispatch, props.match]);
+    // eslint-disable-next-line
+  }, [myList, dispatch]);
 
   useEffect(() => {
     if (user) {

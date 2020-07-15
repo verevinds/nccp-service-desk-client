@@ -26,7 +26,8 @@ const MyDepartmentPage: React.FC<any> = (props) => {
     let id = props.match.params.id;
     let incident = incidents.find((item) => item.id === Number(id));
     dispatch(incidentChoose(incident));
-  }, [incidents, dispatch, props.match]);
+    // eslint-disable-next-line
+  }, [incidents, dispatch]);
 
   useEffect(() => {
     if (incidents && Array.isArray(incidents)) {

@@ -155,7 +155,8 @@ const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId, filter }) => {
 
       jsxItem && setJsxListItem(jsxItem);
     }
-  }, [list, activeId, onClick, filter, limit, match]);
+    // eslint-disable-next-line
+  }, [list, activeId, onClick, filter, limit]);
 
   return (
     <ListGroup variant="flush">
