@@ -2,6 +2,7 @@ import React from 'react';
 
 export interface IAppContext {
   Api?: IApi;
+  apiDispatch?: any;
 }
 export interface IApi {
   comments: (arg: string) => void;

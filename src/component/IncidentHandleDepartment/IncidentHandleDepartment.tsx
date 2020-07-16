@@ -1,36 +1,38 @@
 import React, { memo, useState, useLayoutEffect, useEffect, useContext } from 'react';
 import ModalWindow from '../ModalWindow/ModalWindow';
-import { IIncidentHandleDepartment, ICategory, IOption, IDepartment, IProperty } from './interface';
+import { IIncidentHandleDepartment } from './interface';
 import { Form } from 'react-bootstrap';
-import { useSelector, shallowEqual } from 'react-redux';
-import { IState } from '../../interface';
+import { useSelector } from 'react-redux';
+import { IState, TUser, TCatalog, TDepartment, TCategory, TProperty, TOption } from '../../interface';
 import { useCallback } from 'react';
-import { IApi, AppContext } from '../../AppContext';
+import { AppContext } from '../../AppContext';
+import { IApi } from '../../js/api';
 
 const IncidentHandleDepartment = ({ show, onHide }: IIncidentHandleDepartment) => {
-  const catalog = useSelector((state: IState) => state.catalog, shallowEqual);
-  const user = useSelector((state: IState) => state.auth.user, shallowEqual);
-  const { id } = useSelector((state: IState) => state.incidents.current.incident, shallowEqual);
-  const { Api } = useContext(AppContext);
+  const catalog: TCatalog = useSelector((state: IState) => state.catalog);
+  const { departmentId: userDepartmentId }: TUser = useSelector((state: IState) => state.auth.user);
+  const { id } = useSelector((state: IState) => state.incidents.current.incident);
+  const incident = useSelector((state: IState) => state.incidents.current.incident);
+  const { apiDispatch } = useContext(AppContext);
 
   //**Получение листа отделов */
-  const [currentDepartmentId, setCurrentDepartmentId] = useState(null);
-  const [departmentList, setDepartmentList] = useState<IDepartment[]>([]);
+  const [currentDepartmentId, setCurrentDepartmentId] = useState<number | undefined>();
+  const [departmentList, setDepartmentList] = useState<TDepartment[]>([]);
   useLayoutEffect(() => {
-    if (!!catalog && !!user) {
+    if (!!catalog && !!userDepartmentId) {
       if (!!catalog.department) {
         let department = catalog.department.filter(
-          (item: any) => item.id !== user.departmentId && item.categories.length,
+          (item: any) => item.id !== userDepartmentId && item.categories.length,
         );
         setDepartmentList(department);
         setCurrentDepartmentId(department[0].id);
       }
     }
-  }, [catalog, user]);
+  }, [catalog, userDepartmentId]);
 
   //**Получение листа категорий */
-  const [currentCategoryId, setCurrentCategoryId] = useState(null);
-  const [categoryList, setCategoryList] = useState<ICategory[]>([]);
+  const [currentCategoryId, setCurrentCategoryId] = useState<number | undefined>();
+  const [categoryList, setCategoryList] = useState<TCategory[]>([]);
   useEffect(() => {
     let category = catalog.list.filter((item: any) => Number(item.departmentId) === Number(currentDepartmentId));
     if (!!category.length) {
@@ -38,18 +40,18 @@ const IncidentHandleDepartment = ({ show, onHide }: IIncidentHandleDepartment) =
       setCurrentCategoryId(category[0].id);
     } else {
       setCategoryList([]);
-      setCurrentCategoryId(null);
+      setCurrentCategoryId(undefined);
     }
   }, [currentDepartmentId, catalog.list]);
 
   //**Получение листа параметров и опций*/
   // Параметры
-  const [currentPropertyId, setCurrentPropertyId] = useState<number | null>(null);
-  const [propertyList, setPropertyList] = useState<IProperty[]>([]);
+  const [currentPropertyId, setCurrentPropertyId] = useState<number | undefined>();
+  const [propertyList, setPropertyList] = useState<TProperty[]>([]);
 
   // Опции
-  const [currentOptionId, setCurrentOptionId] = useState<number | null>(null);
-  const [optionList, setOptionList] = useState<IOption[]>([]);
+  const [currentOptionId, setCurrentOptionId] = useState<number | undefined>();
+  const [optionList, setOptionList] = useState<TOption[]>([]);
   useEffect(() => {
     if (!!categoryList) {
       let currentCategory = categoryList.find((item: any) => Number(item.id) === Number(currentCategoryId));
@@ -60,7 +62,7 @@ const IncidentHandleDepartment = ({ show, onHide }: IIncidentHandleDepartment) =
           setCurrentPropertyId(currentCategory.properties[0].id);
         } else {
           setPropertyList([]);
-          setCurrentPropertyId(null);
+          setCurrentPropertyId(undefined);
         }
 
         if (!!currentCategory.options.length) {
@@ -68,7 +70,7 @@ const IncidentHandleDepartment = ({ show, onHide }: IIncidentHandleDepartment) =
           setCurrentOptionId(currentCategory.options[0].id);
         } else {
           setOptionList([]);
-          setCurrentOptionId(null);
+          setCurrentOptionId(undefined);
         }
       }
     }
@@ -81,14 +83,14 @@ const IncidentHandleDepartment = ({ show, onHide }: IIncidentHandleDepartment) =
   // console.log('currentPropertyId', currentPropertyId);
   // console.log('currentOptionId', currentOptionId);
   // console.groupEnd();
-  const jsxSelector = (title: string, defaultValue: number | null, setId: (val: any) => void, list: any) => {
+  const jsxSelector = (title: string, defaultValue: number, setId: (val: any) => void, list: any) => {
     return (
       <>
         <Form.Group>
           <Form.Label>{title}</Form.Label>
           <Form.Control
             as="select"
-            defaultValue={'defaultValue'}
+            defaultValue={defaultValue}
             onChange={(event: any) => {
               setId(event.target.value);
             }}
@@ -128,14 +130,16 @@ const IncidentHandleDepartment = ({ show, onHide }: IIncidentHandleDepartment) =
 
   const onClick = useCallback(
     function (this: IApi) {
-      this.comments(
-        `${user.name1} ${user.name2.charAt(0)} ${user.name3.charAt(0)} передал заявку в "${
-          departmentList.find((item: any) => Number(item.id) === Number(currentDepartmentId))?.name
-        }"`,
-      );
-      this.match(matchHandle);
+      if (incident) {
+        const text = `Назначен перевод в "${
+          departmentList.find((item: TDepartment) => Number(item.id) === Number(currentDepartmentId))?.name
+        }". Перевод осуществится после согласования руководителя.`;
+
+        this.comments().post({ data: { incidentId: incident?.id, text } });
+        this.matches().post(matchHandle);
+      }
     },
-    [matchHandle, user, currentDepartmentId, departmentList],
+    [matchHandle, currentDepartmentId, departmentList, incident],
   );
 
   return (
@@ -143,22 +147,24 @@ const IncidentHandleDepartment = ({ show, onHide }: IIncidentHandleDepartment) =
       title={'Передать заявку'}
       show={show}
       onHide={onHide}
-      onOk={Api && onClick.bind(Api)}
+      onOk={onClick.bind(apiDispatch)}
       textOk={'Передать'}
     >
       <>
-        {!!departmentList.length
+        {!!departmentList.length && currentDepartmentId
           ? jsxSelector('Отделы', currentDepartmentId, setCurrentDepartmentId, departmentList)
           : undefined}
 
-        {!!categoryList.length
+        {!!categoryList.length && currentCategoryId
           ? jsxSelector('Категории', currentCategoryId, setCurrentCategoryId, categoryList)
           : undefined}
 
-        {!!propertyList.length
+        {!!propertyList.length && currentPropertyId
           ? jsxSelector('Параметры', currentPropertyId, setCurrentPropertyId, propertyList)
           : undefined}
-        {!!optionList.length ? jsxSelector('Опции', currentOptionId, setCurrentOptionId, optionList) : undefined}
+        {!!optionList.length && currentOptionId
+          ? jsxSelector('Опции', currentOptionId, setCurrentOptionId, optionList)
+          : undefined}
       </>
     </ModalWindow>
   );

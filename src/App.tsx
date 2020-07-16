@@ -30,7 +30,7 @@ import { positionsRequestSeccessed } from './redux/actionCreators/positionAction
 import { settingRequestSuccessed } from './redux/actionCreators/settingAction';
 
 /**Bootstrap components */
-import { ProgressBar } from 'react-bootstrap';
+import { ProgressBar, Button } from 'react-bootstrap';
 import { incidentRequestSuccessed, myIncidentRequestSuccessed } from './redux/actionCreators/incidentAction';
 import Cookies from 'universal-cookie';
 import AuthModal from './component/AuthModal/AuthModal';
@@ -41,10 +41,10 @@ import InfoPage from './page/InfoPage';
 import { versionSet } from './redux/actionCreators/versionAction';
 import { AppContext } from './AppContext';
 import MyDepartmentPage from './page/MyDepartmentPage';
-import { paramsIncident } from './js/paramsIncident';
 import VisaPage from './page/VisaPage';
 import { IState, TIncident } from './interface';
 import SpinnerGrow from './component/SpinnerGrow/SpinnerGrow';
+import api from './js/api';
 
 const App = () => {
   const cookies = new Cookies();
@@ -69,6 +69,7 @@ const App = () => {
     users: { isUpdate: isUpdateUsers },
     auth: { user },
   }: IState = useSelector((state: IState) => state);
+  const apiDispatch = useMemo(() => api(dispatch, user), [dispatch, user]);
 
   const Api = useMemo(() => {
     return {
@@ -128,20 +129,19 @@ const App = () => {
       },
     };
   }, [dispatch, incident, user]);
-  const hasUser = useMemo(() => !!user?.number, [user]);
 
   /** Получить сохраненные данные из локального хранилища */
   useLayoutEffect(() => {
     const dispatchLocalStorage = (itemName: string, actionRequestSuccessed: any) => {
-      let item = localStorage.getItem(itemName);
-      let hasItem = !!item;
-      let parseItem = hasItem ? JSON.parse(String(item)) : undefined;
-      let hasParseItem = !!parseItem;
+      const item = localStorage.getItem(itemName);
+      const hasItem = !!item;
+      const parseItem = hasItem ? JSON.parse(String(item)) : undefined;
+      const hasParseItem = !!parseItem;
 
       if (hasParseItem) dispatch(actionRequestSuccessed(parseItem));
     };
 
-    let auth = cookies.get('auth');
+    const auth = cookies.get('auth');
     const isAuth = !!auth?.number;
 
     if (isAuth) {
@@ -221,84 +221,39 @@ const App = () => {
   /** Загрузка и обновление информации по отделам */
   useLayoutEffect(() => {
     //Загружаем "дерево": Отдел->Каталог->Параматр/Опция
-    dispatch(
-      queryApi({
-        route: 'catalogs',
-        actionSuccessed: departmentRequestSuccessed,
-      }),
-    );
+    apiDispatch.catalogs().get();
     //Загружаем "дерево": Каталог->Параматр/Опция
-    dispatch(
-      queryApi({
-        route: 'categories',
-        actionSuccessed: categoryRequestSuccessed,
-      }),
-    );
-  }, [isUpdateCatalog, dispatch]);
+    apiDispatch.categories().get();
+  }, [isUpdateCatalog, dispatch, apiDispatch]);
   /** Загрузка и обновление информации по должностям */
   useLayoutEffect(() => {
-    dispatch(
-      queryApi({
-        actionSuccessed: positionsRequestSeccessed,
-        route: 'positions',
-      }),
-    );
-  }, [isUpdatePositions, dispatch]);
+    apiDispatch.positions().get();
+  }, [isUpdatePositions, apiDispatch]);
   /** Загрузка и обновление информации по инцидентам*/
   useLayoutEffect(() => {
-    if (hasUser) {
-      let params = paramsIncident(user);
-
-      /** Получить инциденты "рабочей панели" */
-      Api.incidents({
-        method: 'get',
-        route: 'incidents/work',
-        actionSuccessed: incidentRequestSuccessed,
-        params: { ...params, hasVisa: true },
-        id: undefined,
-      });
-
-      /** Получить инциденты "мой отдел" */
-      Api.incidents({
-        method: 'get',
-        route: 'incidents/department',
-        actionSuccessed: incidentAllowToCreateRequestSuccessed,
-        params: { departmentId: user?.departmentId, allowToCreate: false },
-        id: undefined,
-      });
-
-      /** Получить инциденты "мои заявки" */
-      Api.incidents({
-        method: 'get',
-        route: 'incidents/my',
-        actionSuccessed: myIncidentRequestSuccessed,
-        params: { userNumber: user?.number },
-        id: undefined,
-      });
-
-      /** Получить инциденты "мои согласование" */
-      Api?.incidents({
-        method: 'get',
-        route: 'incidents/visa',
-        actionSuccessed: incidentVisaRequestSuccessed,
-        params: { hasVisa: false, positionId: user?.positionId },
-        id: undefined,
-      });
+    if (!!user) {
+      apiDispatch.incidents().work(user).get();
+      apiDispatch.incidents().department(user).get();
+      apiDispatch.incidents().my(user).get();
+      apiDispatch.incidents().visa(user).get();
     }
-    // eslint-disable-next-line
-  }, [isUpdateIncident, dispatch, user, hasUser]);
+  }, [isUpdateIncident, user, apiDispatch]);
   /** Загрузка и обновление информации по статусам */
   useLayoutEffect(() => {
-    dispatch(queryApi({ route: 'status', actionSuccessed: statusRequestSeccessed }));
-  }, [isUpdateStatus, dispatch]);
+    apiDispatch.status().get();
+  }, [isUpdateStatus, apiDispatch]);
   /** Загрузка и обновление информации по доступу */
   useLayoutEffect(() => {
-    if (hasUser) dispatch(queryApi({ route: 'access', actionSuccessed: accessRequestSeccessed, id: user?.number }));
-  }, [isUpdateStatus, dispatch, hasUser, user]);
+    if (!!user) {
+      const id = user?.number;
+
+      apiDispatch.access().get(id);
+    }
+  }, [isUpdateStatus, apiDispatch, user]);
   /** Загрузка и обновление информации по сотрудникам */
   useLayoutEffect(() => {
-    dispatch(queryApi({ route: 'users', actionSuccessed: usersRequestSeccessed }));
-  }, [isUpdateUsers, dispatch]);
+    apiDispatch.users().get();
+  }, [isUpdateUsers, apiDispatch]);
 
   //** Если обновляется заявка, то обновляем выбранную заявку */
   useEffect(() => {
@@ -315,9 +270,9 @@ const App = () => {
     }
   }, [allowToCreate, history, list, myList, visa, dispatch, incident]);
 
-  if (hasUser)
+  if (!!user)
     return (
-      <AppContext.Provider value={{ Api }}>
+      <AppContext.Provider value={{ Api, apiDispatch }}>
         <BrowserRouter>
           <Header />
           <HandleSocket />

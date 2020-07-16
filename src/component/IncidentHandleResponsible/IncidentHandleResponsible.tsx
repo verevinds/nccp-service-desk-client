@@ -5,7 +5,10 @@ import { queryApi } from '../../redux/actionCreators/queryApiAction';
 import { usersRequestSeccessed } from '../../redux/actionCreators/usersAction';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import styles from './styles.module.css';
-import { IApi, AppContext } from '../../AppContext';
+import { AppContext } from '../../AppContext';
+import { IApi } from '../../js/api';
+import { useMemo } from 'react';
+import { TUser, IState, TIncidentCurrent } from '../../interface';
 
 export interface IIncidentHandleResponsible {
   show?: boolean;
@@ -19,20 +22,26 @@ export type IUser = {
 
 const IncidentHandleResponsible: React.FC<IIncidentHandleResponsible> = ({ show, onHide }) => {
   const dispatch = useDispatch();
-  const { Api } = useContext(AppContext);
+  const { apiDispatch } = useContext(AppContext);
 
-  const list = useSelector((state: any) => state.users.list, shallowEqual);
-  const user = useSelector((state: any) => state.auth.user, shallowEqual);
-  const { incident } = useSelector((state: any) => state.incidents.current, shallowEqual);
+  const users = useSelector((state: IState) => state.users.list);
+  const user: TUser = useSelector((state: IState) => state.auth.user);
+  const { incident }: TIncidentCurrent = useSelector((state: IState) => state.incidents.current);
 
   const [filterList, setFilterList] = useState<IUser[]>([]);
+
   useLayoutEffect(() => {
-    if (!!list) {
+    if (!!users) {
       setFilterList(
-        list.filter((item: any) => Number(item.number) !== Number(incident.currentResponsible) && !item.fired),
+        users.filter(
+          (item: TUser) =>
+            Number(item.number) !== Number(incident.currentResponsible) &&
+            !item.fired &&
+            item.departmentId === user.departmentId,
+        ),
       );
     }
-  }, [list, incident.currentResponsible]);
+  }, [users, incident.currentResponsible, user.departmentId]);
   const [currentResponsible, setCurrentResponsible] = useState<number>();
   useLayoutEffect(() => {
     if (filterList[0]) {
@@ -41,39 +50,41 @@ const IncidentHandleResponsible: React.FC<IIncidentHandleResponsible> = ({ show,
   }, [filterList]);
   const [currentResponsibleFullname, setCurrentResponsibleFullname] = useState('');
   useEffect(() => {
-    let currentUser = list.find((item: any) => Number(item.number) === Number(currentResponsible));
+    let currentUser = users.find((item: any) => Number(item.number) === Number(currentResponsible));
     if (currentUser) {
       setCurrentResponsibleFullname(
         `${currentUser.name1} ${currentUser.name2.charAt(0)}. ${currentUser.name3.charAt(0)}.`,
       );
     }
-    if (!!list.length) {
-      if (!!list.number) {
+    if (!!users.length) {
+      if (!!users.number) {
         setCurrentResponsible(
-          list.filter((item: any) => Number(item.number) !== Number(incident.currentResponsible))[0].number,
+          users.filter((item: any) => Number(item.number) !== Number(incident.currentResponsible))[0].number,
         );
       }
     }
-  }, [currentResponsible, list, incident.currentResponsible]);
-  useLayoutEffect(() => {
-    dispatch(
-      queryApi({
-        route: 'users',
-        actionSuccessed: usersRequestSeccessed,
-        params: { departmentId: user.departmentId },
-      }),
-    );
-  }, [dispatch, user.departmentId]);
+  }, [currentResponsible, users, incident.currentResponsible]);
 
   const onClick = useCallback(
     function (this: IApi) {
-      this.comments(`Заявка переведена в статус "В работе". Ответственным назначен: ${currentResponsibleFullname}`);
-      this.incidents({ data: { currentResponsible, startWork: new Date().toISOString(), statusId: 1 } });
+      if (incident) {
+        this.comments().post({
+          data: {
+            incidentId: incident.id,
+            text: `Заявка переведена в статус "В работе". Ответственным назначен: ${currentResponsibleFullname}`,
+          },
+        });
+        this.incidents().put(incident?.id, {
+          data: { currentResponsible, startWork: new Date().toISOString(), statusId: 1 },
+        });
+      }
+      // this.comments();
+      // this.incidents({ data: { currentResponsible, startWork: new Date().toISOString(), statusId: 1 } });
     },
-    [currentResponsible, currentResponsibleFullname],
+    [currentResponsible, currentResponsibleFullname, incident],
   );
 
-  if (list.length > 1) {
+  if (users.length > 1) {
     return (
       <ModalWindow
         title={`Изменение ответственного для заявки №${incident.id}`}
@@ -82,7 +93,8 @@ const IncidentHandleResponsible: React.FC<IIncidentHandleResponsible> = ({ show,
         textOk={'Сохранить'}
         onOk={() => {
           onHide();
-          !!Api && onClick.call(Api);
+          // !!Api && onClick.call(Api);
+          onClick.call(apiDispatch);
         }}
       >
         <>
