@@ -5,7 +5,6 @@ export interface IIncidentWindowVisa {}
 
 const IncidentWindowVisa: React.FC<IIncidentWindowVisa> = (props) => {
   const incident: TIncident = useSelector((state: IState) => state.incidents.current.incident);
-  console.log(incident);
   return (
     <Fragment>
       <h6>

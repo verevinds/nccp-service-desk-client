@@ -29,13 +29,11 @@ function method(this: any, dispatch: any) {
   return {
     get: (id?: number) => {
       paramQueryBind({ id });
-      console.log('get this', this);
 
       dispatch(queryApi(paramQuery));
       return { ...this, ...method.call(this, dispatch) };
     },
     post: ({ data, params }: { data?: any; params?: any }) => {
-      console.log('post this', this);
       paramQueryBind({ params });
       paramQueryBind({ data: { ...data, ...bindData } });
       paramQueryBind({ method: 'post' });
@@ -43,7 +41,6 @@ function method(this: any, dispatch: any) {
       return { ...this, ...method.call(this, dispatch) };
     },
     put: (id: number, { data, params }: { data?: any; params?: any }) => {
-      console.log('put this', this);
       paramQueryBind({ params });
       paramQueryBind({ data: { ...data, ...bindData } });
       paramQueryBind({ method: 'put' });
@@ -55,7 +52,6 @@ function method(this: any, dispatch: any) {
       paramQueryBind({ method: 'delete' });
       paramQueryBind({ id });
       dispatch(queryApi(paramQuery));
-      console.log('paramQuery', paramQuery);
       return { ...this, ...method.call(this, dispatch) };
     },
   };

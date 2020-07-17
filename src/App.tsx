@@ -189,7 +189,6 @@ const App = () => {
   useLayoutEffect(() => {
     if (!!user) {
       const id = user?.number;
-      console.log('access');
       apiDispatch.access().get(id);
     }
   }, [isUpdateAccess, apiDispatch, user]);

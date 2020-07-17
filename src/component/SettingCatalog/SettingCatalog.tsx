@@ -55,9 +55,7 @@ const SettingCatalog = () => {
   const [filter, setFilter] = useState('');
   const [rules, setRules] = useState<any[]>([]);
   const [isUpdateRules, setIsUpdateRules] = useState(false);
-  useEffect(() => {
-    console.log(paramsRules);
-  }, [paramsRules]);
+
   //** CALLBACKS */
   const handleEvent = useCallback(
     ({ route, list, setCurrent, fact }) => ({ id, value }: TFn) => {
@@ -179,7 +177,7 @@ const SettingCatalog = () => {
     } else {
       event.preventDefault();
       let rules = { ...paramsRules, positionId };
-      console.log(rules);
+
       dispatch(queryApi({ route: 'rules', method: 'post', data: rules }));
     }
     setValidated(true);
