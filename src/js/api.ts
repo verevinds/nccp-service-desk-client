@@ -52,8 +52,10 @@ function method(this: any, dispatch: any) {
       return { ...this, ...method.call(this, dispatch) };
     },
     delete: (id: number) => {
+      paramQueryBind({ method: 'delete' });
       paramQueryBind({ id });
       dispatch(queryApi(paramQuery));
+      console.log('paramQuery', paramQuery);
       return { ...this, ...method.call(this, dispatch) };
     },
   };

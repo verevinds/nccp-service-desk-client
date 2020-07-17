@@ -70,7 +70,7 @@ const HandleMatches = () => {
             },
             vise: () => {
               comments.post({
-                data: { text: `Заявка не завизирована` },
+                data: { text: `Заявка не согласована` },
               });
               match();
             },
