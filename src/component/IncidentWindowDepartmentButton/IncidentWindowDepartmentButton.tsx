@@ -23,7 +23,7 @@ const HandleAllowToCreate = () => {
       return {
         ok: () => {
           comments.post({ data: { text: `Создание заявки согласовано` } });
-          this.incidents().post({
+          this.incidents().put(incidentId, {
             data: {
               allowToCreate: true,
               allowToCreateWork: new Date(),
@@ -37,7 +37,7 @@ const HandleAllowToCreate = () => {
         },
         no: () => {
           comments.post({ data: { text: `Отказано` } });
-          this.incidents().post({ data: { statusId: 8388604 } });
+          this.incidents().put(incidentId, { data: { statusId: 8388604 } });
 
           dispatch(incidentChoose(undefined));
         },
