@@ -6,6 +6,7 @@ import { queryApi } from '../../redux/actionCreators/queryApiAction';
 import { usersCurrentRequestSeccessed } from '../../redux/actionCreators/usersAction';
 import { TUsers, IState } from '../../interface';
 import CardUserButton from '../CardUserButton/CardUserButton';
+import { nameUser } from '../../js/supportingFunction';
 
 interface ICardUser {
   id?: number;
@@ -56,7 +57,7 @@ const CardUser: React.FC<ICardUser> = ({ id, isPopover }) => {
       return (
         <Card>
           <Card.Header>
-            <Card.Text as="h3">{`${user.name1} ${user.name2} ${user.name3} `} </Card.Text>
+            <Card.Text as="h3">{nameUser(user)?.fullName()} </Card.Text>
           </Card.Header>
           <Card.Body>
             <Row>
@@ -88,7 +89,7 @@ const CardUser: React.FC<ICardUser> = ({ id, isPopover }) => {
     else
       return (
         <Container>
-          <h6>{`${user.name1} ${user.name2} ${user.name3} `} </h6>
+          <h6>{nameUser(user)?.fullName()} </h6>
           {img}
           <hr />
           {text(`Email: `, user.email)}

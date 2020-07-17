@@ -1,9 +1,7 @@
 import React, { memo, useState } from 'react';
 import IncidentHandleResponsible from '../IncidentHandleResponsible/IncidentHandleResponsible';
 
-export interface IHandleResponsible {
-  onClick: any;
-}
+export interface IHandleResponsible {}
 
 const HandleResponsible: React.FC<IHandleResponsible> = () => {
   const [show, setShow] = useState(false);

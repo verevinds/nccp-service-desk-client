@@ -13,6 +13,7 @@ import { faAngleRight, faAngleDown, faFileImage, faFile } from '@fortawesome/fre
 import ModalWindow from '../ModalWindow/ModalWindow';
 import PopUpMenu from '../PopupMenu/PopUpMenu';
 import { IState } from '../../interface';
+import { nameUser } from '../../js/supportingFunction';
 
 const IncidentWindowFiles = () => {
   const files = useSelector((state: IState) => state.incidents?.current.incident.files, shallowEqual);
@@ -89,7 +90,7 @@ const IncidentWindowFiles = () => {
                       <td>
                         <pre>{item.name}</pre>
                       </td>
-                      <td>{`${item.user.name1} ${item.user.name2.charAt(0)}. ${item.user.name3.charAt(0)}.`}</td>
+                      <td>{nameUser(item.user)?.initials()}</td>
                       <td>
                         <Moment locale="ru" format="HH:mm D.MM.YYг" withTitle>
                           {item.createdAt}

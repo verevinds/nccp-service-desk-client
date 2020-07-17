@@ -1,4 +1,4 @@
-import { TUser, TIncident } from './../interface';
+import { TUser } from './../interface';
 import { queryApi } from '../redux/actionCreators/queryApiAction';
 import {
   incidentRequestSuccessed,
@@ -15,11 +15,6 @@ import { statusRequestSeccessed } from '../redux/actionCreators/statusAction';
 import { accessRequestSeccessed } from '../redux/actionCreators/accessAction';
 import { usersRequestSeccessed } from '../redux/actionCreators/usersAction';
 
-interface IMethod {
-  get(id?: number | undefined): void;
-  post({ data, params }: { data?: any; params?: any }): void;
-  put(id: number, { data, params }: { data?: any; params?: any }): void;
-}
 function method(this: any, dispatch: any) {
   let { route, actionSuccessed, actionUpdate, params } = this;
   const paramQuery = { route };
@@ -28,34 +23,43 @@ function method(this: any, dispatch: any) {
   paramQueryBind({ actionSuccessed });
   paramQueryBind({ actionUpdate });
   paramQueryBind({ params });
-  console.log('paramQuery this', this);
   const bindData = this.data;
+  this.data = undefined;
+  this.params = undefined;
   return {
-    get(id?: number) {
+    get: (id?: number) => {
       paramQueryBind({ id });
+      console.log('get this', this);
 
       dispatch(queryApi(paramQuery));
-      console.log('paramQuery', paramQuery);
+      return { ...this, ...method.call(this, dispatch) };
     },
-    post({ data, params }: { data?: any; params?: any }) {
+    post: ({ data, params }: { data?: any; params?: any }) => {
+      console.log('post this', this);
       paramQueryBind({ params });
       paramQueryBind({ data: { ...data, ...bindData } });
       paramQueryBind({ method: 'post' });
       dispatch(queryApi(paramQuery));
-      console.log('paramQuery', paramQuery);
+      return { ...this, ...method.call(this, dispatch) };
     },
-    put(id: number, { data, params }: { data?: any; params?: any }) {
-      paramQueryBind({ id });
+    put: (id: number, { data, params }: { data?: any; params?: any }) => {
+      console.log('put this', this);
       paramQueryBind({ params });
       paramQueryBind({ data: { ...data, ...bindData } });
       paramQueryBind({ method: 'put' });
+      paramQueryBind({ id });
       dispatch(queryApi(paramQuery));
-      console.log('paramQuery', paramQuery);
+      return { ...this, ...method.call(this, dispatch) };
+    },
+    delete: (id: number) => {
+      paramQueryBind({ id });
+      dispatch(queryApi(paramQuery));
+      return { ...this, ...method.call(this, dispatch) };
     },
   };
 }
 
-function api(dispatch: any, user?: TUser) {
+function api(dispatch: any) {
   type IActionSuccessed = (data: any) => { type: string; data: any };
   type IActionUpdate = () => { type: string };
   function createRoute(
@@ -67,19 +71,26 @@ function api(dispatch: any, user?: TUser) {
     },
     dataQuery?: { data?: any; params?: any },
   ) {
-    this.route = route;
-    if (dataQuery) {
-      const { data, params } = dataQuery;
-
-      this.params = !!params ? params : undefined;
-      this.data = !!data ? data : undefined;
-    }
-    if (!!action) {
-      const { actionSuccessed, actionUpdate } = action;
+    const handleAction = (action?: any) => {
+      const actionSuccessed = action ? action.actionSuccessed : undefined;
+      const actionUpdate = action ? action.actionUpdate : undefined;
 
       this.actionSuccessed = !!actionSuccessed ? actionSuccessed : undefined;
       this.actionUpdate = !!actionUpdate ? actionUpdate : undefined;
-    }
+
+      return this;
+    };
+    const handleDataQuery = (dataQuery: any) => {
+      const data = dataQuery ? dataQuery.data : undefined;
+      const params = dataQuery ? dataQuery.params : undefined;
+
+      this.params = !!params ? params : undefined;
+      this.data = !!data ? data : undefined;
+    };
+
+    this.route = route;
+    handleDataQuery(dataQuery);
+    handleAction(action);
 
     return method.call(this, dispatch);
   }
@@ -87,14 +98,14 @@ function api(dispatch: any, user?: TUser) {
   const api: IApi = {
     incidents() {
       return {
-        work: () =>
+        work: (user?: TUser) =>
           createRoute.call(
             this,
             'incidents/work',
             { actionSuccessed: incidentRequestSuccessed },
             { params: paramsIncident(user) },
           ),
-        department: () =>
+        department: (user?: TUser) =>
           createRoute.call(
             this,
             'incidents/department',
@@ -106,14 +117,14 @@ function api(dispatch: any, user?: TUser) {
               },
             },
           ),
-        my: () =>
+        my: (user?: TUser) =>
           createRoute.call(
             this,
             'incidents/my',
             { actionSuccessed: myIncidentRequestSuccessed },
             { params: { userNumber: user?.number } },
           ),
-        visa: () =>
+        visa: (user?: TUser) =>
           createRoute.call(
             this,
             'incidents/visa',
@@ -150,9 +161,10 @@ function api(dispatch: any, user?: TUser) {
     matches() {
       return createRoute.call(this, 'matches');
     },
-    comments() {
+    comments(userNumber: number, incidentId: number) {
       const actions = { actionUpdate: incidentCreate };
-      const data = { userNumber: user?.number };
+      const data = { userNumber, incidentId };
+
       return createRoute.call(this, 'comments', actions, { data });
     },
   };
@@ -163,21 +175,41 @@ function api(dispatch: any, user?: TUser) {
 export default api;
 
 export interface IApi {
-  incidents(): {
-    work: (user: TUser) => IMethod;
-    department: (user: TUser) => IMethod;
-    my: (user: TUser) => IMethod;
-    visa: (user: TUser) => IMethod;
-    get(id?: number | undefined): void;
-    post({ data, params }: { data?: any; params?: any }): void;
-    put(id: number, { data, params }: { data?: any; params?: any }): void;
-  };
+  incidents(): IApiIncident;
   catalogs(): IMethod;
   categories(): IMethod;
   positions(): IMethod;
   status(): IMethod;
   access(): IMethod;
   users(): IMethod;
-  matches(): IMethod;
-  comments(): IMethod;
+  matches(): IMethodMatches;
+  comments(userNumber: number, incidentId: number): IMethodComments;
+}
+interface IApiIncident extends IMethod {
+  work: (user: TUser) => IMethod;
+  department: (user: TUser) => IMethod;
+  my: (user: TUser) => IMethod;
+  visa: (user: TUser) => IMethod;
+}
+interface IMethod {
+  get(id?: number | undefined): any;
+  post({ data, params }: { data?: any; params?: any }): any;
+  put(id: number, { data, params }: { data?: any; params?: any }): any;
+  delete(id: number): any;
+}
+interface IMethodComments extends IMethod {
+  post({ data, params }: { data: { text: string }; params?: any }): any;
+}
+interface IMethodMatches extends IMethod {
+  post({
+    data,
+    params,
+  }: {
+    data: {
+      code: number;
+      incidentId: number;
+      params?: {};
+    };
+    params?: any;
+  }): any;
 }

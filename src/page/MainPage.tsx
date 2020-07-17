@@ -1,7 +1,7 @@
 import React, { memo, useMemo, useLayoutEffect, Suspense } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 /** Typescript interface & type */
-import { IState, TIncident, TPropsParams, TUser, TIncidents } from '../interface';
+import { IState, TPropsParams, TUser, TIncidents } from '../interface';
 /** Action creators */
 import { incidentChoose } from '../redux/actionCreators/incidentAction';
 import { incidentRequestSuccessed } from '../redux/actionCreators/incidentAction';
@@ -9,6 +9,7 @@ import { incidentRequestSuccessed } from '../redux/actionCreators/incidentAction
 import SpinnerGrow from '../component/SpinnerGrow/SpinnerGrow';
 import { IncidentContext } from '../component/Incident/IncidentContext';
 import IncidentWindowButton from '../component/IncidentWindowButton/IncidentWindowButton';
+import { findById } from '../js/supportingFunction';
 const Incident = React.lazy(() => import('../component/Incident/Incident'));
 
 const MainPage = (props: TPropsParams) => {
@@ -38,8 +39,7 @@ const MainPage = (props: TPropsParams) => {
   /** Если передается id  в адресной строке, выбрать заявку, иначе обнулить выбранное */
   useLayoutEffect(() => {
     const id = props.match.params.id;
-    const incidentById = (item: TIncident) => item.id === Number(id);
-    const incident = incidents.find(incidentById);
+    const incident = findById(incidents, id);
 
     dispatch(incidentChoose(incident));
   }, [incidents, dispatch, props.match.params.id]);

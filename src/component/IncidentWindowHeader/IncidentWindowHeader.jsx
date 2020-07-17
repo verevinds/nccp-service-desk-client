@@ -7,6 +7,7 @@ import IncidentInWork from '../IncidentInWork/IncidentInWork';
 import IncidentStatus from '../IncidentStatus/IncidentStatus';
 
 import { Card } from 'react-bootstrap';
+import { nameUser } from '../../js/supportingFunction';
 
 const IncidentWindowHeader = () => {
   const incident = useSelector((state) => state.incidents?.current.incident, shallowEqual);
@@ -21,10 +22,7 @@ const IncidentWindowHeader = () => {
               <span className="ml-1 mr-1">|</span>
               <IncidentInWork
                 startWork={incident.startWork}
-                nameResponsible={`
-                ${incident.responsibleUser.name1} ${incident.responsibleUser.name2.charAt(
-                  0,
-                )}.${incident.responsibleUser.name3.charAt(0)}.`}
+                nameResponsible={nameUser(incident.responsibleUser).initials()}
                 number={incident.responsibleUser.number}
               />
             </>

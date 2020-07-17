@@ -1,62 +1,85 @@
 import React, { memo, useMemo, useContext, useCallback } from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
-import { shallowEqual, useSelector } from 'react-redux';
-import { IState, TIncidentCurrent, TMatch, TUser } from '../../interface';
-import { AppContext, IApi } from '../../AppContext';
+import { useSelector } from 'react-redux';
+import { IState, TIncidentCurrent, TMatch, TUser, TIncident } from '../../interface';
+import { AppContext } from '../../AppContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHandshake, faHandshakeSlash } from '@fortawesome/free-solid-svg-icons';
+import { IApi } from '../../js/api';
 
 const HandleMatches = () => {
   const {
     incident: { matches, currentResponsible },
-  }: TIncidentCurrent = useSelector((state: IState) => state.incidents.current, shallowEqual);
+  }: TIncidentCurrent = useSelector((state: IState) => state.incidents.current);
+  const incident: TIncident = useSelector((state: IState) => state.incidents.current);
+
   const user: TUser = useSelector((state: IState) => state.auth.user);
-  const { Api } = useContext(AppContext);
+  const { apiDispatch } = useContext(AppContext);
 
-  const onClick = useCallback(function (this: IApi, item: TMatch) {
-    return {
-      ok: () => {
-        let match = () => this.match({ method: 'put', data: { isMatch: true }, id: item.id });
+  const onClick = useCallback(
+    function (this: IApi, item: TMatch) {
+      const comments = this.comments(user.number, incident.id);
+      return {
+        ok: () => {
+          let match = () => this.matches().put(item.id, { data: { isMatch: true } });
 
-        return {
-          responsible: () => {
-            this.comments(`Ответственный согласован`);
-            this.incidents({ data: { startWork: new Date(), statusId: 1, consent: true } });
-            match();
-          },
-          transfer: () => {
-            this.comments(`Перевод согласован`);
-            this.incidents({ data: { startWork: null, statusId: 0, currentResponsible: null, ...item.params } });
-            match();
-          },
-          vise: () => {
-            this.comments(`Заявка завизирована`);
-            this.incidents({ data: { statusId: 1, ...item.params } });
-            match();
-          },
-        };
-      },
-      cansel: () => {
-        let match = () => this.match({ method: 'delete', id: item.id });
+          return {
+            responsible: () => {
+              comments.post({
+                data: { text: `Ответственный согласован` },
+              });
+              this.incidents().put(incident.id, { data: { startWork: new Date(), statusId: 1, consent: true } });
+              match();
+            },
+            transfer: () => {
+              comments.post({
+                data: { text: `Перевод согласован` },
+              });
+              this.incidents().put(incident.id, {
+                data: { startWork: null, statusId: 0, currentResponsible: null, ...item.params },
+              });
+              match();
+            },
+            vise: () => {
+              comments.post({
+                data: { text: `Заявка завизирована` },
+              });
+              this.incidents().put(incident.id, { data: { statusId: 1, ...item.params } });
+              match();
+            },
+          };
+        },
+        cansel: () => {
+          let match = () => this.matches().delete(item.id);
 
-        return {
-          responsible: () => {
-            this.comments(`Отказано в назначение ответственного`);
-            this.incidents({ data: { startWork: null, statusId: 0, currentResponsible: null, consent: false } });
-            match();
-          },
-          transfer: () => {
-            this.comments(`Отказано в переводе`);
-            match();
-          },
-          vise: () => {
-            this.comments(`Заявка не завизирована`);
-            match();
-          },
-        };
-      },
-    };
-  }, []);
+          return {
+            responsible: () => {
+              comments.post({
+                data: { text: `Отказано в назначение ответственного` },
+              });
+              this.incidents().put(incident.id, {
+                data: { startWork: null, statusId: 0, currentResponsible: null, consent: false },
+              });
+              match();
+            },
+            transfer: () => {
+              comments.post({
+                data: { text: `Отказано в переводе` },
+              });
+              match();
+            },
+            vise: () => {
+              comments.post({
+                data: { text: `Заявка не завизирована` },
+              });
+              match();
+            },
+          };
+        },
+      };
+    },
+    [user.number, incident.id],
+  );
 
   function createButton(okText: string, okOnClick: () => void, cancelOnClick: () => void, isMatch: boolean) {
     let okVariant = 'success';
@@ -75,9 +98,9 @@ const HandleMatches = () => {
   }
 
   let jsxButton = useMemo(() => {
-    if (Api) {
+    if (apiDispatch) {
       let button = matches.map((item: TMatch) => {
-        let onClickBind = onClick.call(Api, item);
+        let onClickBind = onClick.call(apiDispatch, item);
 
         if (user.position.level)
           switch (item.code) {
@@ -112,7 +135,7 @@ const HandleMatches = () => {
 
       return button;
     }
-  }, [matches, user, Api, onClick, currentResponsible]);
+  }, [matches, user, apiDispatch, onClick, currentResponsible]);
 
   return (
     <>

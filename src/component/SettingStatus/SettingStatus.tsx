@@ -5,12 +5,13 @@ import { queryApi } from '../../redux/actionCreators/queryApiAction';
 import { statusUpdate } from '../../redux/actionCreators/statusAction';
 
 import { Col, Row } from 'react-bootstrap';
-import { IState, TStatus, TStatusies } from '../../interface';
+import { IState, TStatus } from '../../interface';
+import { findById } from '../../js/supportingFunction';
 
 const SettingStatus = () => {
   const [parentId, setParentId] = useState(0);
   const [childrenId, setChildrenId] = useState(0);
-  const { list }: TStatusies = useSelector((state: IState) => state.status, shallowEqual);
+  const statuses: TStatus[] = useSelector((state: IState) => state.status.list);
   const category = useSelector((state: IState) => state.catalog.list, shallowEqual);
   const dispatch = useDispatch();
   const route = 'status';
@@ -30,7 +31,7 @@ const SettingStatus = () => {
   );
 
   const handleEvent = useCallback(
-    ({ route, list, fact }) => ({ id, value }: any) => {
+    ({ route, statuses, fact }) => ({ id, value }: any) => {
       let data;
       let method = 'put';
       if (value) {
@@ -38,15 +39,18 @@ const SettingStatus = () => {
           name: value,
         };
       }
+
+      const status = findById(statuses, id);
+
       switch (fact) {
         case 'favorites':
           data = {
-            level: Number(!list.find((item: TStatus) => item.id === id).level),
+            level: Number(!status.level),
           };
           break;
         case 'archive':
           data = {
-            isArchive: Number(!list.find((item: TStatus) => item.id === id).isArchive),
+            isArchive: Number(!status.isArchive),
           };
           break;
         case 'delete':
@@ -75,7 +79,7 @@ const SettingStatus = () => {
   );
 
   useEffect(() => {
-    let parent: TStatus | undefined = list && list.find((item: TStatus) => item.id === parentId);
+    let parent: TStatus | undefined = findById(statuses, parentId);
 
     if (parent && !!childrenId && !!parentId) {
       let bindId = 0;
@@ -110,17 +114,17 @@ const SettingStatus = () => {
       }
       setChildrenId(0);
     }
-  }, [parentId, childrenId, dispatch, category, list]);
+  }, [parentId, childrenId, dispatch, category, statuses]);
 
   return (
     <Col>
       <h2>Статус</h2>
       <Row>
         <List
-          list={list}
-          onSubmit={handleEvent({ route, list })}
-          onDelete={handleEvent({ route, list, fact: 'delete' })}
-          onArchive={handleEvent({ route, list, fact: 'archive' })}
+          list={statuses}
+          onSubmit={handleEvent({ route, statuses: statuses })}
+          onDelete={handleEvent({ route, statuses: statuses, fact: 'delete' })}
+          onArchive={handleEvent({ route, statuses: statuses, fact: 'archive' })}
           handleBind={{ id: parentId, handleBind: handleBindParent, bindDelete: handleBindChild }}
           xs={3}
         />

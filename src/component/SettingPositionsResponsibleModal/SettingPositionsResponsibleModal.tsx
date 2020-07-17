@@ -9,6 +9,7 @@ import { responsibleRequestSuccessed, responsibleUpdate } from '../../redux/acti
 import ButtonFontAwesome from '../ButtonFontAwesome/ButtonFontAwesome';
 import { faTrash, faPlus } from '@fortawesome/free-solid-svg-icons';
 import Axios from 'axios';
+import { findById } from '../../js/supportingFunction';
 export interface ISettingPositionsResponsibleModal {
   show: boolean;
   setShow: (agr0: boolean) => void;
@@ -56,15 +57,12 @@ const SettingPositionsResponsibleModal: React.FC<ISettingPositionsResponsibleMod
     });
   }, []);
 
-  const categories: TCategory[] | undefined = useMemo(() => {
-    return departments.find((item: TDepartment) => item.id === responsible.departmentId)?.categories;
-  }, [departments, responsible]);
-  const properties = useMemo(() => {
-    if (!!categoryId) return categories?.find((item: TCategory) => item.id === Number(categoryId))?.properties;
-  }, [categories, categoryId]);
-  const options = useMemo(() => {
-    if (!!categoryId) return categories?.find((item: TCategory) => item.id === Number(categoryId))?.options;
-  }, [categories, categoryId]);
+  const categories: TCategory[] | undefined = useMemo(
+    () => findById(departments, responsible.departmentId)?.categories,
+    [departments, responsible],
+  );
+  const properties = useMemo(() => findById(categories, categoryId)?.properties, [categories, categoryId]);
+  const options = useMemo(() => findById(categories, categoryId)?.options, [categories, categoryId]);
 
   useEffect(() => {
     if (id)
@@ -179,9 +177,8 @@ const SettingPositionsResponsibleModal: React.FC<ISettingPositionsResponsibleMod
             ? undefined
             : responsibles?.list?.map((item: TResponsible, index: number) => (
                 <ListGroup.Item className="flex flex_row flex_between" key={index}>
-                  {categories?.find((elem: TCategory) => elem.id === Number(item.categoryId))}{' '}
-                  {arrayProperty?.find((elem: TProperty) => elem.id === Number(item.propertyId))?.name}{' '}
-                  {arrayOption?.find((elem: TOption) => elem.id === Number(item.optionId))?.name}
+                  {findById(categories, item.categoryId)?.name} {findById(arrayProperty, item.propertyId)?.name}{' '}
+                  {findById(arrayOption, item.optionId)?.name}
                   <ButtonFontAwesome
                     variant={'danger'}
                     faIcon={faTrash}

@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import ModalWindow from '../ModalWindow/ModalWindow';
 import ModalTunePanel from './ModalTunePanel';
 import { queryApi } from '../../redux/actionCreators/queryApiAction';
-import { IState, TCategory, TPropertyParam, TOption } from '../../interface';
+import { IState, TCategory, TPropertyParam } from '../../interface';
 import { categoryUpdate } from '../../redux/actionCreators/catalogAction';
 import styles from './styles.module.scss';
 import ConstructorInput from '../ConstructorInput/ConstructorInput';
@@ -12,6 +12,7 @@ import ConstructorInput from '../ConstructorInput/ConstructorInput';
 import { BoardContext } from '../Board/BoardContext';
 import { Button } from 'react-bootstrap';
 import Board from '../Board/Board';
+import { findById } from '../../js/supportingFunction';
 
 export interface IModalTune {
   setShow: (agr: boolean) => void;
@@ -53,9 +54,8 @@ const ModalTune: React.FC<IModalTune> = ({ show, setShow, id }) => {
     });
 
   const optionsParams = useMemo(() => {
-    const findProperty = (item: TOption) => item.id === id;
-    let category = catalogs?.find((item: TCategory) => item.options.find(findProperty));
-    let options = category?.options.find(findProperty);
+    let category = catalogs?.find((item: TCategory) => findById(item.options, id));
+    let options = findById(category?.options, id);
 
     return options?.params;
   }, [catalogs, id]);

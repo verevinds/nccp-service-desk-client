@@ -5,6 +5,7 @@ import styles from './styles.module.css';
 //Bootstrap
 import { Button } from 'react-bootstrap';
 import { IState, TStatusies } from '../../interface';
+import { findById } from '../../js/supportingFunction';
 
 const IncidentStatus: React.FC<IIncidentStatus> = () => {
   const status = useSelector((state: IState) => state.incidents?.current.incident.statusId, shallowEqual);
@@ -59,7 +60,7 @@ const IncidentStatus: React.FC<IIncidentStatus> = () => {
     return (
       <>
         <Button variant={variant} style={{ backgroundColor: color }} disabled size="sm" className={styles.item}>
-          {list.find((item: any) => item.id === status)?.name}
+          {findById(list, status)?.name}
         </Button>
       </>
     );

@@ -8,6 +8,7 @@ import { Form, Button, ListGroup } from 'react-bootstrap';
 import { IState, TCategory, TProperty, TOption, TUser } from '../../interface';
 import { useMemo } from 'react';
 import { filterSet } from '../../redux/actionCreators/filterAction';
+import { findById } from '../../js/supportingFunction';
 export interface ISidebarTitle {
   title: string;
 }
@@ -190,9 +191,7 @@ const SidebarTitle: React.FC<ISidebarTitle> = ({ title }) => {
                   {filter.categories.map((item: any) => (
                     <ListGroup.Item>
                       <div className="flex flex_row flex_between">
-                        {!!categories.length
-                          ? categories.find((element: TCategory) => element.id === Number(item))?.name
-                          : 'Загрузка...'}
+                        {!!categories.length ? findById(categories, item)?.name : 'Загрузка...'}
                         <ButtonFontAwesome
                           faIcon={faTrash}
                           onClick={() => {
@@ -217,10 +216,7 @@ const SidebarTitle: React.FC<ISidebarTitle> = ({ title }) => {
                   {filter.properties.map((item: any, index: number) => (
                     <ListGroup.Item key={index}>
                       <div className="flex flex_row flex_between">
-                        {!!properties.length
-                          ? properties.find((element: { id: number; name: string }) => element.id === Number(item))
-                              ?.name
-                          : 'Загрузка...'}
+                        {!!properties.length ? findById(properties, item)?.name : 'Загрузка...'}
                         <ButtonFontAwesome
                           faIcon={faTrash}
                           onClick={() => {
@@ -246,9 +242,7 @@ const SidebarTitle: React.FC<ISidebarTitle> = ({ title }) => {
                   {filter.options.map((item: any) => (
                     <ListGroup.Item>
                       <div className="flex flex_row flex_between">
-                        {!!options.length
-                          ? options.find((element: { id: number; name: string }) => element.id === Number(item))?.name
-                          : 'Загрузка...'}{' '}
+                        {!!options.length ? findById(options, item)?.name : 'Загрузка...'}{' '}
                         <ButtonFontAwesome
                           faIcon={faTrash}
                           onClick={() => {

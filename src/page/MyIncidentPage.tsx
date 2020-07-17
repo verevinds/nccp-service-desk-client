@@ -1,7 +1,7 @@
 import React, { memo, useLayoutEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 /** Typescript interface & type */
-import { TPropsParams, IState, TIncident, TAuth } from '../interface';
+import { TPropsParams, IState, TAuth } from '../interface';
 /**My components */
 import Incident from '../component/Incident/Incident';
 import { IncidentContext } from '../component/Incident/IncidentContext';
@@ -9,6 +9,7 @@ import IncidentWindowMyButton from '../component/IncidentWindowMyButton/Incident
 /** Action creators */
 import { myIncidentRequestSuccessed } from '../redux/actionCreators/incidentAction';
 import { incidentChoose } from '../redux/actionCreators/incidentAction';
+import { findById } from '../js/supportingFunction';
 
 const MyIncidentPage = (props: TPropsParams) => {
   const { user }: TAuth = useSelector((state: IState) => state.auth);
@@ -17,7 +18,7 @@ const MyIncidentPage = (props: TPropsParams) => {
 
   useLayoutEffect(() => {
     let id = props.match.params.id;
-    let incident = incidents.find((item: TIncident) => item.id === Number(id));
+    let incident = findById(incidents, id);
 
     dispatch(incidentChoose(incident));
     // eslint-disable-next-line

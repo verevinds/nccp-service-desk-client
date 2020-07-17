@@ -22,6 +22,7 @@ import ModalWindow from '../ModalWindow/ModalWindow';
 import Axios from 'axios';
 import ButtonFontAwesome from '../ButtonFontAwesome/ButtonFontAwesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { findById } from '../../js/supportingFunction';
 
 export type TFn = {
   id?: number;
@@ -74,12 +75,12 @@ const SettingCatalog = () => {
       switch (fact) {
         case 'favorites':
           data = {
-            level: Number(!list.find((item: any) => item.id === id).level),
+            level: Number(!findById(list, id)?.level),
           };
           break;
         case 'archive':
           data = {
-            isArchive: Number(!list.find((item: any) => item.id === id).isArchive),
+            isArchive: Number(!findById(list, id)?.isArchive),
           };
           if (setCurrent) setCurrent(undefined);
           break;
@@ -120,15 +121,14 @@ const SettingCatalog = () => {
 
   /** SIDE EFFECTS*/
   useEffect(() => {
-    let department: TDepartment | undefined = catalog.department.find((item: any) => item.id === departmentIdCurrent);
-    let category: TCategory | undefined =
-      department && department.categories.find((item: any) => item.id === categoryIdCurrent);
+    let department: TDepartment | undefined = findById(catalog.department, departmentIdCurrent);
+    let category: TCategory | undefined = department && findById(department.categories, categoryIdCurrent);
     setCategorySubList(category);
   }, [categoryIdCurrent, catalog, departmentIdCurrent]);
 
   useEffect(() => {
     let properties = categorySubList && categorySubList.properties;
-    let parent: TProperty | undefined = properties && properties.find((item: TProperty) => item.id === parentId);
+    let parent: TProperty | undefined = properties && findById(properties, parentId);
     if (parent && !!childrenId && !!parentId) {
       let bindId = 0;
       //@ts-ignore
@@ -236,7 +236,7 @@ const SettingCatalog = () => {
           <ListGroup variant="flush">
             {rules.map((item: any) => (
               <ListGroup.Item className="flex flex_between">
-                {positions.find((elem: TPosition) => Number(elem.id) === Number(item?.positionId))?.name}
+                {findById(positions, item?.positionId)?.name}
                 <ButtonFontAwesome
                   variant="danger"
                   faIcon={faTrash}

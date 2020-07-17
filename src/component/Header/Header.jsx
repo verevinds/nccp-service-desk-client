@@ -2,6 +2,7 @@ import React, { memo, useEffect, useState, useMemo } from 'react';
 import CreateIncident from '../CreateIncident/CreateIncident';
 import styles from './styles.module.css';
 import logo from '../../images/logo.webp';
+import { nameUser } from '../../js/supportingFunction';
 /**Bootstrap component */
 import { Navbar, Nav, Image, Button, Badge } from 'react-bootstrap';
 import { useSelector, shallowEqual } from 'react-redux';
@@ -32,12 +33,9 @@ const Header = (props) => {
   /**Получаем полное имя при изменение сущности users в store */
   const [fullName, setFullName] = useState('');
   useEffect(() => {
-    if (!!user) {
-      setFullName(`${user.name1 || 'N'} ${user.name2 || 'N'}`);
-    } else {
-      setFullName(`Гость`);
-    }
+    !!user ? setFullName(nameUser(user)?.fullName()) : setFullName(`Гость`);
   }, [user]);
+
   const [page, setPage] = useState(window.location.pathname);
   const newIncidentCount = useMemo(() => {
     if (listIncident) {

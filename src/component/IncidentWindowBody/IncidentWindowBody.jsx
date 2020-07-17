@@ -14,6 +14,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAddressCard, faAt, faPhone, faDesktop } from '@fortawesome/free-solid-svg-icons';
 import IncidentWindowBodyCustom from '../IncidentWindowBodyCustom/IncidentWindowBodyCustom';
 import IncidentWindowVisa from '../IncidentWindowVisa/IncidentWindowVisa';
+import { nameUser } from '../../js/supportingFunction';
 
 const IncidentWindowBody = ({ handleOpen }) => {
   const { myIncident, Buttons } = useContext(IncidentContext);
@@ -48,11 +49,7 @@ const IncidentWindowBody = ({ handleOpen }) => {
                     </div>
                   }
                 >
-                  <span className="pointer">
-                    {`${incident.initiatorUser.name1 || ''} ${incident.initiatorUser.name2 || ''} ${
-                      incident.initiatorUser.name3 || ''
-                    }`}
-                  </span>
+                  <span className="pointer">{nameUser(incident.initiatorUser)?.fullName()}</span>
                 </OverlayTrigger>
               </td>
             </tr>

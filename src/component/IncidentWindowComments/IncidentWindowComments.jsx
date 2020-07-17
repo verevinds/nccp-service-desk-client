@@ -10,6 +10,7 @@ import { Card, Accordion, Table } from 'react-bootstrap';
 //? Font Awesome иконки
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleRight, faAngleDown } from '@fortawesome/free-solid-svg-icons';
+import { nameUser } from '../../js/supportingFunction';
 
 const IncidentWindowComments = () => {
   const [accordion, setAccordion] = useState(false);
@@ -48,7 +49,7 @@ const IncidentWindowComments = () => {
                       <td>
                         <pre>{item.text}</pre>
                       </td>
-                      <td>{`${item.user.name1} ${item.user.name2.charAt(0)}. ${item.user.name3.charAt(0)}.`}</td>
+                      <td>{nameUser(item.user).initials()}</td>
                       <td>
                         <Moment locale="ru" format="HH:mm D.MM.YYг" withTitle>
                           {item.createdAt}

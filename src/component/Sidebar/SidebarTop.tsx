@@ -1,30 +1,24 @@
 import React, { memo, useMemo, useContext, Fragment } from 'react';
 import { useSelector } from 'react-redux';
 import styles from './siderbar.module.scss';
-import { IState, TUser, TIncident } from '../../interface';
+import { IState, TIncident } from '../../interface';
 import { IncidentContext } from '../Incident/IncidentContext';
+import { nameUser } from '../../js/supportingFunction';
 
 export interface ISidebarTop {
   item: TIncident;
 }
 
-const SidebarTop: React.FC<ISidebarTop> = ({ item }) => {
+const SidebarTop: React.FC<ISidebarTop> = ({ item: { currentResponsible, userNumber } }) => {
   let { isMyIncidentsPage } = useContext(IncidentContext);
   const users = useSelector((state: IState) => state.users.list);
 
-  const responsibleUserName = useMemo(() => {
-    let user = users.find((elem: TUser) => elem.number === item.currentResponsible);
+  const responsibleUserName = useMemo(() => nameUser(users, currentResponsible)?.initials(), [
+    users,
+    currentResponsible,
+  ]);
 
-    if (user) return `${user.name1} ${user.name2.charAt(0)}. ${user.name2.charAt(0)}.`;
-    return undefined;
-  }, [users, item.currentResponsible]);
-
-  const initiatorUserName = useMemo(() => {
-    let user = users.find((elem: TUser) => elem.number === item.userNumber);
-
-    if (user) return `${user.name1} ${user.name2.charAt(0)}. ${user.name2.charAt(0)}.`;
-    return undefined;
-  }, [users, item.userNumber]);
+  const initiatorUserName = useMemo(() => nameUser(users, userNumber)?.initials(), [users, userNumber]);
 
   return (
     <Fragment>

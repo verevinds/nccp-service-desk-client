@@ -8,6 +8,7 @@ import UploadFiles from '../UploadFiles/UploadFiles';
 import { fileUpload } from '../UploadFiles/fileUpload';
 import { fileFetching } from '../../redux/actionCreators/fileAction';
 import { toast } from 'react-toastify';
+import { findById } from '../../js/supportingFunction';
 
 const IncidentHandleStatus = ({ show, onHide, inWork, isModify }) => {
   const dispatch = useDispatch();
@@ -95,16 +96,10 @@ const IncidentHandleStatus = ({ show, onHide, inWork, isModify }) => {
       uploadFile(file);
 
       if (newStatus.statusId !== incident.statusId) {
-        if (inWork)
-          fnNewComment(
-            `Возвращена в статус "${list.find((item) => item.id === newStatus.statusId).name}". Причина: ${newComment}`,
-          );
-        else
-          fnNewComment(
-            `Заявка переведена в статус "${
-              list.find((item) => item.id === newStatus.statusId).name
-            }". Сообщение: ${newComment}`,
-          );
+        const name = findById(list, newStatus.statusId)?.name;
+
+        if (inWork) fnNewComment(`Возвращена в статус "${name}". Причина: ${newComment}`);
+        else fnNewComment(`Заявка переведена в статус "${name}". Сообщение: ${newComment}`);
       } else fnNewComment(newComment);
 
       dispatch(
@@ -136,7 +131,7 @@ const IncidentHandleStatus = ({ show, onHide, inWork, isModify }) => {
           <Form.Label>Изменить статус</Form.Label>
           <Form.Control
             as="select"
-            defaultValue={inWork || isModify ? 1 : list.find((item) => item.id === incident.statusId).id}
+            defaultValue={inWork || isModify ? 1 : findById(list, incident.statusId)?.id}
             onChange={handleStatus}
             disabled={inWork || isModify}
           >

@@ -3,6 +3,7 @@ import List from '../List/List';
 import { useSelector, shallowEqual } from 'react-redux';
 import { THandleEvent } from '../SettingCatalog/SettingCatalog';
 import { IState, TDepartment, TCategory } from '../../interface';
+import { findById } from '../../js/supportingFunction';
 
 export interface ISettingCatalogCategory extends THandleEvent {
   departmentIdCurrent?: number;
@@ -25,8 +26,7 @@ const SettingCatalogCategory: React.FC<ISettingCatalogCategory> = ({
   const [categoryJsx, setCategoryJsx] = useState<JSX.Element | undefined>();
 
   useEffect(() => {
-    let department: TDepartment | undefined =
-      departments && departments.find((item: any) => item.id === departmentIdCurrent);
+    let department: TDepartment | undefined = departments && findById(departments, departmentIdCurrent);
     let updateCategory: TCategory[] | undefined | never[] = department && department.categories;
 
     setCategoryList(updateCategory);

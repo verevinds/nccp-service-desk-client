@@ -24,17 +24,17 @@ import { departmentRequestSuccessed } from './redux/actionCreators/departmentAct
 import { statusRequestSeccessed } from './redux/actionCreators/statusAction';
 import { accessRequestSeccessed } from './redux/actionCreators/accessAction';
 import { filterSet } from './redux/actionCreators/filterAction';
-import { incidentCreate, incidentVisaRequestSuccessed } from './redux/actionCreators/incidentAction';
+import { incidentVisaRequestSuccessed } from './redux/actionCreators/incidentAction';
 import { incidentAllowToCreateRequestSuccessed, incidentChoose } from './redux/actionCreators/incidentAction';
 import { positionsRequestSeccessed } from './redux/actionCreators/positionAction';
 import { settingRequestSuccessed } from './redux/actionCreators/settingAction';
 
 /**Bootstrap components */
-import { ProgressBar, Button } from 'react-bootstrap';
+import { ProgressBar } from 'react-bootstrap';
 import { incidentRequestSuccessed, myIncidentRequestSuccessed } from './redux/actionCreators/incidentAction';
 import Cookies from 'universal-cookie';
 import AuthModal from './component/AuthModal/AuthModal';
-import { queryApi, IQueryApi } from './redux/actionCreators/queryApiAction';
+import { queryApi } from './redux/actionCreators/queryApiAction';
 import { usersRequestSeccessed } from './redux/actionCreators/usersAction';
 import Axios from 'axios';
 import InfoPage from './page/InfoPage';
@@ -42,9 +42,10 @@ import { versionSet } from './redux/actionCreators/versionAction';
 import { AppContext } from './AppContext';
 import MyDepartmentPage from './page/MyDepartmentPage';
 import VisaPage from './page/VisaPage';
-import { IState, TIncident } from './interface';
+import { IState } from './interface';
 import SpinnerGrow from './component/SpinnerGrow/SpinnerGrow';
 import api from './js/api';
+import { findById } from './js/supportingFunction';
 
 const App = () => {
   const cookies = new Cookies();
@@ -57,6 +58,7 @@ const App = () => {
     catalog: { isUpdate: isUpdateCatalog },
     status: { isUpdate: isUpdateStatus },
     positions: { isUpdate: isUpdatePositions },
+    access: { isUpdate: isUpdateAccess },
     incidents: {
       isUpdate: isUpdateIncident,
       current: { incident },
@@ -69,66 +71,7 @@ const App = () => {
     users: { isUpdate: isUpdateUsers },
     auth: { user },
   }: IState = useSelector((state: IState) => state);
-  const apiDispatch = useMemo(() => api(dispatch, user), [dispatch, user]);
-
-  const Api = useMemo(() => {
-    return {
-      catalogs(props: IQueryApi) {
-        dispatch(
-          queryApi({
-            route: 'catalogs',
-            actionSuccessed: departmentRequestSuccessed,
-            ...props,
-            data: {
-              ...props.data,
-            },
-          }),
-        );
-
-        dispatch(
-          queryApi({
-            route: 'categories',
-            actionSuccessed: categoryRequestSuccessed,
-          }),
-        );
-      },
-      comments(text: string) {
-        dispatch(
-          queryApi({
-            route: 'comments',
-            method: 'post',
-            actionUpdate: incidentCreate,
-            data: {
-              userNumber: user.number,
-              incidentId: incident.id,
-              text,
-            },
-          }),
-        );
-      },
-      incidents(props: IQueryApi) {
-        dispatch(
-          queryApi({
-            method: 'put',
-            route: 'incidents',
-            id: incident?.id,
-            ...props,
-            data: {
-              ...props.data,
-            },
-          }),
-        );
-      },
-      match(props: IQueryApi) {
-        dispatch(
-          queryApi({
-            route: 'matches',
-            ...props,
-          }),
-        );
-      },
-    };
-  }, [dispatch, incident, user]);
+  const apiDispatch = useMemo(() => api(dispatch), [dispatch]);
 
   /** Получить сохраненные данные из локального хранилища */
   useLayoutEffect(() => {
@@ -246,10 +189,10 @@ const App = () => {
   useLayoutEffect(() => {
     if (!!user) {
       const id = user?.number;
-
+      console.log('access');
       apiDispatch.access().get(id);
     }
-  }, [isUpdateStatus, apiDispatch, user]);
+  }, [isUpdateAccess, apiDispatch, user]);
   /** Загрузка и обновление информации по сотрудникам */
   useLayoutEffect(() => {
     apiDispatch.users().get();
@@ -258,13 +201,13 @@ const App = () => {
   //** Если обновляется заявка, то обновляем выбранную заявку */
   useEffect(() => {
     if (incident) {
-      let incidentById = (item: TIncident) => item.id === incident.id;
+      const { id } = incident;
 
-      let foundAllowToCreate = allowToCreate.find(incidentById);
-      let foundHistory = history.find(incidentById);
-      let foundList = list.find(incidentById);
-      let foundMyList = myList.find(incidentById);
-      let foundVisa = visa.find(incidentById);
+      let foundAllowToCreate = findById(allowToCreate, id);
+      let foundHistory = findById(history, id);
+      let foundList = findById(list, id);
+      let foundMyList = findById(myList, id);
+      let foundVisa = findById(visa, id);
 
       dispatch(incidentChoose(foundAllowToCreate || foundHistory || foundList || foundMyList || foundVisa));
     }
@@ -272,7 +215,7 @@ const App = () => {
 
   if (!!user)
     return (
-      <AppContext.Provider value={{ Api, apiDispatch }}>
+      <AppContext.Provider value={{ apiDispatch }}>
         <BrowserRouter>
           <Header />
           <HandleSocket />

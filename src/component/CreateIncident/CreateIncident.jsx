@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import queryString from 'query-string';
 import moment from 'moment-business-days';
 import { toast } from 'react-toastify';
+import { nameUser, findById } from '../../js/supportingFunction';
 //** My components */
 import CreateIncidentSelect from '../CreateIncidentSelect/CreateIncidentSelect';
 import ModalWindow from '../ModalWindow/ModalWindow';
@@ -68,7 +69,7 @@ const CreateIncidentModel = ({ handleClose, showModal, isModify }) => {
       level: 0,
       departmentId: currentIdDepartment,
       positionId: null,
-      name: `${user.name1} ${user.name2} ${user.name3}`,
+      name: nameUser(user)?.fullName(),
       email: user.email,
       userNumber: user.number,
       phone1: user.phone1,
@@ -165,17 +166,19 @@ const CreateIncidentModel = ({ handleClose, showModal, isModify }) => {
 
   useEffect(() => {
     if (currentProperties) {
-      const property = currentProperties.find((item) => item.id === currentIdProperty);
+      const property = findById(currentProperties, currentIdProperty);
       const date = new Date();
       const finishWork = new Date(moment(date, 'DD-MM-YYYY').businessAdd(property?.deadline - 1)._d).toISOString();
       property && !isModify && setFinishWork(finishWork);
 
-      setProperty(currentProperties.find((item) => item.id === currentIdProperty));
+      setProperty(property);
     }
   }, [currentIdProperty, currentProperties, isModify]);
 
   useEffect(() => {
-    setOptions(currentOptions.find((item) => item.id === currentIdOption));
+    const option = findById(currentOptions, currentIdOption);
+
+    setOptions(option);
   }, [currentIdOption, currentOptions]);
   //? Устанавливаем эффект на каждое изменение состояния номера текущей категории
   useEffect(() => {

@@ -4,6 +4,7 @@ import { queryApi } from '../../redux/actionCreators/queryApiAction';
 import { positionsRequestSeccessed, positionsUpdate } from '../../redux/actionCreators/positionAction';
 import List from '../List/List';
 import SettingPositionsResponsibleModal from '../SettingPositionsResponsibleModal/SettingPositionsResponsibleModal';
+import { findById } from '../../js/supportingFunction';
 
 const SettingPositions = (props) => {
   const dispatch = useDispatch();
@@ -30,7 +31,7 @@ const SettingPositions = (props) => {
           route,
           method: 'put',
           data: {
-            level: Number(!list.find((item) => item.id === id).level),
+            level: Number(!findById(list, id)?.level),
           },
         }),
       );

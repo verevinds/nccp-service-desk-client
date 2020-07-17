@@ -2,17 +2,18 @@ import React, { memo, useContext, useCallback, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { ButtonGroup, Button } from 'react-bootstrap';
 import { IncidentWindowContext } from '../IncidentWindow/IncidentWindowContext';
-import { IState } from '../../interface';
-import { AppContext, IApi } from '../../AppContext';
+import { IState, TIncident } from '../../interface';
+import { AppContext } from '../../AppContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faUndo } from '@fortawesome/free-solid-svg-icons';
+import { IApi } from '../../js/api';
 export interface IIncidentWindowMyButton {}
 
 const IncidentWindowMyButton: React.FC<IIncidentWindowMyButton> = (props) => {
   const { handleModify, handleOpen } = useContext(IncidentWindowContext);
-  const { Api } = useContext(AppContext);
+  const { apiDispatch } = useContext(AppContext);
   const { name1, name2, name3, number } = useSelector((state: IState) => state.auth.user);
-  const incident = useSelector((state: IState) => state.incidents.current.incident);
+  const incident: TIncident = useSelector((state: IState) => state.incidents.current.incident);
   const { category, property, option, statusId, userNumber } = useSelector(
     (state: IState) => state.incidents.current.incident,
   );
@@ -21,14 +22,15 @@ const IncidentWindowMyButton: React.FC<IIncidentWindowMyButton> = (props) => {
 
   const onClick = useCallback(
     function (this: IApi) {
+      const comments = this.comments(number, incident.id);
       return {
         inWork: () => {
           let incidentData, commentText, match;
+
           if (category?.level || property?.level || option?.level) {
             incidentData = { currentResponsible: number, statusId: 0 };
             commentText = `${fullName} назначил себя ответственный. Ожидает согласования.`;
             match = {
-              method: 'post',
               data: { code: 1, incidentId: incident.id },
             };
           } else {
@@ -40,14 +42,14 @@ const IncidentWindowMyButton: React.FC<IIncidentWindowMyButton> = (props) => {
             commentText = `Заявка переведена в статус "В работе". Ответственным назначен: ${fullName}`;
           }
 
-          this.comments(commentText);
-          this.incidents({ data: { ...incidentData } });
-          this.match({ ...match });
+          comments.post({ data: { text: commentText } });
+          this.incidents().put(incident.id, { data: { ...incidentData } });
+          if (match) this.matches().post(match);
         },
 
         closeWork: () => {
-          this.comments(`Заявка закрыта.`);
-          this.incidents({ data: { statusId: 8388608, closeWork: new Date().toISOString() } });
+          comments.post({ data: { text: `Заявка закрыта.` } });
+          this.incidents().put(incident.id, { data: { statusId: 8388608, closeWork: new Date().toISOString() } });
         },
       };
     },
@@ -66,7 +68,7 @@ const IncidentWindowMyButton: React.FC<IIncidentWindowMyButton> = (props) => {
 
       {Number(statusId) === 8388607 && userNumber === number ? (
         <ButtonGroup aria-label="Basic example">
-          <Button variant="outline-primary" size="sm" onClick={() => Api && onClick.call(Api).closeWork()}>
+          <Button variant="outline-primary" size="sm" onClick={() => onClick.call(apiDispatch).closeWork()}>
             Закрыть
           </Button>
           <Button onClick={() => handleOpen().inWork()} size="sm">

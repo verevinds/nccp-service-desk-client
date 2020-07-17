@@ -15,8 +15,8 @@ export function* queryApiAsync({ route, actionSuccessed, actionUpdate, method, d
       Object.assign(data, { params });
     }
     // console.group(route);
-    // console.dir('actionSuccessed', actionSuccessed);
-    // console.dir('actionUpdate', actionUpdate);
+    // console.dir(actionSuccessed);
+    // console.dir(actionUpdate);
     // console.log('method', method);
     // console.log('data', data);
     // console.log('id', id);

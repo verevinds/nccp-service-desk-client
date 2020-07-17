@@ -5,7 +5,9 @@ import { useSelector } from 'react-redux';
 import { TDepartment, IState, TUser, TIncident } from '../../interface';
 import { Form } from 'react-bootstrap';
 import { useCallback } from 'react';
-import { AppContext, IApi } from '../../AppContext';
+import { AppContext } from '../../AppContext';
+import { nameUser } from '../../js/supportingFunction';
+import { IApi } from '../../js/api';
 
 const IncidentHandleVise = () => {
   const { handleVise } = useContext(IncidentWindowContext);
@@ -16,15 +18,10 @@ const IncidentHandleVise = () => {
   const department: TDepartment[] = useSelector((state: IState) => state.catalog.department);
   const users: TUser[] = useSelector((state: IState) => state.users.list);
   const user: TUser = useSelector((state: IState) => state.auth.user);
-  const { Api } = useContext(AppContext);
-
-  const visePerson = useMemo(() => {
-    return users.find((item: TUser) => item.number === Number(chooseUser));
-  }, [chooseUser, users]);
+  const { apiDispatch } = useContext(AppContext);
 
   const matchHandle = useMemo(() => {
     return {
-      method: 'post',
       data: {
         code: 3,
         incidentId: incident?.id,
@@ -38,15 +35,17 @@ const IncidentHandleVise = () => {
 
   const onClick = useCallback(
     function (this: IApi) {
-      this.comments(
-        `${user.name1} ${user.name2.charAt(0)} ${user.name3.charAt(0)} отправил(а) заявку на визирование` +
-          ` ${visePerson?.name1} ${user.name2.charAt(0)} ${user.name3.charAt(0)}`,
-      );
-      this.incidents({ data: { currentResponsible: chooseUser, statusId: 8388606, departmentId: chooseDepartment } });
-      this.match(matchHandle);
+      const text = `Заявка отправлена на согласование к сотруднику: ` + nameUser(user)?.initials();
+
+      this.comments(user.number, incident.id).post({ data: { text } });
+      this.incidents().put(incident.id, {
+        data: { currentResponsible: chooseUser, statusId: 8388606, departmentId: chooseDepartment },
+      });
+      this.matches().post(matchHandle);
     },
-    [matchHandle, chooseDepartment, chooseUser, user, visePerson],
+    [matchHandle, chooseDepartment, chooseUser, user, incident],
   );
+
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -54,7 +53,7 @@ const IncidentHandleVise = () => {
       event.stopPropagation();
     } else {
       event.preventDefault();
-      Api && onClick.call(Api);
+      onClick.call(apiDispatch);
     }
 
     setValidated(true);

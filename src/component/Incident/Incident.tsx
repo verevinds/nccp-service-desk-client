@@ -13,8 +13,9 @@ import IncidentWindow from '../IncidentWindow/IncidentWindow';
 /**Bootstrap components */
 import { Row, Col, Container } from 'react-bootstrap';
 import { IncidentContext } from './IncidentContext';
-import { IState, TIncident, TAuth, TIncidents } from '../../interface';
+import { IState, TAuth, TIncidents } from '../../interface';
 import SpinnerGrow from '../SpinnerGrow/SpinnerGrow';
+import { findById } from '../../js/supportingFunction';
 
 const Incident = () => {
   // Обработчик состояния номера выбранной заявки
@@ -79,8 +80,8 @@ const Incident = () => {
 
   useEffect(() => {
     if (chooseIncidentId) {
-      const thisHistory = history?.find((item: TIncident) => item.id === chooseIncidentId);
-      const thisList = incidents?.find((item: TIncident) => item.id === chooseIncidentId);
+      const thisHistory = history && findById(history, chooseIncidentId);
+      const thisList = incidents && findById(incidents, chooseIncidentId);
 
       const incident = thisHistory ? thisHistory : thisList;
 

@@ -7,10 +7,11 @@ import { IState, TUser, TCatalog, TDepartment, TCategory, TProperty, TOption } f
 import { useCallback } from 'react';
 import { AppContext } from '../../AppContext';
 import { IApi } from '../../js/api';
+import { findById } from '../../js/supportingFunction';
 
 const IncidentHandleDepartment = ({ show, onHide }: IIncidentHandleDepartment) => {
   const catalog: TCatalog = useSelector((state: IState) => state.catalog);
-  const { departmentId: userDepartmentId }: TUser = useSelector((state: IState) => state.auth.user);
+  const { departmentId: userDepartmentId, number: userNumber }: TUser = useSelector((state: IState) => state.auth.user);
   const { id } = useSelector((state: IState) => state.incidents.current.incident);
   const incident = useSelector((state: IState) => state.incidents.current.incident);
   const { apiDispatch } = useContext(AppContext);
@@ -54,7 +55,7 @@ const IncidentHandleDepartment = ({ show, onHide }: IIncidentHandleDepartment) =
   const [optionList, setOptionList] = useState<TOption[]>([]);
   useEffect(() => {
     if (!!categoryList) {
-      let currentCategory = categoryList.find((item: any) => Number(item.id) === Number(currentCategoryId));
+      let currentCategory: TCategory | undefined = findById(categoryList, currentCategoryId);
 
       if (!!currentCategory) {
         if (!!currentCategory.properties.length) {
@@ -114,7 +115,6 @@ const IncidentHandleDepartment = ({ show, onHide }: IIncidentHandleDepartment) =
     );
   };
   const matchHandle = {
-    method: 'post',
     data: {
       code: 2,
       incidentId: id,
@@ -130,16 +130,16 @@ const IncidentHandleDepartment = ({ show, onHide }: IIncidentHandleDepartment) =
 
   const onClick = useCallback(
     function (this: IApi) {
-      if (incident) {
+      if (incident && userNumber) {
         const text = `Назначен перевод в "${
-          departmentList.find((item: TDepartment) => Number(item.id) === Number(currentDepartmentId))?.name
+          findById(departmentList, currentDepartmentId)?.name
         }". Перевод осуществится после согласования руководителя.`;
 
-        this.comments().post({ data: { incidentId: incident?.id, text } });
+        this.comments(userNumber, incident?.id).post({ data: { text } });
         this.matches().post(matchHandle);
       }
     },
-    [matchHandle, currentDepartmentId, departmentList, incident],
+    [matchHandle, currentDepartmentId, departmentList, incident, userNumber],
   );
 
   return (

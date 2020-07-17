@@ -6,6 +6,7 @@ import { incidentChoose } from '../redux/actionCreators/incidentAction';
 import { IncidentContext } from '../component/Incident/IncidentContext';
 import IncidentWindowDepartmentButton from '../component/IncidentWindowDepartmentButton/IncidentWindowDepartmentButton';
 import Incident from '../component/Incident/Incident';
+import { findById } from '../js/supportingFunction';
 export interface IMyDepartmentPage {}
 
 const MyDepartmentPage: React.FC<any> = (props) => {
@@ -15,7 +16,7 @@ const MyDepartmentPage: React.FC<any> = (props) => {
 
   useLayoutEffect(() => {
     let id = props.match.params.id;
-    let incident = incidents.find((item) => item.id === Number(id));
+    let incident = findById(incidents, id);
 
     dispatch(incidentChoose(incident));
     // eslint-disable-next-line
