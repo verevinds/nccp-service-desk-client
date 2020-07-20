@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import SettingAccess from '../component/SettingAccess/SettingAccess';
 import SettingSubscription from '../component/SettingSubscription/SettingSubscription';
 import List from '../component/List/List';
+import SettingResource from '../component/SettingResource/SettingResource';
 const SettingPositions = React.lazy(() => import('../component/SettingPositions/SettingPositions'));
 
 const SettingPage = (props) => {
@@ -16,6 +17,7 @@ const SettingPage = (props) => {
     let list = [];
     list.push({ name: 'Пользователи', id: 4 });
     list.push({ name: 'Подписки', id: 5 });
+    list.push({ name: 'Ресурсы', id: 6 });
     if (isAccess) {
       list.push({ name: 'Каталог', id: 1 });
       list.push({ name: 'Статус', id: 2 });
@@ -54,7 +56,9 @@ const SettingPage = (props) => {
       case 5:
         setJsxContent(<SettingSubscription />);
         break;
-
+      case 6:
+        setJsxContent(<SettingResource />);
+        break;
       default:
         setJsxContent(<p className="align-content-center">Контент находиться в разработке</p>);
         break;

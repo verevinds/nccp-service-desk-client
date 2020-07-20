@@ -5,6 +5,7 @@ import { InputGroup, FormControl } from 'react-bootstrap';
 //? Font Awesome иконки
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { nameUser } from '../../js/supportingFunction';
 
 interface IFilterQuery {
   setList: (list: never[] | any[]) => void;
@@ -17,9 +18,13 @@ const FilterQuery: React.FC<IFilterQuery> = ({ setList, list }) => {
     if (list && setList) {
       setList(
         list
-          .filter((item: any) => ~item?.name.toLowerCase().indexOf(text.toLowerCase()))
+          .filter((item: any) =>
+            item?.name
+              ? ~item?.name.toLowerCase().indexOf(text.toLowerCase())
+              : ~`${nameUser(item)?.fullName()}`.toLowerCase().indexOf(text.toLowerCase()),
+          )
           .sort((a: any, b: any) => (b.id < a.id ? 1 : -1))
-          .sort((a: any, b: any) => (b.name < a.name ? 1 : -1)),
+          .sort((a: any, b: any) => (b.name && a.name ? (b.name < a.name ? 1 : -1) : b.name1 < a.name1 ? 1 : -1)),
       );
     }
   }, [list, text, setList]);

@@ -29,7 +29,9 @@ const ListItemTag: React.FC<IListItemTag> = ({ list, cursor, handleBind }) => {
                     if (e.ctrlKey) if (handleBind) if (handleBind.bindDelete) handleBind.bindDelete(item.item.id);
                   }}
                 >
-                  {item?.item.name}
+                  {item?.item.name
+                    ? item?.item.name
+                    : `${item?.item.name1} ${item?.item.name2.charAt(0)}.${item?.item.name3.charAt(0)}.`}
                 </li>
               </Fade>
             );

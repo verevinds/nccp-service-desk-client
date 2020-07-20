@@ -15,7 +15,33 @@ export interface IState {
   };
   responsible: IResponsible;
   setting: any;
+  resources: IResource;
 }
+export interface IResource {
+  isUpdate: boolean;
+  list?: TResource[];
+}
+export type TResource = {
+  id: number;
+  name: string;
+  holderId: number;
+  creatorId: number;
+  creatorPositionId: number;
+  creatorDepartmentId: number;
+  isArchive: null | boolean;
+  createdAt: string;
+  updatedAt: string;
+  creatorDepartment: {
+    name: string;
+    parent: null | number;
+  };
+  creatorPosition: {
+    name: string;
+    parent: null | number;
+  };
+  creator: TUser;
+  bind: any;
+};
 export interface IPositions {
   isUpdate: boolean;
   isLoading: boolean;

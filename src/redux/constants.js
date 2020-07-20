@@ -26,7 +26,9 @@ export const CATALOG_UPDATE = 'CATALOG_UPDATE';
 
 /** Константы для параметров*/
 export const PROPERTY_POST = 'PROPERTY_POST';
-
+/** Константы для ресурсов*/
+export const RESOURCE_REQUEST_SUCCESSED = 'RESOURCE_REQUEST_SUCCESSED';
+export const RESOURCE_UPDATE = 'RESOURCE_UPDATE';
 /** Константы для опций*/
 export const OPTION_POST = 'OPTION_POST';
 /** Константы для настроек*/

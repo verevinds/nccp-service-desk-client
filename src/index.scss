@@ -86,6 +86,7 @@ code {
 .align_items-center {
   position: fixed;
   top: 50%;
+  left: 0;
 }
 .btn-primary {
   background-color: var(--blue);
@@ -110,6 +111,13 @@ code {
 }
 .custom-control-label {
   cursor: pointer;
+}
+.w100 {
+  width: 100%;
+}
+
+.h100 {
+  height: 100%;
 }
 :root {
   --blue: #597ba5;
