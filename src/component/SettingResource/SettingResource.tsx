@@ -87,7 +87,7 @@ const SettingResource = () => {
     [setChildrenId],
   );
 
-  if (false)
+  if (resources && users)
     return (
       <Fragment>
         <h1>Ресурсы</h1>
