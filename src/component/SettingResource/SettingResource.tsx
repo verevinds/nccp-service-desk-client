@@ -90,9 +90,9 @@ const SettingResource = () => {
   if (resources && users)
     return (
       <Fragment>
-        <h1>Ресурсы</h1>
         <Row>
           <List
+            title="Ресурсы"
             list={resources}
             onSubmit={handleAdd}
             onArchive={handleArchive}
@@ -100,6 +100,7 @@ const SettingResource = () => {
             xs={5}
           />
           <List
+            title="Сотрудники"
             list={users.filter((user: TUser) => !user.fired)}
             handleBind={{ id: childrenId, handleBind: handleBindChild }}
             xs={7}

@@ -20,7 +20,7 @@ export interface ISettingSubscriptionCard {
 const SettingSubscriptionCard: React.FC<ISettingSubscriptionCard> = ({ title, text, code, warning }) => {
   const [subscription, setSubscription] = useState<ISubscription | undefined>();
   const user: TUser = useSelector((state: IState) => state.auth.user);
-  const subscriptions = useSelector((state: IState) => state.subscription.list);
+  const subscriptions: ISubscription[] = useSelector((state: IState) => state.subscription.list);
   const { isLoading } = useSelector((state: IState) => state.subscription);
   const [isSubscription, setIsSubscription] = useState(false);
   const dispatch = useDispatch();
@@ -79,7 +79,8 @@ const SettingSubscriptionCard: React.FC<ISettingSubscriptionCard> = ({ title, te
   }, [queryParams, dispatch]);
 
   useEffect(() => {
-    let subscription = findById(subscriptions, code);
+    let subscription =
+      Array.isArray(subscriptions) && subscriptions.find((subscription: ISubscription) => subscription.code === code);
 
     if (!!subscription) {
       setSubscription(subscription);
