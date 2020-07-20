@@ -5,13 +5,10 @@ import { AppContext } from '../../AppContext';
 import { IState, TResource, TUser } from '../../interface';
 import { IApi } from '../../js/api';
 import { findById } from '../../js/supportingFunction';
-import { queryApi } from '../../redux/actionCreators/queryApiAction';
-import { statusUpdate } from '../../redux/actionCreators/statusAction';
 import List from '../List/List';
 import SpinnerGrow from '../SpinnerGrow/SpinnerGrow';
-export interface ISettingResource {}
 
-const SettingResource: React.FC<ISettingResource> = (props) => {
+const SettingResource = () => {
   const { apiDispatch } = useContext(AppContext);
   const api: IApi = useMemo(() => apiDispatch, [apiDispatch]);
   const { list: resources, isUpdate } = useSelector((state: IState) => state.resources);
@@ -20,19 +17,6 @@ const SettingResource: React.FC<ISettingResource> = (props) => {
 
   const [parentId, setParentId] = useState(0);
   const [childrenId, setChildrenId] = useState(0);
-  const handleBindParent = useCallback(
-    (id: number) => {
-      setParentId(id);
-    },
-    [setParentId],
-  );
-
-  const handleBindChild = useCallback(
-    (id: number) => {
-      setChildrenId(id);
-    },
-    [setChildrenId],
-  );
 
   useEffect(() => {
     let parent: TResource | undefined = findById(resources, parentId);
@@ -50,27 +34,8 @@ const SettingResource: React.FC<ISettingResource> = (props) => {
       });
 
       if (!!bindId) {
-        // dispatch(
-        //   queryApi({
-        //     route: 'status/bind',
-        //     actionUpdate: statusUpdate,
-        //     method: 'delete',
-        //     id: bindId,
-        //   }),
-        // );
         api.resourcesBind().delete(bindId);
       } else {
-        // dispatch(
-        //   queryApi({
-        //     route: 'status/bind',
-        //     actionUpdate: statusUpdate,
-        //     method: 'post',
-        //     data: {
-        //       categoryId: childrenId,
-        //       statusId: parentId,
-        //     },
-        //   }),
-        // );
         api.resourcesBind().post({
           data: {
             userNumber: childrenId,
@@ -80,12 +45,9 @@ const SettingResource: React.FC<ISettingResource> = (props) => {
       }
       setChildrenId(0);
     }
-
-    console.log(parentId, childrenId);
   }, [parentId, childrenId, resources, api]);
 
   useLayoutEffect(() => {
-    // dispatch(queryApi({ route: 'resources', actionSuccessed: resourceRequestSuccessed }));
     api.resources().get({ creatorDepartmentId: user.departmentId });
   }, [isUpdate, api, user]);
 
@@ -112,8 +74,20 @@ const SettingResource: React.FC<ISettingResource> = (props) => {
     },
     [api, resources],
   );
+  const handleBindParent = useCallback(
+    (id: number) => {
+      setParentId(id);
+    },
+    [setParentId],
+  );
+  const handleBindChild = useCallback(
+    (id: number) => {
+      setChildrenId(id);
+    },
+    [setChildrenId],
+  );
 
-  if (resources && users)
+  if (false)
     return (
       <Fragment>
         <h1>Ресурсы</h1>
