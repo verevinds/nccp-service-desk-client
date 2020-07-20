@@ -30,6 +30,10 @@ export type TList = {
   level?: number;
   isArchive?: boolean;
   bind: TItemTag[];
+  name1?: string;
+  name2?: string;
+  name3?: string;
+  number?: number;
 };
 
 export interface IList extends IHandle {

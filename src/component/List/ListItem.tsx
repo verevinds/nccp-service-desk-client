@@ -41,7 +41,7 @@ export type THandleBind = {
   bindDelete?: (id: number) => void;
 };
 const ListItem: React.FC<IListItem> = ({
-  item: { id, name, level, noChange, isArchive, bind },
+  item: { id, name, level, noChange, isArchive, bind, name1, name2, name3, number },
   onClick,
   onDelete,
   onFavorites,
@@ -52,6 +52,8 @@ const ListItem: React.FC<IListItem> = ({
   handleResponsible,
   handleRules,
 }) => {
+  if (!id && number) id = number;
+
   const [cursor, setCursor] = useState<string | undefined>(undefined);
   const { user } = useSelector((state: IState) => state.auth, shallowEqual);
   const { activeId, setActiveId } = useContext(ListContext);
@@ -261,7 +263,7 @@ const ListItem: React.FC<IListItem> = ({
                   }
                 }}
               >
-                <span>{name}</span>
+                <span>{name ? name : `${name1} ${name2} ${name3}`}</span>
               </div>
             </Col>
             {!!content && !cursor ? (
@@ -273,7 +275,7 @@ const ListItem: React.FC<IListItem> = ({
             ) : undefined}
 
             <Col xs={1} className={`${styles.icon}`}>
-              {id === activeId ? <FontAwesomeIcon icon={faAngleRight} /> : undefined}
+              {id === activeId && onClick ? <FontAwesomeIcon icon={faAngleRight} /> : undefined}
             </Col>
           </Row>
         </Fade>

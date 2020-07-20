@@ -14,22 +14,24 @@ import { positionsRequestSeccessed } from '../redux/actionCreators/positionActio
 import { statusRequestSeccessed } from '../redux/actionCreators/statusAction';
 import { accessRequestSeccessed } from '../redux/actionCreators/accessAction';
 import { usersRequestSeccessed } from '../redux/actionCreators/usersAction';
+import { resourceRequestSuccessed, resourceUpdate } from '../redux/actionCreators/resourcesAction';
 
 function method(this: any, dispatch: any) {
   let { route, actionSuccessed, actionUpdate, params } = this;
-  const paramQuery = { route };
+  const paramQuery: { route: string; actionUpdate?: any } = { route };
   const paramQueryBind = (arg: any) =>
     !!Object.values(arg)[0] && Object.assign(paramQuery, { [Object.keys(arg)[0]]: Object.values(arg)[0] });
-  paramQueryBind({ actionSuccessed });
-  paramQueryBind({ actionUpdate });
   paramQueryBind({ params });
   const bindData = this.data;
   this.data = undefined;
   this.params = undefined;
+  paramQueryBind({ actionUpdate });
   return {
-    get: (id?: number) => {
-      paramQueryBind({ id });
-
+    get: (id?: number | object) => {
+      if (typeof id === 'number') paramQueryBind({ id });
+      else paramQueryBind({ params: id });
+      paramQueryBind({ actionSuccessed });
+      delete paramQuery?.actionUpdate;
       dispatch(queryApi(paramQuery));
       return { ...this, ...method.call(this, dispatch) };
     },
@@ -165,6 +167,16 @@ function api(dispatch: any) {
 
       return createRoute.call(this, 'comments', actions, { data });
     },
+    resources() {
+      const actions = { actionSuccessed: resourceRequestSuccessed, actionUpdate: resourceUpdate };
+
+      return createRoute.call(this, 'resources', actions);
+    },
+
+    resourcesBind() {
+      const actions = { actionSuccessed: resourceRequestSuccessed, actionUpdate: resourceUpdate };
+      return createRoute.call(this, 'resources/bind', actions);
+    },
   };
 
   return api;
@@ -182,6 +194,8 @@ export interface IApi {
   users(): IMethod;
   matches(): IMethodMatches;
   comments(userNumber: number, incidentId: number): IMethodComments;
+  resources(): IMethodResource;
+  resourcesBind(): IMethodResourceBind;
 }
 interface IApiIncident extends IMethod {
   work: (user: TUser) => IMethod;
@@ -190,10 +204,20 @@ interface IApiIncident extends IMethod {
   visa: (user: TUser) => IMethod;
 }
 interface IMethod {
-  get(id?: number | undefined): any;
+  get(id?: number | object): any;
   post({ data, params }: { data?: any; params?: any }): any;
   put(id: number, { data, params }: { data?: any; params?: any }): any;
   delete(id: number): any;
+}
+interface IMethodResource extends IMethod {
+  post({
+    data,
+  }: {
+    data: { name: string; creatorId: number; creatorPositionId: number; creatorDepartmentId: number };
+  }): any;
+}
+interface IMethodResourceBind extends IMethod {
+  post({ data }: { data: { userNumber: number; resourceId: number } }): any;
 }
 interface IMethodComments extends IMethod {
   post({ data, params }: { data: { text: string }; params?: any }): any;
