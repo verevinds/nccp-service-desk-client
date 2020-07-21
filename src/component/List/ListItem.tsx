@@ -39,6 +39,7 @@ export type THandleBind = {
   subId?: number[] | [];
   handleBind: (id: number) => void;
   bindDelete?: (id: number) => void;
+  tagDelete?: (id: number) => void;
 };
 const ListItem: React.FC<IListItem> = ({
   item: { id, name, level, noChange, isArchive, bind, name1, name2, name3, number },

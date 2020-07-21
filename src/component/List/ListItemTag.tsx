@@ -14,6 +14,7 @@ export type TItemTag = {
 };
 
 const ListItemTag: React.FC<IListItemTag> = ({ list, cursor, handleBind }) => {
+  console.dir(handleBind);
   return (
     <>
       <ul className={styles.tags}>
@@ -26,7 +27,7 @@ const ListItemTag: React.FC<IListItemTag> = ({ list, cursor, handleBind }) => {
                   className={`${styles.tag} ${!!cursor ? styles.tagbind : ''} `}
                   key={index}
                   onClick={(e) => {
-                    if (e.ctrlKey) if (handleBind) if (handleBind.bindDelete) handleBind.bindDelete(item.item.id);
+                    if (e.ctrlKey) if (handleBind) if (handleBind.tagDelete) handleBind.tagDelete(item.id);
                   }}
                 >
                   {item?.item.name

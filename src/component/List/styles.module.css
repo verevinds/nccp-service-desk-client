@@ -28,6 +28,7 @@
   z-index: 1;
   margin-top: 10px;
   overflow: hidden;
+  display: contents;
 }
 
 .tags li {

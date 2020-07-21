@@ -86,7 +86,13 @@ const SettingResource = () => {
     },
     [setChildrenId],
   );
-
+  const tagDelete = useCallback(
+    (id) => {
+      api.resourcesBind().delete(id);
+      console.log('id', id);
+    },
+    [api],
+  );
   if (resources && users)
     return (
       <Fragment>
@@ -96,7 +102,7 @@ const SettingResource = () => {
             list={resources}
             onSubmit={handleAdd}
             onArchive={handleArchive}
-            handleBind={{ id: parentId, handleBind: handleBindParent, bindDelete: handleBindChild }}
+            handleBind={{ id: parentId, handleBind: handleBindParent, bindDelete: handleBindChild, tagDelete }}
             xs={5}
           />
           <List
