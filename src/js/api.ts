@@ -129,7 +129,7 @@ function api(dispatch: any) {
             this,
             'incidents/visa',
             { actionSuccessed: incidentVisaRequestSuccessed },
-            { params: { hasVisa: false, positionId: user?.positionId } },
+            { params: { hasVisa: false, positionId: user?.positionId, userNumber: user?.number } },
           ),
         ...createRoute.call(this, 'incidents', { actionUpdate: incidentCreate }),
       };

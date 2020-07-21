@@ -70,6 +70,7 @@ const App = () => {
     },
     users: { isUpdate: isUpdateUsers },
     auth: { user },
+    resources: { isUpdate: isUpdateResources },
   }: IState = useSelector((state: IState) => state);
   const apiDispatch = useMemo(() => api(dispatch), [dispatch]);
 
@@ -196,7 +197,10 @@ const App = () => {
   useLayoutEffect(() => {
     apiDispatch.users().get();
   }, [isUpdateUsers, apiDispatch]);
-
+  /** Занрузка и обновление ресурсов */
+  useLayoutEffect(() => {
+    if (user) apiDispatch.resources().get({ creatorDepartmentId: user.departmentId });
+  }, [isUpdateResources, apiDispatch, user]);
   //** Если обновляется заявка, то обновляем выбранную заявку */
   useEffect(() => {
     if (incident) {

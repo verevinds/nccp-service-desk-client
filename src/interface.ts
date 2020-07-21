@@ -114,16 +114,19 @@ export type TIncident = {
 };
 export type TRulesList = {
   hasVisa: boolean;
+  userNumber: number | null;
   position: {
     id: number;
-    users: {
-      number: number;
-      name1: string;
-      name2: string;
-      name3: string;
-      fired: number;
-    }[];
-  };
+    users: TRulesListPositionUser[];
+  } | null;
+  user: TUser | null;
+};
+export type TRulesListPositionUser = {
+  number: number;
+  name1: string;
+  name2: string;
+  name3: string;
+  fired: number;
 };
 export type TMatch = {
   isMatch: false;

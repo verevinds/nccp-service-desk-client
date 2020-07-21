@@ -6,10 +6,10 @@ export interface IArrayWithId {
 }
 type TId = number | null | string;
 type IFindById = (array?: IArrayWithId[], id?: TId) => any;
-export const findUser = (users: TUser[] | TUser, numberUser?: TId) =>
+export const findUser = (users: TUser[] | TUser | null, numberUser?: TId) =>
   Array.isArray(users) ? users.find((item: TUser) => item.number === Number(numberUser)) : users;
 
-export const nameUser = (user: TUser[] | TUser, numberUser?: TId) => {
+export const nameUser = (user: TUser[] | TUser | null, numberUser?: TId) => {
   const selectUser = findUser(user, numberUser);
 
   if (!selectUser) return undefined;

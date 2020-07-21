@@ -1,6 +1,6 @@
 import React, { memo, useState, useMemo } from 'react';
 import { Form } from 'react-bootstrap';
-import { IState, TDepartment, TPropertyParam, TUser } from '../../interface';
+import { IState, TDepartment, TPropertyParam, TResource, TUser } from '../../interface';
 import { useSelector } from 'react-redux';
 import styles from './styles.module.scss';
 
@@ -19,8 +19,9 @@ const ConstructorInput: React.FC<IConstructorInput> = ({ input, id, onChange, pa
   let formControl;
   const [state, setState] = useState<string | undefined>(input.value);
   const [isSwitchOn, setIsSwitchOn] = useState<boolean | undefined>(!!input.value);
-  const department: TDepartment[] = useSelector((state: IState) => state.catalog.department);
+  const departments: TDepartment[] = useSelector((state: IState) => state.catalog.department);
   const users: TUser[] = useSelector((state: IState) => state.users.list);
+  const resources: TResource[] = useSelector((state: IState) => state.resources?.list);
   const user: TUser = useSelector((state: IState) => state.auth.user);
 
   const usersHandled = useMemo(() => {
@@ -103,6 +104,7 @@ const ConstructorInput: React.FC<IConstructorInput> = ({ input, id, onChange, pa
       break;
 
     case 'list':
+      console.log('input.select', input.select);
       formControl = (
         <div key={`select-${id}`}>
           <Form.Control
@@ -116,21 +118,28 @@ const ConstructorInput: React.FC<IConstructorInput> = ({ input, id, onChange, pa
             <option value="">
               {input.select === 'departments' && 'Выберите отдел'}
               {input.select === 'users' && 'Выберите сотрудника'}
+              {input.select === 'resources' && 'Выберите ресурс'}
             </option>
             {input.select === 'departments' &&
-              department
-                .filter((item: TDepartment) => item.name !== 'НЕ ИСПОЛЬЗОВАТЬ')
-                .map((item: TDepartment, index: number) => (
-                  <option value={item.name} key={index}>
-                    {item.name}
+              departments
+                .filter((department: TDepartment) => department.name !== 'НЕ ИСПОЛЬЗОВАТЬ')
+                .map((department: TDepartment, index: number) => (
+                  <option value={department.name} key={index}>
+                    {department.name}
                   </option>
                 ))}
-            {usersHandled &&
-              usersHandled.map((item: TUser, index: number) => (
-                <option value={`${item.name1} ${item.name2} ${item.name3}`} key={index}>
-                  {`${item.name1} ${item.name2} ${item.name3}`}
-                </option>
-              ))}
+            {input.select === 'users' && usersHandled
+              ? usersHandled.map((user: TUser, index: number) => (
+                  <option value={`${user.name1} ${user.name2} ${user.name3}`} key={index}>
+                    {`${user.name1} ${user.name2} ${user.name3}`}
+                  </option>
+                ))
+              : undefined}
+            {input.select === 'resources' && resources
+              ? resources.map((resource: TResource, index: number) => (
+                  <option value={resource.id}>{resource.name}</option>
+                ))
+              : undefined}
           </Form.Control>
           {!!input.description ? <Form.Text className="text-muted">{input.description}</Form.Text> : undefined}
         </div>

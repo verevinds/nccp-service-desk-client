@@ -1,4 +1,4 @@
-import React, { memo, Fragment, useLayoutEffect, useCallback, useContext, useMemo, useState, useEffect } from 'react';
+import React, { memo, Fragment, useCallback, useContext, useMemo, useState, useEffect } from 'react';
 import { Row } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { AppContext } from '../../AppContext';
@@ -11,7 +11,7 @@ import SpinnerGrow from '../SpinnerGrow/SpinnerGrow';
 const SettingResource = () => {
   const { apiDispatch } = useContext(AppContext);
   const api: IApi = useMemo(() => apiDispatch, [apiDispatch]);
-  const { list: resources, isUpdate } = useSelector((state: IState) => state.resources);
+  const { list: resources } = useSelector((state: IState) => state.resources);
   const user: TUser = useSelector((state: IState) => state.auth.user);
   const users: TUser[] = useSelector((state: IState) => state.users.list);
 
@@ -47,9 +47,9 @@ const SettingResource = () => {
     }
   }, [parentId, childrenId, resources, api]);
 
-  useLayoutEffect(() => {
-    api.resources().get({ creatorDepartmentId: user.departmentId });
-  }, [isUpdate, api, user]);
+  // useLayoutEffect(() => {
+  //   api.resources().get({ creatorDepartmentId: user.departmentId });
+  // }, [isUpdate, api, user]);
 
   const handleAdd = useCallback(
     ({ id, value }) => {

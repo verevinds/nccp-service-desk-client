@@ -33,7 +33,13 @@ const VisaIncidentButton: React.FC<IVisaIncidentButton> = (props) => {
             queryApi({
               route: 'ruleslists/isvisa',
               method: 'put',
-              data: { positionId: user.positionId, incidentId: incident.id, hasVisa: true, hasVisaAt: new Date() },
+              data: {
+                positionId: user.positionId,
+                userNumber: user.number,
+                incidentId: incident.id,
+                hasVisa: true,
+                hasVisaAt: new Date(),
+              },
             }),
           );
           dispatch(incidentChoose(undefined));

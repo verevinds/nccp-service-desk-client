@@ -76,7 +76,7 @@ const ModalTune: React.FC<IModalTune> = ({ show, setShow, id }) => {
     <Fragment>
       <ModalWindow
         show={show}
-        title="Настройка параметра"
+        title="Настройка формы"
         onHide={() => setShow(false)}
         onOk={() => {
           dispatch(

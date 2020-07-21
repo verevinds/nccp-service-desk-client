@@ -104,7 +104,7 @@ const IncidentWindowBody = ({ handleOpen }) => {
       <IncidentWindowBodyCustom />
       <Buttons incident={incident} handleOpen={handleOpen} user={user} myIncident={myIncident} />
       <br />
-      <IncidentWindowVisa />
+      {incident.rules_lists.length ? <IncidentWindowVisa /> : undefined}
       <br />
       <IncidentWindowComments />
       <br />
