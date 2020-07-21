@@ -164,6 +164,7 @@ const SettingCatalog = () => {
 
   const handleRules = useCallback(
     (nameParams: string) => ({ id }: { id: number }) => {
+      setRules([]);
       setParamsRules({ [`${nameParams}`]: id });
       setShow(true);
     },
@@ -195,11 +196,12 @@ const SettingCatalog = () => {
   let PORT = window.location.protocol === 'http:' ? '8080' : '8433';
   const PATH = process.env.REACT_APP_URL || 'srv-sdesk.c31.nccp.ru';
   useLayoutEffect(() => {
-    Axios.get(`${window.location.protocol}//${PATH}:${PORT}/api/rules/params`, { data: paramsRules }).then((res) => {
+    console.log('{ data: paramsRules }', { data: paramsRules });
+    Axios.get(`${window.location.protocol}//${PATH}:${PORT}/api/rules/params`, { params: paramsRules }).then((res) => {
       setRules(res.data);
     });
     // eslint-disable-next-line
-  }, [isUpdateRules]);
+  }, [isUpdateRules, paramsRules]);
 
   return (
     <Fragment>
