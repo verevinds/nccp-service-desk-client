@@ -1,4 +1,4 @@
-import React, { memo, Fragment, useState, useMemo, useContext, Dispatch, SetStateAction } from 'react';
+import React, { memo, useState, useMemo, useContext, Dispatch, SetStateAction } from 'react';
 import { useEffect } from 'react';
 import { Dropdown } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
@@ -57,7 +57,9 @@ const SidebarSearch: React.FC<ISidebarSearch> = (props) => {
     }
 
     props.setSearch(filterIncidents);
-  }, [text]);
+
+    // eslint-disable-next-line
+  }, [text, search.id]);
 
   const dropdowns = useMemo(() => {
     const element = (

@@ -9,11 +9,10 @@ import SidebarFilter from '../SidebarFilter/SidebarFilter';
 import SidebarTitle from '../SidebarTitle/SidebarTitle';
 import { TIncident } from '../../interface';
 import { IncidentContext } from '../Incident/IncidentContext';
-import FilterQuery from '../FilterQuery/FilterQuery';
 import SidebarSearch from '../SidebarSearch/SidebarSearch';
 
 const SidebarWrapper: React.FC<ISidebarWrapper> = ({ title, onClick, activeId, onClickHistory }) => {
-  const { numberResponsible, incidents: incidentsInitial } = useContext(IncidentContext);
+  const { numberResponsible } = useContext(IncidentContext);
   const filterState = useSelector((state: any) => state.filter);
   const [blogTitle, setBlogTitle] = useState<JSX.Element | null>(null);
   const [anotherFilter, setAnotherFilter] = useState<any>(undefined);
