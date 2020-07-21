@@ -9,13 +9,21 @@ import SidebarFilter from '../SidebarFilter/SidebarFilter';
 import SidebarTitle from '../SidebarTitle/SidebarTitle';
 import { TIncident } from '../../interface';
 import { IncidentContext } from '../Incident/IncidentContext';
+import FilterQuery from '../FilterQuery/FilterQuery';
+import SidebarSearch from '../SidebarSearch/SidebarSearch';
 
 const SidebarWrapper: React.FC<ISidebarWrapper> = ({ title, onClick, activeId, onClickHistory }) => {
-  const { numberResponsible, incidents } = useContext(IncidentContext);
+  const { numberResponsible, incidents: incidentsInitial } = useContext(IncidentContext);
   const filterState = useSelector((state: any) => state.filter);
   const [blogTitle, setBlogTitle] = useState<JSX.Element | null>(null);
   const [anotherFilter, setAnotherFilter] = useState<any>(undefined);
   const [filter, setFilter] = useState<any>(undefined);
+  const [search, setSearch] = useState<any>([]);
+
+  const incidents = useMemo(() => search, [search]);
+  useEffect(() => {
+    console.log('search', search);
+  }, [search]);
 
   const responsibleList = useMemo(() => {
     if (numberResponsible) {
@@ -54,10 +62,12 @@ const SidebarWrapper: React.FC<ISidebarWrapper> = ({ title, onClick, activeId, o
       setBlogTitle(newBlogTitle);
     }
   }, [title, incidents]);
+
   return (
     <Fragment>
       <Container>
         {blogTitle}
+        <SidebarSearch search={search} setSearch={setSearch} />
         <div className={styles.block}>
           {responsibleList?.length ? (
             <Fragment>
