@@ -34,10 +34,10 @@ const CreateIncidentModel = ({ handleClose, showModal, isModify }) => {
   const parsed = queryString.parse(window.location.search);
   const dateNow = new Date();
 
-  const [currentIdDepartment, setCurrentIdDepartment] = useState(isModify ? chooseIncident?.departmentId : '');
-  const [currentIdCategory, setCurrentIdCategory] = useState(isModify ? chooseIncident?.categoryId : '');
-  const [currentIdProperty, setCurrentIdProperty] = useState(isModify ? chooseIncident?.propertyId : '');
-  const [currentIdOption, setCurrentIdOption] = useState(null);
+  const [currentIdDepartment, setCurrentIdDepartment] = useState(isModify ? chooseIncident?.departmentId : 0);
+  const [currentIdCategory, setCurrentIdCategory] = useState(isModify ? chooseIncident?.categoryId : 0);
+  const [currentIdProperty, setCurrentIdProperty] = useState(isModify ? chooseIncident?.propertyId : 0);
+  const [currentIdOption, setCurrentIdOption] = useState(0);
   const [finishWork, setFinishWork] = useState(isModify ? chooseIncident.finishWork : '');
   const [text, setText] = useState(isModify ? chooseIncident?.text : '');
   const [file, setFile] = useState(null);
@@ -98,8 +98,17 @@ const CreateIncidentModel = ({ handleClose, showModal, isModify }) => {
   ]);
 
   useEffect(() => {
-    console.log('incident', incident);
-  }, [incident]);
+    console.log('currentIdCategory', currentIdCategory);
+  }, [currentIdCategory]);
+  useEffect(() => {
+    console.log('currentIdProperty', currentIdProperty);
+  }, [currentIdProperty]);
+  useEffect(() => {
+    console.log('currentIdOption', currentIdOption);
+  }, [currentIdOption]);
+  useEffect(() => {
+    console.log('options', options);
+  }, [options]);
 
   useEffect(() => {
     if (isModify) {
@@ -111,14 +120,15 @@ const CreateIncidentModel = ({ handleClose, showModal, isModify }) => {
   }, [chooseIncident, isModify]);
 
   useEffect(() => {
-    !isModify && setCurrentIdProperty(null);
+    !isModify && setCurrentIdProperty(0);
+    !isModify && setCurrentIdOption(0);
   }, [currentIdCategory, isModify]);
   useEffect(() => {
-    !isModify && setCurrentIdOption(null);
+    !isModify && setCurrentIdOption(0);
   }, [currentIdProperty, isModify]);
 
   useEffect(() => {
-    Array.isArray(options?.params) && setState([...options?.params]);
+    Array.isArray(options?.params) ? setState([...options?.params]) : setState([]);
   }, [options]);
 
   useEffect(() => {
@@ -276,13 +286,15 @@ const CreateIncidentModel = ({ handleClose, showModal, isModify }) => {
       </Form.Group>
 
       {listSelect(list, setCurrentIdCategory, 'Выберите категорию', currentIdCategory)}
-      {listSelect(currentProperties, setCurrentIdProperty, '', currentIdProperty)}
+      {!!currentIdCategory ? listSelect(currentProperties, setCurrentIdProperty, '', currentIdProperty) : undefined}
       {!!currentIdProperty ? listSelect(currentOptions, setCurrentIdOption, '', currentIdOption) : undefined}
+
       {Array.isArray(state) && state.length ? (
         <CreateIncidentCustom setParams={setParams} state={state} setState={setState} />
       ) : (
         <CreateIncidentDefault text={text} setText={setText} />
       )}
+
       {!isModify ? (
         <>
           <Form.Group>
