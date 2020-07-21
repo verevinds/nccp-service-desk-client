@@ -9,7 +9,7 @@ import { queryApi } from '../../redux/actionCreators/queryApiAction';
 import { useMemo } from 'react';
 import { subscriptionUpdate } from '../../redux/actionCreators/subscriptionAction';
 import styles from './styles.module.scss';
-import { findById } from '../../js/supportingFunction';
+
 export interface ISettingSubscriptionCard {
   title: string;
   text: string;
