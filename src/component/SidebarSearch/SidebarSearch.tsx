@@ -17,10 +17,12 @@ const SidebarSearch: React.FC<ISidebarSearch> = (props) => {
   const users: TUser[] = useSelector((state: IState) => state.users.list);
   const positions: TPosition[] = useSelector((state: IState) => state.positions.list);
 
-  const [search, setSearch] = useState({
+  const InitialSearch = {
     id: 1,
     name: 'Инициатор',
-  });
+    placeholder: 'Иванов Иван Иванович',
+  };
+  const [search, setSearch] = useState(InitialSearch);
   const [text, setText] = useState('');
 
   useEffect(() => {
@@ -52,6 +54,26 @@ const SidebarSearch: React.FC<ISidebarSearch> = (props) => {
             ~usersNumbersByPosition.findIndex((userNumber: number) => userNumber === incident.userNumber),
         );
         break;
+      case 3:
+        const usersNumbersByPhone: number[] = users
+          .filter((user: TUser) => ~`${user.phone1} ${user.phone2}`.toLowerCase().indexOf(text.toLowerCase()))
+          .map((user: TUser) => user.number);
+
+        filterIncidents = incidents?.filter(
+          (incident: TIncident) =>
+            ~usersNumbersByPhone.findIndex((userNumber: number) => userNumber === incident.userNumber),
+        );
+        break;
+      case 4:
+        const usersNumbersByEmail: number[] = users
+          .filter((user: TUser) => ~user.email.toLowerCase().indexOf(text.toLowerCase()))
+          .map((user: TUser) => user.number);
+
+        filterIncidents = incidents?.filter(
+          (incident: TIncident) =>
+            ~usersNumbersByEmail.findIndex((userNumber: number) => userNumber === incident.userNumber),
+        );
+        break;
       default:
         break;
     }
@@ -72,10 +94,7 @@ const SidebarSearch: React.FC<ISidebarSearch> = (props) => {
           <Dropdown.Item
             onClick={() => {
               setText('');
-              setSearch({
-                id: 1,
-                name: 'Инициатор',
-              });
+              setSearch(InitialSearch);
             }}
             disabled={search.id === 1}
           >
@@ -87,11 +106,38 @@ const SidebarSearch: React.FC<ISidebarSearch> = (props) => {
               setSearch({
                 id: 2,
                 name: 'Должность',
+                placeholder: 'Инженер',
               });
             }}
             disabled={search.id === 2}
           >
             Должность
+          </Dropdown.Item>
+          <Dropdown.Item
+            onClick={() => {
+              setText('');
+              setSearch({
+                id: 3,
+                name: 'Телефон',
+                placeholder: '11-11',
+              });
+            }}
+            disabled={search.id === 3}
+          >
+            Телефон
+          </Dropdown.Item>
+          <Dropdown.Item
+            onClick={() => {
+              setText('');
+              setSearch({
+                id: 4,
+                name: 'Электронная почта',
+                placeholder: 'ivd80123@c31.nccp.ru',
+              });
+            }}
+            disabled={search.id === 4}
+          >
+            Электронная почта
           </Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
@@ -102,7 +148,7 @@ const SidebarSearch: React.FC<ISidebarSearch> = (props) => {
 
   return (
     <div className={styles.search}>
-      <FilterQuery dropdowns={dropdowns} handleText={{ text, setText }} />
+      <FilterQuery dropdowns={dropdowns} options={{ placeholder: search.placeholder }} handleText={{ text, setText }} />
     </div>
   );
 };

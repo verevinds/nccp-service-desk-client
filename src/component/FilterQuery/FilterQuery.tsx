@@ -14,8 +14,9 @@ interface IFilterQuery {
     element: JSX.Element;
   };
   handleText?: { text: string; setText: (text: string) => void };
+  options?: { placeholder: string };
 }
-const FilterQuery: React.FC<IFilterQuery> = ({ setList, list, dropdowns, handleText }) => {
+const FilterQuery: React.FC<IFilterQuery> = ({ setList, list, dropdowns, handleText, options }) => {
   const [text, setText] = useState('');
 
   useEffect(() => {
@@ -41,7 +42,7 @@ const FilterQuery: React.FC<IFilterQuery> = ({ setList, list, dropdowns, handleT
         </InputGroup.Text>
       </InputGroup.Prepend>
       <FormControl
-        placeholder="Поиск..."
+        placeholder={options && options.placeholder ? options.placeholder : 'Поиск...'}
         aria-describedby="basic-addon1"
         value={handleText ? handleText.text : text}
         onChange={(event: React.FormEvent<HTMLInputElement>) => {
