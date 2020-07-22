@@ -9,10 +9,11 @@ import styles from './styles.module.scss';
 export interface ISidebarSearch {
   search: TIncident[] | undefined;
   setSearch: Dispatch<SetStateAction<TIncident[] | undefined>>;
+  incidents: TIncident[];
 }
 
 const SidebarSearch: React.FC<ISidebarSearch> = (props) => {
-  const { incidents } = useContext(IncidentContext);
+  const incidents = props.incidents;
 
   const users: TUser[] = useSelector((state: IState) => state.users.list);
   const positions: TPosition[] = useSelector((state: IState) => state.positions.list);

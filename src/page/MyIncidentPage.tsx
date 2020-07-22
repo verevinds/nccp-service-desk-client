@@ -29,6 +29,7 @@ const MyIncidentPage = (props: TPropsParams) => {
   return (
     <IncidentContext.Provider
       value={{
+        title: 'Мои заявки',
         params,
         actionSuccessed: myIncidentRequestSuccessed,
         isMyIncidentsPage: true,
@@ -37,7 +38,6 @@ const MyIncidentPage = (props: TPropsParams) => {
         incidents,
       }}
     >
-      <h1>Мои заявки</h1>
       <Incident />
     </IncidentContext.Provider>
   );

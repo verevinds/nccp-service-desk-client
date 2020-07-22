@@ -31,7 +31,7 @@ const HeaderButton = ({ page, setPage, faIcon, newIncidentCount, text, to, toolt
         className={`mr-1 `}
         variant={page === to ? 'light' : 'link'}
         onClick={() => {
-          if (tooltip && tooltip.list && tooltip.list.length) setPage(to);
+          setPage(to);
         }}
       >
         <FontAwesomeIcon icon={faIcon} size="lg" className={text ? 'mr-1' : undefined} />

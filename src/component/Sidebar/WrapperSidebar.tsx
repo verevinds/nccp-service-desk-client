@@ -12,7 +12,7 @@ import { IncidentContext } from '../Incident/IncidentContext';
 import SidebarSearch from '../SidebarSearch/SidebarSearch';
 
 const SidebarWrapper: React.FC<ISidebarWrapper> = ({ title, onClick, activeId, onClickHistory }) => {
-  const { numberResponsible } = useContext(IncidentContext);
+  const { numberResponsible, incidents: initialIncidents, match } = useContext(IncidentContext);
   const filterState = useSelector((state: any) => state.filter);
   const [blogTitle, setBlogTitle] = useState<JSX.Element | null>(null);
   const [anotherFilter, setAnotherFilter] = useState<any>(undefined);
@@ -66,7 +66,7 @@ const SidebarWrapper: React.FC<ISidebarWrapper> = ({ title, onClick, activeId, o
     <Fragment>
       <Container>
         {blogTitle}
-        <SidebarSearch search={search} setSearch={setSearch} />
+        {initialIncidents ? <SidebarSearch {...{ incidents: initialIncidents, setSearch, search }} /> : undefined}
         <div className={styles.block}>
           {responsibleList?.length ? (
             <Fragment>
@@ -79,7 +79,7 @@ const SidebarWrapper: React.FC<ISidebarWrapper> = ({ title, onClick, activeId, o
             </Fragment>
           ) : undefined}
 
-          {anotherList && anotherList?.length && title ? (
+          {anotherList && anotherList?.length && (match.path === '/' || match.path === '/incident') ? (
             <Fragment>
               <br />
               <div className={styles.title}>

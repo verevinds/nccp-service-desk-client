@@ -25,29 +25,14 @@ const MyDepartmentPage: React.FC<any> = (props) => {
   return (
     <Fragment>
       <IncidentContext.Provider
-        value={{ incidents, Buttons: IncidentWindowDepartmentButton, match: { path: '/MyDepartmentPage' } }}
+        value={{
+          incidents,
+          Buttons: IncidentWindowDepartmentButton,
+          match: { path: '/MyDepartmentPage' },
+          title: 'Мой отдел',
+        }}
       >
-        <h1>Мой отдел</h1>
         <Incident />
-        {
-          // <Row className="mt-1">
-          //         <Col xs={5}>
-          //           <WrapperSidebar
-          //             list={incidents}
-          //             activeId={chooseIncidentId}
-          //             onClick={(id) => {
-          //               setChooseIncidentId(id);
-          //             }}
-          //             title={'Требует согласования'}
-          //           />
-          //         </Col>
-          //         <Col>
-          //           <Container>
-          //             <IncidentWindow />
-          //           </Container>
-          //         </Col>
-          //       </Row>
-        }
       </IncidentContext.Provider>
     </Fragment>
   );

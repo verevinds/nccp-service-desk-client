@@ -46,7 +46,6 @@ const MainPage = (props: TPropsParams) => {
 
   return (
     <IncidentContext.Provider value={incident}>
-      <h1>Рабочая панель</h1>
       <Suspense fallback={<SpinnerGrow />}>
         <Incident />
       </Suspense>

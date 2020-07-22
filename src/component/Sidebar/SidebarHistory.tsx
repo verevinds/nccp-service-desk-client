@@ -6,11 +6,14 @@ import Sidebar from './Sidebar';
 import { useSelector } from 'react-redux';
 import SidebarFilter from '../SidebarFilter/SidebarFilter';
 import { IState } from '../../interface';
+import SidebarSearch from '../SidebarSearch/SidebarSearch';
 
 const SidebarHistory: React.FC<ISidebarHistory> = ({ onClick, activeId, onClickHistory }) => {
   const history = useSelector((state: IState) => state.incidents.history);
   const [isLoadHistory, setIsLoadHistory] = useState(false);
   const [filter, setFilter] = useState<any>(undefined);
+  const [search, setSearch] = useState<any>([]);
+
   useEffect(() => {
     if (isLoadHistory) {
       onClickHistory();
@@ -35,11 +38,12 @@ const SidebarHistory: React.FC<ISidebarHistory> = ({ onClick, activeId, onClickH
             <Card.Body className={styles.body}>
               {history ? (
                 <Fragment>
+                  {history ? <SidebarSearch {...{ incidents: history, setSearch, search }} /> : undefined}
                   <div className={styles.title}>
                     <h6>Отработанные заявки</h6>
                     <SidebarFilter setFilter={setFilter} color={'#c3c3c3'} />
                   </div>
-                  <Sidebar list={history} filter={filter} onClick={onClick} activeId={activeId} />
+                  <Sidebar list={search} filter={filter} onClick={onClick} activeId={activeId} />
                 </Fragment>
               ) : null}
             </Card.Body>

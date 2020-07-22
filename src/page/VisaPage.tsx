@@ -16,8 +16,14 @@ const VisaPage = () => {
 
   return (
     <Fragment>
-      <IncidentContext.Provider value={{ incidents, Buttons: IncidentWindowVisaButton, match: { path: '/visa' } }}>
-        <h1>Согласование</h1>
+      <IncidentContext.Provider
+        value={{
+          title: 'Требуют моего согласования',
+          incidents,
+          Buttons: IncidentWindowVisaButton,
+          match: { path: '/visa' },
+        }}
+      >
         <Incident />
       </IncidentContext.Provider>
     </Fragment>
