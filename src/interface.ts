@@ -16,6 +16,7 @@ export interface IState {
   responsible: IResponsible;
   setting: any;
   resources: IResource;
+  filter: any;
 }
 export interface IResource {
   isUpdate: boolean;

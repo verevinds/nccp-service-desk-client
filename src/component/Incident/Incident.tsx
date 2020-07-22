@@ -47,20 +47,24 @@ const Incident = () => {
   /** Создать обработку события клика для историй */
   const onClickHistory = useCallback(() => {
     let historyParams;
+
     if (!isMyIncidentsPage) {
       let responsibles = user?.position?.responsibles;
       let arrayCategoryId: (number | never)[] = [];
       let arrayPropertyId: (number | never)[] = [];
       let arrayOptionId: (number | never)[] = [];
+
       if (Array.isArray(responsibles))
         responsibles.forEach((item) => {
           if (item.categoryId) arrayCategoryId.push(item.categoryId);
           if (item.propertyId) arrayPropertyId.push(item.propertyId);
           if (item.optionId) arrayOptionId.push(item.optionId);
         });
+
       arrayCategoryId = Array.from(new Set(arrayCategoryId));
       arrayPropertyId = Array.from(new Set(arrayPropertyId));
       arrayOptionId = Array.from(new Set(arrayOptionId));
+
       let paramsResponsible = { departmentId: user?.departmentId };
 
       if (arrayCategoryId.length > 0)

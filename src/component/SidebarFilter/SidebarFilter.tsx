@@ -1,4 +1,4 @@
-import React, { memo, useState, useCallback, useEffect, useContext } from 'react';
+import React, { memo, useState, useCallback, useContext } from 'react';
 import ButtonFontAwesome from '../ButtonFontAwesome/ButtonFontAwesome';
 //? Font Awesome иконки
 import {
@@ -15,12 +15,17 @@ export interface ISidebarFilter {
   setFilter: any;
   color?: string;
 }
+export type TFilter = { name: string; sing: number };
+
 const SidebarFilter: React.FC<ISidebarFilter> = ({ setFilter, color }) => {
   let { isMyIncidentsPage } = useContext(IncidentContext);
-  const [sort, setSort] = useState({
+
+  const InitialSort = {
     name: 'numeric',
     vectorUp: false,
-  });
+  };
+
+  const [sort, setSort] = useState(InitialSort);
 
   const onClick = useCallback(
     function (this: any) {
@@ -36,8 +41,12 @@ const SidebarFilter: React.FC<ISidebarFilter> = ({ setFilter, color }) => {
         vectorUp = false;
       }
 
-      let sing = vectorUp ? 1 : -1;
-      let filter: { name?: string; sing?: any } = {};
+      const sing = vectorUp ? 1 : -1;
+
+      let filter: TFilter = {
+        name: 'userNumber',
+        sing,
+      };
 
       switch (name) {
         case 'numeric':
@@ -47,17 +56,13 @@ const SidebarFilter: React.FC<ISidebarFilter> = ({ setFilter, color }) => {
           filter.name = 'name';
           break;
         default:
-          filter.name = 'userNumber';
           break;
       }
-      filter.sing = sing;
 
       setFilter(filter);
     },
     [sort, setSort, setFilter],
   );
-
-  useEffect(() => {}, [setFilter, sort]);
 
   let numeric = 'numeric';
   let alpha = 'alpha';
@@ -102,5 +107,3 @@ const SidebarFilter: React.FC<ISidebarFilter> = ({ setFilter, color }) => {
 };
 
 export default memo(SidebarFilter);
-
-// <Popup content={content} trigger={faEllipsisV} size={'sm'} color={color} />

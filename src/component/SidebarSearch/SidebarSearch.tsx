@@ -1,10 +1,9 @@
-import React, { memo, useState, useMemo, useContext, Dispatch, SetStateAction } from 'react';
+import React, { memo, useState, useMemo, Dispatch, SetStateAction } from 'react';
 import { useEffect } from 'react';
 import { Dropdown } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { IState, TIncident, TPosition, TUser } from '../../interface';
 import FilterQuery from '../FilterQuery/FilterQuery';
-import { IncidentContext } from '../Incident/IncidentContext';
 import styles from './styles.module.scss';
 export interface ISidebarSearch {
   search: TIncident[] | undefined;
@@ -145,7 +144,7 @@ const SidebarSearch: React.FC<ISidebarSearch> = (props) => {
     );
 
     return { element };
-  }, [search]);
+  }, [search, InitialSearch]);
 
   return (
     <div className={styles.search}>

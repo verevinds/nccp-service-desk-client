@@ -10,6 +10,7 @@ import SpinnerGrow from '../component/SpinnerGrow/SpinnerGrow';
 import { IncidentContext } from '../component/Incident/IncidentContext';
 import IncidentWindowButton from '../component/IncidentWindowButton/IncidentWindowButton';
 import { findById } from '../js/supportingFunction';
+
 const Incident = React.lazy(() => import('../component/Incident/Incident'));
 
 const MainPage = (props: TPropsParams) => {

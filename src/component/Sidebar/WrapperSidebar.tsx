@@ -1,22 +1,25 @@
 import React, { memo, useState, useEffect, useMemo, Fragment, useContext } from 'react';
-import { ISidebarWrapper } from '../Sidebar/interface';
 import { useSelector } from 'react-redux';
 import { Container } from 'react-bootstrap';
-import SidebarHistory from '../Sidebar/SidebarHistory';
-import styles from './wrapperSidebar.module.css';
-import Sidebar from '../Sidebar/Sidebar';
-import SidebarFilter from '../SidebarFilter/SidebarFilter';
-import SidebarTitle from '../SidebarTitle/SidebarTitle';
-import { TIncident } from '../../interface';
+/** Typescript interface & type */
+import { ISidebarWrapper } from '../Sidebar/interface';
+import { IState, TIncident } from '../../interface';
+/** Components */
 import { IncidentContext } from '../Incident/IncidentContext';
+import Sidebar from '../Sidebar/Sidebar';
+import SidebarHistory from '../Sidebar/SidebarHistory';
+import SidebarFilter, { TFilter } from '../SidebarFilter/SidebarFilter';
+import SidebarTitle from '../SidebarTitle/SidebarTitle';
 import SidebarSearch from '../SidebarSearch/SidebarSearch';
+/** Styles */
+import styles from './wrapperSidebar.module.css';
 
 const SidebarWrapper: React.FC<ISidebarWrapper> = ({ title, onClick, activeId, onClickHistory }) => {
   const { numberResponsible, incidents: initialIncidents, match } = useContext(IncidentContext);
-  const filterState = useSelector((state: any) => state.filter);
+  const filterState = useSelector((state: IState) => state.filter);
   const [blogTitle, setBlogTitle] = useState<JSX.Element | null>(null);
   const [anotherFilter, setAnotherFilter] = useState<any>(undefined);
-  const [filter, setFilter] = useState<any>(undefined);
+  const [filter, setFilter] = useState<TFilter | undefined>();
   const [search, setSearch] = useState<any>([]);
 
   const incidents = useMemo(() => search, [search]);
