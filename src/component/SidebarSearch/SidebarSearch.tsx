@@ -82,7 +82,7 @@ const SidebarSearch: React.FC<ISidebarSearch> = (props) => {
     props.setSearch(filterIncidents);
 
     // eslint-disable-next-line
-  }, [text, search.id]);
+  }, [text, search.id, incidents]);
 
   const dropdowns = useMemo(() => {
     const element = (

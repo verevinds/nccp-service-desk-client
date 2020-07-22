@@ -31,6 +31,7 @@ export const incidentReducer = (state = initialState, action) => {
       return {
         ...state,
         isLoading: false,
+        isUpdate: true,
         isRequest: true,
       };
     case INCIDENT_REQUEST_SUCCESSED:

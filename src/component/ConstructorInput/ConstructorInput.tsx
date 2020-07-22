@@ -136,7 +136,7 @@ const ConstructorInput: React.FC<IConstructorInput> = ({ input, id, onChange, pa
               : undefined}
             {input.select === 'resources' && resources
               ? resources.map((resource: TResource, index: number) => (
-                  <option value={resource.name} key={index}>
+                  <option value={resource.id} key={index}>
                     {resource.name}
                   </option>
                 ))
