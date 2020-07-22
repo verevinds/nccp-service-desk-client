@@ -26,15 +26,19 @@ const SidebarWrapper: React.FC<ISidebarWrapper> = ({ title, onClick, activeId, o
 
   const responsibleList = useMemo(() => {
     if (numberResponsible) {
-      return incidents?.filter((item: TIncident) => item.currentResponsible === numberResponsible);
+      return incidents
+        ?.filter((item: TIncident) => item.currentResponsible === numberResponsible)
+        .sort((a: any, b: any) => (a.id < b.id ? 1 : -1));
     } else {
-      return incidents;
+      return incidents.sort((a: any, b: any) => (a.id < b.id ? 1 : -1));
     }
   }, [incidents, numberResponsible]);
 
   const anotherList = useMemo(() => {
     if (Array.isArray(incidents)) {
-      let newList = incidents.filter((item: TIncident) => item.currentResponsible !== numberResponsible);
+      let newList = incidents
+        .filter((item: TIncident) => item.currentResponsible !== numberResponsible)
+        .sort((a: any, b: any) => (a.id < b.id ? 1 : -1));
       if (filterState.categories || filterState.options || filterState.properties)
         if (filterState.categories.length || filterState.options.length || filterState.properties.length) {
           let combineList: (TIncident | never)[][] = [];
@@ -51,6 +55,7 @@ const SidebarWrapper: React.FC<ISidebarWrapper> = ({ title, onClick, activeId, o
 
           return uniqueFlatCombineList;
         }
+
       return newList;
     }
   }, [incidents, numberResponsible, filterState]);
