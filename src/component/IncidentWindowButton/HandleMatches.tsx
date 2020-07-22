@@ -11,7 +11,7 @@ const HandleMatches = () => {
   const {
     incident: { matches, currentResponsible },
   }: TIncidentCurrent = useSelector((state: IState) => state.incidents.current);
-  const incident: TIncident = useSelector((state: IState) => state.incidents.current);
+  const incident: TIncident = useSelector((state: IState) => state.incidents.current.incident);
 
   const user: TUser = useSelector((state: IState) => state.auth.user);
   const { apiDispatch } = useContext(AppContext);
@@ -78,7 +78,7 @@ const HandleMatches = () => {
         },
       };
     },
-    [user.number, incident.id],
+    [user.number, incident],
   );
 
   function createButton(okText: string, okOnClick: () => void, cancelOnClick: () => void, isMatch: boolean) {

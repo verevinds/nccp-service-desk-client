@@ -8,7 +8,6 @@ const initialState = {
 export const resourceReducer = (state = initialState, action) => {
   switch (action.type) {
     case RESOURCE_REQUEST_SUCCESSED:
-      console.log(action);
       return {
         ...state,
         list: action.data,
