@@ -20,9 +20,6 @@ const SidebarWrapper: React.FC<ISidebarWrapper> = ({ title, onClick, activeId, o
   const [search, setSearch] = useState<any>([]);
 
   const incidents = useMemo(() => search, [search]);
-  useEffect(() => {
-    console.log('search', search);
-  }, [search]);
 
   const responsibleList = useMemo(() => {
     if (numberResponsible) {

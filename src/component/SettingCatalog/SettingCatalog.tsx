@@ -196,7 +196,6 @@ const SettingCatalog = () => {
   let PORT = window.location.protocol === 'http:' ? '8080' : '8433';
   const PATH = process.env.REACT_APP_URL || 'srv-sdesk.c31.nccp.ru';
   useLayoutEffect(() => {
-    console.log('{ data: paramsRules }', { data: paramsRules });
     Axios.get(`${window.location.protocol}//${PATH}:${PORT}/api/rules/params`, { params: paramsRules }).then((res) => {
       setRules(res.data);
     });

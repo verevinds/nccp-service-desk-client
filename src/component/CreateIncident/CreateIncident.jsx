@@ -98,19 +98,6 @@ const CreateIncidentModel = ({ handleClose, showModal, isModify }) => {
   ]);
 
   useEffect(() => {
-    console.log('currentIdCategory', currentIdCategory);
-  }, [currentIdCategory]);
-  useEffect(() => {
-    console.log('currentIdProperty', currentIdProperty);
-  }, [currentIdProperty]);
-  useEffect(() => {
-    console.log('currentIdOption', currentIdOption);
-  }, [currentIdOption]);
-  useEffect(() => {
-    console.log('options', options);
-  }, [options]);
-
-  useEffect(() => {
     if (isModify) {
       setCurrentIdDepartment(chooseIncident?.departmentId);
       setCurrentIdCategory(chooseIncident?.categoryId);

@@ -41,10 +41,7 @@ const SettingPositionsResponsibleModal: React.FC<ISettingPositionsResponsibleMod
     setResponsible({ ...responsible, positionId: id });
     // eslint-disable-next-line
   }, [id]);
-  useEffect(() => {
-    console.log('responsibles', responsibles);
-    // eslint-disable-next-line
-  }, [responsibles]);
+
   useEffect(() => {
     const PORT = window.location.protocol === 'http:' ? '8080' : '8433';
     const PATH = process.env.REACT_APP_URL || 'srv-sdesk.c31.nccp.ru';

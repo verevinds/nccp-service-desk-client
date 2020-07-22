@@ -89,7 +89,6 @@ const SettingResource = () => {
   const tagDelete = useCallback(
     (id) => {
       api.resourcesBind().delete(id);
-      console.log('id', id);
     },
     [api],
   );

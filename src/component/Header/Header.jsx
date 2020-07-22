@@ -69,7 +69,6 @@ const Header = (props) => {
     return myList.filter((item) => item.statusId === 8388605 || item.statusId === 8388607).length;
   }, [myList]);
 
-  console.log(page);
   return (
     <nav>
       <Navbar
