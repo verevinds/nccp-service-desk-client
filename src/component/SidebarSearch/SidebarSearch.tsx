@@ -26,42 +26,58 @@ const SidebarSearch: React.FC<ISidebarSearch> = (props) => {
   const [text, setText] = useState('');
 
   useEffect(() => {
-    let filterIncidents = undefined;
+    let filterIncidents;
 
     switch (search.id) {
       case 1:
         const usersNumbers: number[] = users
           .filter(
-            (user: TUser) => ~`${user.name1} ${user.name2} ${user.name3}`.toLowerCase().indexOf(text.toLowerCase()),
+            (user: TUser) =>
+              ~`${user.name1} ${user.name2} ${user.name3}`
+                .toLowerCase()
+                .indexOf(text.toLowerCase()),
           )
           .map((user: TUser) => user.number);
 
         filterIncidents = incidents?.filter(
-          (incident: TIncident) => ~usersNumbers.findIndex((userNumber: number) => userNumber === incident.userNumber),
+          (incident: TIncident) =>
+            ~usersNumbers.findIndex((userNumber: number) => userNumber === incident.userNumber),
         );
         break;
       case 2:
         const positionsId: number[] = positions
-          .filter((position: TPosition) => ~`${position.name}`.toLowerCase().indexOf(text.toLowerCase()))
+          .filter(
+            (position: TPosition) => ~`${position.name}`.toLowerCase().indexOf(text.toLowerCase()),
+          )
           .map((position: TPosition) => position.id);
 
         const usersNumbersByPosition: number[] = users
-          .filter((user: TUser) => ~positionsId.findIndex((positionId: number) => positionId === user.positionId))
+          .filter(
+            (user: TUser) =>
+              ~positionsId.findIndex((positionId: number) => positionId === user.positionId),
+          )
           .map((user: TUser) => user.number);
 
         filterIncidents = incidents?.filter(
           (incident: TIncident) =>
-            ~usersNumbersByPosition.findIndex((userNumber: number) => userNumber === incident.userNumber),
+            ~usersNumbersByPosition.findIndex(
+              (userNumber: number) => userNumber === incident.userNumber,
+            ),
         );
         break;
       case 3:
         const usersNumbersByPhone: number[] = users
-          .filter((user: TUser) => ~`${user.phone1} ${user.phone2}`.toLowerCase().indexOf(text.toLowerCase()))
+          .filter(
+            (user: TUser) =>
+              ~`${user.phone1} ${user.phone2}`.toLowerCase().indexOf(text.toLowerCase()),
+          )
           .map((user: TUser) => user.number);
 
         filterIncidents = incidents?.filter(
           (incident: TIncident) =>
-            ~usersNumbersByPhone.findIndex((userNumber: number) => userNumber === incident.userNumber),
+            ~usersNumbersByPhone.findIndex(
+              (userNumber: number) => userNumber === incident.userNumber,
+            ),
         );
         break;
       case 4:
@@ -71,7 +87,9 @@ const SidebarSearch: React.FC<ISidebarSearch> = (props) => {
 
         filterIncidents = incidents?.filter(
           (incident: TIncident) =>
-            ~usersNumbersByEmail.findIndex((userNumber: number) => userNumber === incident.userNumber),
+            ~usersNumbersByEmail.findIndex(
+              (userNumber: number) => userNumber === incident.userNumber,
+            ),
         );
         break;
       default:
@@ -86,7 +104,11 @@ const SidebarSearch: React.FC<ISidebarSearch> = (props) => {
   const dropdowns = useMemo(() => {
     const element = (
       <Dropdown>
-        <Dropdown.Toggle id="dropdown-basic" variant="outline-light" size="sm" className={styles.search__button}>
+        <Dropdown.Toggle
+          id='dropdown-basic'
+          variant='outline-light'
+          size='sm'
+          className={styles.search__button}>
           {search.name}
         </Dropdown.Toggle>
 
@@ -96,8 +118,7 @@ const SidebarSearch: React.FC<ISidebarSearch> = (props) => {
               setText('');
               setSearch(InitialSearch);
             }}
-            disabled={search.id === 1}
-          >
+            disabled={search.id === 1}>
             Инициатор
           </Dropdown.Item>
           <Dropdown.Item
@@ -109,8 +130,7 @@ const SidebarSearch: React.FC<ISidebarSearch> = (props) => {
                 placeholder: 'Инженер',
               });
             }}
-            disabled={search.id === 2}
-          >
+            disabled={search.id === 2}>
             Должность
           </Dropdown.Item>
           <Dropdown.Item
@@ -122,8 +142,7 @@ const SidebarSearch: React.FC<ISidebarSearch> = (props) => {
                 placeholder: '11-11',
               });
             }}
-            disabled={search.id === 3}
-          >
+            disabled={search.id === 3}>
             Телефон
           </Dropdown.Item>
           <Dropdown.Item
@@ -135,8 +154,7 @@ const SidebarSearch: React.FC<ISidebarSearch> = (props) => {
                 placeholder: 'ivd80123@c31.nccp.ru',
               });
             }}
-            disabled={search.id === 4}
-          >
+            disabled={search.id === 4}>
             Электронная почта
           </Dropdown.Item>
         </Dropdown.Menu>
@@ -148,7 +166,11 @@ const SidebarSearch: React.FC<ISidebarSearch> = (props) => {
 
   return (
     <div className={styles.search}>
-      <FilterQuery dropdowns={dropdowns} options={{ placeholder: search.placeholder }} handleText={{ text, setText }} />
+      <FilterQuery
+        dropdowns={dropdowns}
+        options={{ placeholder: search.placeholder }}
+        handleText={{ text, setText }}
+      />
     </div>
   );
 };

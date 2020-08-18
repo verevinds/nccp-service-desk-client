@@ -36,7 +36,13 @@ const AuthModal: React.FC<AuthModal> = () => {
           .then((res) => {
             if (Array.isArray(res.data) && String(res.data[0]) === 'Error') {
             } else {
-              dispatch(queryApi({ route: 'users', actionSuccessed: authRequestSuccessed, id: res.data.number }));
+              dispatch(
+                queryApi({
+                  route: 'users',
+                  actionSuccessed: authRequestSuccessed,
+                  id: res.data.number,
+                }),
+              );
 
               dispatch(authInitialApp(res.data));
               if (!cookies.get('auth') && res.data) {
@@ -46,28 +52,27 @@ const AuthModal: React.FC<AuthModal> = () => {
             }
           })
           .catch((err) => {});
-      }}
-    >
+      }}>
       <>
-        <InputGroup className="mb-3">
+        <InputGroup className='mb-3'>
           <FormControl
-            placeholder="Введите Ваш логин"
-            aria-label="Введите Ваш логин"
-            aria-describedby="basic-addon2"
+            placeholder='Введите Ваш логин'
+            aria-label='Введите Ваш логин'
+            aria-describedby='basic-addon2'
             onChange={(event: React.FocusEvent<HTMLInputElement>) => {
               setLogin(event.currentTarget.value);
             }}
           />
           <InputGroup.Append>
-            <InputGroup.Text id="basic-addon2">@c31.nccp.ru</InputGroup.Text>
+            <InputGroup.Text id='basic-addon2'>@c31.nccp.ru</InputGroup.Text>
           </InputGroup.Append>
         </InputGroup>
-        <InputGroup className="mb-3">
+        <InputGroup className='mb-3'>
           <FormControl
-            placeholder="Введите Ваш пароль"
-            aria-label="Введите Ваш пароль"
-            aria-describedby="basic-addon2"
-            type="password"
+            placeholder='Введите Ваш пароль'
+            aria-label='Введите Ваш пароль'
+            aria-describedby='basic-addon2'
+            type='password'
             onChange={(event: React.FocusEvent<HTMLInputElement>) => {
               setPassword(event.currentTarget.value);
             }}

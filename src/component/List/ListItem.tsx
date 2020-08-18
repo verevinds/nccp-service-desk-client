@@ -159,7 +159,7 @@ const ListItem: React.FC<IListItem> = ({
   }, [id, handleRules]);
 
   const content = useMemo(() => {
-    let buttonArray = [];
+    let buttonArray: (JSX.Element | undefined | never)[] = [];
 
     buttonTune && buttonArray.push(buttonTune);
     buttonDedline && buttonArray.push(buttonDedline);
@@ -191,7 +191,8 @@ const ListItem: React.FC<IListItem> = ({
   let jsxTags = useMemo(() => {
     if (!!bind)
       if (!!bind.length)
-        if (bind[0].item) return <ListItemTag list={bind} cursor={Boolean(cursor)} handleBind={handleBind} />;
+        if (bind[0].item)
+          return <ListItemTag list={bind} cursor={Boolean(cursor)} handleBind={handleBind} />;
   }, [bind, cursor, handleBind]);
 
   let active = useMemo(() => {
@@ -249,8 +250,7 @@ const ListItem: React.FC<IListItem> = ({
               setCtrlKey(false);
             }
           }
-        }}
-      >
+        }}>
         <Fade key={id} opposite collapse bottom>
           <Row>
             <Col xs={9}>
@@ -262,8 +262,7 @@ const ListItem: React.FC<IListItem> = ({
                     onClick(id);
                     setActiveId(id);
                   }
-                }}
-              >
+                }}>
                 <span>{name ? name : `${name1} ${name2} ${name3}`}</span>
               </div>
             </Col>

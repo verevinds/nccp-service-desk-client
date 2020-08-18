@@ -11,7 +11,12 @@ import { queryApi } from '../../redux/actionCreators/queryApiAction';
 import { usersCurrentUpdate } from '../../redux/actionCreators/usersAction';
 
 export interface ICardUserButton {}
-
+export type TButton = {
+  variant: string;
+  check?: boolean;
+  onClick: () => void;
+  text: string;
+};
 const CardUserButton: React.FC<ICardUserButton> = (props) => {
   const {
     current: { user },
@@ -36,7 +41,7 @@ const CardUserButton: React.FC<ICardUserButton> = (props) => {
   );
 
   const buttonAccess = useMemo(() => {
-    let button = [];
+    let button: (TButton | never)[] = [];
 
     if (user) {
       if (~user.accesses.findIndex((item: any) => item.access === 1))
@@ -72,10 +77,17 @@ const CardUserButton: React.FC<ICardUserButton> = (props) => {
   return (
     <Fragment>
       <hr />
-      <DropdownButton id="dropdown-basic-button" title="Доступы" size="sm">
+      <DropdownButton id='dropdown-basic-button' title='Доступы' size='sm'>
         {buttonAccess.map((item: any, index: number) => (
-          <Dropdown.Item key={index} as={Button} variant={item.variant} onClick={item.onClick} size="sm">
-            {item.check ? <FontAwesomeIcon icon={faCheck} className={'mr-1'} color="green" /> : undefined}
+          <Dropdown.Item
+            key={index}
+            as={Button}
+            variant={item.variant}
+            onClick={item.onClick}
+            size='sm'>
+            {item.check ? (
+              <FontAwesomeIcon icon={faCheck} className={'mr-1'} color='green' />
+            ) : undefined}
             {item.text}
           </Dropdown.Item>
         ))}

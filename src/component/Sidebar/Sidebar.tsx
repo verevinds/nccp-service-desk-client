@@ -18,15 +18,14 @@ const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId, filter }) => {
   const [limit, setLimit] = useState(8);
 
   const tags = (item: TIncident, color?: string, tooltip?: string) => {
-    let tags = [];
+    let tags: (JSX.Element | never)[] = [];
     if (item.statusId >= 0) {
       tags.push(
         <OverlayTrigger
           key={item.id + 't'}
-          placement="bottom"
+          placement='bottom'
           delay={{ show: 250, hide: 400 }}
-          overlay={<Tooltip id="button-tooltip">{tooltip}</Tooltip>}
-        >
+          overlay={<Tooltip id='button-tooltip'>{tooltip}</Tooltip>}>
           <FontAwesomeIcon icon={faTag} color={color} className={'mb-1'} />
         </OverlayTrigger>,
       );
@@ -35,10 +34,11 @@ const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId, filter }) => {
         tags.push(
           <OverlayTrigger
             key={item.id + 'c'}
-            placement="bottom"
+            placement='bottom'
             delay={{ show: 250, hide: 400 }}
-            overlay={<Tooltip id="button-tooltip">Ответсвенный назначен. Ожидание согласования.</Tooltip>}
-          >
+            overlay={
+              <Tooltip id='button-tooltip'>Ответсвенный назначен. Ожидание согласования.</Tooltip>
+            }>
             <FontAwesomeIcon icon={faUserClock} color={'#597ba5'} />
           </OverlayTrigger>,
         );
@@ -47,10 +47,9 @@ const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId, filter }) => {
         tags.push(
           <OverlayTrigger
             key={item.id + 'd'}
-            placement="bottom"
+            placement='bottom'
             delay={{ show: 250, hide: 400 }}
-            overlay={<Tooltip id="button-tooltip">Ответственный согласован</Tooltip>}
-          >
+            overlay={<Tooltip id='button-tooltip'>Ответственный согласован</Tooltip>}>
             <FontAwesomeIcon icon={faUserCheck} color={'#8cce9b'} />
           </OverlayTrigger>,
         );
@@ -59,7 +58,9 @@ const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId, filter }) => {
     return tags;
   };
 
-  const [jsxListItem, setJsxListItem] = useState<(JSX.Element | undefined)[]>([<p key={0}>Загрузка данных</p>]);
+  const [jsxListItem, setJsxListItem] = useState<(JSX.Element | undefined)[]>([
+    <p key={0}>Загрузка данных</p>,
+  ]);
 
   useEffect(() => {
     if (Array.isArray(list) && list.length) {
@@ -115,9 +116,9 @@ const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId, filter }) => {
 
             const isActive = activeId === item.id ? true : false;
 
-            const itemName = `${item.category ? item.category.name : ''} ${item.property ? item.property.name : ''} ${
-              item.option ? item.option.name : ''
-            }`;
+            const itemName = `${item.category ? item.category.name : ''} ${
+              item.property ? item.property.name : ''
+            } ${item.option ? item.option.name : ''}`;
 
             return (
               <ListGroup.Item
@@ -126,14 +127,14 @@ const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId, filter }) => {
                 {...to}
                 //@ts-ignore
                 onClick={onClick ? () => onClick(item.id) : null}
-                className={`${styles.item} ${isActive ? styles.active : null} bg font-light`}
-              >
+                className={`${styles.item} ${isActive ? styles.active : null} bg font-light`}>
                 <div className={styles.sidebar}>
                   <div className={styles.sidebar__container_top}>
                     <SidebarTop item={item} />
                   </div>
 
-                  <div className={`${styles.sidebar__container_centerLeft} ${styles.icon} ${styles.icon_left}`}>
+                  <div
+                    className={`${styles.sidebar__container_centerLeft} ${styles.icon} ${styles.icon_left}`}>
                     {tags(item, color, tooltip)?.map((item) => item)}
                   </div>
 
@@ -142,7 +143,9 @@ const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId, filter }) => {
                       <span>{itemText}</span>
                     </div>
                     <div className={styles.item__text}>
-                      <span className={styles.item__text_span}>{itemName ? itemName : 'Без категории'}</span>
+                      <span className={styles.item__text_span}>
+                        {itemName ? itemName : 'Без категории'}
+                      </span>
                     </div>
                   </div>
                   {!isActive ? undefined : (
@@ -168,7 +171,7 @@ const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId, filter }) => {
   }, [list, activeId, onClick, filter, limit]);
 
   return (
-    <ListGroup variant="flush">
+    <ListGroup variant='flush'>
       {jsxListItem}
       {list.length > 8 && list.length > limit ? (
         <Button
@@ -176,8 +179,7 @@ const Sidebar: React.FC<ISidebar> = ({ list, onClick, activeId, filter }) => {
           onClick={() => {
             setLimit(limit + 8);
           }}
-          className={'mt-1'}
-        >
+          className={'mt-1'}>
           Показать ещё
         </Button>
       ) : undefined}
