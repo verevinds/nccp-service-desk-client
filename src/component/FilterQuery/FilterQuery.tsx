@@ -20,7 +20,7 @@ const FilterQuery: React.FC<IFilterQuery> = ({ setList, list, dropdowns, handleT
   const [text, setText] = useState('');
 
   useEffect(() => {
-    if (!!list && !!list.length && setList) {
+    if (!!list && Array.isArray(list) && setList) {
       const filterList = list
         .filter((item: any) =>
           item?.name
@@ -28,25 +28,29 @@ const FilterQuery: React.FC<IFilterQuery> = ({ setList, list, dropdowns, handleT
             : ~`${nameUser(item)?.fullName()}`.toLowerCase().indexOf(text.toLowerCase()),
         )
         .sort((a: any, b: any) => (b.id < a.id ? 1 : -1))
-        .sort((a: any, b: any) => (b.name && a.name ? (b.name < a.name ? 1 : -1) : b.name1 < a.name1 ? 1 : -1));
+        .sort((a: any, b: any) =>
+          b.name && a.name ? (b.name < a.name ? 1 : -1) : b.name1 < a.name1 ? 1 : -1,
+        );
 
-      setList(filterList);
+      !!filterList ? setList(filterList) : setList(list);
     }
   }, [list, text, setList]);
 
   return (
-    <InputGroup className="mb-1">
+    <InputGroup className='mb-1'>
       <InputGroup.Prepend>
-        <InputGroup.Text id="basic-addon1">
+        <InputGroup.Text id='basic-addon1'>
           <FontAwesomeIcon icon={faSearch} />
         </InputGroup.Text>
       </InputGroup.Prepend>
       <FormControl
         placeholder={options && options.placeholder ? options.placeholder : 'Поиск...'}
-        aria-describedby="basic-addon1"
+        aria-describedby='basic-addon1'
         value={handleText ? handleText.text : text}
         onChange={(event: React.FormEvent<HTMLInputElement>) => {
-          handleText ? handleText.setText(event.currentTarget.value) : setText(event.currentTarget.value);
+          handleText
+            ? handleText.setText(event.currentTarget.value)
+            : setText(event.currentTarget.value);
         }}
       />
       {!dropdowns ? undefined : (

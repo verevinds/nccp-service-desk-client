@@ -185,8 +185,8 @@ export type TCategory = {
   isArchive: boolean;
   level: number | null;
   name: string;
-  options: TOption[] | never[];
-  properties: TProperty[] | never[];
+  options: (TOption | never)[];
+  properties: (TProperty | never)[];
 };
 export type TOption = {
   bind: never[] | TBindOption[];

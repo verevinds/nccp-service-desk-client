@@ -35,7 +35,12 @@ type THandleEventParams = {
   setCurrent?: Dispatch<SetStateAction<number | undefined>>;
 };
 export interface THandleEvent {
-  handleEvent: ({ route, list, setCurrent, fact }: THandleEventParams) => ({ id, value }: TFn) => void;
+  handleEvent: ({
+    route,
+    list,
+    setCurrent,
+    fact,
+  }: THandleEventParams) => ({ id, value }: TFn) => void;
   handleRules?: (agr0: { id: number }) => void;
 }
 const SettingCatalog = () => {
@@ -120,7 +125,8 @@ const SettingCatalog = () => {
   /** SIDE EFFECTS*/
   useEffect(() => {
     let department: TDepartment | undefined = findById(catalog.department, departmentIdCurrent);
-    let category: TCategory | undefined = department && findById(department.categories, categoryIdCurrent);
+    let category: TCategory | undefined =
+      department && findById(department.categories, categoryIdCurrent);
     setCategorySubList(category);
   }, [categoryIdCurrent, catalog, departmentIdCurrent]);
 
@@ -193,10 +199,14 @@ const SettingCatalog = () => {
 
     return filterPosition;
   }, [positions, filter]);
+
   let PORT = window.location.protocol === 'http:' ? '8080' : '8433';
   const PATH = process.env.REACT_APP_URL || 'srv-sdesk.c31.nccp.ru';
+
   useLayoutEffect(() => {
-    Axios.get(`${window.location.protocol}//${PATH}:${PORT}/api/rules/params`, { params: paramsRules }).then((res) => {
+    Axios.get(`${window.location.protocol}//${PATH}:${PORT}/api/rules/params`, {
+      params: paramsRules,
+    }).then((res) => {
       setRules(res.data);
     });
     // eslint-disable-next-line
@@ -209,22 +219,24 @@ const SettingCatalog = () => {
         onHide={() => setShow(false)}
         onSubmit={onSubmit}
         validated={validated}
-        textOk="Добавить"
-      >
+        textOk='Добавить'>
         <>
           <Form.Group>
             <Form.Control
               value={filter}
-              onChange={(event: React.FormEvent<HTMLInputElement>) => setFilter(event.currentTarget.value)}
+              onChange={(event: React.FormEvent<HTMLInputElement>) =>
+                setFilter(event.currentTarget.value)
+              }
             />
             <Form.Text>Введите название должности</Form.Text>
           </Form.Group>
           <Form.Control
-            as="select"
+            as='select'
             required
             value={positionId}
-            onChange={(event: React.FormEvent<HTMLInputElement>) => setPositionId(event.currentTarget.value)}
-          >
+            onChange={(event: React.FormEvent<HTMLInputElement>) =>
+              setPositionId(event.currentTarget.value)
+            }>
             {filterPosition.map((item: TPosition) => (
               <option value={item.id}>{item.name}</option>
             ))}
@@ -232,15 +244,17 @@ const SettingCatalog = () => {
 
           <hr />
           <h6>Через согласование с</h6>
-          <ListGroup variant="flush">
+          <ListGroup variant='flush'>
             {rules.map((item: any) => (
-              <ListGroup.Item className="flex flex_between">
+              <ListGroup.Item className='flex flex_between'>
                 {findById(positions, item?.positionId)?.name}
                 <ButtonFontAwesome
-                  variant="danger"
+                  variant='danger'
                   faIcon={faTrash}
                   onClick={() => {
-                    Axios.delete(`${window.location.protocol}//${PATH}:${PORT}/api/rules/${item.id}`).then((res) => {
+                    Axios.delete(
+                      `${window.location.protocol}//${PATH}:${PORT}/api/rules/${item.id}`,
+                    ).then((res) => {
                       setIsUpdateRules(true);
                     });
                   }}
@@ -254,27 +268,37 @@ const SettingCatalog = () => {
       <Row>
         <SettingCatalogDepartment setDepartmentIdCurrent={setDepartmentIdCurrent} />
         <SettingCatalogCategory
-          categoryIdCurrent={categoryIdCurrent}
-          setCategoryIdCurrent={setCategoryIdCurrent}
-          categoryList={categoryList}
-          departmentIdCurrent={departmentIdCurrent}
-          handleEvent={handleEvent}
-          setCategoryList={setCategoryList}
-          handleRules={handleRules('categoryId')}
+          {...{
+            categoryIdCurrent,
+            setCategoryIdCurrent,
+            categoryList,
+            departmentIdCurrent,
+            handleEvent,
+            setCategoryList,
+            handleRules: handleRules('categoryId'),
+          }}
         />
         {!!categorySubList ? (
           <SettingCatalogProperty
-            categorySubList={categorySubList}
-            handleEvent={handleEvent}
-            handleBind={{ id: parentId, handleBind: handleBindParent, bindDelete: handleBindChild }}
-            handleRules={handleRules('propertyId')}
+            {...{
+              categorySubList,
+              handleEvent,
+              handleBind: {
+                id: parentId,
+                handleBind: handleBindParent,
+                bindDelete: handleBindChild,
+              },
+              handleRules: handleRules('propertyId'),
+            }}
           />
         ) : undefined}
         <SettingCatalogOption
-          categorySubList={categorySubList}
-          handleEvent={handleEvent}
-          handleBind={{ id: childrenId, handleBind: handleBindChild }}
-          handleRules={handleRules('optionId')}
+          {...{
+            categorySubList,
+            handleEvent,
+            handleBind: { id: childrenId, handleBind: handleBindChild },
+            handleRules: handleRules('optionId'),
+          }}
         />
       </Row>
     </Fragment>

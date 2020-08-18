@@ -6,9 +6,10 @@ import { TProperty, TCategory, IState } from '../../interface';
 import Axios from 'axios';
 import { useSelector } from 'react-redux';
 import ModalDeadline from './ModalDeadline';
+import { useEffect } from 'react';
 
 export interface ISettingCatalogProperty extends THandleEvent {
-  categorySubList: TCategory;
+  categorySubList?: TCategory;
   handleBind: THandleBind;
 }
 
@@ -35,21 +36,26 @@ const SettingCatalogProperty: React.FC<ISettingCatalogProperty> = ({
   return (
     <>
       {!!modalDeadline ? (
-        <ModalDeadline route={route} setShow={setModalDeadline} show={modalDeadline} property={property} />
+        <ModalDeadline
+          route={route}
+          setShow={setModalDeadline}
+          show={modalDeadline}
+          property={property}
+        />
       ) : undefined}
       <List
-        title="Параметры"
-        list={categorySubList?.properties}
+        title='Параметры'
+        list={categorySubList?.properties || []}
         onSubmit={handleEvent({ route })}
         onDelete={handleEvent({ route, fact: 'delete' })}
         onFavorites={handleEvent({
           route,
-          list: categorySubList.properties,
+          list: categorySubList?.properties,
           fact: 'favorites',
         })}
         onArchive={handleEvent({
           route,
-          list: categorySubList.properties,
+          list: categorySubList?.properties,
           fact: 'archive',
         })}
         handleBind={handleBind}

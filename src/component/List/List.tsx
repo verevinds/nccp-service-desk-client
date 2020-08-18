@@ -9,6 +9,7 @@ import styles from './styles.module.css';
 //? Bootstrap
 import { ListGroup, Col, Button } from 'react-bootstrap';
 import { TItemTag } from './ListItemTag';
+import { useEffect } from 'react';
 
 export type THandle = ({ id, value }: TFn) => void;
 export interface IHandle {
@@ -61,13 +62,14 @@ const List: React.FC<IList> = ({
   const [activeId, setActiveId] = useState<number | undefined>(undefined);
   const [localList, setLocalList] = useState<any[]>([]);
   const [limit, setLimit] = useState(50);
+
   return (
     <Col xs={xs || 3}>
       <h3>{title}</h3>
       <FilterQuery list={list} setList={setLocalList} />
       {onSubmit ? <InputFormSubmite onSubmit={onSubmit} /> : undefined}
       <ListContext.Provider value={{ activeId, setActiveId }}>
-        <ListGroup variant="flush" className={`${styles.listGroup} `}>
+        <ListGroup variant='flush' className={`${styles.listGroup} `}>
           {!!localList ? (
             <>
               {localList.map((item: TList, index: number) => {
@@ -91,10 +93,14 @@ const List: React.FC<IList> = ({
                 } else return undefined;
               })}
               <hr />
-              {~localList.findIndex((item: TList, index: number) => item.isArchive) ? <h6>В архиве</h6> : undefined}
+              {~localList.findIndex((item: TList, index: number) => item.isArchive) ? (
+                <h6>В архиве</h6>
+              ) : undefined}
               {localList.map((item: TList, index: number) => {
                 if (index < limit && item.isArchive) {
-                  return <ListItem item={item} onDelete={onDelete} onArchive={onArchive} key={item.id} />;
+                  return (
+                    <ListItem item={item} onDelete={onDelete} onArchive={onArchive} key={item.id} />
+                  );
                 } else return undefined;
               })}
               {localList.length > 50 && localList.length > limit ? (
@@ -103,14 +109,13 @@ const List: React.FC<IList> = ({
                   onClick={() => {
                     setLimit(limit + 50);
                   }}
-                  className={'mt-1'}
-                >
+                  className={'mt-1'}>
                   Показать ещё
                 </Button>
               ) : undefined}
             </>
           ) : (
-            <small className="text-muted text-center">Данные отсутствуют</small>
+            <small className='text-muted text-center'>Данные отсутствуют</small>
           )}
         </ListGroup>
       </ListContext.Provider>
