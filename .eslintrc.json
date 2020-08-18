@@ -2,25 +2,84 @@
   "env": {
     "browser": true,
     "node": true,
-    "es6": true
-  },
-  "extends": [
-    "plugin:react/recommended",
-    "airbnb",
-    "plugin:prettier/recommended"
-  ],
-  "globals": {
-    "Atomics": "readonly",
-    "SharedArrayBuffer": "readonly"
+    "es6": true,
+    "jest/globals": true
   },
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
+    "ecmaVersion": 2020,
+    "sourceType": "module",
     "ecmaFeatures": {
       "jsx": true
-    },
-    "ecmaVersion": 11,
-    "sourceType": "module"
+    }
   },
-  "plugins": ["react", "@typescript-eslint"],
-  "rules": {}
+  "globals": {
+    "document": false,
+    "cookies": false
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    },
+    "import/resolver": {
+      "node": {
+        "paths": ["src"],
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    }
+  },
+  "extends": [
+    "airbnb",
+    "airbnb/hooks",
+    "plugin:prettier/recommended",
+    "prettier/flowtype",
+    "prettier/react",
+    "prettier/standard",
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:jest/recommended",
+    "plugin:jest/style"
+  ],
+  "plugins": ["prettier", "react", "@typescript-eslint", "jest"],
+  "rules": {
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx", ".tsx"] }],
+    "no-restricted-imports": [
+      2,
+      { "paths": [{ "name": "foo", "importNames": ["DisallowedObject"] }] }
+    ],
+    "import/no-extraneous-dependencies": [
+      "error",
+      { "devDependencies": ["**/*.test.ts", "**/*.test.tsx"] }
+    ],
+    "import/no-unresolved": [2, { "caseSensitive": false }],
+    "no-lone-blocks": 2,
+    "no-unused-vars": 2,
+    "react/prop-types": 0,
+    "comma-dangle": [2, "always-multiline"],
+    "no-restricted-syntax": 1,
+    "new-cap": 1,
+    "no-continue": 1,
+    "no-underscore-dangle": 1,
+    "global-require": 1,
+    "react/no-multi-comp": 1,
+    "camelcase": 2,
+    "import/prefer-default-export": 1,
+    "import/extensions": 0,
+    "no-return-assign": 1,
+    "max-len": 2,
+    "jsx-a11y/no-static-element-interactions": 0,
+    "jsx-a11y/click-events-have-key-events": 0,
+    "jsx-a11y/interactive-supports-focus": 0,
+    "jsx-a11y/no-noninteractive-element-interactions": 0,
+    "consistent-return": 0,
+    "no-bitwise": 0,
+    // JEST
+    "jest/no-disabled-tests": "warn",
+    "jest/no-focused-tests": "error",
+    "jest/no-identical-title": "error",
+    "jest/prefer-to-have-length": "warn",
+    "jest/valid-expect": "error",
+    "jest/no-undef": 0
+  }
 }
