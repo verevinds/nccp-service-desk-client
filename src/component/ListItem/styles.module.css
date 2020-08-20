@@ -1,0 +1,71 @@
+.overlay {
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+
+  background-color: rgba(100, 100, 100, .3);
+}
+.focus {
+  z-index: 1010;
+}
+.borderLeft {
+  border-top: none;
+  border-left-color: transparent;
+}
+.borderLeft:hover {
+  color: #17a2b8;
+}
+.active {
+  color: #17a2b8;
+}
+.isArchive {
+  color: #a5a9ad;
+  border: none;
+}
+.icon {
+  z-index: 900;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.icon_right {
+  margin-left: 1em;
+}
+.icon_left {
+  margin-right: 1em;
+}
+.popup {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+.item_pointer {
+  width: 100%;
+
+  cursor: pointer;
+}
+.spinner {
+  display: flex;
+  justify-content: center;
+
+  margin: 2em 0;
+}
+.buttonGroup {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  padding: 0;
+}
+.buttonGroup_flexRow {
+  display: flex;
+  justify-content: space-around;
+}
+.buttonGroup_flexRow button {
+  margin: 0 .1em;
+}

@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useState } from 'react';
 import { THandleEvent } from '../SettingCatalog/SettingCatalog';
-import { THandleBind } from '../List/ListItem';
+import { THandleBind } from '../ListItem/ListItem';
 import List from '../List/List';
 import { TProperty, TCategory, IState } from '../../interface';
 import Axios from 'axios';
