@@ -7,7 +7,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './toastiry.scss';
 
-//** Pages */
+///** Pages */
 import TestPage from './page/TestPage';
 import MyIncidentPage from './page/MyIncidentPage';
 import SettingPage from './page/SettingPage';
@@ -25,13 +25,19 @@ import { statusRequestSeccessed } from './redux/actionCreators/statusAction';
 import { accessRequestSeccessed } from './redux/actionCreators/accessAction';
 import { filterSet } from './redux/actionCreators/filterAction';
 import { incidentVisaRequestSuccessed } from './redux/actionCreators/incidentAction';
-import { incidentAllowToCreateRequestSuccessed, incidentChoose } from './redux/actionCreators/incidentAction';
+import {
+  incidentAllowToCreateRequestSuccessed,
+  incidentChoose,
+} from './redux/actionCreators/incidentAction';
 import { positionsRequestSeccessed } from './redux/actionCreators/positionAction';
 import { settingRequestSuccessed } from './redux/actionCreators/settingAction';
 
 /**Bootstrap components */
 import { ProgressBar } from 'react-bootstrap';
-import { incidentRequestSuccessed, myIncidentRequestSuccessed } from './redux/actionCreators/incidentAction';
+import {
+  incidentRequestSuccessed,
+  myIncidentRequestSuccessed,
+} from './redux/actionCreators/incidentAction';
 import Cookies from 'universal-cookie';
 import AuthModal from './component/AuthModal/AuthModal';
 import { queryApi } from './redux/actionCreators/queryApiAction';
@@ -212,7 +218,9 @@ const App = () => {
       let foundMyList = findById(myList, id);
       let foundVisa = findById(visa, id);
 
-      dispatch(incidentChoose(foundAllowToCreate || foundHistory || foundList || foundMyList || foundVisa));
+      dispatch(
+        incidentChoose(foundAllowToCreate || foundHistory || foundList || foundMyList || foundVisa),
+      );
     }
   }, [allowToCreate, history, list, myList, visa, dispatch, incident]);
 
@@ -223,7 +231,7 @@ const App = () => {
           <Header />
           <HandleSocket />
           <ToastContainer
-            position="top-right"
+            position='top-right'
             autoClose={false}
             newestOnTop={false}
             closeOnClick={false}
@@ -236,16 +244,16 @@ const App = () => {
           </div>
 
           <Switch>
-            <Route exact path="/" component={MainPage} />
-            <Route path="/incident/:id" component={MainPage} />
-            <Route path="/incident" component={MainPage} />
-            <Route path="/setting" component={SettingPage} />
-            <Route path="/myincidents/:id" component={MyIncidentPage} />
-            <Route path="/myincidents" component={MyIncidentPage} />
-            <Route path="/test" component={TestPage} />
-            <Route path="/info" component={InfoPage} />
-            <Route path="/MyDepartmentPage" component={MyDepartmentPage} />
-            <Route path="/visa" component={VisaPage} />
+            <Route exact path='/' component={MainPage} />
+            <Route path='/incident/:id' component={MainPage} />
+            <Route path='/incident' component={MainPage} />
+            <Route path='/setting' component={SettingPage} />
+            <Route path='/myincidents/:id' component={MyIncidentPage} />
+            <Route path='/myincidents' component={MyIncidentPage} />
+            <Route path='/test' component={TestPage} />
+            <Route path='/info' component={InfoPage} />
+            <Route path='/MyDepartmentPage' component={MyDepartmentPage} />
+            <Route path='/visa' component={VisaPage} />
           </Switch>
         </BrowserRouter>
       </AppContext.Provider>
