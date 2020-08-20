@@ -1,5 +1,5 @@
 import React, { memo, useState, Dispatch, SetStateAction } from 'react';
-import ListItem, { THandleBind } from './ListItem';
+import ListItem, { THandleBind } from '../ListItem/ListItem';
 import { ListContext } from './context';
 import { TFn } from '../SettingCatalog/SettingCatalog';
 import FilterQuery from '../FilterQuery/FilterQuery';
@@ -7,8 +7,8 @@ import InputFormSubmite from '../InputFormSubmite/InputFormSubmite';
 import styles from './styles.module.css';
 
 //? Bootstrap
-import { ListGroup, Col, Button } from 'react-bootstrap';
-import { TItemTag } from './ListItemTag';
+import { ListGroup, Col, Button, FormControl } from 'react-bootstrap';
+import { TItemTag } from '../ListItemTag/ListItemTag';
 import { useEffect } from 'react';
 
 export type THandle = ({ id, value }: TFn) => void;
@@ -66,7 +66,7 @@ const List: React.FC<IList> = ({
   return (
     <Col xs={xs || 3}>
       <h3>{title}</h3>
-      <FilterQuery list={list} setList={setLocalList} />
+      <FilterQuery list={list} setList={setLocalList} handleChoose={{ onClick, setActiveId }} />
       {onSubmit ? <InputFormSubmite onSubmit={onSubmit} /> : undefined}
       <ListContext.Provider value={{ activeId, setActiveId }}>
         <ListGroup variant='flush' className={`${styles.listGroup} `}>

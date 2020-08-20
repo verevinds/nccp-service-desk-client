@@ -1,7 +1,7 @@
 import React, { memo, useEffect, useState, useCallback } from 'react';
 import List from '../List/List';
 import { THandleEvent } from '../SettingCatalog/SettingCatalog';
-import { THandleBind } from '../List/ListItem';
+import { THandleBind } from '../ListItem/ListItem';
 import { TCategory } from '../../interface';
 import ModalTune from '../ModalTune/ModalTune';
 
@@ -33,7 +33,7 @@ const SettingCatalogOption: React.FC<ISettingCatalogOption> = ({
 
       newOptionJsx = (
         <List
-          title="Опции"
+          title='Опции'
           list={categorySubList.options}
           onSubmit={handleEvent({ route })}
           onDelete={handleEvent({ route, fact: 'delete' })}
