@@ -19,13 +19,13 @@ import {
   faAddressCard,
   faAtlas,
 } from '@fortawesome/free-solid-svg-icons';
-import { ListContext } from './context';
+import { ListContext } from '../List/context';
 import Fade from 'react-reveal/Fade';
 import Popup from '../Popup/Popup';
 import { faEllipsisV } from '@fortawesome/free-solid-svg-icons';
 
-import { TList, IHandle } from './List';
-import ListItemTag from './ListItemTag';
+import { TList, IHandle } from '../List/List';
+import ListItemTag from '../ListItemTag/ListItemTag';
 import { IState } from '../../interface';
 
 export interface IListItem extends IHandle {

@@ -15,9 +15,21 @@ interface IFilterQuery {
   };
   handleText?: { text: string; setText: (text: string) => void };
   options?: { placeholder: string };
+  handleChoose?: {
+    onClick?: React.Dispatch<React.SetStateAction<number | undefined>>;
+    setActiveId: React.Dispatch<React.SetStateAction<number | undefined>>;
+  };
 }
-const FilterQuery: React.FC<IFilterQuery> = ({ setList, list, dropdowns, handleText, options }) => {
+const FilterQuery: React.FC<IFilterQuery> = ({
+  setList,
+  list,
+  dropdowns,
+  handleText,
+  options,
+  handleChoose,
+}) => {
   const [text, setText] = useState('');
+  const [firstChildren, setFirstChildren] = useState(list ? list[0] : undefined);
 
   useEffect(() => {
     if (!!list && Array.isArray(list) && setList) {
@@ -32,7 +44,13 @@ const FilterQuery: React.FC<IFilterQuery> = ({ setList, list, dropdowns, handleT
           b.name && a.name ? (b.name < a.name ? 1 : -1) : b.name1 < a.name1 ? 1 : -1,
         );
 
-      !!filterList ? setList(filterList) : setList(list);
+      if (!!filterList) {
+        setList(filterList);
+        setFirstChildren(filterList[0]);
+      } else {
+        setList(list);
+        setFirstChildren(list[0]);
+      }
     }
   }, [list, text, setList]);
 
@@ -51,6 +69,12 @@ const FilterQuery: React.FC<IFilterQuery> = ({ setList, list, dropdowns, handleT
           handleText
             ? handleText.setText(event.currentTarget.value)
             : setText(event.currentTarget.value);
+        }}
+        onKeyUp={(event: React.KeyboardEvent<HTMLDivElement>) => {
+          if (event.key === 'Enter' && !!firstChildren && handleChoose && handleChoose.onClick) {
+            handleChoose?.onClick(firstChildren.id);
+            handleChoose?.setActiveId(firstChildren.id);
+          }
         }}
       />
       {!dropdowns ? undefined : (

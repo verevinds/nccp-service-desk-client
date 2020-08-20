@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import styles from './styles.module.css';
 import Fade from 'react-reveal/Fade';
-import { THandleBind } from './ListItem';
+import { THandleBind } from '../ListItem/ListItem';
 
 export interface IListItemTag {
   cursor: any;
@@ -27,12 +27,14 @@ const ListItemTag: React.FC<IListItemTag> = ({ list, cursor, handleBind }) => {
                   className={`${styles.tag} ${!!cursor ? styles.tagbind : ''} `}
                   key={index}
                   onClick={(e) => {
-                    if (e.ctrlKey) if (handleBind) if (handleBind.tagDelete) handleBind.tagDelete(item.id);
-                  }}
-                >
+                    if (e.ctrlKey)
+                      if (handleBind) if (handleBind.tagDelete) handleBind.tagDelete(item.id);
+                  }}>
                   {item?.item.name
                     ? item?.item.name
-                    : `${item?.item.name1} ${item?.item.name2.charAt(0)}.${item?.item.name3.charAt(0)}.`}
+                    : `${item?.item.name1} ${item?.item.name2.charAt(0)}.${item?.item.name3.charAt(
+                        0,
+                      )}.`}
                 </li>
               </Fade>
             );
