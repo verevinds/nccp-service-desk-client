@@ -7,9 +7,8 @@ import InputFormSubmite from '../InputFormSubmite/InputFormSubmite';
 import styles from './styles.module.css';
 
 //? Bootstrap
-import { ListGroup, Col, Button, FormControl } from 'react-bootstrap';
+import { ListGroup, Col, Button } from 'react-bootstrap';
 import { TItemTag } from '../ListItemTag/ListItemTag';
-import { useEffect } from 'react';
 
 export type THandle = ({ id, value }: TFn) => void;
 export interface IHandle {

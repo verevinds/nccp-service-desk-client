@@ -6,7 +6,6 @@ import { TProperty, TCategory, IState } from '../../interface';
 import Axios from 'axios';
 import { useSelector } from 'react-redux';
 import ModalDeadline from './ModalDeadline';
-import { useEffect } from 'react';
 
 export interface ISettingCatalogProperty extends THandleEvent {
   categorySubList?: TCategory;
