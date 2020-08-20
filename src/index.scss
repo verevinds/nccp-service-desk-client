@@ -1,23 +1,32 @@
 @font-face {
   font-family: 'Rosatom light';
+
   src: url('./font/RST45.ttf') format('woff2'), url('./font/RST45.ttf') format('truetype'),
-    /* Только если нужна поддержка старых Android, иначе закомментировать */ url('./font/RST45.ttf') format('woff');
+  /* Только если нужна поддержка старых Android, иначе закомментировать */ url('./font/RST45.ttf')
+  format('woff');
 }
 @font-face {
   font-family: 'Rosatom bold';
+
   src: url('./font/RST75.otf') format('woff2'), url('./font/RST75.otf') format('truetype'),
-    /* Только если нужна поддержка старых Android, иначе закомментировать */ url('./font/RST75.otf') format('woff');
+  /* Только если нужна поддержка старых Android, иначе закомментировать */ url('./font/RST75.otf')
+  format('woff');
 }
 @font-face {
   font-family: 'Rosatom';
-  src: url('./font/RST55.ttf') format('woff2'), url('./font/RST55.ttf') format('truetype'),
-    /* Только если нужна поддержка старых Android, иначе закомментировать */ url('./font/RST55.ttf') format('woff');
   font-weight: normal;
   font-style: normal;
+
+  src: url('./font/RST55.ttf') format('woff2'), url('./font/RST55.ttf') format('truetype'),
+  /* Только если нужна поддержка старых Android, иначе закомментировать */ url('./font/RST55.ttf')
+  format('woff');
+}
+* {
+  content-visibility: auto;
 }
 i {
-  font-family: 'Rosatom light', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell',
-    'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-family: 'Rosatom light', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
 }
 // h1,
 // h2,
@@ -29,11 +38,15 @@ i {
 //     'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
 // }
 body {
+  font-family: 'Rosatom', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+
   position: relative;
-  background-color: rgb(233, 235, 236);
+
   margin: 0;
-  font-family: 'Rosatom', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell',
-    'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+
+  background-color: rgb(233, 235, 236);
+
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -54,15 +67,16 @@ code {
   cursor: pointer;
 }
 .font-light {
-  font-family: 'Rosatom light', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell',
-    'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-family: 'Rosatom light', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   font-weight: 100;
 }
 .fcc {
-  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
+
+  width: 100%;
 }
 
 .flex {
@@ -89,20 +103,21 @@ code {
   left: 0;
 }
 .btn-primary {
-  background-color: var(--blue);
   border-color: var(--blue);
+  background-color: var(--blue);
 }
 .btn-link {
   font-weight: 400;
-  color: var(--blue);
+
   text-decoration: none;
+
+  color: var(--blue);
 }
 .btn-outline-primary {
   color: var(--blue);
   border-color: var(--blue);
 }
-.btn:hover {
-}
+
 .red {
   color: var(--red);
 }
@@ -121,24 +136,24 @@ code {
 }
 :root {
   --blue: #597ba5;
-  --indigo: #6610f2;
-  --purple: #6f42c1;
-  --pink: #e83e8c;
-  --red: #dc3545;
-  --orange: #fd7e14;
-  --yellow: #ffc107;
-  --green: #28a745;
-  --teal: #20c997;
   --cyan: #17a2b8;
-  --white: #fff;
+  --danger: #dc3545;
+  --dark: #343a40;
   --gray: #6c757d;
   --gray-dark: #343a40;
+  --green: #28a745;
+  --indigo: #6610f2;
+  --info: #17a2b8;
+  --light: #f8f9fa;
+  --orange: #fd7e14;
+  --pink: #e83e8c;
   --primary: #007bff;
+  --purple: #6f42c1;
+  --red: #dc3545;
   --secondary: #6c757d;
   --success: #28a745;
-  --info: #17a2b8;
+  --teal: #20c997;
   --warning: #ffc107;
-  --danger: #dc3545;
-  --light: #f8f9fa;
-  --dark: #343a40;
+  --white: #fff;
+  --yellow: #ffc107;
 }
