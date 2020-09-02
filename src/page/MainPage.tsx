@@ -22,7 +22,9 @@ const MainPage = (props: TPropsParams) => {
   const dispatch = useDispatch();
 
   const params = useMemo(() => ({ departmentId: user?.departmentId }), [user]);
-  const title = useMemo(() => `${user?.department?.name ? user?.department?.name : 'Заявки'}`, [user]);
+  const title = useMemo(() => `${user?.department?.name ? user?.department?.name : 'Заявки'}`, [
+    user,
+  ]);
   /** Создать объект для проброса в компоненты, на каждое изменение параметров запроса и заголовка */
   const incident = useMemo(
     () => ({
@@ -48,6 +50,7 @@ const MainPage = (props: TPropsParams) => {
   return (
     <IncidentContext.Provider value={incident}>
       <Suspense fallback={<SpinnerGrow />}>
+        Hello
         <Incident />
       </Suspense>
     </IncidentContext.Provider>

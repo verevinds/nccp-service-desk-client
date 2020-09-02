@@ -14,7 +14,12 @@ import SidebarSearch from '../SidebarSearch/SidebarSearch';
 /** Styles */
 import styles from './wrapperSidebar.module.css';
 
-const SidebarWrapper: React.FC<ISidebarWrapper> = ({ title, onClick, activeId, onClickHistory }) => {
+const SidebarWrapper: React.FC<ISidebarWrapper> = ({
+  title,
+  onClick,
+  activeId,
+  onClickHistory,
+}) => {
   const { numberResponsible, incidents: initialIncidents, match } = useContext(IncidentContext);
   const filterState = useSelector((state: IState) => state.filter);
   const [blogTitle, setBlogTitle] = useState<JSX.Element | null>(null);
@@ -40,12 +45,18 @@ const SidebarWrapper: React.FC<ISidebarWrapper> = ({ title, onClick, activeId, o
         .filter((item: TIncident) => item.currentResponsible !== numberResponsible)
         .sort((a: any, b: any) => (a.id < b.id ? 1 : -1));
       if (filterState.categories || filterState.options || filterState.properties)
-        if (filterState.categories.length || filterState.options.length || filterState.properties.length) {
+        if (
+          filterState.categories.length ||
+          filterState.options.length ||
+          filterState.properties.length
+        ) {
           let combineList: (TIncident | never)[][] = [];
           for (let key in filterState) {
             if (filterState[key].length) {
               filterState[key].forEach((element: any) => {
-                const filterList = newList?.filter((item: TIncident) => item[key] === Number(element));
+                const filterList = newList?.filter(
+                  (item: TIncident) => item[key] === Number(element),
+                );
                 if (filterList) combineList.push(filterList);
               });
             }
@@ -71,7 +82,9 @@ const SidebarWrapper: React.FC<ISidebarWrapper> = ({ title, onClick, activeId, o
     <Fragment>
       <Container>
         {blogTitle}
-        {initialIncidents ? <SidebarSearch {...{ incidents: initialIncidents, setSearch, search }} /> : undefined}
+        {initialIncidents ? (
+          <SidebarSearch {...{ incidents: initialIncidents, setSearch, search }} />
+        ) : undefined}
         <div className={styles.block}>
           {responsibleList?.length ? (
             <Fragment>
@@ -80,27 +93,37 @@ const SidebarWrapper: React.FC<ISidebarWrapper> = ({ title, onClick, activeId, o
                 {!numberResponsible ? <div></div> : <h6>Моя ответственность</h6>}
                 <SidebarFilter setFilter={setFilter} />
               </div>
-              <Sidebar list={responsibleList} onClick={onClick} activeId={activeId} filter={filter} />
+              <Sidebar
+                list={responsibleList}
+                onClick={onClick}
+                activeId={activeId}
+                filter={filter}
+              />
             </Fragment>
           ) : undefined}
 
-          {anotherList && anotherList?.length && (match.path === '/' || match.path === '/incident') ? (
+          {anotherList &&
+          anotherList?.length &&
+          (match.path === '/' || match.path === '/incident') ? (
             <Fragment>
               <br />
               <div className={styles.title}>
                 <h6>Остальные заявки</h6>
                 <SidebarFilter setFilter={setAnotherFilter} />
               </div>
-              <Sidebar list={anotherList} filter={anotherFilter} onClick={onClick} activeId={activeId} />
+              <Sidebar
+                list={anotherList}
+                filter={anotherFilter}
+                onClick={onClick}
+                activeId={activeId}
+              />
             </Fragment>
           ) : undefined}
 
           {!anotherList?.length && !responsibleList?.length ? (
-            <p className="text-muted text-center">
-              <h6>
-                <samp>cписок пустой</samp>
-              </h6>
-            </p>
+            <h6 className='text-muted text-center'>
+              <samp>cписок пустой</samp>
+            </h6>
           ) : undefined}
 
           {!onClickHistory ? undefined : (

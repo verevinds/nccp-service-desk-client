@@ -21,9 +21,7 @@
   /* Только если нужна поддержка старых Android, иначе закомментировать */ url('./font/RST55.ttf')
   format('woff');
 }
-* {
-  content-visibility: auto;
-}
+
 i {
   font-family: 'Rosatom light', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
   'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
