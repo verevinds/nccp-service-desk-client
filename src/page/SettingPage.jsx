@@ -19,11 +19,11 @@ const SettingPage = (props) => {
     list.push({ name: 'Пользователи', id: 4 });
     list.push({ name: 'Подписки', id: 5 });
     list.push({ name: 'Ресурсы', id: 6 });
-    list.push({ name: 'Группы', id: 7 });
     if (isAccess) {
       list.push({ name: 'Каталог', id: 1 });
       list.push({ name: 'Статус', id: 2 });
       list.push({ name: 'Должности', id: 3 });
+      list.push({ name: 'Группы', id: 7 });
     }
 
     return list;
