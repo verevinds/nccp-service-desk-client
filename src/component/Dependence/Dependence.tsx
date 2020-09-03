@@ -1,9 +1,9 @@
 import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import * as React from 'react';
-import { Row, Col, Container, FormControl, ListGroup, ListGroupItem } from 'react-bootstrap';
+import { Col, Container, FormControl, ListGroup, ListGroupItem } from 'react-bootstrap';
 import ButtonFontAwesome from '../ButtonFontAwesome/ButtonFontAwesome';
-import ConstructorInput from '../ConstructorInput/ConstructorInput';
 import './Dependence.scss';
+
 export interface IDependence {
   title: string;
   pickList: { id: number; [k: string]: any }[];
@@ -34,12 +34,17 @@ const Dependence: React.FC<IDependence> = ({
             <option value='' disabled>
               Выберите сотрудника
             </option>
-            {pickList.map((el: any) => {
-              if (!~listDependence.findIndex((item) => item.idDependence === el.id))
-                return (
-                  <option value={el.id} key={el.id}>{`${el.name1} ${el.name2} ${el.name3}`}</option>
-                );
-            })}
+            {
+              // eslint-disable-next-line
+              pickList.map((el: any) => {
+                if (!~listDependence.findIndex((item) => item.idDependence === el.id))
+                  return (
+                    <option
+                      value={el.id}
+                      key={el.id}>{`${el.name1} ${el.name2} ${el.name3}`}</option>
+                  );
+              })
+            }
           </FormControl>
           <ButtonFontAwesome
             faIcon={faPlus}

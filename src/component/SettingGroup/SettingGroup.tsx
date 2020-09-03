@@ -27,8 +27,7 @@ const SettingGroup: React.FC<ISettingGroup> = () => {
 
   React.useEffect(() => {
     if (group) setGroup(list.find((el) => el.id === group.id));
-    console.log(list);
-  }, [list]);
+  }, [list, group]);
   const handleGroup = React.useCallback(() => {
     return {
       add({ id, value }: TFn) {
