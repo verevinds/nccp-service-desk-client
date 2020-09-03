@@ -63,7 +63,7 @@ const List: React.FC<IList> = ({
   const [limit, setLimit] = useState(50);
 
   return (
-    <Col xs={xs || 3}>
+    <Col xs={xs || 3} className={styles.list}>
       <h3>{title}</h3>
       <FilterQuery list={list} setList={setLocalList} handleChoose={{ onClick, setActiveId }} />
       {onSubmit ? <InputFormSubmite onSubmit={onSubmit} /> : undefined}
