@@ -1,0 +1,28 @@
+.button-create {
+  position: relative;
+
+  display: flex;
+  overflow: hidden;
+  align-items: center;
+  justify-content: flex-start;
+
+  width: 31px;
+  height: 31px;
+
+  transition: all 600ms ease-out;
+  &__text {
+    line-height: 31px;
+
+    position: absolute;
+    left: 28px;
+
+    width: 99px;
+    height: 31px;
+
+    opacity: 1;
+  }
+
+  &:hover {
+    width: 140px;
+  }
+}

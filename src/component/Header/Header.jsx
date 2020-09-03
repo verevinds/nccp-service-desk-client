@@ -18,6 +18,7 @@ import {
   faUserTie,
 } from '@fortawesome/free-solid-svg-icons';
 import HeaderButton from '../HeaderButton/HeaderButton';
+import './Header.scss';
 
 const Header = (props) => {
   const user = useSelector((state) => state.auth.user, shallowEqual);
@@ -41,7 +42,11 @@ const Header = (props) => {
     if (listIncident) {
       let newList = listIncident.filter((item) => item.numberResponsible !== user?.number);
       if (filterState.categories || filterState.options || filterState.properties)
-        if (filterState.categories.length || filterState.options.length || filterState.properties.length) {
+        if (
+          filterState.categories.length ||
+          filterState.options.length ||
+          filterState.properties.length
+        ) {
           let combineList = [];
           for (let key in filterState) {
             if (filterState[key].length) {
@@ -73,17 +78,16 @@ const Header = (props) => {
     <nav>
       <Navbar
         collapseOnSelect
-        expand="lg"
-        variant="light"
-        style={{ backgroundColor: '#fff', boxShadow: '0px 0px 6px 1px rgba(0,0,0,0.2)' }}
-      >
+        expand='lg'
+        variant='light'
+        style={{ backgroundColor: '#fff', boxShadow: '0px 0px 6px 1px rgba(0,0,0,0.2)' }}>
         <Navbar.Brand className={styles.brand}>
-          <a href="http://www.c31.nccp.ru/">
+          <a href='http://www.c31.nccp.ru/'>
             <Image src={logo} className={styles.logo} />
           </a>
         </Navbar.Brand>
-        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-        <Navbar.Collapse id="responsive-navbar-nav">
+        <Navbar.Toggle aria-controls='responsive-navbar-nav' />
+        <Navbar.Collapse id='responsive-navbar-nav'>
           <Nav className={`${styles.nav} mr-auto`}>
             <Nav.Item>
               <HeaderButton
@@ -95,7 +99,8 @@ const Header = (props) => {
                 tooltip={{
                   list: myList || [],
                   isListTooltips: 'Заявки созданные Вами',
-                  isNoListTooltips: 'Все Ваши заявки были выполнены, и находятся в статусе "Закрыт"',
+                  isNoListTooltips:
+                    'Все Ваши заявки были выполнены, и находятся в статусе "Закрыт"',
                 }}
                 newIncidentCount={newMyIncidentCount}
               />
@@ -136,7 +141,8 @@ const Header = (props) => {
                     text={'Согласование'}
                     tooltip={{
                       list: visa || [],
-                      isListTooltips: 'Заявки, которые требуют Вашего согласования для принятия их на исполнение.',
+                      isListTooltips:
+                        'Заявки, которые требуют Вашего согласования для принятия их на исполнение.',
                       isNoListTooltips: 'Заявок по Вашему отделу, требующих Вашего внимания, нет',
                     }}
                     newIncidentCount={newVisaIncidentCount}
@@ -146,21 +152,25 @@ const Header = (props) => {
             </Nav.Item>{' '}
           </Nav>
           <Nav>
-            <Nav.Item className="fcc">
-              <Button onClick={handleOpen} size="sm">
-                <FontAwesomeIcon icon={faEdit} size="sm" className="mr-1" />
-                Создать заявку
+            <Nav.Item className='fcc'>
+              <Button onClick={handleOpen} size='sm' className='button-create'>
+                <FontAwesomeIcon icon={faEdit} size='sm' className='button-create__icon' />
+                <span className='button-create__text ml-1 '>Создать заявку</span>
               </Button>
               {!!showModal && user ? (
                 <CreateIncident handleClose={handleClose} showModal={showModal} user={user} />
               ) : null}
             </Nav.Item>
             <Nav.Item>
-              <Nav.Link href="">
+              <Nav.Link href=''>
                 <div className={styles.user}>
-                  <Navbar.Text className="pr-1 nowrap">{`${fullName}`}</Navbar.Text>
+                  <Navbar.Text className='pr-1 nowrap'>{`${fullName}`}</Navbar.Text>
                   <div className={styles.avatar}>
-                    <Image src={user ? user.photo : ''} roundedCircle className={styles.avatar__img} />
+                    <Image
+                      src={user ? user.photo : ''}
+                      roundedCircle
+                      className={styles.avatar__img}
+                    />
                   </div>
                 </div>
               </Nav.Link>
@@ -189,7 +199,7 @@ const Header = (props) => {
               }}
             />
             {String(version) !== localStorage.getItem('version') ? (
-              <Badge variant="primary" pill className={styles.info__badge}>
+              <Badge variant='primary' pill className={styles.info__badge}>
                 !
               </Badge>
             ) : undefined}
