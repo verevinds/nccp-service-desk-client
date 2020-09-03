@@ -4,7 +4,7 @@ export interface IQueryApi {
   route?: string;
   actionSuccessed?: (type: string, data: any) => void;
   actionUpdate?: (type: string, data: any) => void;
-  method?: string;
+  method?: 'post' | 'delete' | 'put' | string;
   data?: any;
   id?: number;
   params?: {};

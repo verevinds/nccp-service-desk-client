@@ -17,7 +17,21 @@ export interface IState {
   setting: any;
   resources: IResource;
   filter: any;
+  groups: IGroups;
 }
+
+export interface IGroups {
+  list: (never | TGroup)[];
+  isLoading: boolean;
+  isUpdate: boolean;
+}
+export type TGroup = {
+  id: number;
+  name: string;
+  isArchive: boolean;
+  updatedAt: string;
+  createdAt: string;
+};
 export interface IResource {
   isUpdate: boolean;
   list?: TResource[];

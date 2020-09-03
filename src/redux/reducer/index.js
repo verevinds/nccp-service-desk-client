@@ -15,6 +15,7 @@ import { filterReducer } from './filterReducer';
 import { responsibleReducer } from './responsibleReducer';
 import { settingReducer } from './settingReducer';
 import { resourceReducer } from './resourceReducer';
+import { groupReducer } from './groupReducer';
 
 export const CombineReducers = combineReducers({
   auth: authReducer,
@@ -33,4 +34,5 @@ export const CombineReducers = combineReducers({
   responsible: responsibleReducer,
   setting: settingReducer,
   resources: resourceReducer,
+  groups: groupReducer,
 });

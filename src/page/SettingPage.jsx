@@ -8,6 +8,7 @@ import SettingAccess from '../component/SettingAccess/SettingAccess';
 import SettingSubscription from '../component/SettingSubscription/SettingSubscription';
 import List from '../component/List/List';
 import SettingResource from '../component/SettingResource/SettingResource';
+import SettingGroup from 'src/component/SettingGroup/SettingGroup';
 const SettingPositions = React.lazy(() => import('../component/SettingPositions/SettingPositions'));
 
 const SettingPage = (props) => {
@@ -18,6 +19,7 @@ const SettingPage = (props) => {
     list.push({ name: 'Пользователи', id: 4 });
     list.push({ name: 'Подписки', id: 5 });
     list.push({ name: 'Ресурсы', id: 6 });
+    list.push({ name: 'Группы', id: 7 });
     if (isAccess) {
       list.push({ name: 'Каталог', id: 1 });
       list.push({ name: 'Статус', id: 2 });
@@ -59,19 +61,24 @@ const SettingPage = (props) => {
       case 6:
         setJsxContent(<SettingResource />);
         break;
+      case 7:
+        setJsxContent(<SettingGroup />);
+        break;
       default:
-        setJsxContent(<p className="align-content-center">Контент находиться в разработке</p>);
+        setJsxContent(<p className='align-content-center'>Контент находиться в разработке</p>);
         break;
     }
   }, [activeId, isAccess]);
   return (
-    <Row className={'m-1'}>
+    <Row className={'m-1'} style={{ flex: '1' }}>
       <Col xs={3}>
         <h1>Настройки</h1>
         <List list={list} xs={12} onClick={setActiveId} />
       </Col>
 
-      <Col xs={9}>{jsxContent}</Col>
+      <Col xs={9} style={{ display: 'flex', flexDirection: 'column' }}>
+        {jsxContent}
+      </Col>
     </Row>
   );
 };
