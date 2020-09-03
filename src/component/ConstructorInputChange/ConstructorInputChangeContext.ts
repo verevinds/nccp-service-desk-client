@@ -15,7 +15,7 @@ export const ConstructorInputChangeContext = React.createContext<IConstructorInp
     required: false,
     description: '',
     parent: '',
-    select: '',
+    select: 'users',
     value: '',
   },
 });

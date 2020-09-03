@@ -31,6 +31,15 @@ export type TGroup = {
   isArchive: boolean;
   updatedAt: string;
   createdAt: string;
+  group_lists: TGroupList[];
+};
+export type TGroupList = {
+  id: number;
+  groupId: number;
+  userNumber: number;
+  createdAt: string;
+  updatedAt: string;
+  user: TUser;
 };
 export interface IResource {
   isUpdate: boolean;
@@ -234,14 +243,14 @@ export type TProperty = {
   params: (never | TPropertyParam)[][];
 };
 export type TPropertyParam = {
-  title: string;
-  placeholder: string;
-  type: TTypeInput;
-  required: boolean;
-  description: string;
-  parent: string;
-  select: string;
-  value: any;
+  title?: string;
+  placeholder?: string;
+  type?: TTypeInput;
+  required?: boolean;
+  description?: string;
+  parent?: string;
+  select: 'departments' | 'users' | 'resources' | string;
+  value?: any;
 };
 export type TTypeInput =
   | 'button'
@@ -300,7 +309,7 @@ export type TStatus = {
 export type TUsers = {
   current: { user?: TUser; isUpdate: boolean };
   isUpdate: boolean;
-  list: TUser[] | never[];
+  list: (TUser | never)[];
 };
 
 export type TUser = {

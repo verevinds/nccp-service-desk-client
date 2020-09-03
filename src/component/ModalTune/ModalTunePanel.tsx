@@ -19,7 +19,9 @@ const ModalTunePanel: React.FC<IModalTunePanel> = ({ stateInput }) => {
   const [parent, setParent] = useState('');
   const [type, setType] = useState<TTypeInput | string>('');
   const [subType, setSubType] = useState('');
-  const [listType, setListType] = useState('departments');
+  const [listType, setListType] = useState<'departments' | 'users' | 'resources' | string>(
+    'departments',
+  );
 
   const jsxSubType = useMemo(() => {
     if (
@@ -31,31 +33,30 @@ const ModalTunePanel: React.FC<IModalTunePanel> = ({ stateInput }) => {
       return (
         <>
           <InputGroup.Prepend>
-            <InputGroup.Text id="basic-addon1" as="h5">
+            <InputGroup.Text id='basic-addon1' as='h5'>
               Тип
             </InputGroup.Text>
           </InputGroup.Prepend>
           <Form.Control
-            as="select"
+            as='select'
             className={styles.formControl}
             value={type}
             onChange={(event: React.FormEvent<HTMLInputElement>) => {
               setType(event.currentTarget.value);
-            }}
-          >
-            <option value="text">Текст</option>
-            <option value="password">Пароль</option>
-            <option value="color">Палитра</option>
-            <option value="date">Дата</option>
-            <option value="datetime-local">Дата и время</option>
-            <option value="email">Email</option>
-            <option value="number">Числовая строка</option>
-            <option value="range">Диапозон</option>
-            <option value="search">Строка (Быстроя очистка)</option>
-            <option value="time">Время</option>
-            <option value="url">Ссылка</option>
-            <option value="month">Месяц</option>
-            <option value="week">Неделя</option>
+            }}>
+            <option value='text'>Текст</option>
+            <option value='password'>Пароль</option>
+            <option value='color'>Палитра</option>
+            <option value='date'>Дата</option>
+            <option value='datetime-local'>Дата и время</option>
+            <option value='email'>Email</option>
+            <option value='number'>Числовая строка</option>
+            <option value='range'>Диапозон</option>
+            <option value='search'>Строка (Быстроя очистка)</option>
+            <option value='time'>Время</option>
+            <option value='url'>Ссылка</option>
+            <option value='month'>Месяц</option>
+            <option value='week'>Неделя</option>
           </Form.Control>
         </>
       );
@@ -66,22 +67,21 @@ const ModalTunePanel: React.FC<IModalTunePanel> = ({ stateInput }) => {
       return (
         <>
           <InputGroup.Prepend>
-            <InputGroup.Text id="basic-addon1" as="h5">
+            <InputGroup.Text id='basic-addon1' as='h5'>
               Тип
             </InputGroup.Text>
           </InputGroup.Prepend>
           <Form.Control
-            as="select"
+            as='select'
             className={styles.formControl}
             onChange={(event: React.FormEvent<HTMLInputElement>) => {
               let listType = event.currentTarget.value;
               setListType(listType);
             }}
-            value={listType}
-          >
-            <option value="departments">Отделы</option>
-            <option value="users">Сотрудники</option>
-            <option value="resources">Ресурсы</option>
+            value={listType}>
+            <option value='departments'>Отделы</option>
+            <option value='users'>Сотрудники</option>
+            <option value='resources'>Ресурсы</option>
           </Form.Control>
         </>
       );
@@ -108,12 +108,12 @@ const ModalTunePanel: React.FC<IModalTunePanel> = ({ stateInput }) => {
       <div className={styles.tunePanel_Panel}>
         <InputGroup className={styles.inputGroup}>
           <InputGroup.Prepend>
-            <InputGroup.Text id="basic-addon1" as="h5">
+            <InputGroup.Text id='basic-addon1' as='h5'>
               Вид
             </InputGroup.Text>
           </InputGroup.Prepend>
           <Form.Control
-            as="select"
+            as='select'
             className={styles.formControl}
             onChange={(event: React.FormEvent<HTMLInputElement>) => {
               let type = event.currentTarget.value;
@@ -121,14 +121,13 @@ const ModalTunePanel: React.FC<IModalTunePanel> = ({ stateInput }) => {
               setSubType(type);
               if (type !== 'list') setListType('');
             }}
-            value={type}
-          >
-            <option value="text">Текстовое поле</option>
-            <option value="void">Заглушка</option>
-            <option value="checkbox">Множественный выбор</option>
-            <option value="list">Выпадающий список</option>
-            <option value="switch">Переключатель</option>
-            <option value="title">Заголовок</option>
+            value={type}>
+            <option value='text'>Текстовое поле</option>
+            <option value='void'>Заглушка</option>
+            <option value='checkbox'>Множественный выбор</option>
+            <option value='list'>Выпадающий список</option>
+            <option value='switch'>Переключатель</option>
+            <option value='title'>Заголовок</option>
           </Form.Control>
           {jsxSubType}
           {jsxListType}
@@ -136,19 +135,18 @@ const ModalTunePanel: React.FC<IModalTunePanel> = ({ stateInput }) => {
 
         <InputGroup className={styles.inputGroup}>
           <InputGroup.Prepend>
-            <InputGroup.Text id="basic-addon1" as="h5">
+            <InputGroup.Text id='basic-addon1' as='h5'>
               активно, если поле
             </InputGroup.Text>
           </InputGroup.Prepend>
           <Form.Control
-            as="select"
+            as='select'
             className={styles.formControl}
             onChange={(event: React.FormEvent<HTMLInputElement>) => {
               let value = event.currentTarget.value;
               setParent(value);
-            }}
-          >
-            <option selected value=""></option>
+            }}>
+            <option selected value=''></option>
             {stateInput?.map((item: TPropertyParam, index) => {
               let { type, description, title, placeholder } = item;
               if (type !== 'title')
@@ -161,14 +159,14 @@ const ModalTunePanel: React.FC<IModalTunePanel> = ({ stateInput }) => {
             })}
           </Form.Control>
           <InputGroup.Append>
-            <InputGroup.Text id="basic-addon1" as="h5">
+            <InputGroup.Text id='basic-addon1' as='h5'>
               пустое
             </InputGroup.Text>
           </InputGroup.Append>
         </InputGroup>
       </div>
 
-      <Form.Group controlId="exampleForm.ControlSelect10" className={styles.tunePanel_Body}>
+      <Form.Group controlId='exampleForm.ControlSelect10' className={styles.tunePanel_Body}>
         <ConstructorInputChange
           input={input}
           handleText={setDescription}
@@ -177,12 +175,14 @@ const ModalTunePanel: React.FC<IModalTunePanel> = ({ stateInput }) => {
         />
       </Form.Group>
       <div className={styles.tunePanel__buttons}>
-        <Form.Group controlId="exampleForm.ControlSelect6" className={`${styles.formCheck} pointer`}>
+        <Form.Group
+          controlId='exampleForm.ControlSelect6'
+          className={`${styles.formCheck} pointer`}>
           {String(subType) !== 'title' ? (
             <Form.Check
-              type="switch"
+              type='switch'
               className={`pointer`}
-              label="Обязательное поле"
+              label='Обязательное поле'
               onChange={(event: React.FormEvent<HTMLInputElement>) => {
                 //@ts-ignore
                 setRequired(event.currentTarget.checked);
@@ -207,8 +207,7 @@ const ModalTunePanel: React.FC<IModalTunePanel> = ({ stateInput }) => {
             setType('');
             setSubType('');
           }}
-          variant="outline-light"
-        >
+          variant='outline-light'>
           Добавить
         </Button>
       </div>

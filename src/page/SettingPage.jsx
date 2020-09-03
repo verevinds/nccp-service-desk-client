@@ -76,9 +76,7 @@ const SettingPage = (props) => {
         <List list={list} xs={12} onClick={setActiveId} />
       </Col>
 
-      <Col xs={9} style={{ display: 'flex', flexDirection: 'column' }}>
-        {jsxContent}
-      </Col>
+      <Col xs={9}>{jsxContent}</Col>
     </Row>
   );
 };
