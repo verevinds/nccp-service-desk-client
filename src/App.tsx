@@ -48,7 +48,7 @@ import { versionSet } from './redux/actionCreators/versionAction';
 import { AppContext } from './AppContext';
 import MyDepartmentPage from './page/MyDepartmentPage';
 import VisaPage from './page/VisaPage';
-import { IState } from './interface';
+import { IState, TGroup, TGroupList } from './interface';
 import SpinnerGrow from './component/SpinnerGrow/SpinnerGrow';
 import api from './js/api';
 import { findById } from './js/supportingFunction';
@@ -182,7 +182,8 @@ const App = () => {
   /** Загрузка и обновление информации по инцидентам*/
   useLayoutEffect(() => {
     if (!!user) {
-      apiDispatch.incidents().work(user).get();
+      const groups = user.groups.map((group: TGroupList) => group.groupId);
+      apiDispatch.incidents().work(user, groups).get();
       apiDispatch.incidents().department(user).get();
       apiDispatch.incidents().my(user).get();
       apiDispatch.incidents().visa(user).get();
@@ -197,6 +198,7 @@ const App = () => {
     if (!!user) {
       const id = user?.number;
       apiDispatch.access().get(id);
+      console.log(user);
     }
   }, [isUpdateAccess, apiDispatch, user]);
   /** Загрузка и обновление информации по сотрудникам */

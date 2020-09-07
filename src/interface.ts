@@ -50,6 +50,7 @@ export type TGroupList = {
   createdAt: string;
   updatedAt: string;
   user: TUser;
+  properties?: TGroupProperty[];
 };
 export interface IResource {
   isUpdate: boolean;
@@ -349,6 +350,7 @@ export type TUser = {
     updatedAt: string;
   };
   position: TPosition;
+  groups: TGroupList[];
 };
 export interface ISubscription {
   id: number;

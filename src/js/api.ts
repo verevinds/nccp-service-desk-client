@@ -20,7 +20,8 @@ function method(this: any, dispatch: any) {
   let { route, actionSuccessed, actionUpdate, params } = this;
   const paramQuery: { route: string; actionUpdate?: any } = { route };
   const paramQueryBind = (arg: any) =>
-    !!Object.values(arg)[0] && Object.assign(paramQuery, { [Object.keys(arg)[0]]: Object.values(arg)[0] });
+    !!Object.values(arg)[0] &&
+    Object.assign(paramQuery, { [Object.keys(arg)[0]]: Object.values(arg)[0] });
   paramQueryBind({ params });
   const bindData = this.data;
   this.data = undefined;
@@ -98,12 +99,17 @@ function api(dispatch: any) {
   const api: IApi = {
     incidents() {
       return {
-        work: (user?: TUser) =>
+        work: (user: TUser, groups?: number[]) =>
           createRoute.call(
             this,
             'incidents/work',
             { actionSuccessed: incidentRequestSuccessed },
-            { params: paramsIncident(user) },
+            {
+              params: {
+                groups: groups?.length ? JSON.stringify(groups) : undefined,
+                departmentId: user.departmentId,
+              },
+            },
           ),
         department: (user?: TUser) =>
           createRoute.call(
@@ -198,7 +204,7 @@ export interface IApi {
   resourcesBind(): IMethodResourceBind;
 }
 interface IApiIncident extends IMethod {
-  work: (user: TUser) => IMethod;
+  work: (user: TUser, groups: number[]) => IMethod;
   department: (user: TUser) => IMethod;
   my: (user: TUser) => IMethod;
   visa: (user: TUser) => IMethod;
@@ -213,7 +219,12 @@ interface IMethodResource extends IMethod {
   post({
     data,
   }: {
-    data: { name: string; creatorId: number; creatorPositionId: number; creatorDepartmentId: number };
+    data: {
+      name: string;
+      creatorId: number;
+      creatorPositionId: number;
+      creatorDepartmentId: number;
+    };
   }): any;
 }
 interface IMethodResourceBind extends IMethod {
