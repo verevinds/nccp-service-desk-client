@@ -12,6 +12,7 @@ import SettingResource from '../component/SettingResource/SettingResource';
 import SettingGroup from 'src/component/SettingGroup/SettingGroup';
 import { queryApi } from 'src/redux/actionCreators/queryApiAction';
 import { groupRequestSuccessed } from 'src/redux/actionCreators/groupAction';
+import SettingDepartment from '../component/SettingDepartment/SettingDepartment';
 const SettingPositions = React.lazy(() => import('../component/SettingPositions/SettingPositions'));
 
 const SettingPage = (props) => {
@@ -35,6 +36,7 @@ const SettingPage = (props) => {
     list.push({ name: 'Пользователи', id: 4 });
     list.push({ name: 'Подписки', id: 5 });
     list.push({ name: 'Ресурсы', id: 6 });
+    list.push({ name: 'Отделы', id: 8 });
     if (isAccess) {
       list.push({ name: 'Каталог', id: 1 });
       list.push({ name: 'Статус', id: 2 });
@@ -79,6 +81,9 @@ const SettingPage = (props) => {
         break;
       case 7:
         setJsxContent(<SettingGroup />);
+        break;
+      case 8:
+        setJsxContent(<SettingDepartment />);
         break;
       default:
         setJsxContent(<p className='align-content-center'>Контент находиться в разработке</p>);

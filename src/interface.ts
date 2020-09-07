@@ -211,6 +211,7 @@ export type TDepartment = {
   categories: TCategory[] | never[];
   id: number;
   name: string;
+  parent: number;
 };
 export type TCategory = {
   deadline: number;
