@@ -6,6 +6,7 @@ import { TProperty, TCategory, IState } from '../../interface';
 import Axios from 'axios';
 import { useSelector } from 'react-redux';
 import ModalDeadline from './ModalDeadline';
+import GroupModal from '../GroupModal/GroupModal';
 
 export interface ISettingCatalogProperty extends THandleEvent {
   categorySubList?: TCategory;
@@ -22,6 +23,8 @@ const SettingCatalogProperty: React.FC<ISettingCatalogProperty> = ({
   const { isFinishTime } = useSelector((state: IState) => state.setting);
   const [modalDeadline, setModalDeadline] = useState(false);
   const [property, setProperty] = useState<TProperty | null>(null);
+  const [chooseId, setChooseId] = useState<number | undefined>();
+  const [show, setShow] = useState(false);
   const handleDedline = useCallback(({ id }) => {
     setModalDeadline(true);
     let PORT = window.location.protocol === 'http:' ? '8080' : '8433';
@@ -60,8 +63,13 @@ const SettingCatalogProperty: React.FC<ISettingCatalogProperty> = ({
         handleBind={handleBind}
         handleDedline={isFinishTime ? handleDedline : undefined}
         handleRules={handleRules}
+        handleBindGroup={(id) => {
+          setChooseId(id);
+          setShow(true);
+        }}
         xs={3}
       />
+      <GroupModal show={show} id={chooseId} onHide={() => setShow(false)} />
     </>
   );
 };

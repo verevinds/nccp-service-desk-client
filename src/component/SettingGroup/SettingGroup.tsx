@@ -67,15 +67,6 @@ const SettingGroup: React.FC<ISettingGroup> = () => {
     };
   }, [route, dispatch, list]);
 
-  React.useLayoutEffect(() => {
-    console.log(isUpdate);
-    dispatch(
-      queryApi({
-        route,
-        actionSuccessed: groupRequestSuccessed,
-      }),
-    );
-  }, [route, dispatch, isUpdate]);
   return (
     <>
       <h2>Группы</h2>

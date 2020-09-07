@@ -21,6 +21,7 @@ export interface IHandle {
   handleTune?: ({ id }: { id: number }) => void;
   handleResponsible?: (agr0: { id: number }) => void;
   handleRules?: (agr0: { id: number }) => void;
+  handleBindGroup?: (id: number) => void;
 }
 export type TList = {
   id: number;
@@ -56,6 +57,7 @@ const List: React.FC<IList> = ({
   handleTune,
   handleResponsible,
   handleRules,
+  handleBindGroup,
   xs,
 }) => {
   const [activeId, setActiveId] = useState<number | undefined>(undefined);
@@ -86,6 +88,7 @@ const List: React.FC<IList> = ({
                       handleTune={handleTune}
                       handleResponsible={handleResponsible}
                       handleRules={handleRules}
+                      handleBindGroup={handleBindGroup}
                       key={item.id}
                     />
                   );

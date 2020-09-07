@@ -18,6 +18,7 @@ import {
   faPencilRuler,
   faAddressCard,
   faAtlas,
+  faBezierCurve,
 } from '@fortawesome/free-solid-svg-icons';
 import { ListContext } from '../List/context';
 import Fade from 'react-reveal/Fade';
@@ -52,6 +53,7 @@ const ListItem: React.FC<IListItem> = ({
   handleTune,
   handleResponsible,
   handleRules,
+  handleBindGroup,
 }) => {
   if (!id && number) id = number;
 
@@ -157,14 +159,26 @@ const ListItem: React.FC<IListItem> = ({
         />
       );
   }, [id, handleRules]);
-
+  const buttonBindGroup = useMemo(() => {
+    if (!!handleBindGroup)
+      return (
+        <ButtonFontAwesome
+          faIcon={faBezierCurve}
+          onClick={() => {
+            handleBindGroup(id);
+          }}
+          variant={'info'}
+          tooltip={'Назначить на группу'}
+        />
+      );
+  }, [id, handleBindGroup]);
   const content = useMemo(() => {
     let buttonArray: (JSX.Element | undefined | never)[] = [];
 
     buttonTune && buttonArray.push(buttonTune);
     buttonDedline && buttonArray.push(buttonDedline);
     buttonRules && buttonArray.push(buttonRules);
-
+    buttonBindGroup && buttonArray.push(buttonBindGroup);
     buttonResponsible && buttonArray.push(buttonResponsible);
     if (!!buttonArchive || !!buttonDelete || !!buttonFavorites) {
       if (!!isArchive) {
@@ -186,6 +200,7 @@ const ListItem: React.FC<IListItem> = ({
     buttonTune,
     buttonResponsible,
     buttonRules,
+    buttonBindGroup,
   ]);
 
   let jsxTags = useMemo(() => {
@@ -252,7 +267,7 @@ const ListItem: React.FC<IListItem> = ({
           }
         }}>
         <Fade key={id} opposite collapse bottom>
-          <Row>
+          <Row style={{ justifyContent: 'space-between' }}>
             <Col xs={9}>
               <div
                 className={!!onClick ? styles.item_pointer : undefined}
@@ -273,10 +288,9 @@ const ListItem: React.FC<IListItem> = ({
                 </div>
               </Col>
             ) : undefined}
-
-            <Col xs={1} className={`${styles.icon}`}>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
               {id === activeId && onClick ? <FontAwesomeIcon icon={faAngleRight} /> : undefined}
-            </Col>
+            </div>
           </Row>
         </Fade>
 

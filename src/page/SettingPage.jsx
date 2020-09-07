@@ -3,17 +3,33 @@ import SettingCatalog from '../component/SettingCatalog/SettingCatalog';
 import SettingStatus from '../component/SettingStatus/SettingStatus';
 /**Bootstrap components */
 import { Row, Col } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+
 import SettingAccess from '../component/SettingAccess/SettingAccess';
 import SettingSubscription from '../component/SettingSubscription/SettingSubscription';
 import List from '../component/List/List';
 import SettingResource from '../component/SettingResource/SettingResource';
 import SettingGroup from 'src/component/SettingGroup/SettingGroup';
+import { queryApi } from 'src/redux/actionCreators/queryApiAction';
+import { groupRequestSuccessed } from 'src/redux/actionCreators/groupAction';
 const SettingPositions = React.lazy(() => import('../component/SettingPositions/SettingPositions'));
 
 const SettingPage = (props) => {
   const [activeId, setActiveId] = useState(0);
+  const dispatch = useDispatch();
+
   const isAccess = useSelector((state) => state.access.isAccess);
+  const { isUpdate: isUpdateGroups } = useSelector((state) => state.groups);
+
+  React.useLayoutEffect(() => {
+    dispatch(
+      queryApi({
+        route: 'groups',
+        actionSuccessed: groupRequestSuccessed,
+      }),
+    );
+  }, [dispatch, isUpdateGroups]);
+
   const list = useMemo(() => {
     let list = [];
     list.push({ name: 'Пользователи', id: 4 });
