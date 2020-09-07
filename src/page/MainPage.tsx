@@ -50,7 +50,6 @@ const MainPage = (props: TPropsParams) => {
   return (
     <IncidentContext.Provider value={incident}>
       <Suspense fallback={<SpinnerGrow />}>
-        Hello
         <Incident />
       </Suspense>
     </IncidentContext.Provider>
