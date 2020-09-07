@@ -32,9 +32,9 @@ export type TGroup = {
   updatedAt: string;
   createdAt: string;
   users: TGroupList[];
-  properties: TGroupProperties[];
+  properties: TGroupProperty[];
 };
-export type TGroupProperties = {
+export type TGroupProperty = {
   id: number;
   groupId: number;
   categoryId: null | number;
