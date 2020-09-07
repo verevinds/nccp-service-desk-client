@@ -31,7 +31,17 @@ export type TGroup = {
   isArchive: boolean;
   updatedAt: string;
   createdAt: string;
-  group_lists: TGroupList[];
+  users: TGroupList[];
+  properties: TGroupProperties[];
+};
+export type TGroupProperties = {
+  id: number;
+  groupId: number;
+  categoryId: null | number;
+  propertyId: null | number;
+  optionId: null | number;
+  createdAt: string;
+  updatedAt: string;
 };
 export type TGroupList = {
   id: number;
