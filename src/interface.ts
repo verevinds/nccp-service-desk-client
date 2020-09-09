@@ -351,7 +351,7 @@ export type TUser = {
     updatedAt: string;
   };
   position: TPosition;
-  groups: TGroupList[];
+  groups: TGroupList[] | null;
 };
 export interface ISubscription {
   id: number;
