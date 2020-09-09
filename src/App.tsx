@@ -183,7 +183,7 @@ const App = () => {
   /** Загрузка и обновление информации по инцидентам*/
   useLayoutEffect(() => {
     if (!!user) {
-      const groups = user.groups.map((group: TGroupList) => group.groupId);
+      const groups = user.groups?.map((group: TGroupList) => group.groupId);
       apiDispatch.incidents().work(user, groups).get();
       apiDispatch.incidents().department(user).get();
       apiDispatch.incidents().my(user).get();
