@@ -11,6 +11,7 @@ interface newRulesList {
 
 const IncidentWindowVisa: React.FC<IIncidentWindowVisa> = (props) => {
   const incident: TIncident = useSelector((state: IState) => state.incidents.current.incident);
+
   const users: TUser[] = useSelector((state: IState) => state.users.list);
   const rulesLists = useMemo(() => {
     const uniqueRules: any[] = [];
@@ -68,11 +69,11 @@ const IncidentWindowVisa: React.FC<IIncidentWindowVisa> = (props) => {
         <small>Список согласующих:</small>
       </h6>
       {rulesLists.map((item: newRulesList, index: number) => (
-        <div className="flex  blockquote-footer" key={index}>
+        <div className='flex  blockquote-footer' key={index}>
           <div>
             <p key={index}>{`${item.name}:  `}</p>
           </div>
-          <div style={{ color: item.hasVisa ? 'green' : 'red' }} className="ml-2">
+          <div style={{ color: item.hasVisa ? 'green' : 'red' }} className='ml-2'>
             {item.hasVisa ? 'Согласовано' : 'Не согласовано'}
           </div>
         </div>

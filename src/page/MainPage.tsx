@@ -25,6 +25,7 @@ const MainPage = (props: TPropsParams) => {
   const title = useMemo(() => `${user?.department?.name ? user?.department?.name : 'Заявки'}`, [
     user,
   ]);
+
   /** Создать объект для проброса в компоненты, на каждое изменение параметров запроса и заголовка */
   const incident = useMemo(
     () => ({

@@ -28,7 +28,9 @@ const HandleMatches = () => {
               comments.post({
                 data: { text: `Ответственный согласован` },
               });
-              this.incidents().put(incident.id, { data: { startWork: new Date(), statusId: 1, consent: true } });
+              this.incidents().put(incident.id, {
+                data: { startWork: new Date(), statusId: 1, consent: true },
+              });
               match();
             },
             transfer: () => {
@@ -81,7 +83,12 @@ const HandleMatches = () => {
     [user.number, incident],
   );
 
-  function createButton(okText: string, okOnClick: () => void, cancelOnClick: () => void, isMatch: boolean) {
+  function createButton(
+    okText: string,
+    okOnClick: () => void,
+    cancelOnClick: () => void,
+    isMatch: boolean,
+  ) {
     let okVariant = 'success';
     let cancelVariant = 'outline-danger';
     let cancelText = 'Отказать';
@@ -143,12 +150,12 @@ const HandleMatches = () => {
         if (!item.isMatch)
           return (
             <ButtonGroup key={index}>
-              <Button variant={item.okVariant} onClick={item.okOnClick} size="sm">
-                <FontAwesomeIcon icon={faHandshake} className="mr-1" />
+              <Button variant={item.okVariant} onClick={item.okOnClick} size='sm'>
+                <FontAwesomeIcon icon={faHandshake} className='mr-1' />
                 {item.okText}
               </Button>
-              <Button variant={item.cancelVariant} onClick={item.cancelOnClick} size="sm">
-                <FontAwesomeIcon icon={faHandshakeSlash} className="mr-1" />
+              <Button variant={item.cancelVariant} onClick={item.cancelOnClick} size='sm'>
+                <FontAwesomeIcon icon={faHandshakeSlash} className='mr-1' />
                 {item.cancelText}
               </Button>
             </ButtonGroup>

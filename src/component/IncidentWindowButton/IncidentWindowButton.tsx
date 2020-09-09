@@ -26,9 +26,16 @@ const IncidentWindowButton: React.FC<IIncidentWindowButton> = ({ myIncident }) =
     position: { level },
   } = useSelector((state: IState) => state.auth.user);
   const incident = useSelector((state: IState) => state.incidents.current.incident);
-  const { id, category, property, option, currentResponsible, statusId, matches, userNumber }: TIncident = useSelector(
-    (state: IState) => state.incidents.current.incident,
-  );
+  const {
+    id,
+    category,
+    property,
+    option,
+    currentResponsible,
+    statusId,
+    matches,
+    userNumber,
+  }: TIncident = useSelector((state: IState) => state.incidents.current.incident);
   const [fullName] = useState(`${name1} ${name2} ${name3}`);
   const { apiDispatch } = useContext(AppContext);
 
@@ -60,7 +67,9 @@ const IncidentWindowButton: React.FC<IIncidentWindowButton> = ({ myIncident }) =
 
         closeWork: () => {
           comments.post({ data: { text: `Заявка закрыта` } });
-          this.incidents().put(id, { data: { statusId: 8388608, closeWork: new Date().toISOString() } });
+          this.incidents().put(id, {
+            data: { statusId: 8388608, closeWork: new Date().toISOString() },
+          });
         },
       };
     },
@@ -69,21 +78,29 @@ const IncidentWindowButton: React.FC<IIncidentWindowButton> = ({ myIncident }) =
 
   const mainButton = useMemo(() => {
     if (!!currentResponsible) {
-      if (Number(statusId) > 0 && Number(statusId) < 8000000 && currentResponsible === number && !myIncident) {
+      if (
+        Number(statusId) > 0 &&
+        Number(statusId) < 8000000 &&
+        currentResponsible === number &&
+        !myIncident
+      ) {
         return (
-          <Button variant="outline-primary" size="sm" onClick={handleOpen}>
-            <FontAwesomeIcon icon={faPencilAlt} className="mr-1" />
+          <Button variant='outline-primary' size='sm' onClick={handleOpen}>
+            <FontAwesomeIcon icon={faPencilAlt} className='mr-1' />
             Изменить
           </Button>
         );
       }
       if (Number(statusId) === 8388607 && userNumber === number && !!myIncident) {
         return (
-          <ButtonGroup aria-label="Basic example">
-            <Button variant="outline-primary" size="sm" onClick={() => onClick.call(apiDispatch).closeWork()}>
+          <ButtonGroup aria-label='Basic example'>
+            <Button
+              variant='outline-primary'
+              size='sm'
+              onClick={() => onClick.call(apiDispatch).closeWork()}>
               Закрыть
             </Button>
-            <Button onClick={() => handleOpen().inWork()} size="sm">
+            <Button onClick={() => handleOpen().inWork()} size='sm'>
               Вернуть в работу
             </Button>
           </ButtonGroup>
@@ -92,18 +109,26 @@ const IncidentWindowButton: React.FC<IIncidentWindowButton> = ({ myIncident }) =
     }
     if (!Number(statusId) && !currentResponsible && !myIncident) {
       return (
-        <Button variant="outline-success" onClick={onClick.call(apiDispatch).inWork} size="sm">
+        <Button variant='outline-success' onClick={onClick.call(apiDispatch).inWork} size='sm'>
           Взять в работу
         </Button>
       );
     }
-  }, [statusId, currentResponsible, handleOpen, myIncident, number, onClick, apiDispatch, userNumber]);
+  }, [
+    statusId,
+    currentResponsible,
+    handleOpen,
+    myIncident,
+    number,
+    onClick,
+    apiDispatch,
+    userNumber,
+  ]);
 
   const buttonMatch = useMemo(() => {
+    console.log(!!~matches.findIndex((item: TMatch) => item.isMatch === false));
     let isMatches = !!~matches.findIndex((item: TMatch) => item.isMatch === false);
-    if (isMatches) {
-      return <HandleMatches />;
-    }
+    if (isMatches) return <HandleMatches />;
   }, [matches]);
 
   return (
@@ -111,29 +136,30 @@ const IncidentWindowButton: React.FC<IIncidentWindowButton> = ({ myIncident }) =
       <hr />
       <div className={styles.bar}>
         <div>
-          {!!buttonMatch && Number(statusId) < 8000000 && !myIncident ? (
+          {!!buttonMatch && Number(statusId) < 8400000 && !myIncident ? (
             buttonMatch
-          ) : Number(statusId) < 8000000 && !myIncident ? (
+          ) : Number(statusId) < 8400000 && !myIncident ? (
             <DropdownButton
               id={`dropdown`}
               as={ButtonGroup}
               title={'Дополнительные действия'}
               variant={'outline-info'}
-              size="sm"
-            >
+              size='sm'>
               {level ? (
-                <Dropdown.Item eventKey="1">
+                <Dropdown.Item eventKey='1'>
                   <HandleResponsible />
                 </Dropdown.Item>
               ) : undefined}
-              <Dropdown.Item eventKey="2">
+              <Dropdown.Item eventKey='2'>
                 <HandleDepartment />
               </Dropdown.Item>
               {Number(statusId) > 0 ? (
                 <>
                   <Dropdown.Divider />
 
-                  <Dropdown.Item eventKey="2" onClick={() => handleVise && handleVise.setVise(true)}>
+                  <Dropdown.Item
+                    eventKey='2'
+                    onClick={() => handleVise && handleVise.setVise(true)}>
                     Отправить на согласование
                   </Dropdown.Item>
                 </>

@@ -53,7 +53,7 @@
   },
   "scripts": {
     "start": "set PORT=8081 & react-scripts start",
-    "startLocal": "set PORT=8081 & cross-env REACT_APP_URL=localhost react-scripts start",
+    "startLocal": "set PORT=8070 & cross-env REACT_APP_URL=localhost react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
