@@ -99,7 +99,7 @@ function api(dispatch: any) {
   const api: IApi = {
     incidents() {
       return {
-        work: (user: TUser, groups?: number[]) =>
+        work: (user: TUser, groups?: number[] | null) =>
           createRoute.call(
             this,
             'incidents/work',
@@ -204,7 +204,7 @@ export interface IApi {
   resourcesBind(): IMethodResourceBind;
 }
 interface IApiIncident extends IMethod {
-  work: (user: TUser, groups: number[]) => IMethod;
+  work: (user: TUser, groups?: number[]) => IMethod;
   department: (user: TUser) => IMethod;
   my: (user: TUser) => IMethod;
   visa: (user: TUser) => IMethod;
