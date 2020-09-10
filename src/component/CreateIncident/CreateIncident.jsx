@@ -28,15 +28,23 @@ const CreateIncidentModel = ({ handleClose, showModal, isModify }) => {
   moment.updateLocale('ru', {
     workingWeekdays: [1, 2, 3, 4, 5],
   });
-  const [state, setState] = useState(isModify && chooseIncident.params ? [...chooseIncident.params] : []);
+  const [state, setState] = useState(
+    isModify && chooseIncident.params ? [...chooseIncident.params] : [],
+  );
   const dispatch = useDispatch();
   // eslint-disable-next-line
   const parsed = queryString.parse(window.location.search);
   const dateNow = new Date();
 
-  const [currentIdDepartment, setCurrentIdDepartment] = useState(isModify ? chooseIncident?.departmentId : 0);
-  const [currentIdCategory, setCurrentIdCategory] = useState(isModify ? chooseIncident?.categoryId : 0);
-  const [currentIdProperty, setCurrentIdProperty] = useState(isModify ? chooseIncident?.propertyId : 0);
+  const [currentIdDepartment, setCurrentIdDepartment] = useState(
+    isModify ? chooseIncident?.departmentId : 0,
+  );
+  const [currentIdCategory, setCurrentIdCategory] = useState(
+    isModify ? chooseIncident?.categoryId : 0,
+  );
+  const [currentIdProperty, setCurrentIdProperty] = useState(
+    isModify ? chooseIncident?.propertyId : 0,
+  );
   const [currentIdOption, setCurrentIdOption] = useState(0);
   const [finishWork, setFinishWork] = useState(isModify ? chooseIncident.finishWork : '');
   const [text, setText] = useState(isModify ? chooseIncident?.text : '');
@@ -127,6 +135,7 @@ const CreateIncidentModel = ({ handleClose, showModal, isModify }) => {
   useEffect(() => {
     if (currentCategory) {
       let options = currentCategory[0]?.options;
+
       let newOptions = [];
 
       Array.isArray(options) &&
@@ -144,23 +153,18 @@ const CreateIncidentModel = ({ handleClose, showModal, isModify }) => {
           }
         });
 
-      if (!!newOptions.length) {
-        let options = newOptions.filter((item) => !item.isArchive);
-        setCurrentOptions(options);
-      } else {
-        if (Array.isArray(options))
-          newOptions = options.filter((item) => {
-            let isBind = true;
-
-            item.bind.forEach((item) => {
-              if (item.propertyId !== currentIdProperty) isBind = false;
-            });
-
-            return isBind;
+      if (Array.isArray(options))
+        newOptions = options.filter((item) => {
+          let isBind = true;
+          item.bind.forEach((item) => {
+            if (item.propertyId !== currentIdProperty) isBind = false;
           });
-      }
+
+          return isBind;
+        });
 
       options = newOptions.filter((item) => !item.isArchive);
+      console.log(options);
       setCurrentOptions(options);
     }
   }, [currentIdProperty, currentCategory]);
@@ -169,7 +173,9 @@ const CreateIncidentModel = ({ handleClose, showModal, isModify }) => {
     if (currentProperties) {
       const property = findById(currentProperties, currentIdProperty);
       const date = new Date();
-      const finishWork = new Date(moment(date, 'DD-MM-YYYY').businessAdd(property?.deadline - 1)._d).toISOString();
+      const finishWork = new Date(
+        moment(date, 'DD-MM-YYYY').businessAdd(property?.deadline - 1)._d,
+      ).toISOString();
       property && !isModify && setFinishWork(finishWork);
 
       setProperty(property);
@@ -244,7 +250,11 @@ const CreateIncidentModel = ({ handleClose, showModal, isModify }) => {
             route: 'comments',
             method: 'post',
             actionUpdate: incidentCreate,
-            data: { text: 'Заявка доработана', incidentId: chooseIncident.id, userNumber: user.number },
+            data: {
+              text: 'Заявка доработана',
+              incidentId: chooseIncident.id,
+              userNumber: user.number,
+            },
           }),
         );
       } else await dispatch(incidentFetching(data, dataFile));
@@ -263,18 +273,21 @@ const CreateIncidentModel = ({ handleClose, showModal, isModify }) => {
       textOk={isModify ? 'Сохранить' : 'Отправить'}
       textNot={'Отменить'}
       validated={validated}
-      size={options?.params?.length > 2 ? 'lg' : undefined}
-    >
-      <Form.Group controlId="formBasicEmail">
-        <Form.Control type="text" disabled value={`${incident.name}`} />
-        <Form.Text className="text-muted">
+      size={options?.params?.length > 2 ? 'lg' : undefined}>
+      <Form.Group controlId='formBasicEmail'>
+        <Form.Control type='text' disabled value={`${incident.name}`} />
+        <Form.Text className='text-muted'>
           Если имя в этом поле не совпадает с Вашим, обратитесь к администратору.
         </Form.Text>
       </Form.Group>
 
       {listSelect(list, setCurrentIdCategory, 'Выберите категорию', currentIdCategory)}
-      {!!currentIdCategory ? listSelect(currentProperties, setCurrentIdProperty, '', currentIdProperty) : undefined}
-      {!!currentIdProperty ? listSelect(currentOptions, setCurrentIdOption, '', currentIdOption) : undefined}
+      {!!currentIdCategory
+        ? listSelect(currentProperties, setCurrentIdProperty, '', currentIdProperty)
+        : undefined}
+      {!!currentIdProperty
+        ? listSelect(currentOptions, setCurrentIdOption, '', currentIdOption)
+        : undefined}
 
       {Array.isArray(state) && state.length ? (
         <CreateIncidentCustom setParams={setParams} state={state} setState={setState} />
@@ -288,18 +301,22 @@ const CreateIncidentModel = ({ handleClose, showModal, isModify }) => {
             <UploadFiles setFile={setFile} />
           </Form.Group>
           {!isFinishTime ? undefined : (
-            <InputGroup className="mb-3">
+            <InputGroup className='mb-3'>
               <InputGroup.Prepend>
-                <InputGroup.Text id="basic-addon1">Срок выполнения</InputGroup.Text>
+                <InputGroup.Text id='basic-addon1'>Срок выполнения</InputGroup.Text>
               </InputGroup.Prepend>
               <Form.Control
-                type="date"
+                type='date'
                 value={finishWork?.slice(0, 10)}
-                min={new Date(moment(new Date(), 'DD-MM-YYYY').businessAdd(property?.deadline - 1)._d)
+                min={new Date(
+                  moment(new Date(), 'DD-MM-YYYY').businessAdd(property?.deadline - 1)._d,
+                )
                   .toISOString()
                   .slice(0, 10)}
                 onChange={(event) =>
-                  setFinishWork(new Date(`${event.currentTarget.value}${finishWork?.slice(10)}`).toISOString())
+                  setFinishWork(
+                    new Date(`${event.currentTarget.value}${finishWork?.slice(10)}`).toISOString(),
+                  )
                 }
               />
             </InputGroup>
