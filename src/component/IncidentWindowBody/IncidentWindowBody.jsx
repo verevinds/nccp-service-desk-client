@@ -22,7 +22,6 @@ const IncidentWindowBody = ({ handleOpen }) => {
   const { user } = useSelector((state) => state.auth, shallowEqual);
   const incident = useSelector((state) => state.incidents?.current.incident, shallowEqual);
 
-  console.log(incident);
   return (
     <Card.Body className={styles.window}>
       <Card.Title>

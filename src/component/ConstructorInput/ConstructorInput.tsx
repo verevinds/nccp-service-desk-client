@@ -1,6 +1,6 @@
 import React, { memo, useState, useMemo } from 'react';
 import { Form } from 'react-bootstrap';
-import { IState, TDepartment, TPropertyParam, TResource, TUser } from '../../interface';
+import { IState, TDepartment, TPosition, TPropertyParam, TResource, TUser } from '../../interface';
 import { useSelector } from 'react-redux';
 import styles from './styles.module.scss';
 
@@ -15,18 +15,26 @@ export interface IConstructorInput {
   setCount?: any;
 }
 
-const ConstructorInput: React.FC<IConstructorInput> = ({ input, id, onChange, parentValue, indexRow, indexCol }) => {
+const ConstructorInput: React.FC<IConstructorInput> = ({
+  input,
+  id,
+  onChange,
+  parentValue,
+  indexRow,
+  indexCol,
+}) => {
   let formControl;
   const [state, setState] = useState<string | undefined>(input.value);
   const [isSwitchOn, setIsSwitchOn] = useState<boolean | undefined>(!!input.value);
   const departments: TDepartment[] = useSelector((state: IState) => state.catalog.department);
   const users: TUser[] = useSelector((state: IState) => state.users.list);
   const resources: TResource[] = useSelector((state: IState) => state.resources?.list);
+  const positions: TPosition[] = useSelector((state: IState) => state.positions.list);
   const user: TUser = useSelector((state: IState) => state.auth.user);
 
   const usersHandled = useMemo(() => {
     if (users) {
-      return users.filter((item: TUser) => item.departmentId === user.departmentId);
+      return users.filter((item: TUser) => item.fired === 0);
     }
     return users;
   }, [users, user.departmentId]);
@@ -54,28 +62,33 @@ const ConstructorInput: React.FC<IConstructorInput> = ({ input, id, onChange, pa
             className={styles.input}
             key={`f-${id}`}
             // required={!!input.required}
-            pattern="/^(\s*)?(\+)?([- _():=+]?\d[- _():=+]?){10,14}(\s*)?$/"
+            pattern='/^(\s*)?(\+)?([- _():=+]?\d[- _():=+]?){10,14}(\s*)?$/'
             value={state}
             onChange={handleChange}
             disabled={!!parentValue}
           />
 
-          <Form.Text className="text-muted">Введите номер телефона в формате: +7(903)888-88-88</Form.Text>
+          <Form.Text className='text-muted'>
+            Введите номер телефона в формате: +7(903)888-88-88
+          </Form.Text>
         </div>
       );
       break;
     case 'switch':
       formControl = (
-        <div className="custom-control custom-switch ">
+        <div className='custom-control custom-switch '>
           <input
-            type="checkbox"
-            className="custom-control-input pointer"
+            type='checkbox'
+            className='custom-control-input pointer'
             id={`customSwitch${id}`}
             defaultChecked={!!isSwitchOn}
             required={!!input.required}
             disabled={!!parentValue}
           />
-          <label className="custom-control-label pointer" htmlFor={`customSwitch${id}`} onClick={onSwitchAction}>
+          <label
+            className='custom-control-label pointer'
+            htmlFor={`customSwitch${id}`}
+            onClick={onSwitchAction}>
             {input.placeholder}
           </label>
         </div>
@@ -98,7 +111,9 @@ const ConstructorInput: React.FC<IConstructorInput> = ({ input, id, onChange, pa
     case 'title':
       formControl = (
         <div key={`fdg-${id}`}>
-          {!!input.description ? <Form.Text className="text-muted">{input.description}</Form.Text> : undefined}
+          {!!input.description ? (
+            <Form.Text className='text-muted'>{input.description}</Form.Text>
+          ) : undefined}
         </div>
       );
       break;
@@ -107,17 +122,17 @@ const ConstructorInput: React.FC<IConstructorInput> = ({ input, id, onChange, pa
       formControl = (
         <div key={`select-${id}`}>
           <Form.Control
-            as="select"
+            as='select'
             onChange={handleChange}
             required={!!input.required}
             disabled={!!parentValue}
             className={styles.input}
-            defaultValue={input.value}
-          >
-            <option value="">
+            defaultValue={input.value}>
+            <option value=''>
               {input.select === 'departments' && 'Выберите отдел'}
               {input.select === 'users' && 'Выберите сотрудника'}
               {input.select === 'resources' && 'Выберите ресурс'}
+              {input.select === 'positions' && 'Выберите должность'}
             </option>
             {input.select === 'departments' &&
               departments
@@ -141,8 +156,17 @@ const ConstructorInput: React.FC<IConstructorInput> = ({ input, id, onChange, pa
                   </option>
                 ))
               : undefined}
+            {input.select === 'positions' && positions
+              ? positions.map((position: TPosition, index: number) => (
+                  <option value={position.id} key={index}>
+                    {position.name}
+                  </option>
+                ))
+              : undefined}
           </Form.Control>
-          {!!input.description ? <Form.Text className="text-muted">{input.description}</Form.Text> : undefined}
+          {!!input.description ? (
+            <Form.Text className='text-muted'>{input.description}</Form.Text>
+          ) : undefined}
         </div>
       );
       break;
@@ -160,7 +184,9 @@ const ConstructorInput: React.FC<IConstructorInput> = ({ input, id, onChange, pa
             key={`dfg-${id}`}
           />
 
-          {!!input.description ? <Form.Text className="text-muted">{input.description}</Form.Text> : undefined}
+          {!!input.description ? (
+            <Form.Text className='text-muted'>{input.description}</Form.Text>
+          ) : undefined}
         </div>
       );
   }
@@ -168,7 +194,9 @@ const ConstructorInput: React.FC<IConstructorInput> = ({ input, id, onChange, pa
   return (
     <Form.Group controlId={id} key={id} className={styles.group}>
       {!!input.title ? (
-        <Form.Label className={styles.title}>{input.type === 'title' ? <b>{input.title}</b> : input.title}</Form.Label>
+        <Form.Label className={styles.title}>
+          {input.type === 'title' ? <b>{input.title}</b> : input.title}
+        </Form.Label>
       ) : undefined}
       {formControl}
     </Form.Group>
