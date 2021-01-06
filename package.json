@@ -15,7 +15,7 @@
     "@types/react-bootstrap": "^1.0.1",
     "@types/react-router-dom": "^5.1.5",
     "@types/socket.io-client": "^1.4.33",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "bootstrap": "^4.4.1",
     "howler": "^2.2.0",
     "http-proxy-middleware": "^1.0.4",
